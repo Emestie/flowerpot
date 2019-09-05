@@ -22,8 +22,12 @@ function createWindow() {
         });
     win.loadURL(startUrl);
 
+    //TODO: on ready try to load settings
+    //TODO: if dev env get setting from some predefined json
+
     // Emitted when the window is closed.
     win.on("closed", () => {
+        //TODO: save settings
         win = null;
     });
 }

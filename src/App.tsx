@@ -1,33 +1,31 @@
 import React from "react";
-//const { dialog } = require("electron");
+import store from "./store";
+import { observer } from "mobx-react";
+import SettingsView from "./views/SettingsView";
+import CredentialsView from "./views/CredentialsView";
+import Settings from "./helpers/Settings";
 
-const App: React.FC = () => {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <p>
-                    Edit <code>src/App.tsx</code> and save to 1reload.
-                </p>
-                <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-                    Learn React
-                </a>
-                <button
-                    onClick={() => {
-                      //  dialog.showOpenDialog({ properties: ["openFile", "openDirectory", "multiSelections"] });
-                    }}
-                >
-                    alert
-                </button>
-                <button
-                    onClick={() => {
-                        let notif = new Notification("lalala");
-                    }}
-                >
-                    notif
-                </button>
-            </header>
-        </div>
-    );
-};
+@observer
+export default class App extends React.Component {
+    componentDidMount() {
+        Settings.pullFromWindow();
+        // if (store.settings.credentialsChecked) store.view = "main";
+        // else store.view = "credentials";
+        store.view = "settings";
+    }
 
-export default App;
+    render() {
+        switch (store.view) {
+            case "loading":
+                return <SettingsView />;
+            case "error":
+                return <SettingsView />;
+            case "main":
+                return <SettingsView />;
+            case "settings":
+                return <SettingsView />;
+            case "credentials":
+                return <CredentialsView />;
+        }
+    }
+}
