@@ -1,9 +1,10 @@
 import React from "react";
 import store from "./store";
 import { observer } from "mobx-react";
+import Settings from "./helpers/Settings";
 import SettingsView from "./views/SettingsView";
 import CredentialsView from "./views/CredentialsView";
-import Settings from "./helpers/Settings";
+import SelectQueriesView from "./views/SelectQueriesView";
 
 @observer
 export default class App extends React.Component {
@@ -11,7 +12,7 @@ export default class App extends React.Component {
         Settings.pullFromWindow();
         // if (store.settings.credentialsChecked) store.view = "main";
         // else store.view = "credentials";
-        store.view = "settings";
+        store.view = "selectqueries";
     }
 
     render() {
@@ -26,6 +27,8 @@ export default class App extends React.Component {
                 return <SettingsView />;
             case "credentials":
                 return <CredentialsView />;
+            case "selectqueries":
+                return <SelectQueriesView />;
         }
     }
 }

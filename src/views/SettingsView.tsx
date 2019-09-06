@@ -1,21 +1,21 @@
 import React from "react";
-import { Header, Container, Button, Form, Input, DropdownProps, DropdownItemProps, Label } from "semantic-ui-react";
+import { Header, Container, Button, Form, Input, DropdownProps, DropdownItemProps, Label, Icon } from "semantic-ui-react";
 import { observer } from "mobx-react";
 import store from "../store";
 import QueryTable from "../components/QueryTable";
+
+const avatar = require("../assets/ti.jpg") as string;
 
 interface IProps {}
 interface IState {}
 
 @observer
 export default class SettingsView extends React.Component<IProps, IState> {
-    state: IState = {};
-
     refreshRates: DropdownItemProps[] = [
         { text: "1 minute", value: 60 },
         { text: "5 minutes", value: 300 },
         { text: "10 minutes", value: 600 },
-        { text: "30 minutes", value: 1800 }
+        { text: "30 minutes", value: 1800 },
     ];
 
     openCreds = () => {
@@ -29,12 +29,14 @@ export default class SettingsView extends React.Component<IProps, IState> {
     render() {
         return (
             <div className="Page">
-                <div className="RightTopCorner">
-                    <Button onClick={this.openCreds}>Edit TFS & Account settings</Button>
-                    <Button positive>Save</Button>
+                <div className="TopBar">
+                    <Header as="h1">Settings</Header>
+                    <div className="RightTopCorner">
+                        <Button onClick={this.openCreds}>Edit TFS & Account settings</Button>
+                        <Button positive>Save</Button>
+                    </div>
                 </div>
                 <Container fluid>
-                    <Header as="h1">Settings</Header>
                     <Header as="h3" dividing>
                         Refresh rate
                     </Header>
@@ -51,7 +53,19 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         Credits
                     </Header>
-                    Flower Pot (c) 2019 Me.
+                    <Label image>
+                        <img src={avatar} />
+                        Valery Murashko
+                        <Label.Detail>did it!</Label.Detail>
+                    </Label>
+                    <Label>
+                        Version
+                        <Label.Detail>//TODO: 0.1.0.20190906-092600</Label.Detail>
+                    </Label>
+                    <Label as="a">
+                        <Icon name="github" />
+                        github.com/Emestie/flowerpot
+                    </Label>
                 </Container>
             </div>
         );

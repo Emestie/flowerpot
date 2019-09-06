@@ -17,14 +17,14 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         pathInvalid: false,
         userInvalid: false,
         pwdInvalid: false,
-        credentialsCheckStatus: 0
+        credentialsCheckStatus: 0,
     };
 
     statuses = [
         { color: undefined, text: "Not checked yet" },
         { color: undefined, text: "Checking..." },
         { color: "red", text: "Wrong" },
-        { color: "olive", text: "OK" }
+        { color: "olive", text: "OK" },
     ];
 
     componentDidMount() {
@@ -101,14 +101,16 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     render() {
         return (
             <div className="Page">
-                <div className="RightTopCorner">
-                    <Button positive disabled={this.isBackUnavailable} onClick={this.onSave}>
-                        Save
-                    </Button>
-                </div>
-                <Container fluid>
+                <div className="TopBar">
                     <Header as="h1">TFS & Account settings</Header>
+                    <div className="RightTopCorner">
+                        <Button positive disabled={this.isBackUnavailable} onClick={this.onSave}>
+                            Save
+                        </Button>
+                    </div>
+                </div>
 
+                <Container fluid>
                     <Header as="h3" dividing>
                         Credentials
                     </Header>
