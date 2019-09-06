@@ -6,16 +6,17 @@ type View = "loading" | "error" | "main" | "settings" | "credentials" | "selectq
 
 class Store {
     @observable view: View = "loading";
+    @observable errorMessage: string = "lalala";
     @observable settings: ISettings = {
-        tfsPath: "",
+        tfsPath: "http://tfs.eos.loc:8080/tfs/DefaultCollection/",
         tfsUser: "",
         tfsPwd: "",
         credentialsChecked: false,
         refreshRate: 60,
         queries: [
-            { enabled: true, collapsed: false, order: 1, queryId: "x", queryName: "What have I done", teamId: "xx", teamName: "Delo96" },
-            { enabled: true, collapsed: false, order: 2, queryId: "x1", queryName: "Whai have I done 1", teamId: "xx", teamName: "Nadzor" },
-            { enabled: true, collapsed: false, order: 3, queryId: "x2", queryName: "Whai have I done 2", teamId: "xx", teamName: "Nadzor" },
+            // { enabled: true, collapsed: false, order: 1, queryId: "x", queryName: "What have I done", teamId: "xx", teamName: "Delo96" },
+            // { enabled: true, collapsed: false, order: 2, queryId: "x1", queryName: "Whai have I done 1", teamId: "xx", teamName: "Nadzor" },
+            // { enabled: true, collapsed: false, order: 3, queryId: "x2", queryName: "Whai have I done 2", teamId: "xx", teamName: "Nadzor" },
         ],
     };
 
@@ -33,7 +34,13 @@ class Store {
     private onQueriesChange = reaction(() => this.settings.queries, Settings.pushToWindow);
 
     @action switchView(view: View) {
+        this.errorMessage = "";
         this.view = view;
+    }
+
+    @action showErrorPage(text: string) {
+        this.errorMessage = text;
+        this.view = "error";
     }
 
     @action setSettings(settings: ISettings) {

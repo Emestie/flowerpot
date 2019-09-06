@@ -1,4 +1,5 @@
 import store from "../store";
+import { ITeam, IFavQuery } from "./Loaders";
 
 export interface IQuery {
     queryId: string;
@@ -12,6 +13,20 @@ export interface IQuery {
 
 export default class Query {
     //! after any operation update queries array in store
+
+    public static buildFromResponse(favQuery: IFavQuery, team: ITeam): IQuery {
+        let query: IQuery = {
+            collapsed: false,
+            enabled: true,
+            order: 99,
+            queryId: favQuery.queryItem.id,
+            queryName: favQuery.queryItem.name,
+            teamId: team.guid,
+            teamName: team.name,
+        };
+
+        return query;
+    }
 
     public static add(query: IQuery) {
         let allQueries = store.getQueries(true);

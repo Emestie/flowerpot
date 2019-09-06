@@ -26,6 +26,10 @@ export default class SettingsView extends React.Component<IProps, IState> {
         store.settings.refreshRate = val;
     }
 
+    onSave = () => {
+        store.switchView("main");
+    };
+
     render() {
         return (
             <div className="Page">
@@ -33,7 +37,9 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Header as="h1">Settings</Header>
                     <div className="RightTopCorner">
                         <Button onClick={this.openCreds}>Edit TFS & Account settings</Button>
-                        <Button positive>Save</Button>
+                        <Button positive onClick={this.onSave}>
+                            Save
+                        </Button>
                     </div>
                 </div>
                 <Container fluid>

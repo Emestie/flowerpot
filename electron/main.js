@@ -10,7 +10,8 @@ function createWindow() {
     // Create the browser window.
     win = new BrowserWindow({
         width: 800,
-        height: 600
+        height: 600,
+        webPreferences: { webSecurity: false },
     });
 
     const startUrl =
@@ -18,7 +19,7 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true
+            slashes: true,
         });
     win.loadURL(startUrl);
 

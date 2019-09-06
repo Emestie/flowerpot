@@ -1,1 +1,44 @@
-export {}
+import React from "react";
+import { Header, Button, Container, Label, Message } from "semantic-ui-react";
+import store from "../store";
+
+interface IProps {}
+interface IState {}
+
+export default class ErrorView extends React.Component<IProps, IState> {
+    onSettingsClick = () => {
+        store.switchView("credentials");
+    };
+
+    render() {
+        return (
+            <div className="Page">
+                <div className="TopBar">
+                    <Header as="h1">Error :(</Header>
+                    <div className="RightTopCorner"></div>
+                </div>
+                <Container fluid>
+                    <Message negative>
+                        <Message.Header>Something bad happened!</Message.Header>
+                        <p>{store.errorMessage}</p>
+                    </Message>
+                    <div style={{ textAlign: "center" }}>
+                        <div>
+                            You can try manual{" "}
+                            <Button size="tiny" compact>
+                                Refresh
+                            </Button>
+                        </div>
+                        <div>
+                            Or go to{" "}
+                            <Button size="tiny" compact onClick={this.onSettingsClick}>
+                                TFS Settings
+                            </Button>{" "}
+                            to check your account and server
+                        </div>
+                    </div>
+                </Container>
+            </div>
+        );
+    }
+}

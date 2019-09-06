@@ -2,6 +2,7 @@ import React from "react";
 import { Header, Container, Button, Form, Input, DropdownProps, DropdownItemProps, Label } from "semantic-ui-react";
 import { observer } from "mobx-react";
 import store from "../store";
+import Loaders from "../helpers/Loaders";
 
 interface IProps {}
 interface IState {
@@ -23,7 +24,8 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     statuses = [
         { color: undefined, text: "Not checked yet" },
         { color: undefined, text: "Checking..." },
-        { color: "red", text: "Wrong" },
+        { color: "red", text: "Server unavailable or TFS path is wrong" },
+        { color: "red", text: "Wrong credentials" },
         { color: "olive", text: "OK" },
     ];
 
@@ -34,7 +36,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     }
 
     get isBackUnavailable() {
-        return this.state.pathInvalid || this.state.userInvalid || this.state.pwdInvalid || this.state.credentialsCheckStatus != 3;
+        return this.state.pathInvalid || this.state.userInvalid || this.state.pwdInvalid || this.state.credentialsCheckStatus != 4;
     }
 
     get isCheckUnabailable() {
@@ -43,7 +45,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
             this.state.userInvalid ||
             this.state.pwdInvalid ||
             this.checkInProgress ||
-            this.state.credentialsCheckStatus == 3
+            this.state.credentialsCheckStatus == 4
         );
     }
 
@@ -55,29 +57,37 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         return this.state.credentialsCheckStatus == 1;
     }
 
+    setCredentialsStatus(status: number) {
+        store.settings.credentialsChecked = status === 4 ? true : false;
+        this.setState({ credentialsCheckStatus: status });
+    }
+
     validateTfsPath = (val: string, ignoreStore?: boolean) => {
-        //start with http and end with /
+        this.setCredentialsStatus(0);
         if (!ignoreStore) store.settings.tfsPath = val;
 
         let invalid = false;
         if (val[val.length - 1] !== "/") invalid = true;
         if (val.indexOf("http") !== 0) invalid = true;
-        if (val.indexOf("://") !== 0) invalid = true;
+        if (val.indexOf("://") === -1) invalid = true;
         if (val.length < 11) invalid = true;
         this.setState({ pathInvalid: invalid });
     };
 
     validateTfsUser = (val: string, ignoreStore?: boolean) => {
+        this.setCredentialsStatus(0);
         if (!ignoreStore) store.settings.tfsUser = val;
 
         let invalid = false;
         if (!val.length) invalid = true;
-        if (val.indexOf("\\") !== -1 || val.indexOf("@") !== -1) invalid = true;
+        //TODO: only one \\
+        if (val.indexOf("\\") < 1 || val.indexOf("\\") === val.length - 1 || val.indexOf("@") !== -1) invalid = true;
 
         this.setState({ userInvalid: invalid });
     };
 
     validateTfsPwd = (val: string, ignoreStore?: boolean) => {
+        this.setCredentialsStatus(0);
         if (!ignoreStore) store.settings.tfsPwd = val;
     };
 
@@ -90,12 +100,21 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         alert(s);
     };
 
-    onCheck = () => {
-        this.setState({ credentialsCheckStatus: 1 });
+    onCheck = async () => {
+        this.setCredentialsStatus(1);
 
-        //after check status set to 3 mark that creds is valid
-        //!if any error set to false
-        store.settings.credentialsChecked = true;
+        let tfscheck = await Loaders.checkTfsPath();
+        if (!tfscheck) {
+            this.setCredentialsStatus(2);
+            return;
+        }
+
+        let result = await Loaders.checkCredentials();
+        if (!result) {
+            this.setCredentialsStatus(3);
+        } else {
+            this.setCredentialsStatus(4);
+        }
     };
 
     render() {
@@ -126,8 +145,8 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                         <Form.Group widths="equal">
                             <Form.Input
                                 fluid
-                                label="TFS username (without domain)"
-                                placeholder="user.name"
+                                label="TFS username (with domain)"
+                                placeholder="domain\user.name"
                                 value={store.settings.tfsUser}
                                 onChange={e => this.validateTfsUser(e.target.value)}
                                 error={this.state.userInvalid}
@@ -142,7 +161,10 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                             />
                         </Form.Group>
                     </Form>
-                    <div>You must check credentials you entered before leaving this page.</div>
+                    <div>
+                        <br />
+                        <Label color="orange">NOTE!</Label> You must check credentials you entered before leaving this page.
+                    </div>
                     <br />
                     <div>
                         Status: <Label color={this.statusParams.color as any}>{this.statusParams.text}</Label>

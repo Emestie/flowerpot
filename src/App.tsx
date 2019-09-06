@@ -5,24 +5,27 @@ import Settings from "./helpers/Settings";
 import SettingsView from "./views/SettingsView";
 import CredentialsView from "./views/CredentialsView";
 import SelectQueriesView from "./views/SelectQueriesView";
+import ErrorView from "./views/ErrorView";
+import MainView from "./views/MainView";
+import LoadingView from "./views/LoadingView";
 
 @observer
 export default class App extends React.Component {
     componentDidMount() {
         Settings.pullFromWindow();
-        // if (store.settings.credentialsChecked) store.view = "main";
-        // else store.view = "credentials";
-        store.view = "selectqueries";
+        //if (store.settings.credentialsChecked) store.view = "main";
+        //else store.view = "credentials";
+        store.view = "main";
     }
 
     render() {
         switch (store.view) {
             case "loading":
-                return <SettingsView />;
+                return <LoadingView />;
             case "error":
-                return <SettingsView />;
+                return <ErrorView />;
             case "main":
-                return <SettingsView />;
+                return <MainView />;
             case "settings":
                 return <SettingsView />;
             case "credentials":
