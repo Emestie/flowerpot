@@ -6,8 +6,26 @@ interface IProps {}
 interface IState {}
 
 export default class ErrorView extends React.Component<IProps, IState> {
+    private interval: NodeJS.Timeout | undefined;
+
+    componentDidMount() {
+        this.routineStart();
+    }
+
+    routineStart = () => {
+        if (this.interval) clearInterval(this.interval);
+
+        this.interval = setInterval(() => {
+            this.onRefreshClick();
+        }, 60000);
+    };
+
     onSettingsClick = () => {
         store.switchView("credentials");
+    };
+
+    onRefreshClick = () => {
+        store.switchView("main");
     };
 
     render() {
@@ -25,7 +43,7 @@ export default class ErrorView extends React.Component<IProps, IState> {
                     <div style={{ textAlign: "center" }}>
                         <div>
                             You can try manual{" "}
-                            <Button size="tiny" compact>
+                            <Button size="tiny" compact onClick={this.onRefreshClick}>
                                 Refresh
                             </Button>
                         </div>

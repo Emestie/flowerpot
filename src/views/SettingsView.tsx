@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Container, Button, Form, Input, DropdownProps, DropdownItemProps, Label, Icon } from "semantic-ui-react";
+import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
 import { observer } from "mobx-react";
 import store from "../store";
 import QueryTable from "../components/QueryTable";
@@ -14,8 +14,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
     refreshRates: DropdownItemProps[] = [
         { text: "1 minute", value: 60 },
         { text: "5 minutes", value: 300 },
-        { text: "10 minutes", value: 600 },
-        { text: "30 minutes", value: 1800 },
+        { text: "10 minutes", value: 600 }
     ];
 
     openCreds = () => {
@@ -25,6 +24,10 @@ export default class SettingsView extends React.Component<IProps, IState> {
     onRateSelect(val: number) {
         store.settings.refreshRate = val;
     }
+
+    toggleNotif = () => {
+        store.settings.showNotifications = !store.settings.showNotifications;
+    };
 
     onSave = () => {
         store.switchView("main");
@@ -44,7 +47,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
                 </div>
                 <Container fluid>
                     <Header as="h3" dividing>
-                        Refresh rate
+                        Queries to watch
+                    </Header>
+                    <QueryTable />
+                    <Header as="h3" dividing>
+                        Other settings
                     </Header>
                     <Form.Select
                         label="Queries refresh rate: "
@@ -52,17 +59,15 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         value={store.settings.refreshRate}
                         onChange={(e, { value }) => this.onRateSelect(value as number)}
                     />
-                    <Header as="h3" dividing>
-                        Queries to watch
-                    </Header>
-                    <QueryTable />
+                    <br />
+                    <Form.Checkbox label="Show notifications" checked={store.settings.showNotifications} onChange={this.toggleNotif} />
                     <Header as="h3" dividing>
                         Credits
                     </Header>
                     <Label image>
                         <img src={avatar} />
                         Valery Murashko
-                        <Label.Detail>did it!</Label.Detail>
+                        <Label.Detail>made it!</Label.Detail>
                     </Label>
                     <Label>
                         Version

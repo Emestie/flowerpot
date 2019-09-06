@@ -1,38 +1,9 @@
 import Differences from "./Differences";
 import store from "../store";
 import { Ntlm } from "../lib/ntlm";
-import Query, { IQuery } from "./Query";
-
-export interface ITeam {
-    guid: string;
-    name: string;
-}
-
-export interface IFavQuery {
-    queryItem: {
-        id: string;
-        name: string;
-        isFolder: boolean;
-    };
-}
+import Query, { IQuery, ITeam, IFavQuery } from "./Query";
 
 export default class Loaders {
-    public static interval: NodeJS.Timeout;
-    public static count: number = 0;
-
-    // public static startLoadingRoutine() {
-    //     if (this.interval) clearInterval(this.interval);
-
-    //     this.loadWorkItems();
-    //     this.interval = setInterval(() => {
-    //         this.loadWorkItems();
-    //     }, store.settings.refreshRate * 1000);
-    // }
-
-    // public static stopLoadingRoutine() {
-    //     if (this.interval) clearInterval(this.interval);
-    // }
-
     public static async loadAvailableQueries() {
         let queries: IQuery[] = [];
         try {
@@ -57,11 +28,6 @@ export default class Loaders {
             store.showErrorPage(ex);
         }
         return queries;
-    }
-
-    public static async loadWorkItems(query: IQuery) {
-        this.count += 1;
-        Differences.check();
     }
 
     public static async checkCredentials() {

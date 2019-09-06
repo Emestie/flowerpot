@@ -7,6 +7,7 @@ export interface ISettings {
     tfsPwd: string;
     credentialsChecked: boolean;
     refreshRate: number;
+    showNotifications: boolean;
     queries: IQuery[];
 }
 

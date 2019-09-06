@@ -13,7 +13,9 @@ export default class MainView extends React.Component<IProps, IState> {
         return !!store.getQueries().length;
     }
 
-    onRefresh = () => {};
+    onRefresh = () => {
+        store.restartRoutines();
+    };
 
     onSettings = () => {
         store.switchView("settings");

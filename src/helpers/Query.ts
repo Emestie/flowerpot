@@ -1,5 +1,4 @@
 import store from "../store";
-import { ITeam, IFavQuery } from "./Loaders";
 
 export interface IQuery {
     queryId: string;
@@ -9,6 +8,19 @@ export interface IQuery {
     enabled: boolean;
     collapsed: boolean;
     order: number;
+}
+
+export interface ITeam {
+    guid: string;
+    name: string;
+}
+
+export interface IFavQuery {
+    queryItem: {
+        id: string;
+        name: string;
+        isFolder: boolean;
+    };
 }
 
 export default class Query {
@@ -22,7 +34,7 @@ export default class Query {
             queryId: favQuery.queryItem.id,
             queryName: favQuery.queryItem.name,
             teamId: team.guid,
-            teamName: team.name,
+            teamName: team.name
         };
 
         return query;
