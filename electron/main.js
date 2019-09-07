@@ -4,14 +4,18 @@ const url = require("url");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win;
+let wnd;
 
 function createWindow() {
     // Create the browser window.
-    win = new BrowserWindow({
+    wnd = new BrowserWindow({
         width: 800,
         height: 600,
-        webPreferences: { webSecurity: false },
+        minWidth: 800,
+        minHeight: 600,
+        x: 100,
+        y: 100,
+        webPreferences: { webSecurity: false }
     });
 
     const startUrl =
@@ -19,17 +23,17 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true,
+            slashes: true
         });
-    win.loadURL(startUrl);
+    wnd.loadURL(startUrl);
 
     //TODO: on ready try to load settings
     //TODO: if dev env get setting from some predefined json
 
     // Emitted when the window is closed.
-    win.on("closed", () => {
+    wnd.on("closed", () => {
         //TODO: save settings
-        win = null;
+        wnd = null;
     });
 }
 
@@ -43,7 +47,7 @@ app.on("window-all-closed", () => {
 });
 
 app.on("activate", () => {
-    if (win === null) {
+    if (wnd === null) {
         createWindow();
     }
 });
