@@ -49,7 +49,7 @@ export default class MainView extends React.Component<IProps, IState> {
                     </div>
                 </div>
                 <Container fluid>
-                    {store.updateReady && (
+                    {store.updateStatus === "ready" && (
                         <Message positive>
                             <Message.Header>Update arrived!</Message.Header>
                             <p>

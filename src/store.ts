@@ -3,13 +3,14 @@ import Settings, { ISettings } from "./helpers/Settings";
 import { IQuery } from "./helpers/Query";
 
 type View = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug";
+type UpdateStatus = "none" | "downloading" | "ready" | "checking";
 
 class Store {
     @observable _routinesRestart: number = 0;
 
     @observable view: View = "loading";
     @observable errorMessage: string = "";
-    @observable updateReady: boolean = false;
+    @observable updateStatus: UpdateStatus = "none";
     @observable settings: ISettings = {
         tfsPath: "http://tfs.eos.loc:8080/tfs/DefaultCollection/",
         tfsUser: "",

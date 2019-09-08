@@ -34,9 +34,21 @@ export default class Electron {
     public static checkForUpdates() {
         let ipcRenderer = Electron.getIpcRenderer();
         if (ipcRenderer) {
+            ipcRenderer.on("checking_for_update", () => {
+                ipcRenderer.removeAllListeners("checking_for_update");
+                store.updateStatus = "checking";
+            });
+            ipcRenderer.on("update_not_available", () => {
+                ipcRenderer.removeAllListeners("update_not_available");
+                store.updateStatus = "none";
+            });
             ipcRenderer.on("update_available", () => {
                 ipcRenderer.removeAllListeners("update_available");
-                store.updateReady = true;
+                store.updateStatus = "downloading";
+            });
+            ipcRenderer.on("update_downloaded", () => {
+                ipcRenderer.removeAllListeners("update_downloaded");
+                store.updateStatus = "ready";
             });
             ipcRenderer.send("check-for-updates");
         }

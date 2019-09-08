@@ -101,6 +101,18 @@ app.on("activate", () => {
     }
 });
 
+autoUpdater.on("checking-for-update", () => {
+    wnd.webContents.send("checking_for_update");
+});
+
+autoUpdater.on("update-not-available", () => {
+    wnd.webContents.send("update_not_available");
+});
+
+autoUpdater.on("download-progress", data => {
+    wnd.webContents.send("download_progress", data);
+});
+
 autoUpdater.on("update-available", () => {
     wnd.webContents.send("update_available");
 });

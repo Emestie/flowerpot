@@ -40,7 +40,7 @@ export default class QueryTable extends React.Component {
         ));
 
         return (
-            <Table compact celled definition>
+            <Table compact celled definition size='small'>
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell></Table.HeaderCell>

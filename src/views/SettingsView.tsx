@@ -35,6 +35,30 @@ export default class SettingsView extends React.Component<IProps, IState> {
     };
 
     render() {
+        let updateLabel = undefined;
+
+        switch (store.updateStatus) {
+            case "checking":
+                updateLabel = <Label>Checking for updates...</Label>;
+                break;
+            case "downloading":
+                updateLabel = <Label color="teal">Downloading update...</Label>;
+                break;
+            case "ready":
+                updateLabel = (
+                    <Label as="a" color="green" onClick={() => Electron.updateApp()}>
+                        Update ready. Click to install
+                    </Label>
+                );
+                break;
+            default:
+                updateLabel = (
+                    <Label as="a" onClick={() => Electron.checkForUpdates()}>
+                        Check for updates
+                    </Label>
+                );
+        }
+
         return (
             <div className="Page">
                 <div className="TopBar">
@@ -74,6 +98,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         Version
                         <Label.Detail>{Electron.getVer()}</Label.Detail>
                     </Label>
+                    {updateLabel}
                 </Container>
             </div>
         );
