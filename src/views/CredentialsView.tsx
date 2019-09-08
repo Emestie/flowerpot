@@ -96,8 +96,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     };
 
     onTest = () => {
-        let s = JSON.stringify(store);
-        alert(s);
+        store.switchView("settings");
     };
 
     onCheck = async () => {
@@ -173,7 +172,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                     <Button primary loading={this.checkInProgress} disabled={this.isCheckUnabailable} onClick={this.onCheck}>
                         Validate
                     </Button>
-                    {/* <Button onClick={this.onTest}>test</Button> */}
+                    <Button onClick={this.onTest}>test</Button>
                 </Container>
             </div>
         );
