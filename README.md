@@ -4,6 +4,6 @@ Flowerpot is an electron app that working in background and tracking your TFS qu
 
 ## Credits
 
--   Created by [https://github.com/Emestie](Emestie)
+-   Created by [Emestie](https://github.com/Emestie)
 
 -   Icon by AnayaChe
