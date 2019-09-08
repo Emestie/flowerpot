@@ -61,7 +61,7 @@ function createWindow() {
         tray.setImage(pathToIcon);
     });
 
-    ipcMain.on("react-started", () => {
+    ipcMain.on("check-for-updates", () => {
         autoUpdater.checkForUpdatesAndNotify();
     });
 
@@ -102,11 +102,11 @@ app.on("activate", () => {
 });
 
 autoUpdater.on("update-available", () => {
-    mainWindow.webContents.send("update_available");
+    wnd.webContents.send("update_available");
 });
 
 autoUpdater.on("update-downloaded", () => {
-    mainWindow.webContents.send("update_downloaded");
+    wnd.webContents.send("update_downloaded");
 });
 
 function buildTrayIcon() {

@@ -16,14 +16,7 @@ export default class App extends React.Component {
     componentDidMount() {
         Settings.pullFromWindow();
 
-        let ipcRenderer = Electron.getIpcRenderer();
-        if (ipcRenderer) {
-            ipcRenderer.on("update_available", () => {
-                ipcRenderer.removeAllListeners("update_available");
-                store.updateReady = true;
-            });
-            ipcRenderer.send("react-started");
-        }
+        Electron.checkForUpdates();
 
         if (Electron.isDev()) {
             store.view = "debug";
@@ -49,6 +42,8 @@ export default class App extends React.Component {
                 return <SelectQueriesView />;
             case "debug":
                 return <DebugView />;
+            default:
+                return <MainView />;
         }
     }
 }
