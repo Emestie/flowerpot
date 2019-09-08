@@ -2,31 +2,32 @@
     "name": "flowerpot",
     "description": "TFS Query watch tool",
     "author": {
-        "name": "Emestie",
+        "name": "Valery Murashko",
         "url": "https://github.com/Emestie"
     },
     "homepage": ".",
-    "main": "electron/main.js",
+    "main": "public/electron.js",
     "build": {
         "productName": "Flowerpot",
         "appId": "mst.flowerpot",
-        "electronVersion": "6.0.7",
         "files": [
             "build/**/*",
-            "electron/*",
             "_icons/*"
-        ]
+        ],
+        "win": {
+            "icon": "build/icon.png"
+        },
+        "publish": {
+            "provider": "github"
+        }
     },
     "version": "0.1.0",
-    "private": true,
     "dependencies": {
         "@types/jest": "24.0.18",
         "@types/node": "12.7.4",
         "@types/react": "16.9.2",
         "@types/react-dom": "16.9.0",
-        "electron": "^6.0.7",
-        "electron-builder": "^21.2.0",
-        "foreman": "^3.0.1",
+        "electron-is-dev": "^1.1.0",
         "mobx": "^5.13.0",
         "mobx-react": "^6.1.3",
         "node-sass": "^4.12.0",
@@ -38,13 +39,19 @@
         "semantic-ui-react": "^0.88.0",
         "typescript": "3.6.2"
     },
+    "devDependencies": {
+        "foreman": "^3.0.1",
+        "@types/preval.macro": "^3.0.0",
+        "electron": "^6.0.7",
+        "electron-builder": "^21.2.0"
+    },
     "scripts": {
         "dev": "nf start",
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
         "electron": "electron .",
-        "ebuild": "npm build && node_modules/.bin/build"
+        "electron-bulid": "npm run build && electron-builder -w --publish never",
+        "electron-deploy": "npm run build && electron-builder -w --publish always"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -60,8 +67,5 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "devDependencies": {
-        "@types/preval.macro": "^3.0.0"
     }
 }

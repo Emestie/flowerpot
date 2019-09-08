@@ -1,8 +1,9 @@
 const { app, BrowserWindow, ipcMain, Menu, Tray } = require("electron");
+const isDev = require("electron-is-dev");
 const path = require("path");
 const url = require("url");
 
-const Store = require("./store");
+const Store = require("./electron/store");
 
 const store = new Store({
     configName: "settings",
@@ -37,10 +38,10 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/preload.js" }
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
     });
 
-    if (process.env.NODE_ENV === "production") wnd.setMenu(null);
+    if (!isDev) wnd.setMenu(null);
 
     const startUrl =
         process.env.ELECTRON_START_URL ||
