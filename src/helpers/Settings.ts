@@ -13,23 +13,18 @@ export interface ISettings {
 
 export default class Settings {
     public static pullFromWindow() {
-        let settings = (window as any).flowerpotSettingsStorage;
-        if (settings) store.setSettings(settings);
+        //let settings = (window as any).flowerpotSettingsStorage;
+        let settings = localStorage.getItem("flowerpot");
+        if (settings) {
+            try {
+                let parsedSettings = JSON.parse(settings);
+                store.setSettings(parsedSettings);
+            } catch (e) {}
+        }
     }
 
     public static pushToWindow() {
-        (window as any).flowerpotSettingsStorage = JSON.parse(JSON.stringify(store.settings));
+        //(window as any).flowerpotSettingsStorage = store.copy(store.settings);
+        localStorage.setItem("flowerpot", JSON.stringify(store.settings));
     }
-
-    // public static get(name: string) {
-    //     let storage = (window as any).flowerpotSettingsStorage;
-    //     if (!storage) return undefined;
-    //     return storage[name];
-    // }
-
-    // public static set(name: string, value: any) {
-    //     let storage = (window as any).flowerpotSettingsStorage;
-    //     if (!storage) (window as any).flowerpotSettingsStorage = {};
-    //     (window as any).flowerpotSettingsStorage[name] = value;
-    // }
 }

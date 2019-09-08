@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Container, Button, Form, Input, DropdownProps, DropdownItemProps, Label } from "semantic-ui-react";
+import { Header, Container, Button, Form, Label } from "semantic-ui-react";
 import { observer } from "mobx-react";
 import store from "../store";
 import Loaders from "../helpers/Loaders";
@@ -18,15 +18,15 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         pathInvalid: false,
         userInvalid: false,
         pwdInvalid: false,
-        credentialsCheckStatus: 0,
+        credentialsCheckStatus: 0
     };
 
     statuses = [
-        { color: undefined, text: "Not checked yet" },
-        { color: undefined, text: "Checking..." },
+        { color: undefined, text: "Not validated yet" },
+        { color: undefined, text: "Validating..." },
         { color: "red", text: "Server unavailable or TFS path is wrong" },
-        { color: "red", text: "Wrong credentials" },
-        { color: "olive", text: "OK" },
+        { color: "red", text: "Incorrect Username or Password" },
+        { color: "olive", text: "OK" }
     ];
 
     componentDidMount() {
@@ -163,7 +163,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                     </Form>
                     <div>
                         <br />
-                        <Label color="orange">NOTE!</Label> You must check credentials you entered before leaving this page.
+                        <Label color="orange">NOTE!</Label> You must validate credentials you entered before leaving this page.
                     </div>
                     <br />
                     <div>
@@ -171,7 +171,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                     </div>
                     <br />
                     <Button primary loading={this.checkInProgress} disabled={this.isCheckUnabailable} onClick={this.onCheck}>
-                        Check
+                        Validate
                     </Button>
                     {/* <Button onClick={this.onTest}>test</Button> */}
                 </Container>

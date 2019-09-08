@@ -3,6 +3,7 @@ import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from 
 import { observer } from "mobx-react";
 import store from "../store";
 import QueryTable from "../components/QueryTable";
+import Electron from "../helpers/Electron";
 
 const avatar = require("../assets/ti.jpg") as string;
 
@@ -64,18 +65,14 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         Credits
                     </Header>
-                    <Label image>
+                    <Label as="a" image onClick={() => Electron.openUrl("https://github.com/Emestie/flowerpot")}>
                         <img src={avatar} />
-                        Valery Murashko
-                        <Label.Detail>made it!</Label.Detail>
+                        <Icon name="github" />
+                        Emestie/flowerpot
                     </Label>
                     <Label>
                         Version
-                        <Label.Detail>//TODO: 0.1.0.20190906-092600</Label.Detail>
-                    </Label>
-                    <Label as="a">
-                        <Icon name="github" />
-                        github.com/Emestie/flowerpot
+                        <Label.Detail>{Electron.getVer()}</Label.Detail>
                     </Label>
                 </Container>
             </div>

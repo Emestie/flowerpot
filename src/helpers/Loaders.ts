@@ -1,4 +1,3 @@
-import Differences from "./Differences";
 import store from "../store";
 import { Ntlm } from "../lib/ntlm";
 import Query, { IQuery, ITeam, IFavQuery } from "./Query";
@@ -30,6 +29,10 @@ export default class Loaders {
         return queries;
     }
 
+    public static async loadQueryWorkItems() {
+        //add loaded WI to (window as any).wiStorage (qId)
+    }
+
     public static async checkCredentials() {
         try {
             await this.request("_api/_wit/teamProjects?__v=5");
@@ -56,6 +59,7 @@ export default class Loaders {
 
             var url = store.settings.tfsPath + subpath;
 
+            // * Research: maybe I can anth once
             try {
                 if (!Ntlm.authenticate(url)) {
                     reject("Cannot authenticate with provided credentials, TFS path is not valid or network problems occured");

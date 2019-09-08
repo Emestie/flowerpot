@@ -1,12 +1,7 @@
 systems to create:
 
 - in react: calc differences and show notifications
-- in react: find max rank across all queries and store it in window (only active queries)
-- in react: open external links (bugs and git)
-- in react: appver
-- in ele: get max rank from window and change icon
-- in ele: tray
 - in ele: update and branding
 - in ele: startup - splash?
-- in ele: store window pos and dims and user settings in file
-- in ele: limit min window size
+
+- add mora to contributors

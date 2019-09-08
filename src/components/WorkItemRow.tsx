@@ -1,6 +1,7 @@
 import React from "react";
 import { IWorkItem } from "../helpers/WorkItem";
 import { Table, Popup, Label, Icon } from "semantic-ui-react";
+import Electron from "../helpers/Electron";
 
 interface IProps {
     item: IWorkItem;
@@ -118,8 +119,9 @@ export default class WorkItemRow extends React.Component<IProps> {
                 <Table.Cell collapsing>
                     {this.importanceEl} {this.promptnessEl} {this.rankEl}
                 </Table.Cell>
-
-                <Table.Cell>{this.titleEl}</Table.Cell>
+                <Table.Cell>
+                    <a className="WorkItemLink" onClick={() => Electron.openUrl(item.url)}>{this.titleEl}</a>
+                </Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.assignedTo)}</Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.createdBy)}</Table.Cell>
                 <Table.Cell collapsing>

@@ -3,6 +3,7 @@ import { Header, Container, Message, Button } from "semantic-ui-react";
 import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
 import { observer } from "mobx-react";
+import Differences from "../helpers/Differences";
 
 interface IProps {}
 interface IState {}
@@ -24,11 +25,7 @@ export default class MainView extends React.Component<IProps, IState> {
     render() {
         let queries = store.getQueries();
         let queriesElems = queries.length ? (
-            queries.map(q => (
-                <>
-                    <WorkItemsBlock query={q} />
-                </>
-            ))
+            queries.map(q => <WorkItemsBlock key={q.queryId} query={q} />)
         ) : (
             <Message info>
                 <Message.Header>No queries found</Message.Header>

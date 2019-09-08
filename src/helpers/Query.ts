@@ -1,4 +1,6 @@
 import store from "../store";
+import { IWorkItem } from "./WorkItem";
+import Electron from "./Electron";
 
 export interface IQuery {
     queryId: string;
@@ -21,6 +23,10 @@ export interface IFavQuery {
         name: string;
         isFolder: boolean;
     };
+}
+
+interface IWIStorage {
+    [queryId: string]: IWorkItem[];
 }
 
 export default class Query {
@@ -91,5 +97,28 @@ export default class Query {
 
     private static updateAllInStore(queries: IQuery[]) {
         store.settings.queries = store.copy(queries);
+    }
+
+    public static calculateIconLevel(query: IQuery, workItems: IWorkItem[]) {
+        if (!(window as any).wiStorage) (window as any).wiStorage = {};
+        let wiStorage = (window as any).wiStorage as IWIStorage;
+        let queries = store.getQueries();
+        let queriesIds = queries.map(q => q.queryId);
+
+        let allWIs: IWorkItem[] = [];
+        //clear incative queries in wi
+        for (let x in wiStorage) {
+            if (!queriesIds.includes(x)) wiStorage[x] = [];
+            allWIs = [...allWIs, ...wiStorage[x]];
+        }
+
+        let level = allWIs.length ? 3 : 4;
+
+        allWIs.forEach(wi => {
+            if (wi.promptness && wi.promptness < level) level = wi.promptness;
+            if (wi.rank === 1) level = wi.rank;
+        });
+
+        Electron.updateTrayIcon(level);
     }
 }
