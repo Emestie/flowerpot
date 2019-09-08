@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Button, Container, Label, Message } from "semantic-ui-react";
+import { Header, Button, Container, Message } from "semantic-ui-react";
 import store from "../store";
 
 interface IProps {}
@@ -42,10 +42,11 @@ export default class ErrorView extends React.Component<IProps, IState> {
                     </Message>
                     <div style={{ textAlign: "center" }}>
                         <div>
-                            You can try manual{" "}
-                            <Button size="tiny" compact onClick={this.onRefreshClick}>
+                            You can try manually{" "}
+                            <Button size="tiny" compact primary onClick={this.onRefreshClick}>
                                 Refresh
-                            </Button>
+                            </Button>{" "}
+                            page
                         </div>
                         <div>
                             Or go to{" "}

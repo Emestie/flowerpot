@@ -3,7 +3,6 @@ import { Header, Label, Table } from "semantic-ui-react";
 import store from "../store";
 import { IQuery } from "../helpers/Query";
 import { observer } from "mobx-react";
-import QueryTable from "./QueryTable";
 import { reaction } from "mobx";
 import WorkItemRow from "./WorkItemRow";
 import WorkItem, { IWorkItem } from "../helpers/WorkItem";
@@ -36,7 +35,7 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
 
         this.interval = setInterval(() => {
             this.loadWorkItems();
-            this.setState({ n: this.state.n += 1 });
+            this.setState({ n: this.state.n + 1 });
         }, store.settings.refreshRate * 1000);
     };
 

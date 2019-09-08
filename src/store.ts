@@ -2,13 +2,14 @@ import { observable, action, reaction } from "mobx";
 import Settings, { ISettings } from "./helpers/Settings";
 import { IQuery } from "./helpers/Query";
 
-type View = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries";
+type View = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug";
 
 class Store {
     @observable _routinesRestart: number = 0;
 
     @observable view: View = "loading";
     @observable errorMessage: string = "";
+    @observable updateReady: boolean = false;
     @observable settings: ISettings = {
         tfsPath: "http://tfs.eos.loc:8080/tfs/DefaultCollection/",
         tfsUser: "",
@@ -16,11 +17,7 @@ class Store {
         credentialsChecked: false,
         refreshRate: 60,
         showNotifications: true,
-        queries: [
-            { enabled: true, collapsed: false, order: 1, queryId: "x", queryName: "What have I done", teamId: "xx", teamName: "Delo96" },
-            { enabled: true, collapsed: false, order: 2, queryId: "x1", queryName: "Whai have I done 1", teamId: "xx", teamName: "Nadzor" },
-            { enabled: true, collapsed: false, order: 3, queryId: "x2", queryName: "Whai have I done 2", teamId: "xx", teamName: "Nadzor" }
-        ]
+        queries: []
     };
 
     @observable getQueries(all?: boolean) {

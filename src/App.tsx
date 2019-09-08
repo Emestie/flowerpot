@@ -8,14 +8,19 @@ import SelectQueriesView from "./views/SelectQueriesView";
 import ErrorView from "./views/ErrorView";
 import MainView from "./views/MainView";
 import LoadingView from "./views/LoadingView";
+import DebugView from "./views/DebugView";
+import Electron from "./helpers/Electron";
 
 @observer
 export default class App extends React.Component {
     componentDidMount() {
         Settings.pullFromWindow();
-        //if (store.settings.credentialsChecked) store.view = "main";
-        //else store.view = "credentials";
-        store.view = "main";
+        if (Electron.isDev()) {
+            store.view = "debug";
+        } else {
+            if (store.settings.credentialsChecked) store.view = "main";
+            else store.view = "credentials";
+        }
     }
 
     render() {
@@ -32,6 +37,8 @@ export default class App extends React.Component {
                 return <CredentialsView />;
             case "selectqueries":
                 return <SelectQueriesView />;
+            case "debug":
+                return <DebugView />;
         }
     }
 }

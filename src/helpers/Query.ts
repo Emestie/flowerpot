@@ -74,7 +74,7 @@ export default class Query {
         let allQueries = store.getQueries(true);
 
         let index = this.findIndex(query);
-        let indexToSwapWith = direction == "up" ? index - 1 : index + 1;
+        let indexToSwapWith = direction === "up" ? index - 1 : index + 1;
 
         let buffer = allQueries[indexToSwapWith].order;
         allQueries[indexToSwapWith].order = allQueries[index].order;

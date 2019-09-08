@@ -3,13 +3,22 @@ import { Header, Container, Message, Button } from "semantic-ui-react";
 import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
 import { observer } from "mobx-react";
-import Differences from "../helpers/Differences";
+import Electron from "../helpers/Electron";
 
 interface IProps {}
 interface IState {}
 
 @observer
 export default class MainView extends React.Component<IProps, IState> {
+    componentDidMount() {
+        let ipcRenderer = Electron.getIpcRenderer();
+        if (!ipcRenderer) return;
+        ipcRenderer.on("update_available", () => {
+            ipcRenderer.removeAllListeners("update_available");
+            store.updateReady = true;
+        });
+    }
+
     get isRefreshAvailable() {
         return !!store.getQueries().length;
     }
@@ -20,6 +29,10 @@ export default class MainView extends React.Component<IProps, IState> {
 
     onSettings = () => {
         store.switchView("settings");
+    };
+
+    onUpdate = () => {
+        Electron.updateApp();
     };
 
     render() {
@@ -44,7 +57,21 @@ export default class MainView extends React.Component<IProps, IState> {
                         <Button onClick={this.onSettings}>Settings</Button>
                     </div>
                 </div>
-                <Container fluid>{queriesElems}</Container>
+                <Container fluid>
+                    {store.updateReady && (
+                        <Message positive>
+                            <Message.Header>Update arrived!</Message.Header>
+                            <p>
+                                Flowerpot update is available. You can{" "}
+                                <Button compact positive size="tiny" onClick={this.onUpdate}>
+                                    Install
+                                </Button>{" "}
+                                it now by restarting the app.
+                            </p>
+                        </Message>
+                    )}
+                    {queriesElems}
+                </Container>
             </div>
         );
     }

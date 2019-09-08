@@ -36,7 +36,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     }
 
     get isBackUnavailable() {
-        return this.state.pathInvalid || this.state.userInvalid || this.state.pwdInvalid || this.state.credentialsCheckStatus != 4;
+        return this.state.pathInvalid || this.state.userInvalid || this.state.pwdInvalid || this.state.credentialsCheckStatus !== 4;
     }
 
     get isCheckUnabailable() {
@@ -45,7 +45,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
             this.state.userInvalid ||
             this.state.pwdInvalid ||
             this.checkInProgress ||
-            this.state.credentialsCheckStatus == 4
+            this.state.credentialsCheckStatus === 4
         );
     }
 
@@ -54,7 +54,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     }
 
     get checkInProgress() {
-        return this.state.credentialsCheckStatus == 1;
+        return this.state.credentialsCheckStatus === 1;
     }
 
     setCredentialsStatus(status: number) {

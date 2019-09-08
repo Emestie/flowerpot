@@ -65,8 +65,8 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         Credits
                     </Header>
-                    <Label as="a" image onClick={() => Electron.openUrl("https://github.com/Emestie/flowerpot")}>
-                        <img src={avatar} />
+                    <Label as="a" image onClick={() => Electron.openUrl("https://emestie.github.io/flowerpot")}>
+                        <img src={avatar} alt="" />
                         <Icon name="github" />
                         Emestie/flowerpot
                     </Label>

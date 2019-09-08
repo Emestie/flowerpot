@@ -1,3 +1,4 @@
+/* eslint-disable */
 // NTLM (ntlm.js) authentication in JavaScript.
 // ------------------------------------------------------------------------
 // The MIT License (MIT). Copyright (c) 2012 Erland Ranvinge.

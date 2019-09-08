@@ -26,10 +26,10 @@ export default class QueryTable extends React.Component {
                 <Table.Cell>{q.teamName}</Table.Cell>
                 <Table.Cell>{q.queryName}</Table.Cell>
                 <Table.Cell collapsing>
-                    <Button size="tiny" icon compact disabled={v == 0} onClick={() => Query.move(q, "up")}>
+                    <Button size="tiny" icon compact disabled={v === 0} onClick={() => Query.move(q, "up")}>
                         <Icon name="arrow up" />
                     </Button>
-                    <Button size="tiny" icon compact disabled={v == a.length - 1} onClick={() => Query.move(q, "dn")}>
+                    <Button size="tiny" icon compact disabled={v === a.length - 1} onClick={() => Query.move(q, "dn")}>
                         <Icon name="arrow down" />
                     </Button>
                     <Button size="tiny" negative icon compact onClick={() => Query.delete(q)}>

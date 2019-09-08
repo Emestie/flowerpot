@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, Menu, Tray } = require("electron");
+const { autoUpdater } = require("electron-updater");
 const isDev = require("electron-is-dev");
 const path = require("path");
 const url = require("url");
@@ -54,9 +55,16 @@ function createWindow() {
 
     buildTrayIcon();
 
+    autoUpdater.checkForUpdatesAndNotify();
+
     ipcMain.on("update-icon", (e, level) => {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
-        tray.setImage(__dirname + "/../_icons/flower" + level + ".png");
+        let pathToIcon = __dirname + "/../_icons/flower" + level + ".png";
+        tray.setImage(pathToIcon);
+    });
+
+    ipcMain.on("update-app", () => {
+        autoUpdater.quitAndInstall();
     });
 
     wnd.on("resize", () => {
@@ -89,6 +97,13 @@ app.on("activate", () => {
     if (wnd === null) {
         createWindow();
     }
+});
+
+autoUpdater.on("update-available", () => {
+    mainWindow.webContents.send("update_available");
+});
+autoUpdater.on("update-downloaded", () => {
+    mainWindow.webContents.send("update_downloaded");
 });
 
 function buildTrayIcon() {
