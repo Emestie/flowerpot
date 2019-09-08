@@ -53,4 +53,9 @@ export default class Electron {
             ipcRenderer.send("check-for-updates");
         }
     }
+
+    public static reactIsReady() {
+        let ipcRenderer = Electron.getIpcRenderer();
+        if (ipcRenderer) ipcRenderer.send("react-is-ready");
+    }
 }

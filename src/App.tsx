@@ -14,6 +14,8 @@ import Electron from "./helpers/Electron";
 @observer
 export default class App extends React.Component {
     componentDidMount() {
+        Electron.reactIsReady();
+
         Settings.pullFromWindow();
 
         Electron.checkForUpdates();

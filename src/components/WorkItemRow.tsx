@@ -121,7 +121,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                 </Table.Cell>
                 <Table.Cell>
                     <a href="#" className="WorkItemLink" onClick={() => Electron.openUrl(item.url)}>
-                        {this.titleEl}
+                        {item.titleFull}
                     </a>
                 </Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.assignedTo)}</Table.Cell>
