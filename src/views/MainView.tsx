@@ -10,15 +10,6 @@ interface IState {}
 
 @observer
 export default class MainView extends React.Component<IProps, IState> {
-    componentDidMount() {
-        let ipcRenderer = Electron.getIpcRenderer();
-        if (!ipcRenderer) return;
-        ipcRenderer.on("update_available", () => {
-            ipcRenderer.removeAllListeners("update_available");
-            store.updateReady = true;
-        });
-    }
-
     get isRefreshAvailable() {
         return !!store.getQueries().length;
     }

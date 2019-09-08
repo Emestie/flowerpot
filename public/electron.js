@@ -55,12 +55,14 @@ function createWindow() {
 
     buildTrayIcon();
 
-    autoUpdater.checkForUpdatesAndNotify();
-
     ipcMain.on("update-icon", (e, level) => {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
         let pathToIcon = __dirname + "/../_icons/flower" + level + ".png";
         tray.setImage(pathToIcon);
+    });
+
+    ipcMain.on("react-started", () => {
+        autoUpdater.checkForUpdatesAndNotify();
     });
 
     ipcMain.on("update-app", () => {
@@ -102,6 +104,7 @@ app.on("activate", () => {
 autoUpdater.on("update-available", () => {
     mainWindow.webContents.send("update_available");
 });
+
 autoUpdater.on("update-downloaded", () => {
     mainWindow.webContents.send("update_downloaded");
 });

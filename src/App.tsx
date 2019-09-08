@@ -15,6 +15,16 @@ import Electron from "./helpers/Electron";
 export default class App extends React.Component {
     componentDidMount() {
         Settings.pullFromWindow();
+
+        let ipcRenderer = Electron.getIpcRenderer();
+        if (ipcRenderer) {
+            ipcRenderer.on("update_available", () => {
+                ipcRenderer.removeAllListeners("update_available");
+                store.updateReady = true;
+            });
+            ipcRenderer.send("react-started");
+        }
+
         if (Electron.isDev()) {
             store.view = "debug";
         } else {
