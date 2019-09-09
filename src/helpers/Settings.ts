@@ -26,6 +26,8 @@ export default class Settings {
                 store.setSettings(parsedSettings);
             } catch (e) {}
         }
+
+        store.autostart = Electron.getStoreProp("autostart");
     }
 
     public static pushToWindow() {
