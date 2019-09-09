@@ -3,6 +3,7 @@ import { Header, Container, Button, Form, Label } from "semantic-ui-react";
 import { observer } from "mobx-react";
 import store from "../store";
 import Loaders from "../helpers/Loaders";
+import Electron from "../helpers/Electron";
 
 interface IProps {}
 interface IState {
@@ -10,6 +11,7 @@ interface IState {
     userInvalid: boolean;
     pwdInvalid: boolean;
     credentialsCheckStatus: number;
+    debugInputValue: string;
 }
 
 @observer
@@ -18,7 +20,8 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         pathInvalid: false,
         userInvalid: false,
         pwdInvalid: false,
-        credentialsCheckStatus: 0
+        credentialsCheckStatus: 0,
+        debugInputValue: ""
     };
 
     statuses = [
@@ -80,7 +83,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
 
         let invalid = false;
         if (!val.length) invalid = true;
-        
+
         if (val.indexOf("\\") < 1 || val.indexOf("\\") === val.length - 1 || val.indexOf("@") !== -1) invalid = true;
 
         this.setState({ userInvalid: invalid });
@@ -116,7 +119,15 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         }
     };
 
+    onDebugInputChange = (e: any) => {
+        if (e.target.value === "debug") store.switchView("debug");
+        if (e.target.value === "con") Electron.toggleConsole();
+        this.setState({ debugInputValue: e.target.value });
+    };
+
     render() {
+        let debugInputRef = React.createRef();
+
         return (
             <div className="Page">
                 <div className="TopBar">
@@ -162,7 +173,10 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                     </Form>
                     <div>
                         <br />
-                        <Label color="orange">NOTE!</Label> You must validate credentials you entered before leaving this page.
+                        <Label color="orange">
+                            <span onDoubleClick={() => (debugInputRef.current as any).focus()}>NOTE!</span>
+                        </Label>{" "}
+                        You must validate credentials you entered before leaving this page.
                     </div>
                     <br />
                     <div>
@@ -174,6 +188,13 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                     </Button>
                     {/* <Button onClick={this.onTest}>test</Button> */}
                 </Container>
+                <input
+                    style={{ opacity: 0 }}
+                    ref={debugInputRef as any}
+                    type="text"
+                    value={this.state.debugInputValue}
+                    onChange={this.onDebugInputChange}
+                />
             </div>
         );
     }

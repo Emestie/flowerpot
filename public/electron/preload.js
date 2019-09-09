@@ -4,3 +4,4 @@ window.isDev = require("electron-is-dev");
 const ElectronStore = require("./store");
 const eleStore = new ElectronStore(require("./store-defaults"));
 window.electronStore = eleStore;
+window.electronRemote = require('electron').remote;
