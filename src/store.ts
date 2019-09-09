@@ -1,6 +1,7 @@
 import { observable, action, reaction } from "mobx";
 import Settings, { ISettings } from "./helpers/Settings";
 import { IQuery } from "./helpers/Query";
+import Electron from "./helpers/Electron";
 
 type View = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug";
 type UpdateStatus = "none" | "downloading" | "ready" | "checking";
@@ -18,8 +19,9 @@ class Store {
         credentialsChecked: false,
         refreshRate: 60,
         showNotifications: true,
-        queries: [],
+        queries: []
     };
+    @observable autostart: boolean = true;
 
     @observable getQueries(all?: boolean) {
         let queries = this.copy<IQuery[]>(this.settings.queries).sort((a, b) => a.order - b.order);
@@ -36,6 +38,7 @@ class Store {
     private onRateChange = reaction(() => this.settings.refreshRate, Settings.pushToWindow);
     private onNotifChange = reaction(() => this.settings.showNotifications, Settings.pushToWindow);
     private onQueriesChange = reaction(() => this.settings.queries, Settings.pushToWindow);
+    private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);
 
     @action switchView(view: View) {
         this.errorMessage = "";

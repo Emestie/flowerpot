@@ -6,10 +6,16 @@ import { observer } from "mobx-react";
 import Electron from "../helpers/Electron";
 
 interface IProps {}
-interface IState {}
+interface IState {
+    updateInstallInProgress: boolean;
+}
 
 @observer
 export default class MainView extends React.Component<IProps, IState> {
+    state: IState = {
+        updateInstallInProgress: false
+    };
+
     get isRefreshAvailable() {
         return !!store.getQueries().length;
     }
@@ -23,6 +29,7 @@ export default class MainView extends React.Component<IProps, IState> {
     };
 
     onUpdate = () => {
+        this.setState({ updateInstallInProgress: true });
         Electron.updateApp();
     };
 
@@ -58,7 +65,7 @@ export default class MainView extends React.Component<IProps, IState> {
                             <Message.Header>Update arrived!</Message.Header>
                             <p>
                                 Flowerpot update is available. You can{" "}
-                                <Button compact positive size="tiny" onClick={this.onUpdate}>
+                                <Button compact positive size="tiny" loading={this.state.updateInstallInProgress} onClick={this.onUpdate}>
                                     Install
                                 </Button>{" "}
                                 it now by restarting the app.

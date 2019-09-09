@@ -5,20 +5,8 @@ const path = require("path");
 const url = require("url");
 
 const Store = require("./electron/store");
-
-const store = new Store({
-    configName: "settings",
-    defaults: {
-        windowDim: {
-            width: 800,
-            height: 600,
-        },
-        windowPos: {
-            x: undefined,
-            y: undefined,
-        },
-    },
-});
+const storeDefaults = require("./electron/store-defaults");
+const store = new Store(storeDefaults);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -34,7 +22,8 @@ function createWindow() {
         app.setAppUserModelId("mst.flowerpot");
     }
 
-    // Create the browser window.
+    registerAutostart();
+
     wnd = new BrowserWindow({
         title: "Flowerpot",
         icon: __dirname + "/../_icons/flower4.png",
@@ -44,7 +33,7 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
     });
 
     if (!isDev) wnd.setMenu(null);
@@ -54,7 +43,7 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true,
+            slashes: true
         });
     wnd.loadURL(startUrl);
 
@@ -79,6 +68,10 @@ function createWindow() {
         data.icon = buildIconPath(currentLevel);
         let notif = new Notification(data);
         notif.show();
+    });
+
+    ipcMain.on("toggle-autostart", () => {
+        registerAutostart();
     });
 
     wnd.on("resize", () => {
@@ -140,7 +133,7 @@ function buildTrayIcon() {
             label: "Show",
             click: () => {
                 wnd.show();
-            },
+            }
         },
         {
             label: "Quit",
@@ -148,8 +141,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            },
-        },
+            }
+        }
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -161,4 +154,13 @@ function buildTrayIcon() {
 
 function buildIconPath(level) {
     return __dirname + "/../_icons/flower" + level + ".png";
+}
+
+function registerAutostart() {
+    if (!isDev) {
+        app.setLoginItemSettings({
+            openAtLogin: store.get("autostart"),
+            path: app.getPath("exe")
+        });
+    }
 }

@@ -2,7 +2,6 @@ import React from "react";
 import { Header, Button, Container } from "semantic-ui-react";
 import store from "../store";
 import Electron from "../helpers/Electron";
-import Differences from "../helpers/Differences";
 
 interface IProps {}
 interface IState {}
@@ -13,7 +12,7 @@ export default class DebugView extends React.Component<IProps, IState> {
     };
 
     showNotif = () => {
-        (Differences as any).showNotif("test", "new");
+        new Notification("title", { body: "body" });
     };
 
     showNotifNative = () => {
@@ -47,7 +46,7 @@ export default class DebugView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         Notifs
                     </Header>
-                    <Button onClick={() => this.showNotif()}>Show</Button>
+                    <Button onClick={() => this.showNotif()}>Show html5</Button>
                     <Button onClick={() => this.showNotifNative()}>Show native electron</Button>
                 </Container>
             </div>

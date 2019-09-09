@@ -8,14 +8,20 @@ import Electron from "../helpers/Electron";
 const avatar = require("../assets/ti.jpg") as string;
 
 interface IProps {}
-interface IState {}
+interface IState {
+    updateInstallInProgress: boolean;
+}
 
 @observer
 export default class SettingsView extends React.Component<IProps, IState> {
+    state: IState = {
+        updateInstallInProgress: false
+    };
+
     refreshRates: DropdownItemProps[] = [
         { key: 1, text: "1 minute", value: 60 },
         { key: 2, text: "5 minutes", value: 300 },
-        { key: 3, text: "10 minutes", value: 600 },
+        { key: 3, text: "10 minutes", value: 600 }
     ];
 
     openCreds = () => {
@@ -30,13 +36,22 @@ export default class SettingsView extends React.Component<IProps, IState> {
         store.settings.showNotifications = !store.settings.showNotifications;
     };
 
+    toggleAutostart = () => {
+        store.autostart = !store.autostart;
+    };
+
     onSave = () => {
         store.switchView("main");
     };
 
+    onUpdate = () => {
+        this.setState({ updateInstallInProgress: true });
+        Electron.updateApp();
+    };
+
     render() {
         if (Electron.isDev()) {
-            this.refreshRates.push({ key: 99, text: "(debug) 10 seconds", value: 10 });
+            if (this.refreshRates.length !== 4) this.refreshRates.push({ key: Math.random(), text: "(debug) 10 seconds", value: 10 });
         }
 
         let updateLabel = undefined;
@@ -50,7 +65,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                 break;
             case "ready":
                 updateLabel = (
-                    <Label as="a" color="green" onClick={() => Electron.updateApp()}>
+                    <Label as="a" color="green" onClick={() => this.onUpdate()}>
                         Update ready. Click to install
                     </Label>
                 );
@@ -88,6 +103,8 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         value={store.settings.refreshRate}
                         onChange={(e, { value }) => this.onRateSelect(value as number)}
                     />
+                    <br />
+                    <Form.Checkbox label="Add to Windows startup" checked={store.autostart} onChange={this.toggleAutostart} />
                     <br />
                     <Form.Checkbox label="Show notifications" checked={store.settings.showNotifications} onChange={this.toggleNotif} />
                     <Header as="h3" dividing>

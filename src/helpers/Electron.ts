@@ -7,9 +7,29 @@ export interface INotificationData {
 }
 
 export default class Electron {
+    private static getElectronStore() {
+        if ((window as any).electronStore) return (window as any).electronStore;
+        else return null;
+    }
+
+    public static getStoreProp(prop: string) {
+        let store = this.getElectronStore();
+        if (store) return store.get(prop);
+    }
+
+    public static setStoreProp(prop: string, value: any) {
+        let store = this.getElectronStore();
+        if (store) store.set(prop, value);
+    }
+
+    public static toggleAutostart() {
+        Electron.setStoreProp("autostart", store.autostart);
+        Electron.sendIpcRenderer("toggle-autostart");
+    }
+
     public static updateTrayIcon(level: number) {
         if (!level || !+level || level > 4 || level < 1) level = 4;
-        if ((window as any).ipcRenderer) (window as any).ipcRenderer.send("update-icon", level);
+        Electron.sendIpcRenderer("update-icon", level);
     }
 
     public static getVer() {
@@ -27,17 +47,22 @@ export default class Electron {
         else return false;
     }
 
-    public static getIpcRenderer() {
+    private static getIpcRenderer() {
         if ((window as any).ipcRenderer) return (window as any).ipcRenderer;
         else return null;
     }
 
+    public static sendIpcRenderer(channel: string, data?: any) {
+        let ipc = this.getIpcRenderer();
+        if (ipc) ipc.send(channel, data);
+    }
+
     public static updateApp() {
-        if ((window as any).ipcRenderer) (window as any).ipcRenderer.send("update-app");
+        Electron.sendIpcRenderer("update-app");
     }
 
     public static showNativeNotif(data: INotificationData) {
-        if ((window as any).ipcRenderer) (window as any).ipcRenderer.send("show-notification", data);
+        Electron.sendIpcRenderer("show-notification", data);
     }
 
     public static checkForUpdates(cyclic?: boolean) {
@@ -70,7 +95,6 @@ export default class Electron {
     }
 
     public static reactIsReady() {
-        let ipcRenderer = Electron.getIpcRenderer();
-        if (ipcRenderer) ipcRenderer.send("react-is-ready");
+        Electron.sendIpcRenderer("react-is-ready");
     }
 }
