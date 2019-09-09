@@ -54,15 +54,23 @@ export default class Differences {
 
         console.log("news", news.length, "changed", changed.length);
 
-        if (store.settings.showNotifications) {
-            news.forEach(n => {
+        news.forEach(n => {
+            if (
+                store.settings.notificationsMode === "all" ||
+                (store.settings.notificationsMode === "mine" && n.assignedToFull.indexOf(store.settings.tfsUser) !== -1)
+            ) {
                 this.showNotif(this.createTitleForWI(n), "new");
-            });
+            }
+        });
 
-            changed.forEach(c => {
+        changed.forEach(c => {
+            if (
+                store.settings.notificationsMode === "all" ||
+                (store.settings.notificationsMode === "mine" && c.assignedToFull.indexOf(store.settings.tfsUser) !== -1)
+            ) {
                 this.showNotif(this.createTitleForWI(c), "change");
-            });
-        }
+            }
+        });
 
         wiStorage[query.queryId] = store.copy(workItems);
     }

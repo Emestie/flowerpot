@@ -1,10 +1,10 @@
 import React from "react";
-import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
+import { Header, Container, Button, Form, DropdownItemProps, Label, Icon, DropdownProps } from "semantic-ui-react";
 import { observer } from "mobx-react";
 import store from "../store";
 import QueriesSettingsTable from "../components/QueriesSettingsTable";
 import Electron from "../helpers/Electron";
-import { TSortPattern } from "../helpers/Settings";
+import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
 
 const avatar = require("../assets/ti.jpg") as string;
 
@@ -31,6 +31,12 @@ export default class SettingsView extends React.Component<IProps, IState> {
         { key: 3, text: "ID", value: "id" }
     ];
 
+    notificationsModes: DropdownItemProps[] = [
+        { key: 1, text: "All", value: "all" },
+        { key: 1, text: "Mine only", value: "mine" },
+        { key: 1, text: "None", value: "none" }
+    ];
+
     openCreds = () => {
         store.switchView("credentials");
     };
@@ -43,12 +49,16 @@ export default class SettingsView extends React.Component<IProps, IState> {
         store.settings.sortPattern = val;
     }
 
-    toggleNotif = () => {
-        store.settings.showNotifications = !store.settings.showNotifications;
-    };
+    onNotifModeSelect(val: TNotificationsMode) {
+        store.settings.notificationsMode = val;
+    }
 
     toggleAutostart = () => {
         store.autostart = !store.autostart;
+    };
+
+    toggleIconColor = () => {
+        store.settings.iconChangesOnMyWorkItemsOnly = !store.settings.iconChangesOnMyWorkItemsOnly;
     };
 
     onSave = () => {
@@ -121,13 +131,25 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         onChange={(e, { value }) => this.onRateSelect(value as number)}
                     />
                     <br />
+                    <Form.Select
+                        label="Show notifications: "
+                        options={this.notificationsModes}
+                        value={store.settings.notificationsMode}
+                        onChange={(e, { value }) => this.onNotifModeSelect(value as TNotificationsMode)}
+                    />
+                    <br />
+                    <Form.Checkbox
+                        label="Change app icon color only on my Work Items events"
+                        checked={store.settings.iconChangesOnMyWorkItemsOnly}
+                        onChange={this.toggleIconColor}
+                    />
+                    <br />
                     <Form.Checkbox
                         label="Start with Windows (applies on app restart)"
                         checked={store.autostart}
                         onChange={this.toggleAutostart}
                     />
                     <br />
-                    <Form.Checkbox label="Show notifications" checked={store.settings.showNotifications} onChange={this.toggleNotif} />
                     <Header as="h3" dividing>
                         Credits
                     </Header>

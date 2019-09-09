@@ -125,6 +125,10 @@ export default class Query {
             if (wiStorage[x]) allWIs = [...allWIs, ...(wiStorage[x] as IWorkItem[])];
         }
 
+        if (store.settings.iconChangesOnMyWorkItemsOnly) {
+            allWIs = allWIs.filter(wi => wi.assignedToFull.indexOf(store.settings.tfsUser) !== -1);
+        }
+
         let level = allWIs.length ? 3 : 4;
 
         allWIs.forEach(wi => {

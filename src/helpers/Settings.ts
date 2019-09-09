@@ -3,6 +3,7 @@ import { IQuery } from "./Query";
 import Electron from "./Electron";
 
 export type TSortPattern = "default" | "assignedto" | "id";
+export type TNotificationsMode = "all" | "mine" | "none";
 
 export interface ISettings {
     tfsPath: string;
@@ -11,7 +12,8 @@ export interface ISettings {
     credentialsChecked: boolean;
     refreshRate: number;
     sortPattern: TSortPattern;
-    showNotifications: boolean;
+    notificationsMode: TNotificationsMode;
+    iconChangesOnMyWorkItemsOnly: boolean;
     queries: IQuery[];
 }
 

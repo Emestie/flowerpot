@@ -19,9 +19,11 @@ class Store {
         credentialsChecked: false,
         refreshRate: 60,
         sortPattern: "default",
-        showNotifications: true,
+        notificationsMode: "all",
+        iconChangesOnMyWorkItemsOnly: false,
         queries: []
     };
+    //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
 
     @observable getQueries(all?: boolean) {
@@ -37,7 +39,8 @@ class Store {
     private onPwdChange = reaction(() => this.settings.tfsPwd, Settings.pushToWindow);
     private onCredsChange = reaction(() => this.settings.credentialsChecked, Settings.pushToWindow);
     private onRateChange = reaction(() => this.settings.refreshRate, Settings.pushToWindow);
-    private onNotifChange = reaction(() => this.settings.showNotifications, Settings.pushToWindow);
+    private onNotifChange = reaction(() => this.settings.notificationsMode, Settings.pushToWindow);
+    private onIconEventsChange = reaction(() => this.settings.iconChangesOnMyWorkItemsOnly, Settings.pushToWindow);
     private onQueriesChange = reaction(() => this.settings.queries, Settings.pushToWindow);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);
 
