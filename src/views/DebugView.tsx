@@ -28,6 +28,10 @@ export default class DebugView extends React.Component<IProps, IState> {
                 </div>
                 <Container fluid>
                     <Header as="h3" dividing>
+                        Electron
+                    </Header>
+                    <Button onClick={() => Electron.toggleConsole()}>console</Button>
+                    <Header as="h3" dividing>
                         Views
                     </Header>
                     <Button onClick={() => store.switchView("main")}>main</Button>

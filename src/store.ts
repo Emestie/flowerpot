@@ -3,21 +3,22 @@ import Settings, { ISettings } from "./helpers/Settings";
 import { IQuery } from "./helpers/Query";
 import Electron from "./helpers/Electron";
 
-type View = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug";
-type UpdateStatus = "none" | "downloading" | "ready" | "checking";
+type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug";
+type TUpdateStatus = "none" | "downloading" | "ready" | "checking";
 
 class Store {
     @observable _routinesRestart: number = 0;
 
-    @observable view: View = "loading";
+    @observable view: TView = "loading";
     @observable errorMessage: string = "";
-    @observable updateStatus: UpdateStatus = "none";
+    @observable updateStatus: TUpdateStatus = "none";
     @observable settings: ISettings = {
         tfsPath: "http://tfs.eos.loc:8080/tfs/DefaultCollection/",
         tfsUser: "",
         tfsPwd: "",
         credentialsChecked: false,
         refreshRate: 60,
+        sortPattern: "default",
         showNotifications: true,
         queries: []
     };
@@ -40,7 +41,7 @@ class Store {
     private onQueriesChange = reaction(() => this.settings.queries, Settings.pushToWindow);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);
 
-    @action switchView(view: View) {
+    @action switchView(view: TView) {
         this.errorMessage = "";
         this.view = view;
     }

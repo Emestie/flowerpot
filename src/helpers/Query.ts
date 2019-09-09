@@ -11,6 +11,8 @@ export interface IQuery {
     enabled: boolean;
     collapsed: boolean;
     order: number;
+    ignoreIcon: boolean;
+    ignoreNotif: boolean;
 }
 
 export interface ITeam {
@@ -51,6 +53,8 @@ export default class Query {
             queryName: favQuery.queryItem.name,
             teamId: team.guid,
             teamName: team.name,
+            ignoreIcon: false,
+            ignoreNotif: false
         };
 
         return query;
@@ -70,13 +74,8 @@ export default class Query {
         this.updateAllInStore(allQueries);
     }
 
-    public static toggleEnability(query: IQuery) {
-        query.enabled = !query.enabled;
-        this.updateSingleInStore(query);
-    }
-
-    public static toggleCollapse(query: IQuery) {
-        query.collapsed = !query.collapsed;
+    public static toggleBoolean(query: IQuery, boolPropName: "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon") {
+        query[boolPropName] = !query[boolPropName];
         this.updateSingleInStore(query);
     }
 
@@ -115,7 +114,7 @@ export default class Query {
 
         wiStorage[query.queryId] = store.copy(workItems);
 
-        let queries = store.getQueries();
+        let queries = store.getQueries().filter(q => !q.ignoreIcon);
         let queriesIds = queries.map(q => q.queryId);
 
         let allWIs: IWorkItem[] = [];

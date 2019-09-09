@@ -124,7 +124,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         return (
             <Table.Row warning={this.isOrange} negative={this.isRed}>
                 <Table.Cell collapsing>
-                    {this.typeEl} {item.id}
+                    {this.typeEl} {item.id}{item.hasChanges && <span className='hasChangesMark'>*</span>}
                 </Table.Cell>
                 <Table.Cell collapsing>
                     {this.importanceEl} {this.promptnessEl} {this.rankEl}

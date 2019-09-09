@@ -18,6 +18,7 @@ export interface IWorkItem {
     rank?: number;
     weight: number;
     url: string;
+    hasChanges?: boolean;
 }
 
 export interface IResponseWorkItem {

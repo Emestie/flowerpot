@@ -13,10 +13,14 @@ export default class Differences {
         if (!(window as any).wiStorage) (window as any).wiStorage = {};
         let wiStorage = (window as any).wiStorage as IWIStorage;
 
-        //clear unused queries
-        let allQueries = store.getQueries().map(q => q.queryId);
+        //clear unused and ignored queries
+        let allQueriesIds = store
+            .getQueries()
+            .filter(q => !q.ignoreNotif)
+            .map(q => q.queryId);
+
         for (let x in wiStorage) {
-            if (!allQueries.includes(x)) wiStorage[x] = undefined;
+            if (!allQueriesIds.includes(x)) wiStorage[x] = undefined;
         }
 
         if (Loaders.outage) {
@@ -38,10 +42,12 @@ export default class Differences {
             if (!storage) return;
             let stored = this.getWIById(storage, wi.id);
             if (!stored) {
+                wi.hasChanges = true;
                 news.push(wi);
                 return;
             }
             if (stored.rev !== wi.rev) {
+                wi.hasChanges = true;
                 changed.push(wi);
             }
         });
@@ -79,7 +85,6 @@ export default class Differences {
             if (reason === "new") title += ": new item";
             if (reason === "change") title += ": item changed";
         }
-        // new Notification(title, { body: text });
         Electron.showNativeNotif({ title: title, body: text });
     }
 }

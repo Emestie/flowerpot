@@ -2,8 +2,9 @@ import React from "react";
 import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
 import { observer } from "mobx-react";
 import store from "../store";
-import QueryTable from "../components/QueryTable";
+import QueriesSettingsTable from "../components/QueriesSettingsTable";
 import Electron from "../helpers/Electron";
+import { TSortPattern } from "../helpers/Settings";
 
 const avatar = require("../assets/ti.jpg") as string;
 
@@ -24,12 +25,22 @@ export default class SettingsView extends React.Component<IProps, IState> {
         { key: 3, text: "10 minutes", value: 600 }
     ];
 
+    sortPatterns: DropdownItemProps[] = [
+        { key: 1, text: "Weight -> Date", value: "default" },
+        { key: 2, text: '"Assigned To" Name -> Date', value: "assignedto" },
+        { key: 3, text: "ID", value: "id" }
+    ];
+
     openCreds = () => {
         store.switchView("credentials");
     };
 
     onRateSelect(val: number) {
         store.settings.refreshRate = val;
+    }
+
+    onSortSelect(val: TSortPattern) {
+        store.settings.sortPattern = val;
     }
 
     toggleNotif = () => {
@@ -93,7 +104,13 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         Queries to watch
                     </Header>
-                    <QueryTable />
+                    <QueriesSettingsTable />
+                    <Form.Select
+                        label="Sort pattern: "
+                        options={this.sortPatterns}
+                        value={store.settings.sortPattern}
+                        onChange={(e, { value }) => this.onSortSelect(value as TSortPattern)}
+                    />
                     <Header as="h3" dividing>
                         Other settings
                     </Header>
@@ -104,7 +121,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         onChange={(e, { value }) => this.onRateSelect(value as number)}
                     />
                     <br />
-                    <Form.Checkbox label="Add to Windows startup" checked={store.autostart} onChange={this.toggleAutostart} />
+                    <Form.Checkbox
+                        label="Start with Windows (applies on app restart)"
+                        checked={store.autostart}
+                        onChange={this.toggleAutostart}
+                    />
                     <br />
                     <Form.Checkbox label="Show notifications" checked={store.settings.showNotifications} onChange={this.toggleNotif} />
                     <Header as="h3" dividing>

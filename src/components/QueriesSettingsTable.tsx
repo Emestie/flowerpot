@@ -5,7 +5,7 @@ import Query from "../helpers/Query";
 import { observer } from "mobx-react";
 
 @observer
-export default class QueryTable extends React.Component {
+export default class QueriesSettingsTable extends React.Component {
     openQuerySelector = () => {
         store.switchView("selectqueries");
     };
@@ -19,12 +19,28 @@ export default class QueryTable extends React.Component {
                     <Checkbox
                         checked={q.enabled}
                         onChange={() => {
-                            Query.toggleEnability(q);
+                            Query.toggleBoolean(q, "enabled");
                         }}
                     />
                 </Table.Cell>
                 <Table.Cell>{q.teamName}</Table.Cell>
                 <Table.Cell>{q.queryName}</Table.Cell>
+                <Table.Cell collapsing>
+                    <Checkbox
+                        checked={q.ignoreIcon}
+                        onChange={() => {
+                            Query.toggleBoolean(q, "ignoreIcon");
+                        }}
+                    />
+                </Table.Cell>
+                <Table.Cell collapsing>
+                    <Checkbox
+                        checked={q.ignoreNotif}
+                        onChange={() => {
+                            Query.toggleBoolean(q, "ignoreNotif");
+                        }}
+                    />
+                </Table.Cell>
                 <Table.Cell collapsing>
                     <Button size="tiny" icon compact disabled={v === 0} onClick={() => Query.move(q, "up")}>
                         <Icon name="arrow up" />
@@ -40,12 +56,14 @@ export default class QueryTable extends React.Component {
         ));
 
         return (
-            <Table compact celled definition size='small'>
+            <Table compact celled definition size="small">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell></Table.HeaderCell>
                         <Table.HeaderCell>Team project</Table.HeaderCell>
                         <Table.HeaderCell>Query name</Table.HeaderCell>
+                        <Table.HeaderCell>Ignore Icon</Table.HeaderCell>
+                        <Table.HeaderCell>Ignore Notif.</Table.HeaderCell>
                         <Table.HeaderCell>Actions</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
@@ -53,7 +71,7 @@ export default class QueryTable extends React.Component {
                 <Table.Footer fullWidth>
                     <Table.Row>
                         <Table.HeaderCell />
-                        <Table.HeaderCell colSpan="4">
+                        <Table.HeaderCell colSpan="6">
                             <Button icon labelPosition="left" primary size="small" onClick={this.openQuerySelector}>
                                 <Icon name="add" /> Add Query
                             </Button>

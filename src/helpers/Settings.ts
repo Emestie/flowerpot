@@ -2,12 +2,15 @@ import store from "../store";
 import { IQuery } from "./Query";
 import Electron from "./Electron";
 
+export type TSortPattern = "default" | "assignedto" | "id";
+
 export interface ISettings {
     tfsPath: string;
     tfsUser: string;
     tfsPwd: string;
     credentialsChecked: boolean;
     refreshRate: number;
+    sortPattern: TSortPattern;
     showNotifications: boolean;
     queries: IQuery[];
 }

@@ -65,7 +65,22 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         return this.state.workItems.filter(wi => wi.promptness === 2).length;
     }
 
-    wiSorting = (a: IWorkItem, b: IWorkItem) => {
+    onCollapseClick = () => {
+        Query.toggleBoolean(this.props.query, "collapsed");
+    };
+
+    getSortPattern = () => {
+        switch (store.settings.sortPattern) {
+            case "assignedto":
+                return this.sortPatternAssignedTo;
+            case "id":
+                return this.sortPatternId;
+            default:
+                return this.sortPatternDefault;
+        }
+    };
+
+    sortPatternDefault = (a: IWorkItem, b: IWorkItem) => {
         if (a.weight < b.weight) return -1;
         else if (a.weight > b.weight) return 1;
 
@@ -73,13 +88,22 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         else return 1;
     };
 
-    onCollapseClick = () => {
-        Query.toggleCollapse(this.props.query);
+    sortPatternAssignedTo = (a: IWorkItem, b: IWorkItem) => {
+        if (a.assignedTo < b.assignedTo) return -1;
+        else if (a.assignedTo > b.assignedTo) return 1;
+
+        if (a.createdDate < b.createdDate) return -1;
+        else return 1;
+    };
+
+    sortPatternId = (a: IWorkItem, b: IWorkItem) => {
+        if (a.id < b.id) return -1;
+        else return 1;
     };
 
     render() {
         let query = this.props.query;
-        let workItems = this.state.workItems.sort(this.wiSorting).map(wi => <WorkItemRow key={wi.id} item={wi} />);
+        let workItems = this.state.workItems.sort(this.getSortPattern()).map(wi => <WorkItemRow key={wi.id} item={wi} />);
 
         let iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 
