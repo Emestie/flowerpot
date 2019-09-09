@@ -17,7 +17,7 @@ export default class DebugView extends React.Component<IProps, IState> {
     };
 
     showNotifNative = () => {
-        Electron.showNativeNotif(null);
+        Electron.showNativeNotif({ title: "test1", body: "test2" });
     };
 
     render() {

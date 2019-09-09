@@ -28,6 +28,7 @@ let tray;
 function createWindow() {
     let { width, height } = store.get("windowDim");
     let { x, y } = store.get("windowPos");
+    let currentLevel = 4;
 
     // Create the browser window.
     wnd = new BrowserWindow({
@@ -57,6 +58,7 @@ function createWindow() {
 
     ipcMain.on("update-icon", (e, level) => {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
+        currentLevel = level;
         let pathToIcon = __dirname + "/../_icons/flower" + level + ".png";
         tray.setImage(pathToIcon);
     });
@@ -69,8 +71,10 @@ function createWindow() {
         autoUpdater.quitAndInstall();
     });
 
-    ipcMain.on("show-notification", (data) => {
-        new Notification({ title: "title", body: "body" });
+    ipcMain.on("show-notification", (e, data) => {
+        data.icon = __dirname + "/../_icons/flower" + currentLevel + ".png";
+        let notif = new Notification(data);
+        notif.show();
     });
 
     wnd.on("resize", () => {

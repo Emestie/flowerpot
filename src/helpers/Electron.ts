@@ -1,6 +1,11 @@
 import preval from "preval.macro";
 import store from "../store";
 
+export interface INotificationData {
+    title: string;
+    body?: string;
+}
+
 export default class Electron {
     public static updateTrayIcon(level: number) {
         if (!level || !+level || level > 4 || level < 1) level = 4;
@@ -31,7 +36,7 @@ export default class Electron {
         if ((window as any).ipcRenderer) (window as any).ipcRenderer.send("update-app");
     }
 
-    public static showNativeNotif(data: any) {
+    public static showNativeNotif(data: INotificationData) {
         if ((window as any).ipcRenderer) (window as any).ipcRenderer.send("show-notification", data);
     }
 
