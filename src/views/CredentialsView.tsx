@@ -80,7 +80,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
 
         let invalid = false;
         if (!val.length) invalid = true;
-        //TODO: only one \\
+        
         if (val.indexOf("\\") < 1 || val.indexOf("\\") === val.length - 1 || val.indexOf("@") !== -1) invalid = true;
 
         this.setState({ userInvalid: invalid });

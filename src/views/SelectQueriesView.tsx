@@ -48,8 +48,13 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
     };
 
     onCancel = () => {
-        //TODO: clear local state
+        this.setState({ availableQueries: [] });
         store.switchView("settings");
+    };
+
+    onRefresh = () => {
+        this.setState({ isLoading: true });
+        this.loadQueries();
     };
 
     toggleCheck = (query: ISelectableQuery) => {
@@ -92,7 +97,12 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
                     <Label color="orange">NOTE!</Label> You can see here only queries that in your <b>Favorites</b> and <b>not yet added</b> to watch
                     list.
                     <Header as="h3" dividing>
-                        Available queries
+                        Available queries{" "}
+                        <span>
+                            <Button compact size="tiny" onClick={this.onRefresh} disabled={this.state.isLoading}>
+                                Refresh
+                            </Button>
+                        </span>
                     </Header>
                     {queryList}
                 </Container>
