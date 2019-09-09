@@ -1,5 +1,5 @@
 import store from "../store";
-import WorkItem, { IWorkItem } from "./WorkItem";
+import { IWorkItem } from "./WorkItem";
 import Electron from "./Electron";
 import Loaders from "./Loaders";
 

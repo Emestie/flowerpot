@@ -1,7 +1,6 @@
 import React from "react";
 import { Header, Button, Container, Message } from "semantic-ui-react";
 import store from "../store";
-import Differences from "../helpers/Differences";
 
 interface IProps {}
 interface IState {}

@@ -12,6 +12,7 @@ export default class Loaders {
         let queries: IQuery[] = [];
         try {
             let r = (await this.request("_api/_wit/teamProjects?__v=5")) as any;
+            // eslint-disable-next-line
             if (!r.projects) throw "No available team projects found";
 
             let teams = r.projects as ITeam[];
@@ -40,6 +41,7 @@ export default class Loaders {
         try {
             let queryInfo = (await this.request(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
 
+            // eslint-disable-next-line
             if (!queryInfo || !queryInfo.workItems) throw "Error while loading query";
             let qwi = queryInfo.workItems;
 

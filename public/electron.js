@@ -59,7 +59,7 @@ function createWindow() {
     ipcMain.on("update-icon", (e, level) => {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
         currentLevel = level;
-        let pathToIcon = __dirname + "/../_icons/flower" + level + ".png";
+        let pathToIcon = buildIconPath(level);
         tray.setImage(pathToIcon);
     });
 
@@ -72,7 +72,7 @@ function createWindow() {
     });
 
     ipcMain.on("show-notification", (e, data) => {
-        data.icon = __dirname + "/../_icons/flower" + currentLevel + ".png";
+        data.icon = buildIconPath(currentLevel);
         let notif = new Notification(data);
         notif.show();
     });
@@ -153,4 +153,8 @@ function buildTrayIcon() {
     tray.on("double-click", () => {
         wnd.show();
     });
+}
+
+function buildIconPath(level) {
+    return __dirname + "/../_icons/flower" + level + ".png";
 }

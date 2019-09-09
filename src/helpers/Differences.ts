@@ -2,6 +2,7 @@ import { IQuery, IWIStorage } from "./Query";
 import { IWorkItem } from "./WorkItem";
 import store from "../store";
 import Loaders from "./Loaders";
+import Electron from "./Electron";
 
 export default class Differences {
     public static clearWiStorage() {
@@ -78,6 +79,7 @@ export default class Differences {
             if (reason === "new") title += ": new item";
             if (reason === "change") title += ": item changed";
         }
-        new Notification(title, { body: text });
+        // new Notification(title, { body: text });
+        Electron.showNativeNotif({ title: title, body: text });
     }
 }
