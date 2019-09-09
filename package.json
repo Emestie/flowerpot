@@ -21,7 +21,7 @@
             "provider": "github"
         }
     },
-    "version": "0.1.6",
+    "version": "0.1.7",
     "dependencies": {
         "@types/jest": "24.0.18",
         "@types/node": "12.7.4",
