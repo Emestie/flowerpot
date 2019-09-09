@@ -30,6 +30,10 @@ function createWindow() {
     let { x, y } = store.get("windowPos");
     let currentLevel = 4;
 
+    if (process.platform === "win32") {
+        app.setAppUserModelId("mst.flowerpot");
+    }
+
     // Create the browser window.
     wnd = new BrowserWindow({
         title: "Flowerpot",
