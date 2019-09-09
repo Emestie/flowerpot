@@ -31,6 +31,10 @@ export default class Electron {
         if ((window as any).ipcRenderer) (window as any).ipcRenderer.send("update-app");
     }
 
+    public static showNativeNotif(data: any) {
+        if ((window as any).ipcRenderer) (window as any).ipcRenderer.send("show-notification", data);
+    }
+
     public static checkForUpdates(cyclic?: boolean) {
         if (cyclic) {
             setInterval(() => {

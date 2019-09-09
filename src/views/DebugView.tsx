@@ -16,6 +16,10 @@ export default class DebugView extends React.Component<IProps, IState> {
         (Differences as any).showNotif("test", "new");
     };
 
+    showNotifNative = () => {
+        Electron.showNativeNotif(null);
+    };
+
     render() {
         return (
             <div className="Page">
@@ -44,6 +48,7 @@ export default class DebugView extends React.Component<IProps, IState> {
                         Notifs
                     </Header>
                     <Button onClick={() => this.showNotif()}>Show</Button>
+                    <Button onClick={() => this.showNotifNative()}>Show native electron</Button>
                 </Container>
             </div>
         );

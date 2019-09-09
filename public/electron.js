@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, Tray } = require("electron");
+const { app, BrowserWindow, ipcMain, Menu, Tray, Notification } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const isDev = require("electron-is-dev");
 const path = require("path");
@@ -11,13 +11,13 @@ const store = new Store({
     defaults: {
         windowDim: {
             width: 800,
-            height: 600
+            height: 600,
         },
         windowPos: {
             x: undefined,
-            y: undefined
-        }
-    }
+            y: undefined,
+        },
+    },
 });
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -39,7 +39,7 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
     });
 
     if (!isDev) wnd.setMenu(null);
@@ -49,7 +49,7 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true
+            slashes: true,
         });
     wnd.loadURL(startUrl);
 
@@ -67,6 +67,10 @@ function createWindow() {
 
     ipcMain.on("update-app", () => {
         autoUpdater.quitAndInstall();
+    });
+
+    ipcMain.on("show-notification", (data) => {
+        new Notification({ title: "title", body: "body" });
     });
 
     wnd.on("resize", () => {
@@ -128,7 +132,7 @@ function buildTrayIcon() {
             label: "Show",
             click: () => {
                 wnd.show();
-            }
+            },
         },
         {
             label: "Quit",
@@ -136,8 +140,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            }
-        }
+            },
+        },
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
