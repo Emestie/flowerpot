@@ -66,6 +66,13 @@ class Store {
         (this.intervalStorage as any)[query.queryId] = interval;
     }
 
+    clearInterval(query: IQuery) {
+        if ((this.intervalStorage as any)[query.queryId]) {
+            clearInterval((this.intervalStorage as any)[query.queryId]);
+            (this.intervalStorage as any)[query.queryId] = undefined;
+        }
+    }
+
     copy<T = any>(val: T) {
         return JSON.parse(JSON.stringify(val)) as T;
     }

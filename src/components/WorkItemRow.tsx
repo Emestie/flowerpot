@@ -130,6 +130,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                     {this.importanceEl} {this.promptnessEl} {this.rankEl}
                 </Table.Cell>
                 <Table.Cell>
+                    <span className="IterationInTitle">{item.iterationPath}</span>
                     <span className="WorkItemLink" onClick={() => Electron.openUrl(item.url)}>
                         {item.titleFull}
                     </span>

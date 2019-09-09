@@ -1,20 +1,40 @@
 import { IQuery, IWIStorage } from "./Query";
 import { IWorkItem } from "./WorkItem";
 import store from "../store";
+import Loaders from "./Loaders";
 
 export default class Differences {
+    public static clearWiStorage() {
+        (window as any).wiStorage = undefined;
+    }
+
     public static put(query: IQuery, workItems: IWorkItem[]) {
         if (!(window as any).wiStorage) (window as any).wiStorage = {};
         let wiStorage = (window as any).wiStorage as IWIStorage;
+
+        //clear unused queries
+        let allQueries = store.getQueries().map(q => q.queryId);
+        for (let x in wiStorage) {
+            if (!allQueries.includes(x)) wiStorage[x] = undefined;
+        }
+
+        if (Loaders.outage) {
+            (wiStorage as any) = undefined;
+            Loaders.outage = false;
+            return;
+        }
+
         if (!wiStorage[query.queryId]) {
             wiStorage[query.queryId] = store.copy(workItems);
             return;
         }
+
         let storage = wiStorage[query.queryId];
         let news: IWorkItem[] = [];
         let changed: IWorkItem[] = [];
 
         workItems.forEach(wi => {
+            if (!storage) return;
             let stored = this.getWIById(storage, wi.id);
             if (!stored) {
                 news.push(wi);
@@ -25,7 +45,8 @@ export default class Differences {
             }
         });
 
-        console.log(news, changed)
+        console.log("news", news.length, "changed", changed.length);
+
         if (store.settings.showNotifications) {
             news.forEach(n => {
                 this.showNotif(this.createTitleForWI(n), "new");

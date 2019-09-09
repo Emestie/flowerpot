@@ -31,7 +31,13 @@ export default class Electron {
         if ((window as any).ipcRenderer) (window as any).ipcRenderer.send("update-app");
     }
 
-    public static checkForUpdates() {
+    public static checkForUpdates(cyclic?: boolean) {
+        if (cyclic) {
+            setInterval(() => {
+                this.checkForUpdates();
+            }, 1000 * 60 * 60);
+        }
+
         let ipcRenderer = Electron.getIpcRenderer();
         if (ipcRenderer) {
             ipcRenderer.on("checking_for_update", () => {

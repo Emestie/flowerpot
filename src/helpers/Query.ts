@@ -1,6 +1,7 @@
 import store from "../store";
-import { IWorkItem } from "./WorkItem";
+import WorkItem, { IWorkItem } from "./WorkItem";
 import Electron from "./Electron";
+import Loaders from "./Loaders";
 
 export interface IQuery {
     queryId: string;
@@ -35,7 +36,7 @@ export interface IFavQuery {
 }
 
 export interface IWIStorage {
-    [queryId: string]: IWorkItem[];
+    [queryId: string]: IWorkItem[] | undefined;
 }
 
 export default class Query {
@@ -119,9 +120,10 @@ export default class Query {
 
         let allWIs: IWorkItem[] = [];
         //clear incative queries in wi
+
         for (let x in wiStorage) {
-            if (!queriesIds.includes(x)) wiStorage[x] = [];
-            allWIs = [...allWIs, ...wiStorage[x]];
+            if (!queriesIds.includes(x) || Loaders.outage) wiStorage[x] = undefined;
+            if (wiStorage[x]) allWIs = [...allWIs, ...(wiStorage[x] as IWorkItem[])];
         }
 
         let level = allWIs.length ? 3 : 4;

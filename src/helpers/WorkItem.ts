@@ -2,6 +2,7 @@ export interface IWorkItem {
     id: number;
     rev: number;
     type: "Bug" | "Issue" | "Task";
+    iterationPath: string;
     assignedTo: string;
     assignedToFull: string;
     createdDate: string;
@@ -32,6 +33,7 @@ export interface IResponseWorkItem {
         "EOS.QA.PromptnessLevel"?: string;
         "EOS.QA.ImportanceLevel"?: string;
         "Microsoft.VSTS.Common.Rank"?: string;
+        "System.IterationPath": string;
     };
     _links: {
         html: {
@@ -103,6 +105,7 @@ export default class WorkItem {
             createdByFull: resp.fields["System.CreatedBy"],
             title: this.shortTitle(resp.fields["System.Title"]),
             titleFull: resp.fields["System.Title"],
+            iterationPath: resp.fields["System.IterationPath"],
             promptness: this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]),
             promptnessText: resp.fields["EOS.QA.PromptnessLevel"],
             importance: this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]),
@@ -117,15 +120,24 @@ export default class WorkItem {
         let promptness = this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) || 0;
         let importance = this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) || 0;
 
-        let rank = 0;
-        if (!promptness && !importance) {
-            rank = (resp.fields["Microsoft.VSTS.Common.Rank"] as any) || 0;
-            if (!rank) rank = 5;
-            /* eslint-disable-next-line */
-            if (rank != 1) rank = 3;
+        let weight = 0;
+
+        if (promptness) {
+            weight += promptness;
+        } else {
+            if (resp.fields["System.WorkItemType"] === "Issue") weight += 3;
         }
 
-        return promptness + importance + +rank;
+        if (importance) {
+            weight += importance;
+        }
+
+        if (resp.fields["System.WorkItemType"] === "Task") {
+            if (resp.fields["Microsoft.VSTS.Common.Rank"] === "1") weight += 1;
+            else weight += 3;
+        }
+
+        return weight;
     }
 
     private static rankToNumber(rank?: string) {

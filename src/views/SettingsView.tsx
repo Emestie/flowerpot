@@ -12,7 +12,11 @@ interface IState {}
 
 @observer
 export default class SettingsView extends React.Component<IProps, IState> {
-    refreshRates: DropdownItemProps[] = [{ text: "1 minute", value: 60 }, { text: "5 minutes", value: 300 }, { text: "10 minutes", value: 600 }];
+    refreshRates: DropdownItemProps[] = [
+        { key: 1, text: "1 minute", value: 60 },
+        { key: 2, text: "5 minutes", value: 300 },
+        { key: 3, text: "10 minutes", value: 600 },
+    ];
 
     openCreds = () => {
         store.switchView("credentials");
@@ -31,6 +35,10 @@ export default class SettingsView extends React.Component<IProps, IState> {
     };
 
     render() {
+        if (Electron.isDev()) {
+            this.refreshRates.push({ key: 99, text: "(debug) 10 seconds", value: 10 });
+        }
+
         let updateLabel = undefined;
 
         switch (store.updateStatus) {

@@ -11,42 +11,47 @@ interface IProps {
     query: IQuery;
 }
 interface IState {
-    n: number;
     workItems: IWorkItem[];
     isLoading: boolean;
 }
 
 @observer
 export default class WorkItemsBlock extends React.Component<IProps, IState> {
-    state: IState = { n: 0, workItems: [], isLoading: true };
+    state: IState = { workItems: [], isLoading: true };
 
     // private onRoutinesRestart = reaction(() => store._routinesRestart, () => this.routineStart());
 
-    componentDidMount() {
-        setTimeout(() => this.routineStart(), 100);
+    componentWillUnmount() {
+        store.clearInterval(this.props.query);
     }
 
-    routineStart = () => {
+    async componentDidMount() {
+        setTimeout(async () => {
+            this.routineStart();
+        }, 100);
+    }
+
+    async routineStart() {
         this.setState({ workItems: [], isLoading: true });
 
-        let interval = store.getInterval(this.props.query);
-        if (interval) clearInterval(interval);
+        store.clearInterval(this.props.query);
 
-        this.loadWorkItems();
+        await this.loadWorkItemsForThisQuery();
 
         store.setInterval(
             this.props.query,
             setInterval(() => {
-                this.loadWorkItems();
+                this.loadWorkItemsForThisQuery();
             }, store.settings.refreshRate * 1000)
         );
-    };
+    }
 
-    loadWorkItems = async () => {
-        let wi = await Loaders.loadQueryWorkItems(this.props.query);
-        Query.calculateIconLevel(this.props.query, wi);
-        this.setState({ workItems: wi, isLoading: false });
-    };
+    async loadWorkItemsForThisQuery() {
+        console.log("updating query", this.props.query.queryId);
+        let wis = await Loaders.loadQueryWorkItems(this.props.query);
+        Query.calculateIconLevel(this.props.query, wis);
+        this.setState({ workItems: wis, isLoading: false });
+    }
 
     get totalItems() {
         return this.state.workItems.length;

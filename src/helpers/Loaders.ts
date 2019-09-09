@@ -5,6 +5,9 @@ import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
 import Differences from "./Differences";
 
 export default class Loaders {
+    private static auth: boolean = false;
+    public static outage: boolean = false;
+
     public static async loadAvailableQueries() {
         let queries: IQuery[] = [];
         try {
@@ -44,18 +47,18 @@ export default class Loaders {
                 let wi = (await this.request("_apis/wit/workItems/" + qwi[x].id)) as IResponseWorkItem;
                 wis.push(WorkItem.buildFromResponse(wi));
             }
+
+            Differences.put(query, wis);
         } catch (ex) {
             store.showErrorPage(ex);
         }
-
-        Differences.put(query, wis);
 
         return wis;
     }
 
     public static async checkCredentials() {
         try {
-            await this.request("_api/_wit/teamProjects?__v=5");
+            await this.request("_api/_wit/teamProjects?__v=5", true);
             return true;
         } catch (ex) {
             return false;
@@ -72,17 +75,21 @@ export default class Loaders {
         }
     }
 
-    private static async request(subpath: string) {
+    private static request(subpath: string, forceAuth?: boolean) {
         return new Promise((resolve, reject) => {
             let [domain, user] = store.settings.tfsUser.split("\\");
             Ntlm.setCredentials(domain, user, store.settings.tfsPwd);
 
             var url = store.settings.tfsPath + subpath;
 
-            // * Research: maybe I can anth once
             try {
-                if (!Ntlm.authenticate(url)) {
-                    reject("Cannot authenticate with provided credentials, TFS path is not valid or network problems occured");
+                if (!this.auth || forceAuth) {
+                    if (!Ntlm.authenticate(url)) {
+                        this.outage = true;
+                        reject("Cannot authenticate with provided credentials, TFS path is not valid or network problems occured");
+                    } else {
+                        this.auth = true;
+                    }
                 }
 
                 var request = new XMLHttpRequest();
@@ -91,7 +98,18 @@ export default class Loaders {
 
                 resolve(JSON.parse(request.responseText));
             } catch (ex) {
-                reject("Something went wrong during request processing");
+                if (!forceAuth) {
+                    this.request(subpath, true)
+                        .then(x => {
+                            resolve(x);
+                        })
+                        .catch(v => {
+                            reject(v);
+                        });
+                } else {
+                    this.outage = true;
+                    reject("Something went wrong during request processing");
+                }
             }
         });
     }

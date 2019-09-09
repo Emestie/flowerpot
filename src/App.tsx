@@ -18,7 +18,7 @@ export default class App extends React.Component {
 
         Settings.pullFromWindow();
 
-        Electron.checkForUpdates();
+        Electron.checkForUpdates(true);
 
         if (Electron.isDev()) {
             store.view = "debug";
