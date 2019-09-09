@@ -32,19 +32,23 @@ export default class MainView extends React.Component<IProps, IState> {
             queries.map(q => <WorkItemsBlock key={q.queryId} query={q} />)
         ) : (
             <Message info>
-                <Message.Header>No queries found</Message.Header>
+                <Message.Header>No queries to watch</Message.Header>
                 <p>Go to settings and add some</p>
             </Message>
         );
+
+        if (!queries.length) {
+            Electron.updateTrayIcon(4);
+        }
 
         return (
             <div className="Page">
                 <div className="TopBar">
                     <Header as="h1">Queries</Header>
                     <div className="RightTopCorner">
-                        <Button onClick={this.onRefresh} disabled={!this.isRefreshAvailable}>
+                        {/* <Button onClick={this.onRefresh} disabled={!this.isRefreshAvailable}>
                             Refresh
-                        </Button>
+                        </Button> */}
                         <Button onClick={this.onSettings}>Settings</Button>
                     </div>
                 </div>

@@ -18,7 +18,7 @@ class Store {
         credentialsChecked: false,
         refreshRate: 60,
         showNotifications: true,
-        queries: []
+        queries: [],
     };
 
     @observable getQueries(all?: boolean) {
@@ -26,6 +26,8 @@ class Store {
         if (all) return queries;
         else return queries.filter(q => !!q.enabled);
     }
+
+    intervalStorage = {};
 
     private onPathChange = reaction(() => this.settings.tfsPath, Settings.pushToWindow);
     private onUserChange = reaction(() => this.settings.tfsUser, Settings.pushToWindow);
@@ -52,6 +54,16 @@ class Store {
 
     @action restartRoutines() {
         this._routinesRestart += 1;
+    }
+
+    getInterval(query: IQuery): NodeJS.Timeout | null {
+        let interval = (this.intervalStorage as any)[query.queryId];
+        if (interval) return (this.intervalStorage as any)[query.queryId];
+        else return null;
+    }
+
+    setInterval(query: IQuery, interval: NodeJS.Timeout) {
+        (this.intervalStorage as any)[query.queryId] = interval;
     }
 
     copy<T = any>(val: T) {

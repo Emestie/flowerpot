@@ -22,6 +22,7 @@ export default class App extends React.Component {
 
         if (Electron.isDev()) {
             store.view = "debug";
+            //store.view = "main";
         } else {
             if (store.settings.credentialsChecked) store.view = "main";
             else store.view = "credentials";

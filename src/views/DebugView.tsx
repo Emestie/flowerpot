@@ -1,8 +1,8 @@
 import React from "react";
-import { Header, Button, Container, Message } from "semantic-ui-react";
+import { Header, Button, Container } from "semantic-ui-react";
 import store from "../store";
-import Query from "../helpers/Query";
 import Electron from "../helpers/Electron";
+import Differences from "../helpers/Differences";
 
 interface IProps {}
 interface IState {}
@@ -10,6 +10,10 @@ interface IState {}
 export default class DebugView extends React.Component<IProps, IState> {
     changeIconLevel = (level: number) => {
         Electron.updateTrayIcon(level);
+    };
+
+    showNotif = () => {
+        (Differences as any).showNotif("test", "new");
     };
 
     render() {
@@ -36,6 +40,10 @@ export default class DebugView extends React.Component<IProps, IState> {
                     <Button onClick={() => this.changeIconLevel(2)}>2</Button>
                     <Button onClick={() => this.changeIconLevel(3)}>3</Button>
                     <Button onClick={() => this.changeIconLevel(4)}>4</Button>
+                    <Header as="h3" dividing>
+                        Notifs
+                    </Header>
+                    <Button onClick={() => this.showNotif()}>Show</Button>
                 </Container>
             </div>
         );

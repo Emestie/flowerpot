@@ -22,6 +22,9 @@
     height: 60px;
 }
 
-.WorkItemLink{
+.WorkItemLink {
     cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }

@@ -1,11 +1,11 @@
 import React from "react";
-import { Header, Label, Table } from "semantic-ui-react";
+import { Header, Label, Table, Icon } from "semantic-ui-react";
 import store from "../store";
-import { IQuery } from "../helpers/Query";
+import Query, { IQuery } from "../helpers/Query";
 import { observer } from "mobx-react";
-import { reaction } from "mobx";
 import WorkItemRow from "./WorkItemRow";
-import WorkItem, { IWorkItem } from "../helpers/WorkItem";
+import { IWorkItem } from "../helpers/WorkItem";
+import Loaders from "../helpers/Loaders";
 
 interface IProps {
     query: IQuery;
@@ -18,30 +18,34 @@ interface IState {
 
 @observer
 export default class WorkItemsBlock extends React.Component<IProps, IState> {
-    state: IState = { n: 0, workItems: [], isLoading: false };
+    state: IState = { n: 0, workItems: [], isLoading: true };
 
-    private onRoutinesRestart = reaction(() => store._routinesRestart, () => this.routineStart());
-    private interval: NodeJS.Timeout | undefined;
+    // private onRoutinesRestart = reaction(() => store._routinesRestart, () => this.routineStart());
 
     componentDidMount() {
-        this.routineStart();
+        setTimeout(() => this.routineStart(), 100);
     }
 
     routineStart = () => {
         this.setState({ workItems: [], isLoading: true });
-        //TODO: first load
-        if (this.interval) clearInterval(this.interval);
+
+        let interval = store.getInterval(this.props.query);
+        if (interval) clearInterval(interval);
+
         this.loadWorkItems();
 
-        this.interval = setInterval(() => {
-            this.loadWorkItems();
-            this.setState({ n: this.state.n + 1 });
-        }, store.settings.refreshRate * 1000);
+        store.setInterval(
+            this.props.query,
+            setInterval(() => {
+                this.loadWorkItems();
+            }, store.settings.refreshRate * 1000)
+        );
     };
 
     loadWorkItems = async () => {
-        //let wi = await Loaders.loadWorkItems(this.props.query);
-        this.setState({ workItems: [WorkItem.fish(), WorkItem.fish()], isLoading: false });
+        let wi = await Loaders.loadQueryWorkItems(this.props.query);
+        Query.calculateIconLevel(this.props.query, wi);
+        this.setState({ workItems: wi, isLoading: false });
     };
 
     get totalItems() {
@@ -56,15 +60,28 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         return this.state.workItems.filter(wi => wi.promptness === 2).length;
     }
 
+    wiSorting = (a: IWorkItem, b: IWorkItem) => {
+        if (a.weight < b.weight) return -1;
+        else if (a.weight > b.weight) return 1;
+
+        if (a.createdDate < b.createdDate) return -1;
+        else return 1;
+    };
+
+    onCollapseClick = () => {
+        Query.toggleCollapse(this.props.query);
+    };
+
     render() {
         let query = this.props.query;
-        //TODO: sort
-        let workItems = this.state.workItems /*.sort((a,b) => a.promptness - b.promptness)*/
-            .map(wi => <WorkItemRow key={wi.id} item={wi} />);
+        let workItems = this.state.workItems.sort(this.wiSorting).map(wi => <WorkItemRow key={wi.id} item={wi} />);
+
+        let iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 
         return (
             <>
                 <Header as="h3" dividing>
+                    {!this.state.isLoading && !!this.state.workItems.length && <span onClick={this.onCollapseClick}>{iconCollapse}</span>}
                     {query.queryName}
                     <small>
                         <span style={{ marginLeft: 10, color: "gray" }}>{query.teamName}</span>
@@ -84,16 +101,18 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
                             {this.totalItems}
                         </Label>
                     )}
-                    {!this.totalItems && (
+                    {!this.totalItems && !this.state.isLoading && (
                         <Label size="small" circular color="green">
                             ✔
                         </Label>
                     )}
                     {this.state.isLoading && <Label size="small">Loading...</Label>}
                 </Header>
-                <Table compact size="small">
-                    {workItems}
-                </Table>
+                {!!this.state.workItems.length && !query.collapsed && (
+                    <Table compact size="small">
+                        <tbody>{workItems}</tbody>
+                    </Table>
+                )}
             </>
         );
     }

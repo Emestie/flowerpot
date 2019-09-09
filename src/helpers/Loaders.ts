@@ -1,6 +1,8 @@
 import store from "../store";
 import { Ntlm } from "../lib/ntlm";
-import Query, { IQuery, ITeam, IFavQuery } from "./Query";
+import Query, { IQuery, ITeam, IFavQuery, IResponseQuery } from "./Query";
+import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
+import Differences from "./Differences";
 
 export default class Loaders {
     public static async loadAvailableQueries() {
@@ -29,8 +31,26 @@ export default class Loaders {
         return queries;
     }
 
-    public static async loadQueryWorkItems() {
-        //add loaded WI to (window as any).wiStorage (qId)
+    public static async loadQueryWorkItems(query: IQuery) {
+        let wis: IWorkItem[] = [];
+
+        try {
+            let queryInfo = (await this.request(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
+
+            if (!queryInfo || !queryInfo.workItems) throw "Error while loading query";
+            let qwi = queryInfo.workItems;
+
+            for (let x in qwi) {
+                let wi = (await this.request("_apis/wit/workItems/" + qwi[x].id)) as IResponseWorkItem;
+                wis.push(WorkItem.buildFromResponse(wi));
+            }
+        } catch (ex) {
+            store.showErrorPage(ex);
+        }
+
+        Differences.put(query, wis);
+
+        return wis;
     }
 
     public static async checkCredentials() {

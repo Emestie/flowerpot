@@ -17,6 +17,15 @@ export interface ITeam {
     name: string;
 }
 
+interface IResponseQueryWI {
+    id: number;
+    url: string;
+}
+
+export interface IResponseQuery {
+    workItems: IResponseQueryWI[];
+}
+
 export interface IFavQuery {
     queryItem: {
         id: string;
@@ -25,7 +34,7 @@ export interface IFavQuery {
     };
 }
 
-interface IWIStorage {
+export interface IWIStorage {
     [queryId: string]: IWorkItem[];
 }
 
@@ -40,7 +49,7 @@ export default class Query {
             queryId: favQuery.queryItem.id,
             queryName: favQuery.queryItem.name,
             teamId: team.guid,
-            teamName: team.name
+            teamName: team.name,
         };
 
         return query;
@@ -102,6 +111,9 @@ export default class Query {
     public static calculateIconLevel(query: IQuery, workItems: IWorkItem[]) {
         if (!(window as any).wiStorage) (window as any).wiStorage = {};
         let wiStorage = (window as any).wiStorage as IWIStorage;
+
+        wiStorage[query.queryId] = store.copy(workItems);
+
         let queries = store.getQueries();
         let queriesIds = queries.map(q => q.queryId);
 

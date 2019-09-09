@@ -12,11 +12,7 @@ interface IState {}
 
 @observer
 export default class SettingsView extends React.Component<IProps, IState> {
-    refreshRates: DropdownItemProps[] = [
-        { text: "1 minute", value: 60 },
-        { text: "5 minutes", value: 300 },
-        { text: "10 minutes", value: 600 }
-    ];
+    refreshRates: DropdownItemProps[] = [{ text: "1 minute", value: 60 }, { text: "5 minutes", value: 300 }, { text: "10 minutes", value: 600 }];
 
     openCreds = () => {
         store.switchView("credentials");
@@ -89,7 +85,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         Credits
                     </Header>
-                    <Label as="a" image onClick={() => Electron.openUrl("https://emestie.github.io/flowerpot")}>
+                    <Label as="a" image onClick={() => Electron.openUrl("https://github.com/Emestie/flowerpot")}>
                         <img src={avatar} alt="" />
                         <Icon name="github" />
                         Emestie/flowerpot

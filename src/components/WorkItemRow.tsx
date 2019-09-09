@@ -48,7 +48,17 @@ export default class WorkItemRow extends React.Component<IProps> {
 
     get rankEl() {
         if (this.props.item.rank === undefined) return undefined;
-        return <Popup content={"Rank " + this.props.item.rank} trigger={<span>{this.props.item.rank}</span>} />;
+        return (
+            <Popup
+                content={"Rank " + this.props.item.rank}
+                trigger={
+                    <span>
+                        <Icon name="chess queen" />
+                        {this.props.item.rank}
+                    </span>
+                }
+            />
+        );
     }
 
     get revEl() {
@@ -102,7 +112,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         }
 
         if (name.indexOf("Тагулова") !== -1) {
-            return <span style={{ color: "rgb(75, 45, 31)" }}>{name}</span>;
+            return <span style={{ color: "rgb(90, 45, 31)" }}>{name}</span>;
         }
 
         return name;
@@ -120,9 +130,9 @@ export default class WorkItemRow extends React.Component<IProps> {
                     {this.importanceEl} {this.promptnessEl} {this.rankEl}
                 </Table.Cell>
                 <Table.Cell>
-                    <a href="#" className="WorkItemLink" onClick={() => Electron.openUrl(item.url)}>
+                    <span className="WorkItemLink" onClick={() => Electron.openUrl(item.url)}>
                         {item.titleFull}
-                    </a>
+                    </span>
                 </Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.assignedTo)}</Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.createdBy)}</Table.Cell>
