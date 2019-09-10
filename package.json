@@ -15,7 +15,7 @@
             "_icons/**/*"
         ],
         "win": {
-            "icon": "build/icon.png"
+            "icon": "build/icon.ico"
         },
         "publish": {
             "provider": "github"
