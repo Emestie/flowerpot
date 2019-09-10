@@ -23,7 +23,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         if (!this.props.item.importance) return undefined;
         return (
             <Popup
-                content={this.props.item.importanceText}
+                content={"Severity " + this.props.item.importanceText}
                 trigger={
                     <span>
                         <Icon name="exclamation triangle" />
@@ -38,7 +38,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         if (!this.props.item.promptness) return undefined;
         return (
             <Popup
-                content={this.props.item.promptnessText}
+                content={"Priority " + this.props.item.promptnessText}
                 trigger={
                     <span>
                         <Icon name="clock" />

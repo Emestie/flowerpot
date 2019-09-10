@@ -85,7 +85,11 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         let q = this.props.query;
         if (!q.queryPath) return;
 
-        Electron.openUrl(store.settings.tfsPath + q.teamName + "/_workItems?path=" + q.queryPath + "&_a=query");
+        let encodedPath = encodeURI(q.queryPath)
+            .replace("/", "%2F")
+            .replace("&", "%26");
+
+        Electron.openUrl(store.settings.tfsPath + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
     };
 
     getSortPattern = () => {

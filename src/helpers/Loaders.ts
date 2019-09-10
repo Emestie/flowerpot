@@ -1,6 +1,6 @@
 import store from "../store";
 import { Ntlm } from "../lib/ntlm";
-import Query, { IQuery, ITeam, IFavQuery, IResponseQuery } from "./Query";
+import Query, { IQuery, ITeam, IFavQuery, IResponseQuery, IResponseQueryWI } from "./Query";
 import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
 import Differences from "./Differences";
 
@@ -42,8 +42,21 @@ export default class Loaders {
             let queryInfo = (await this.request(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
 
             // eslint-disable-next-line
-            if (!queryInfo || !queryInfo.workItems) throw "Error while loading query";
-            let qwi = queryInfo.workItems;
+            if (!queryInfo) throw "Error while loading query";
+            let preparedWIs: IResponseQueryWI[] = [];
+
+            //query results can be tree
+            if (queryInfo.queryType === "flat") preparedWIs = queryInfo.workItems;
+            else {
+                if (queryInfo.workItemRelations) {
+                    for (let x in queryInfo.workItemRelations) {
+                        if (!queryInfo.workItemRelations[x] || !queryInfo.workItemRelations[x].target) continue;
+                        preparedWIs.push(queryInfo.workItemRelations[x].target);
+                    }
+                }
+            }
+
+            let qwi = preparedWIs;
 
             for (let x in qwi) {
                 let wi = (await this.request("_apis/wit/workItems/" + qwi[x].id)) as IResponseWorkItem;

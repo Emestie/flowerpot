@@ -24,13 +24,15 @@ export interface ITeam {
     name: string;
 }
 
-interface IResponseQueryWI {
+export interface IResponseQueryWI {
     id: number;
     url: string;
 }
 
 export interface IResponseQuery {
+    queryType: "flat" | "tree";
     workItems: IResponseQueryWI[];
+    workItemRelations?: any;
 }
 
 export interface IFavQuery {

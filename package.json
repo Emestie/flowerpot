@@ -12,7 +12,7 @@
         "appId": "mst.flowerpot",
         "files": [
             "build/**/*",
-            "_icons/*"
+            "_icons/**/*"
         ],
         "win": {
             "icon": "build/icon.png"

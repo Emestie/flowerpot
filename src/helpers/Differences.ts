@@ -51,7 +51,7 @@ export default class Differences {
             }
         });
 
-        console.log("news", news.length, "changed", changed.length);
+        console.log("New WIs", news.length, "Changed WIs", changed.length);
 
         news.forEach(n => {
             if (

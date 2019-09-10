@@ -8,8 +8,8 @@ interface IProps {}
 interface IState {}
 
 export default class DebugView extends React.Component<IProps, IState> {
-    changeIconLevel = (level: number) => {
-        Electron.updateTrayIcon(level, true);
+    changeIconLevel = (level: number, noDot?: boolean) => {
+        Electron.updateTrayIcon(level, !noDot);
     };
 
     showNotif = () => {
@@ -54,6 +54,7 @@ export default class DebugView extends React.Component<IProps, IState> {
                     <Button onClick={() => this.changeIconLevel(2)}>2</Button>
                     <Button onClick={() => this.changeIconLevel(3)}>3</Button>
                     <Button onClick={() => this.changeIconLevel(4)}>4</Button>
+                    <Button onClick={() => this.changeIconLevel(4, true)}>4 no dot</Button>
                     <Header as="h3" dividing>
                         Notifs
                     </Header>

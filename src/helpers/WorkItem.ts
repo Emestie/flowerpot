@@ -34,6 +34,8 @@ export interface IResponseWorkItem {
         "EOS.QA.ImportanceLevel"?: string;
         "Microsoft.VSTS.Common.Rank"?: string;
         "System.IterationPath": string;
+        "Microsoft.VSTS.Common.Priority"?: string; //promptness
+        "Microsoft.VSTS.Common.Severity"?: string; //importance
     };
     _links: {
         html: {
@@ -106,10 +108,10 @@ export default class WorkItem {
             title: this.shortTitle(resp.fields["System.Title"]),
             titleFull: resp.fields["System.Title"],
             iterationPath: resp.fields["System.IterationPath"],
-            promptness: this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]),
-            promptnessText: resp.fields["EOS.QA.PromptnessLevel"],
-            importance: this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]),
-            importanceText: resp.fields["EOS.QA.ImportanceLevel"],
+            promptness: this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]),
+            promptnessText: resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"],
+            importance: this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"]),
+            importanceText: resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"],
             rank: this.rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]),
             weight: this.calcWeight(resp),
         };
@@ -117,8 +119,10 @@ export default class WorkItem {
     }
 
     private static calcWeight(resp: IResponseWorkItem) {
-        let promptness = this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) || 0;
-        let importance = this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) || 0;
+        let promptness =
+            this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) || this.extractLevel(resp.fields["Microsoft.VSTS.Common.Priority"]) || 0;
+        let importance =
+            this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) || this.extractLevel(resp.fields["Microsoft.VSTS.Common.Severity"]) || 0;
 
         let weight = 0;
 
@@ -147,6 +151,7 @@ export default class WorkItem {
 
     private static extractLevel(level?: string): number | undefined {
         if (!level) return undefined;
+        if (+level) return +level;
         return +level[0];
     }
 

@@ -26,7 +26,7 @@ function createWindow() {
 
     wnd = new BrowserWindow({
         title: "Flowerpot",
-        icon: __dirname + "/../_icons/flower4.png",
+        icon: buildIconPath(4),
         width: width,
         height: height,
         minWidth: 800,
@@ -54,6 +54,10 @@ function createWindow() {
         currentLevel = level;
         let pathToIcon = buildIconPath(level, hasChanges);
         tray.setImage(pathToIcon);
+        
+        let pathToDotIcon = buildIconDotPath(level, hasChanges);
+        if (level !== 4) wnd.setOverlayIcon(pathToDotIcon, "dot");
+        else wnd.setOverlayIcon(null, "no-dot");
     });
 
     ipcMain.on("check-for-updates", () => {
@@ -156,8 +160,12 @@ function buildTrayIcon() {
 }
 
 function buildIconPath(level, hasChanges) {
-    if (hasChanges) level = level + "-dot";
-    return __dirname + "/../_icons/flower" + level + ".png";
+    if (hasChanges) level = level + "d";
+    return __dirname + "/../_icons/flower" + level + ".ico";
+}
+
+function buildIconDotPath(level, hasChanges) {
+    return __dirname + "/../_icons/dots/dot" + level + ".png";
 }
 
 function registerAutostart() {
