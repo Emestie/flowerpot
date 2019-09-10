@@ -1,3 +1,5 @@
+$flowerGreen: #3cb371;
+
 .Page {
     user-select: none;
     padding: 15px;
@@ -38,5 +40,17 @@
 
 .hasChangesMark {
     color: orangered;
+    font-weight: bold;
+}
+
+.hasChangesCell {
+    border-left: 3px solid $flowerGreen;
+}
+
+.hasNoChangesCell {
+    border-left: 3px solid transparent;
+}
+
+.hasChangesText {
     font-weight: bold;
 }

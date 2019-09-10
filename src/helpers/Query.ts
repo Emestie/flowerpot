@@ -8,6 +8,7 @@ type TBoolProps = "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon" | "empt
 export interface IQuery {
     queryId: string;
     queryName: string;
+    queryPath: string;
     teamId: string;
     teamName: string;
     enabled: boolean;
@@ -36,6 +37,7 @@ export interface IFavQuery {
     queryItem: {
         id: string;
         name: string;
+        path: string;
         isFolder: boolean;
     };
 }
@@ -54,6 +56,7 @@ export default class Query {
             order: 99,
             queryId: favQuery.queryItem.id,
             queryName: favQuery.queryItem.name,
+            queryPath: favQuery.queryItem.path,
             teamId: team.guid,
             teamName: team.name,
             ignoreIcon: false,

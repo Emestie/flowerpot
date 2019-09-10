@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import WorkItemRow from "./WorkItemRow";
 import { IWorkItem } from "../helpers/WorkItem";
 import Loaders from "../helpers/Loaders";
+import Electron from "../helpers/Electron";
 
 interface IProps {
     query: IQuery;
@@ -80,6 +81,13 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         Query.toggleBoolean(this.props.query, "collapsed");
     };
 
+    onQueryNameClick = () => {
+        let q = this.props.query;
+        if (!q.queryPath) return;
+
+        Electron.openUrl(store.settings.tfsPath + q.teamName + "/_workItems?path=" + q.queryPath + "&_a=query");
+    };
+
     getSortPattern = () => {
         switch (store.settings.sortPattern) {
             case "assignedto":
@@ -129,12 +137,9 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
                 <Header as="h3" dividing>
                     {!this.state.isLoading && !!this.state.workItems.length && <span onClick={this.onCollapseClick}>{iconCollapse}</span>}
                     <span onClick={this.dropAllWiChanges}>
-                        {!!this.atLeastOneWiHasChanges && (
-                            <span className="hasChangesMark">
-                                <Icon size="small" name="circle" />
-                            </span>
-                        )}
-                        {query.queryName}
+                        <span className={query.queryPath ? "WorkItemLink" : ""} onClick={this.onQueryNameClick}>
+                            {query.queryName}
+                        </span>
                         <small>
                             <span style={{ marginLeft: 10, color: "gray" }}>{query.teamName}</span>
                         </small>

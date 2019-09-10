@@ -131,7 +131,7 @@ export default class WorkItemRow extends React.Component<IProps> {
 
         return (
             <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
-                <Table.Cell collapsing>
+                <Table.Cell collapsing className={hasChanges ? "hasChangesCell" : "hasNoChangesCell"}>
                     {this.typeEl} {item.id}
                 </Table.Cell>
                 <Table.Cell collapsing>
@@ -139,18 +139,13 @@ export default class WorkItemRow extends React.Component<IProps> {
                 </Table.Cell>
                 <Table.Cell>
                     <span className="IterationInTitle">{item.iterationPath}</span>
-                    <span className="WorkItemLink" onClick={() => Electron.openUrl(item.url)}>
+                    <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>
                         {item.titleFull}
                     </span>
                 </Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.assignedTo)}</Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.createdBy)}</Table.Cell>
                 <Table.Cell collapsing>
-                    {!!hasChanges && (
-                        <span className="hasChangesMark">
-                            <Icon name="circle" />
-                        </span>
-                    )}
                     {this.revEl} {this.freshnessEl}
                 </Table.Cell>
             </Table.Row>

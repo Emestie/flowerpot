@@ -2,6 +2,7 @@ import React from "react";
 import { Header, Button, Container } from "semantic-ui-react";
 import store from "../store";
 import Electron from "../helpers/Electron";
+import WorkItem from "../helpers/WorkItem";
 
 interface IProps {}
 interface IState {}
@@ -17,6 +18,12 @@ export default class DebugView extends React.Component<IProps, IState> {
 
     showNotifNative = () => {
         Electron.showNativeNotif({ title: "test1", body: "test2" });
+    };
+
+    setChanges = () => {
+        let wi = WorkItem.fish();
+        wi.id = 108920;
+        store.setWIHasChanges(wi, true);
     };
 
     render() {
@@ -52,6 +59,10 @@ export default class DebugView extends React.Component<IProps, IState> {
                     </Header>
                     <Button onClick={() => this.showNotif()}>Show html5</Button>
                     <Button onClick={() => this.showNotifNative()}>Show native electron</Button>
+                    <Header as="h3" dividing>
+                        More
+                    </Header>
+                    <Button onClick={() => this.setChanges()}>Set changes to WI</Button>
                 </Container>
             </div>
         );
