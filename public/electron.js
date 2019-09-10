@@ -33,7 +33,7 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
     });
 
     if (!isDev) wnd.setMenu(null);
@@ -43,7 +43,7 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true,
+            slashes: true
         });
     wnd.loadURL(startUrl);
 
@@ -54,7 +54,7 @@ function createWindow() {
         currentLevel = level;
         let pathToIcon = buildIconPath(level, hasChanges);
         tray.setImage(pathToIcon);
-        
+
         let pathToDotIcon = buildIconDotPath(level, hasChanges);
         if (level !== 4) wnd.setOverlayIcon(pathToDotIcon, "dot");
         else wnd.setOverlayIcon(null, "no-dot");
@@ -134,22 +134,28 @@ autoUpdater.on("update-downloaded", () => {
 });
 
 function buildTrayIcon() {
+    let locale = store.get("locale");
+    if (locale === "auto") {
+        locale = app.getLocale();
+        if (locale !== "ru") locale = "en";
+    }
+
     tray = new Tray(buildIconPath(4, false));
     const contextMenu = Menu.buildFromTemplate([
         {
-            label: "Show",
+            label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
                 wnd.show();
-            },
+            }
         },
         {
-            label: "Quit",
+            label: locale === "ru" ? "Выход" : "Quit",
             click: () => {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            },
-        },
+            }
+        }
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -172,7 +178,7 @@ function registerAutostart() {
     if (!isDev) {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe"),
+            path: app.getPath("exe")
         });
     }
 }

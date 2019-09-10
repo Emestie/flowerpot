@@ -3,6 +3,7 @@ import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
 import store from "../store";
 import Query from "../helpers/Query";
 import { observer } from "mobx-react";
+import { s } from "../values/Strings";
 
 @observer
 export default class QueriesSettingsTable extends React.Component {
@@ -60,11 +61,11 @@ export default class QueriesSettingsTable extends React.Component {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell></Table.HeaderCell>
-                        <Table.HeaderCell>Team project</Table.HeaderCell>
-                        <Table.HeaderCell>Query name</Table.HeaderCell>
-                        <Table.HeaderCell>Ignore Icon</Table.HeaderCell>
-                        <Table.HeaderCell>Ignore Notif.</Table.HeaderCell>
-                        <Table.HeaderCell>Actions</Table.HeaderCell>
+                        <Table.HeaderCell>{s("teamProject")}</Table.HeaderCell>
+                        <Table.HeaderCell>{s("queryName")}</Table.HeaderCell>
+                        <Table.HeaderCell>{s("ignoreIcon")}</Table.HeaderCell>
+                        <Table.HeaderCell>{s("ignoreNotif")}</Table.HeaderCell>
+                        <Table.HeaderCell>{s("actions")}</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>{rows}</Table.Body>
@@ -73,7 +74,7 @@ export default class QueriesSettingsTable extends React.Component {
                         <Table.HeaderCell />
                         <Table.HeaderCell colSpan="6">
                             <Button icon labelPosition="left" primary size="small" onClick={this.openQuerySelector}>
-                                <Icon name="add" /> Add Query
+                                <Icon name="add" /> {s("addQuery")}
                             </Button>
                         </Table.HeaderCell>
                     </Table.Row>

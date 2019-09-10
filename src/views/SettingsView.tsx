@@ -1,10 +1,11 @@
 import React from "react";
-import { Header, Container, Button, Form, DropdownItemProps, Label, Icon, DropdownProps } from "semantic-ui-react";
+import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
 import { observer } from "mobx-react";
-import store from "../store";
+import store, { TLocale } from "../store";
 import QueriesSettingsTable from "../components/QueriesSettingsTable";
 import Electron from "../helpers/Electron";
 import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
+import { s } from "../values/Strings";
 
 const avatar = require("../assets/ti.jpg") as string;
 
@@ -20,21 +21,27 @@ export default class SettingsView extends React.Component<IProps, IState> {
     };
 
     refreshRates: DropdownItemProps[] = [
-        { key: 1, text: "1 minute", value: 60 },
-        { key: 2, text: "5 minutes", value: 300 },
-        { key: 3, text: "10 minutes", value: 600 }
+        { key: 1, text: s("refresh1m"), value: 60 },
+        { key: 2, text: s("refresh5m"), value: 300 },
+        { key: 3, text: s("refresh10m"), value: 600 }
     ];
 
     sortPatterns: DropdownItemProps[] = [
-        { key: 1, text: "Weight -> Date", value: "default" },
-        { key: 2, text: '"Assigned To" Name -> Date', value: "assignedto" },
-        { key: 3, text: "ID", value: "id" }
+        { key: 1, text: s("sortPatternWeight"), value: "default" },
+        { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
+        { key: 3, text: s("sortPatternId"), value: "id" }
     ];
 
     notificationsModes: DropdownItemProps[] = [
-        { key: 1, text: "All", value: "all" },
-        { key: 2, text: "Mine only", value: "mine" },
-        { key: 3, text: "None", value: "none" }
+        { key: 1, text: s("notifModeAll"), value: "all" },
+        { key: 2, text: s("notifModeMine"), value: "mine" },
+        { key: 3, text: s("notifModeNone"), value: "none" }
+    ];
+
+    locales: DropdownItemProps[] = [
+        { key: 1, text: s("localeAuto"), value: "auto" },
+        { key: 2, text: s("localeEn"), value: "en" },
+        { key: 3, text: s("localeRu"), value: "ru" }
     ];
 
     openCreds = () => {
@@ -51,6 +58,10 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     onNotifModeSelect(val: TNotificationsMode) {
         store.settings.notificationsMode = val;
+    }
+
+    onLocaleSelect(val: TLocale) {
+        store.locale = val;
     }
 
     toggleAutostart = () => {
@@ -72,29 +83,30 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     render() {
         if (Electron.isDev()) {
-            if (this.refreshRates.length !== 4) this.refreshRates.push({ key: Math.random(), text: "(debug) 10 seconds", value: 10 });
+            if (this.refreshRates.length !== 4) this.refreshRates.push({ key: Math.random(), text: s("refreshdebug"), value: 10 });
         }
 
         let updateLabel = undefined;
 
         switch (store.updateStatus) {
             case "checking":
-                updateLabel = <Label>Checking for updates...</Label>;
+                updateLabel = <Label>{s("updateStateChecking")}</Label>;
                 break;
             case "downloading":
-                updateLabel = <Label color="teal">Downloading update...</Label>;
+                updateLabel = <Label color="teal">{s("updateStateDownloading")}</Label>;
                 break;
             case "ready":
+                //TODO: button here and updateInstallInProgress
                 updateLabel = (
                     <Label as="a" color="green" onClick={() => this.onUpdate()}>
-                        Update ready. Click to install
+                        {s("updateStateReady")}
                     </Label>
                 );
                 break;
             default:
                 updateLabel = (
                     <Label as="a" onClick={() => Electron.checkForUpdates()}>
-                        Check for updates
+                        {s("updateStateNone")}
                     </Label>
                 );
         }
@@ -102,56 +114,60 @@ export default class SettingsView extends React.Component<IProps, IState> {
         return (
             <div className="Page">
                 <div className="TopBar">
-                    <Header as="h1">Settings</Header>
+                    <Header as="h1">{s("settingsHeader")}</Header>
                     <div className="RightTopCorner">
-                        <Button onClick={this.openCreds}>Edit TFS & Account settings</Button>
+                        <Button onClick={this.openCreds}>{s("editTfsSettingsBtn")}</Button>
                         <Button positive onClick={this.onSave}>
-                            Save
+                            {s("settingsBackButton")}
                         </Button>
                     </div>
                 </div>
                 <Container fluid>
                     <Header as="h3" dividing>
-                        Queries to watch
+                        {s("settingsQueriesHeader")}
                     </Header>
                     <QueriesSettingsTable />
                     <Form.Select
-                        label="Sort pattern: "
+                        label={s("sortPattern")}
                         options={this.sortPatterns}
                         value={store.settings.sortPattern}
                         onChange={(e, { value }) => this.onSortSelect(value as TSortPattern)}
                     />
                     <Header as="h3" dividing>
-                        Other settings
+                        {s("settingsOthersHeader")}
                     </Header>
                     <Form.Select
-                        label="Queries refresh rate: "
+                        label={s("ddLocalesLabel")}
+                        options={this.locales}
+                        value={store.locale}
+                        onChange={(e, { value }) => this.onLocaleSelect(value as TLocale)}
+                    />
+                    <br />
+                    <Form.Select
+                        label={s("ddRefreshLabel")}
                         options={this.refreshRates}
                         value={store.settings.refreshRate}
                         onChange={(e, { value }) => this.onRateSelect(value as number)}
                     />
                     <br />
                     <Form.Select
-                        label="Show notifications: "
+                        label={s("ddShowNotifLabel")}
                         options={this.notificationsModes}
                         value={store.settings.notificationsMode}
                         onChange={(e, { value }) => this.onNotifModeSelect(value as TNotificationsMode)}
                     />
                     <br />
                     <Form.Checkbox
-                        label="Change app icon color only on my Work Items events"
+                        label={s("cbIconLabel")}
                         checked={store.settings.iconChangesOnMyWorkItemsOnly}
                         onChange={this.toggleIconColor}
                     />
                     <br />
-                    <Form.Checkbox
-                        label="Start with Windows (applies on app restart)"
-                        checked={store.autostart}
-                        onChange={this.toggleAutostart}
-                    />
+                    <Form.Checkbox label={s("cbAutostartLabel")} checked={store.autostart} onChange={this.toggleAutostart} />
                     <br />
+
                     <Header as="h3" dividing>
-                        Credits
+                        {s("settingsCreditsHeader")}
                     </Header>
                     <Label as="a" image onClick={() => Electron.openUrl("https://github.com/Emestie/flowerpot")}>
                         <img src={avatar} alt="" />
@@ -159,7 +175,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         Emestie/flowerpot
                     </Label>
                     <Label>
-                        Version
+                        {s("versionWord")}
                         <Label.Detail>{Electron.getVer()}</Label.Detail>
                     </Label>
                     {updateLabel}

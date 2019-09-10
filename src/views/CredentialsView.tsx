@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import store from "../store";
 import Loaders from "../helpers/Loaders";
 import Electron from "../helpers/Electron";
+import { s } from "../values/Strings";
 
 interface IProps {}
 interface IState {
@@ -25,11 +26,11 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     };
 
     statuses = [
-        { color: undefined, text: "Not validated yet" },
-        { color: undefined, text: "Validating..." },
-        { color: "red", text: "Server unavailable or TFS path is wrong" },
-        { color: "red", text: "Incorrect Username or Password" },
-        { color: "olive", text: "OK" }
+        { color: undefined, text: s("credsState1") },
+        { color: undefined, text: s("credsState2") },
+        { color: "red", text: s("credsState3") },
+        { color: "red", text: s("credsState4") },
+        { color: "olive", text: s("credsState5") }
     ];
 
     componentDidMount() {
@@ -131,22 +132,22 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         return (
             <div className="Page">
                 <div className="TopBar">
-                    <Header as="h1">TFS & Account settings</Header>
+                    <Header as="h1">{s("tfsHeader")}</Header>
                     <div className="RightTopCorner">
                         <Button positive disabled={this.isBackUnavailable} onClick={this.onSave}>
-                            Save
+                            {s("save")}
                         </Button>
                     </div>
                 </div>
 
                 <Container fluid>
                     <Header as="h3" dividing>
-                        Credentials
+                        {s("credsHeader")}
                     </Header>
                     <Form loading={this.checkInProgress}>
                         <Form.Input
                             fluid
-                            label="TFS path with collection name (must start with 'http://' and end with '/')"
+                            label={s("tfsPath")}
                             placeholder="http://tfs.eos.loc:8080/tfs/DefaultCollection/"
                             value={store.settings.tfsPath}
                             onChange={e => this.validateTfsPath(e.target.value)}
@@ -155,7 +156,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                         <Form.Group widths="equal">
                             <Form.Input
                                 fluid
-                                label="TFS username (with domain)"
+                                label={s("tfsUser")}
                                 placeholder="domain\user.name"
                                 value={store.settings.tfsUser}
                                 onChange={e => this.validateTfsUser(e.target.value)}
@@ -163,7 +164,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                             />
                             <Form.Input
                                 fluid
-                                label="TFS password"
+                                label={s("tfsPwd")}
                                 type="password"
                                 value={store.settings.tfsPwd}
                                 onChange={e => this.validateTfsPwd(e.target.value)}
@@ -174,17 +175,18 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                     <div>
                         <br />
                         <Label color="orange">
-                            <span onDoubleClick={() => (debugInputRef.current as any).focus()}>NOTE!</span>
+                            <span onDoubleClick={() => (debugInputRef.current as any).focus()}>{s("note")}</span>
                         </Label>{" "}
-                        You must validate credentials you entered before leaving this page.
+                        {s("credsNoteText")}
                     </div>
                     <br />
                     <div>
-                        Status: <Label color={this.statusParams.color as any}>{this.statusParams.text}</Label>
+                        {s("status")}
+                        <Label color={this.statusParams.color as any}>{this.statusParams.text}</Label>
                     </div>
                     <br />
                     <Button primary loading={this.checkInProgress} disabled={this.isCheckUnabailable} onClick={this.onCheck}>
-                        Validate
+                        {s("validate")}
                     </Button>
                     {/* <Button onClick={this.onTest}>test</Button> */}
                 </Container>

@@ -6,6 +6,7 @@ import { IWorkItem } from "./helpers/WorkItem";
 
 type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug";
 type TUpdateStatus = "none" | "downloading" | "ready" | "checking";
+export type TLocale = "auto" | "en" | "ru";
 
 class Store {
     @observable _routinesRestart: number = 0;
@@ -22,10 +23,11 @@ class Store {
         sortPattern: "default",
         notificationsMode: "all",
         iconChangesOnMyWorkItemsOnly: false,
-        queries: [],
+        queries: []
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
+    @observable locale: TLocale = "auto";
 
     @observable getQueries(all?: boolean) {
         let queries = this.copy<IQuery[]>(this.settings.queries).sort((a, b) => a.order - b.order);
@@ -47,6 +49,7 @@ class Store {
     private onNotifChange = reaction(() => this.settings.notificationsMode, Settings.pushToWindow);
     private onIconEventsChange = reaction(() => this.settings.iconChangesOnMyWorkItemsOnly, Settings.pushToWindow);
     private onQueriesChange = reaction(() => this.settings.queries, Settings.pushToWindow);
+    private onLocaleChange = reaction(() => this.locale, Electron.changeLocale);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);
 
     @action switchView(view: TView) {

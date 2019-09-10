@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import store from "../store";
 import Query, { IQuery } from "../helpers/Query";
 import Loaders from "../helpers/Loaders";
+import { s } from "../values/Strings";
 
 interface IProps {}
 interface IState {
@@ -19,7 +20,7 @@ interface ISelectableQuery extends IQuery {
 export default class SelectQueriesView extends React.Component<IProps, IState> {
     state: IState = {
         isLoading: true,
-        availableQueries: [],
+        availableQueries: []
     };
 
     componentDidMount() {
@@ -68,7 +69,7 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
         let queryList = this.state.isLoading ? (
             <Message icon>
                 <Icon name="circle notched" loading />
-                <Message.Content>Loading...</Message.Content>
+                <Message.Content> {s("loading")}</Message.Content>
             </Message>
         ) : this.state.availableQueries.length ? (
             this.state.availableQueries.map(q => (
@@ -78,29 +79,32 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
             ))
         ) : (
             <Message visible color="red">
-                You don't have any available queries. Make sure you added desired ones to Favorites in TFS.
+                {s("noQueriesAvailable")}
             </Message>
         );
 
         return (
             <div className="Page">
                 <div className="TopBar">
-                    <Header as="h1">Select Queries</Header>
+                    <Header as="h1">{s("selQHeader")}</Header>
                     <div className="RightTopCorner">
-                        <Button onClick={this.onCancel}>Cancel</Button>
+                        <Button onClick={this.onCancel}>{s("cancel")}</Button>
                         <Button onClick={this.onAdd} positive disabled={!this.isAddAvailable}>
-                            Add
+                            {s("add")}
                         </Button>
                     </div>
                 </div>
                 <Container fluid>
-                    <Label color="orange">NOTE!</Label> You can see here only queries that in your <b>Favorites</b> and <b>not yet added</b> to watch
-                    list.
+                    <Label color="orange">{s("note")}</Label> {s("selqNote1")}
+                    <b>{s("selqNote2")}</b>
+                    {s("selqNote3")}
+                    <b>{s("selqNote4")}</b>
+                    {s("selqNote5")}
                     <Header as="h3" dividing>
-                        Available queries{" "}
+                        {s("selqAvailableHeader")}{" "}
                         <span>
                             <Button compact size="tiny" onClick={this.onRefresh} disabled={this.state.isLoading}>
-                                Refresh
+                                {s("refresh")}
                             </Button>
                         </span>
                     </Header>

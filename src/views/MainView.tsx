@@ -5,6 +5,7 @@ import WorkItemsBlock from "../components/WorkItemsBlock";
 import { observer } from "mobx-react";
 import Electron from "../helpers/Electron";
 import { IQuery } from "../helpers/Query";
+import { s } from "../values/Strings";
 
 interface IProps {}
 interface IState {
@@ -14,7 +15,7 @@ interface IState {
 @observer
 export default class MainView extends React.Component<IProps, IState> {
     state: IState = {
-        updateInstallInProgress: false,
+        updateInstallInProgress: false
     };
 
     get isRefreshAvailable() {
@@ -46,8 +47,8 @@ export default class MainView extends React.Component<IProps, IState> {
             queries.map(q => <WorkItemsBlock key={q.queryId} query={q} />)
         ) : (
             <Message info>
-                <Message.Header>No queries to watch</Message.Header>
-                <p>Go to settings and add some</p>
+                <Message.Header>{s("noQueriesToWatch")}</Message.Header>
+                <p>{s("noQueriesToWatchText")}</p>
             </Message>
         );
 
@@ -58,24 +59,24 @@ export default class MainView extends React.Component<IProps, IState> {
         return (
             <div className="Page">
                 <div className="TopBar">
-                    <Header as="h1">Queries</Header>
+                    <Header as="h1">{s("mainHeader")}</Header>
                     <div className="RightTopCorner">
                         {/* <Button onClick={this.onRefresh} disabled={!this.isRefreshAvailable}>
-                            Refresh
+                            {s('refresh')}
                         </Button> */}
-                        <Button onClick={this.onSettings}>Settings</Button>
+                        <Button onClick={this.onSettings}>{s("settings")}</Button>
                     </div>
                 </div>
                 <Container fluid>
                     {store.updateStatus === "ready" && (
                         <Message positive>
-                            <Message.Header>Update arrived!</Message.Header>
+                            <Message.Header>{s("updateArrived")}</Message.Header>
                             <p>
-                                Flowerpot update is available. You can{" "}
+                                {s("updateArrivedText1")}{" "}
                                 <Button compact positive size="tiny" loading={this.state.updateInstallInProgress} onClick={this.onUpdate}>
-                                    Install
+                                    {s("install")}
                                 </Button>{" "}
-                                it now by restarting the app.
+                                {s("updateArrivedText2")}
                             </p>
                         </Message>
                     )}

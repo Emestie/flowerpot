@@ -3,6 +3,7 @@ import { IWorkItem } from "./WorkItem";
 import store from "../store";
 import Loaders from "./Loaders";
 import Electron from "./Electron";
+import { s } from "../values/Strings";
 
 export default class Differences {
     public static clearWiStorage() {
@@ -56,7 +57,8 @@ export default class Differences {
         news.forEach(n => {
             if (
                 store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" && n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
+                (store.settings.notificationsMode === "mine" &&
+                    n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
             ) {
                 this.showNotif(this.createTitleForWI(n), "new");
             }
@@ -65,7 +67,8 @@ export default class Differences {
         changed.forEach(c => {
             if (
                 store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" && c.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
+                (store.settings.notificationsMode === "mine" &&
+                    c.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
             ) {
                 this.showNotif(this.createTitleForWI(c), "change");
             }
@@ -89,8 +92,8 @@ export default class Differences {
     private static showNotif(text: string, reason?: "new" | "change") {
         let title = "Flowerpot";
         if (reason) {
-            if (reason === "new") title += ": new item";
-            if (reason === "change") title += ": item changed";
+            if (reason === "new") title += s("notifNewItem");
+            if (reason === "change") title += s("notifChangedItem");
         }
         Electron.showNativeNotif({ title: title, body: text });
     }

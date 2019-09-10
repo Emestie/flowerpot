@@ -3,6 +3,7 @@ import { Ntlm } from "../lib/ntlm";
 import Query, { IQuery, ITeam, IFavQuery, IResponseQuery, IResponseQueryWI } from "./Query";
 import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
 import Differences from "./Differences";
+import { s } from "../values/Strings";
 
 export default class Loaders {
     private static auth: boolean = false;
@@ -13,7 +14,7 @@ export default class Loaders {
         try {
             let r = (await this.request("_api/_wit/teamProjects?__v=5")) as any;
             // eslint-disable-next-line
-            if (!r.projects) throw "No available team projects found";
+            if (!r.projects) throw s("throwNoTeams");
 
             let teams = r.projects as ITeam[];
 
@@ -42,7 +43,7 @@ export default class Loaders {
             let queryInfo = (await this.request(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
 
             // eslint-disable-next-line
-            if (!queryInfo) throw "Error while loading query";
+            if (!queryInfo) throw s("throwQueryLoading");
             let preparedWIs: IResponseQueryWI[] = [];
 
             //query results can be tree
@@ -101,7 +102,7 @@ export default class Loaders {
                 if (!this.auth || forceAuth) {
                     if (!Ntlm.authenticate(url)) {
                         this.outage = true;
-                        reject("Cannot authenticate with provided credentials, TFS path is not valid or network problems occured");
+                        reject(s("throwAuth"));
                     } else {
                         this.auth = true;
                     }
@@ -123,7 +124,7 @@ export default class Loaders {
                         });
                 } else {
                     this.outage = true;
-                    reject("Something went wrong during request processing");
+                    reject(s("throwUnknown"));
                 }
             }
         });

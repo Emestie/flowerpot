@@ -10,6 +10,7 @@ const storeDefaults = {
             y: undefined
         },
         autostart: true,
+        locale: "auto",
         flowerpot: undefined
     }
 };

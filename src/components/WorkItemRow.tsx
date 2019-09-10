@@ -4,6 +4,7 @@ import { Table, Popup, Icon } from "semantic-ui-react";
 import Electron from "../helpers/Electron";
 import store from "../store";
 import { observer } from "mobx-react";
+import { s } from "../values/Strings";
 
 interface IProps {
     item: IWorkItem;
@@ -23,7 +24,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         if (!this.props.item.importance) return undefined;
         return (
             <Popup
-                content={"Severity " + this.props.item.importanceText}
+                content={s("severity") + this.props.item.importanceText}
                 trigger={
                     <span>
                         <Icon name="exclamation triangle" />
@@ -38,7 +39,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         if (!this.props.item.promptness) return undefined;
         return (
             <Popup
-                content={"Priority " + this.props.item.promptnessText}
+                content={s("priority") + this.props.item.promptnessText}
                 trigger={
                     <span>
                         <Icon name="clock" />
@@ -67,7 +68,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     get revEl() {
         return (
             <Popup
-                content={"Revision"}
+                content={s("revision")}
                 trigger={
                     <span>
                         <Icon name="redo" />
@@ -85,7 +86,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     get freshnessEl() {
         return (
             <Popup
-                content="Time since created"
+                content={s("timeSinceCreated")}
                 trigger={
                     <span>
                         <Icon name="leaf" />

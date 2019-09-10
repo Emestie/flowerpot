@@ -1,6 +1,7 @@
 import React from "react";
 import { Header, Button, Container, Message } from "semantic-ui-react";
 import store from "../store";
+import { s } from "../values/Strings";
 
 interface IProps {}
 interface IState {}
@@ -32,28 +33,28 @@ export default class ErrorView extends React.Component<IProps, IState> {
         return (
             <div className="Page">
                 <div className="TopBar">
-                    <Header as="h1">Error :(</Header>
+                    <Header as="h1">{s("errorHeader")}</Header>
                     <div className="RightTopCorner"></div>
                 </div>
                 <Container fluid>
                     <Message negative>
-                        <Message.Header>Something bad happened!</Message.Header>
+                        <Message.Header>{s("errorMsg")}</Message.Header>
                         <p>{store.errorMessage}</p>
                     </Message>
                     <div style={{ textAlign: "center" }}>
                         <div>
-                            You can try manually{" "}
+                            {s("errorDesc1")}{" "}
                             <Button size="tiny" compact primary onClick={this.onRefreshClick}>
-                                Refresh
+                                {s("refresh")}
                             </Button>{" "}
-                            page
+                            {s("errorDesc2")}
                         </div>
                         <div>
-                            Or go to{" "}
+                            {s("errorDesc3")}{" "}
                             <Button size="tiny" compact onClick={this.onSettingsClick}>
-                                TFS Settings
+                                {s("tfsSettings")}
                             </Button>{" "}
-                            to check your account and server
+                            {s("errorDesc4")}
                         </div>
                     </div>
                 </Container>

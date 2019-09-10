@@ -30,6 +30,7 @@ export default class Settings {
         }
 
         store.autostart = Electron.getStoreProp("autostart");
+        store.locale = Electron.getStoreProp("locale");
     }
 
     public static pushToWindow() {

@@ -7,6 +7,7 @@ import WorkItemRow from "./WorkItemRow";
 import { IWorkItem } from "../helpers/WorkItem";
 import Loaders from "../helpers/Loaders";
 import Electron from "../helpers/Electron";
+import { s } from "../values/Strings";
 
 interface IProps {
     query: IQuery;
@@ -168,7 +169,7 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
                             ✔
                         </Label>
                     )}
-                    {this.state.isLoading && <Label size="small">Loading...</Label>}
+                    {this.state.isLoading && <Label size="small">{s("loading")}</Label>}
                 </Header>
                 {!!this.state.workItems.length && !query.collapsed && (
                     <Table compact size="small">
