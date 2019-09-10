@@ -3,6 +3,8 @@ import { IWorkItem } from "./WorkItem";
 import Electron from "./Electron";
 import Loaders from "./Loaders";
 
+type TBoolProps = "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon" | "empty";
+
 export interface IQuery {
     queryId: string;
     queryName: string;
@@ -13,6 +15,7 @@ export interface IQuery {
     order: number;
     ignoreIcon: boolean;
     ignoreNotif: boolean;
+    empty?: boolean;
 }
 
 export interface ITeam {
@@ -54,7 +57,7 @@ export default class Query {
             teamId: team.guid,
             teamName: team.name,
             ignoreIcon: false,
-            ignoreNotif: false
+            ignoreNotif: false,
         };
 
         return query;
@@ -74,8 +77,12 @@ export default class Query {
         this.updateAllInStore(allQueries);
     }
 
-    public static toggleBoolean(query: IQuery, boolPropName: "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon") {
-        query[boolPropName] = !query[boolPropName];
+    public static toggleBoolean(query: IQuery, boolPropName: TBoolProps, forcedValue?: boolean) {
+        if (forcedValue === undefined) {
+            query[boolPropName] = !query[boolPropName];
+        } else {
+            query[boolPropName] = forcedValue;
+        }
         this.updateSingleInStore(query);
     }
 
@@ -108,9 +115,14 @@ export default class Query {
         store.settings.queries = store.copy(queries);
     }
 
-    public static calculateIconLevel(query: IQuery, workItems: IWorkItem[]) {
+    public static getWIStorage() {
         if (!(window as any).wiStorage) (window as any).wiStorage = {};
         let wiStorage = (window as any).wiStorage as IWIStorage;
+        return wiStorage;
+    }
+
+    public static calculateIconLevel(query: IQuery, workItems: IWorkItem[]) {
+        let wiStorage = this.getWIStorage();
 
         wiStorage[query.queryId] = store.copy(workItems);
 
@@ -126,7 +138,9 @@ export default class Query {
         }
 
         if (store.settings.iconChangesOnMyWorkItemsOnly) {
-            allWIs = allWIs.filter(wi => wi.assignedToFull.indexOf(store.settings.tfsUser) !== -1);
+            allWIs = allWIs.filter(wi => {
+                return wi.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1;
+            });
         }
 
         let level = allWIs.length ? 3 : 4;
@@ -136,6 +150,15 @@ export default class Query {
             if (wi.rank === 1) level = wi.rank;
         });
 
-        Electron.updateTrayIcon(level);
+        let hasChanges = false;
+        for (let x in allWIs) {
+            let wiChanges = store.getWIHasChanges(allWIs[x]);
+            if (wiChanges) {
+                hasChanges = true;
+                break;
+            }
+        }
+
+        Electron.updateTrayIcon(level, hasChanges);
     }
 }

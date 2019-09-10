@@ -33,8 +33,8 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     notificationsModes: DropdownItemProps[] = [
         { key: 1, text: "All", value: "all" },
-        { key: 1, text: "Mine only", value: "mine" },
-        { key: 1, text: "None", value: "none" }
+        { key: 2, text: "Mine only", value: "mine" },
+        { key: 3, text: "None", value: "none" }
     ];
 
     openCreds = () => {

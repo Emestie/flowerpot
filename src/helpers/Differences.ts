@@ -1,4 +1,4 @@
-import { IQuery, IWIStorage } from "./Query";
+import Query, { IQuery } from "./Query";
 import { IWorkItem } from "./WorkItem";
 import store from "../store";
 import Loaders from "./Loaders";
@@ -10,8 +10,7 @@ export default class Differences {
     }
 
     public static put(query: IQuery, workItems: IWorkItem[]) {
-        if (!(window as any).wiStorage) (window as any).wiStorage = {};
-        let wiStorage = (window as any).wiStorage as IWIStorage;
+        let wiStorage = Query.getWIStorage();
 
         //clear unused and ignored queries
         let allQueriesIds = store
@@ -42,12 +41,12 @@ export default class Differences {
             if (!storage) return;
             let stored = this.getWIById(storage, wi.id);
             if (!stored) {
-                wi.hasChanges = true;
+                store.setWIHasChanges(wi, true);
                 news.push(wi);
                 return;
             }
             if (stored.rev !== wi.rev) {
-                wi.hasChanges = true;
+                store.setWIHasChanges(wi, true);
                 changed.push(wi);
             }
         });
@@ -57,7 +56,7 @@ export default class Differences {
         news.forEach(n => {
             if (
                 store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" && n.assignedToFull.indexOf(store.settings.tfsUser) !== -1)
+                (store.settings.notificationsMode === "mine" && n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
             ) {
                 this.showNotif(this.createTitleForWI(n), "new");
             }
@@ -66,7 +65,7 @@ export default class Differences {
         changed.forEach(c => {
             if (
                 store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" && c.assignedToFull.indexOf(store.settings.tfsUser) !== -1)
+                (store.settings.notificationsMode === "mine" && c.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
             ) {
                 this.showNotif(this.createTitleForWI(c), "change");
             }

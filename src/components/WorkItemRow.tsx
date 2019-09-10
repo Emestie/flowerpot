@@ -2,11 +2,14 @@ import React from "react";
 import { IWorkItem } from "../helpers/WorkItem";
 import { Table, Popup, Icon } from "semantic-ui-react";
 import Electron from "../helpers/Electron";
+import store from "../store";
+import { observer } from "mobx-react";
 
 interface IProps {
     item: IWorkItem;
 }
 
+@observer
 export default class WorkItemRow extends React.Component<IProps> {
     get isRed() {
         return this.props.item.promptness === 1 || this.props.item.rank === 1;
@@ -118,13 +121,18 @@ export default class WorkItemRow extends React.Component<IProps> {
         return name;
     }
 
+    dropChanges = () => {
+        store.setWIHasChanges(this.props.item, false);
+    };
+
     render() {
         let item = this.props.item;
+        let hasChanges = store.getWIHasChanges(item);
 
         return (
-            <Table.Row warning={this.isOrange} negative={this.isRed}>
+            <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
                 <Table.Cell collapsing>
-                    {this.typeEl} {item.id}{item.hasChanges && <span className='hasChangesMark'>*</span>}
+                    {this.typeEl} {item.id}
                 </Table.Cell>
                 <Table.Cell collapsing>
                     {this.importanceEl} {this.promptnessEl} {this.rankEl}
@@ -138,6 +146,11 @@ export default class WorkItemRow extends React.Component<IProps> {
                 <Table.Cell collapsing>{this.specialNameEffect(item.assignedTo)}</Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.createdBy)}</Table.Cell>
                 <Table.Cell collapsing>
+                    {!!hasChanges && (
+                        <span className="hasChangesMark">
+                            <Icon name="circle" />
+                        </span>
+                    )}
                     {this.revEl} {this.freshnessEl}
                 </Table.Cell>
             </Table.Row>

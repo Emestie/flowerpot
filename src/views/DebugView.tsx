@@ -8,7 +8,7 @@ interface IState {}
 
 export default class DebugView extends React.Component<IProps, IState> {
     changeIconLevel = (level: number) => {
-        Electron.updateTrayIcon(level);
+        Electron.updateTrayIcon(level, true);
     };
 
     showNotif = () => {

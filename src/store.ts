@@ -2,6 +2,7 @@ import { observable, action, reaction } from "mobx";
 import Settings, { ISettings } from "./helpers/Settings";
 import { IQuery } from "./helpers/Query";
 import Electron from "./helpers/Electron";
+import { IWorkItem } from "./helpers/WorkItem";
 
 type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug";
 type TUpdateStatus = "none" | "downloading" | "ready" | "checking";
@@ -21,7 +22,7 @@ class Store {
         sortPattern: "default",
         notificationsMode: "all",
         iconChangesOnMyWorkItemsOnly: false,
-        queries: []
+        queries: [],
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
@@ -30,6 +31,10 @@ class Store {
         let queries = this.copy<IQuery[]>(this.settings.queries).sort((a, b) => a.order - b.order);
         if (all) return queries;
         else return queries.filter(q => !!q.enabled);
+    }
+    @observable _changesCollection: any = {};
+    @observable getWIHasChanges(workItem: IWorkItem) {
+        return !!this._changesCollection[workItem.id];
     }
 
     intervalStorage = {};
@@ -61,6 +66,10 @@ class Store {
 
     @action restartRoutines() {
         this._routinesRestart += 1;
+    }
+
+    @action setWIHasChanges(workItem: IWorkItem, hasChanges: boolean) {
+        this._changesCollection[workItem.id] = hasChanges;
     }
 
     getInterval(query: IQuery): NodeJS.Timeout | null {

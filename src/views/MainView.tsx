@@ -4,6 +4,7 @@ import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
 import { observer } from "mobx-react";
 import Electron from "../helpers/Electron";
+import { IQuery } from "../helpers/Query";
 
 interface IProps {}
 interface IState {
@@ -13,7 +14,7 @@ interface IState {
 @observer
 export default class MainView extends React.Component<IProps, IState> {
     state: IState = {
-        updateInstallInProgress: false
+        updateInstallInProgress: false,
     };
 
     get isRefreshAvailable() {
@@ -33,8 +34,14 @@ export default class MainView extends React.Component<IProps, IState> {
         Electron.updateApp();
     };
 
+    queriesSorting = (a: IQuery, b: IQuery) => {
+        if (a.empty === b.empty) return 0;
+        if (!a.empty && b.empty) return -1;
+        else return 1;
+    };
+
     render() {
-        let queries = store.getQueries();
+        let queries = store.getQueries().sort(this.queriesSorting);
         let queriesElems = queries.length ? (
             queries.map(q => <WorkItemsBlock key={q.queryId} query={q} />)
         ) : (

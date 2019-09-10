@@ -50,6 +50,8 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         console.log("updating query", this.props.query.queryId);
         let wis = await Loaders.loadQueryWorkItems(this.props.query);
         Query.calculateIconLevel(this.props.query, wis);
+        //set query emptiness to sort them
+        Query.toggleBoolean(this.props.query, "empty", !wis.length);
         this.setState({ workItems: wis, isLoading: false });
     }
 
@@ -63,6 +65,15 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
 
     get orangeItems() {
         return this.state.workItems.filter(wi => wi.promptness === 2).length;
+    }
+
+    get atLeastOneWiHasChanges() {
+        let wis = this.state.workItems;
+        let changes = false;
+        wis.forEach(wi => {
+            if (!changes) changes = store.getWIHasChanges(wi);
+        });
+        return changes;
     }
 
     onCollapseClick = () => {
@@ -101,6 +112,12 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         else return 1;
     };
 
+    dropAllWiChanges = () => {
+        this.state.workItems.forEach(wi => {
+            store.setWIHasChanges(wi, false);
+        });
+    };
+
     render() {
         let query = this.props.query;
         let workItems = this.state.workItems.sort(this.getSortPattern()).map(wi => <WorkItemRow key={wi.id} item={wi} />);
@@ -111,10 +128,17 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
             <>
                 <Header as="h3" dividing>
                     {!this.state.isLoading && !!this.state.workItems.length && <span onClick={this.onCollapseClick}>{iconCollapse}</span>}
-                    {query.queryName}
-                    <small>
-                        <span style={{ marginLeft: 10, color: "gray" }}>{query.teamName}</span>
-                    </small>
+                    <span onClick={this.dropAllWiChanges}>
+                        {!!this.atLeastOneWiHasChanges && (
+                            <span className="hasChangesMark">
+                                <Icon size="small" name="circle" />
+                            </span>
+                        )}
+                        {query.queryName}
+                        <small>
+                            <span style={{ marginLeft: 10, color: "gray" }}>{query.teamName}</span>
+                        </small>
+                    </span>
                     {!!this.redItems && (
                         <Label size="small" circular color="red">
                             {this.redItems}

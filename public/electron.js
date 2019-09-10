@@ -33,7 +33,7 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
     });
 
     if (!isDev) wnd.setMenu(null);
@@ -43,16 +43,16 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true
+            slashes: true,
         });
     wnd.loadURL(startUrl);
 
     buildTrayIcon();
 
-    ipcMain.on("update-icon", (e, level) => {
+    ipcMain.on("update-icon", (e, { level, hasChanges }) => {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
         currentLevel = level;
-        let pathToIcon = buildIconPath(level);
+        let pathToIcon = buildIconPath(level, hasChanges);
         tray.setImage(pathToIcon);
     });
 
@@ -67,6 +67,9 @@ function createWindow() {
     ipcMain.on("show-notification", (e, data) => {
         data.icon = buildIconPath(currentLevel);
         let notif = new Notification(data);
+        notif.on("click", () => {
+            wnd.show();
+        });
         notif.show();
     });
 
@@ -127,13 +130,13 @@ autoUpdater.on("update-downloaded", () => {
 });
 
 function buildTrayIcon() {
-    tray = new Tray(__dirname + "/../_icons/flower4.png");
+    tray = new Tray(buildIconPath(4, false));
     const contextMenu = Menu.buildFromTemplate([
         {
             label: "Show",
             click: () => {
                 wnd.show();
-            }
+            },
         },
         {
             label: "Quit",
@@ -141,8 +144,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            }
-        }
+            },
+        },
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -152,7 +155,8 @@ function buildTrayIcon() {
     });
 }
 
-function buildIconPath(level) {
+function buildIconPath(level, hasChanges) {
+    if (hasChanges) level = level + "-dot";
     return __dirname + "/../_icons/flower" + level + ".png";
 }
 
@@ -160,7 +164,7 @@ function registerAutostart() {
     if (!isDev) {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe")
+            path: app.getPath("exe"),
         });
     }
 }

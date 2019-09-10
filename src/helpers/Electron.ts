@@ -27,9 +27,9 @@ export default class Electron {
         Electron.sendIpcRenderer("toggle-autostart");
     }
 
-    public static updateTrayIcon(level: number) {
+    public static updateTrayIcon(level: number, hasChanges?: boolean) {
         if (!level || !+level || level > 4 || level < 1) level = 4;
-        Electron.sendIpcRenderer("update-icon", level);
+        Electron.sendIpcRenderer("update-icon", { level: level, hasChanges: !!hasChanges });
     }
 
     public static getVer() {
