@@ -35,6 +35,9 @@ export default class Settings {
     public static pushToWindow() {
         //(window as any).flowerpotSettingsStorage = store.copy(store.settings);
         //localStorage.setItem("flowerpot", JSON.stringify(store.settings));
-        Electron.setStoreProp("flowerpot", JSON.stringify(store.settings));
+        try {
+            let settingsToStore = JSON.stringify(store.settings);
+            Electron.setStoreProp("flowerpot", settingsToStore);
+        } catch (e) {}
     }
 }
