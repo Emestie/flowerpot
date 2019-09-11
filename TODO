@@ -1,13 +1,19 @@
 systems to create:
 
++100 weight for all
+
 ability to hide certain ids from main list (until any changes on them)
 log system
     timestamp - added - id - title - ...
     maybe i can get removed WIs
 
 show mine wis before others option
-    (+20 weight for all that not mine)
+    (-20 weight)
 add isMine option to WI itself
+
+favorites list (same as hide)
+    mark them purple or some color too
+    (-40 weight)
 
 settings page
     q to watch
