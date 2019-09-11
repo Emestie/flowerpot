@@ -6,6 +6,11 @@ export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden";
 
+interface IListItem {
+    id: number;
+    rev: number;
+}
+
 export interface ISettings {
     tfsPath: string;
     tfsUser: string;
@@ -18,15 +23,14 @@ export interface ISettings {
     mineOnTop: boolean;
     queries: IQuery[];
     lists: {
-        [K in TLists]: number[];
+        [K in TLists]: IListItem[];
     };
 }
 
 export default class Settings {
     public static pullFromWindow() {
-        //let settings = (window as any).flowerpotSettingsStorage;
-        //let settings = localStorage.getItem("flowerpot");
-        let settings = Electron.getStoreProp("flowerpot") || localStorage.getItem("flowerpot");
+        let settings = Electron.getStoreProp("flowerpot");
+        console.log("settings pulled", !!settings);
         if (settings) {
             try {
                 let parsedSettings = JSON.parse(settings);
@@ -39,8 +43,6 @@ export default class Settings {
     }
 
     public static pushToWindow() {
-        //(window as any).flowerpotSettingsStorage = store.copy(store.settings);
-        //localStorage.setItem("flowerpot", JSON.stringify(store.settings));
         try {
             let settingsToStore = JSON.stringify(store.settings);
             Electron.setStoreProp("flowerpot", settingsToStore);

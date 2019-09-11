@@ -102,16 +102,17 @@ const en: ILocalizedStrings = {
     mineOnTop: "Show my Work Items on top",
     settingsWIHeader: "Work Items",
     listsHeader: "Lists",
-    favoritesDescription: "IDs of Work Items you will see on top of query results",
+    favoritesDescription: "IDs of Work Items you will see on top of query results.",
     favorites: "Favorites",
-    deferredDescription: "IDs of Work Items you will see at the bottom of query results",
+    deferredDescription: "IDs of Work Items you will see at the bottom of query results.",
     deferred: "Deferred",
-    hiddenDescription: "IDs of Work Items that will be hidden from result list until something will be changed in them",
+    hiddenDescription: "IDs of Work Items that will be hidden from result list until something will be changed in them.",
     hidden: "Hidden",
-    permawatchDescription: "IDs of Work Items that will be placed in separated query and stay there until manual remove",
+    permawatchDescription: "IDs of Work Items that will be placed in separated query and stay there until manual remove.",
     permawatch: "Permawatch",
     listsNote:
-        "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one."
+        "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
+    addItemsInListNotice: "To add items in this list use context menu in Queries view."
 };
 
 export default en;

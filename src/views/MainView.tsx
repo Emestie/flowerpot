@@ -43,6 +43,7 @@ export default class MainView extends React.Component<IProps, IState> {
 
     render() {
         let queries = store.getQueries().sort(this.queriesSorting);
+
         let queriesElems = queries.length ? (
             queries.map(q => <WorkItemsBlock key={q.queryId} query={q} />)
         ) : (

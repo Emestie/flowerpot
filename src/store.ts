@@ -1,6 +1,6 @@
 import { observable, action, reaction } from "mobx";
 import Settings, { ISettings, TLists } from "./helpers/Settings";
-import { IQuery } from "./helpers/Query";
+import Query, { IQuery } from "./helpers/Query";
 import Electron from "./helpers/Electron";
 import { IWorkItem } from "./helpers/WorkItem";
 
@@ -39,14 +39,15 @@ class Store {
     @observable getQueries(all?: boolean) {
         let queries = this.copy<IQuery[]>(this.settings.queries).sort((a, b) => a.order - b.order);
         if (all) return queries;
-        else return queries.filter(q => !!q.enabled);
+        if (this.getList("permawatch").length) queries.push(Query.getFakePermawatchQuery());
+        return queries.filter(q => !!q.enabled);
     }
     @observable _changesCollection: any = {};
     @observable getWIHasChanges(workItem: IWorkItem) {
         return !!this._changesCollection[workItem.id];
     }
     @observable getList(list: TLists) {
-        return this.copy(this.settings.lists[list]).sort((a, b) => a - b);
+        return this.copy(this.settings.lists[list]).sort((a, b) => a.id - b.id);
     }
     @observable getAllLists() {
         return [...this.getList("deferred"), ...this.getList("favorites"), ...this.getList("hidden"), ...this.getList("permawatch")];

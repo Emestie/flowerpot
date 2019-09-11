@@ -57,6 +57,10 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         this.setState({ workItems: wis, isLoading: false });
     }
 
+    get isPermawatch() {
+        return this.props.query.queryId === "___permawatch";
+    }
+
     get totalItems() {
         return this.state.workItems.length;
     }
@@ -133,16 +137,25 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
 
     render() {
         let query = this.props.query;
-        let workItems = this.state.workItems.sort(this.getSortPattern()).map(wi => <WorkItemRow key={wi.id} item={wi} />);
+        let workItems = this.state.workItems
+            .sort(this.getSortPattern())
+            .map(wi => <WorkItemRow key={wi.id} item={wi} isPermawatch={this.isPermawatch} />);
 
         let iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 
         return (
             <>
                 <Header as="h3" dividing>
-                    {!this.state.isLoading && !!this.state.workItems.length && <span onClick={this.onCollapseClick}>{iconCollapse}</span>}
+                    {!this.state.isLoading && !!this.state.workItems.length && !this.isPermawatch && (
+                        <span onClick={this.onCollapseClick}>{iconCollapse}</span>
+                    )}
                     <span onClick={this.dropAllWiChanges}>
                         <span className={query.queryPath ? "WorkItemLink" : ""} onClick={this.onQueryNameClick}>
+                            {this.isPermawatch && (
+                                <span>
+                                    <Icon name="eye" />
+                                </span>
+                            )}
                             {query.queryName}
                         </span>
                         <small>

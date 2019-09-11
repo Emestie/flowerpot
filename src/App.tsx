@@ -22,11 +22,11 @@ export default class App extends React.Component {
         Electron.checkForUpdates(true);
 
         if (Electron.isDev()) {
-            //store.view = "debug";
-            store.view = "lists";
+            store.switchView("debug");
+            //store.switchView("lists");
         } else {
-            if (store.settings.credentialsChecked) store.view = "main";
-            else store.view = "credentials";
+            if (store.settings.credentialsChecked) store.switchView("main");
+            else store.switchView("credentials");
         }
     }
 

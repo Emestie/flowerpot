@@ -37,7 +37,7 @@ export default class ListsView extends React.Component<iProps, iState> {
                         {s("permawatch")}
                     </Header>
                     {s("permawatchDescription")}
-                    <ListBlock list="permawatch" />
+                    <ListBlock listName="permawatch" />
                     <Header as="h3" dividing>
                         <span>
                             <Icon name="star" />
@@ -45,7 +45,7 @@ export default class ListsView extends React.Component<iProps, iState> {
                         {s("favorites")}
                     </Header>
                     {s("favoritesDescription")}
-                    <ListBlock list="favorites" />
+                    <ListBlock listName="favorites" />
                     <Header as="h3" dividing>
                         <span>
                             <Icon name="clock outline" />
@@ -53,7 +53,7 @@ export default class ListsView extends React.Component<iProps, iState> {
                         {s("deferred")}
                     </Header>
                     {s("deferredDescription")}
-                    <ListBlock list="deferred" />
+                    <ListBlock listName="deferred" />
                     <Header as="h3" dividing>
                         <span>
                             <Icon name="eye slash outline" />
@@ -61,7 +61,7 @@ export default class ListsView extends React.Component<iProps, iState> {
                         {s("hidden")}
                     </Header>
                     {s("hiddenDescription")}
-                    <ListBlock list="hidden" />
+                    <ListBlock listName="hidden" />
                 </Container>
             </div>
         );

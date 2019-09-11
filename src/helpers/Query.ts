@@ -2,6 +2,7 @@ import store from "../store";
 import { IWorkItem } from "./WorkItem";
 import Electron from "./Electron";
 import Loaders from "./Loaders";
+import { s } from "../values/Strings";
 
 type TBoolProps = "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon" | "empty";
 
@@ -62,7 +63,7 @@ export default class Query {
             teamId: team.guid,
             teamName: team.name,
             ignoreIcon: false,
-            ignoreNotif: false,
+            ignoreNotif: false
         };
 
         return query;
@@ -165,5 +166,20 @@ export default class Query {
         }
 
         Electron.updateTrayIcon(level, hasChanges);
+    }
+
+    public static getFakePermawatchQuery(): IQuery {
+        return {
+            collapsed: false,
+            enabled: true,
+            ignoreIcon: true,
+            ignoreNotif: false,
+            queryId: "___permawatch",
+            queryName: s("permawatch"),
+            order: 99999,
+            queryPath: "",
+            teamId: "___permawatch",
+            teamName: ""
+        };
     }
 }

@@ -4,6 +4,7 @@ import Query, { IQuery, ITeam, IFavQuery, IResponseQuery, IResponseQueryWI } fro
 import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
 import Differences from "./Differences";
 import { s } from "../values/Strings";
+import Lists from "./Lists";
 
 export default class Loaders {
     private static auth: boolean = false;
@@ -61,6 +62,12 @@ export default class Loaders {
 
             for (let x in qwi) {
                 let wi = (await this.request("_apis/wit/workItems/" + qwi[x].id)) as IResponseWorkItem;
+
+                if (Lists.isIn("hidden", wi.id, wi.rev)) {
+                    continue;
+                }
+                Lists.deleteFromList("hidden", wi.id);
+                
                 wis.push(WorkItem.buildFromResponse(wi));
             }
 

@@ -8,6 +8,7 @@ import { s } from "../values/Strings";
 
 interface IProps {
     item: IWorkItem;
+    isPermawatch: boolean;
 }
 
 @observer
@@ -153,6 +154,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                         {item.titleFull}
                     </span>
                 </Table.Cell>
+                {this.props.isPermawatch && <Table.Cell collapsing>{item.state}</Table.Cell>}
                 <Table.Cell collapsing>{this.specialNameEffect(item.assignedTo)}</Table.Cell>
                 <Table.Cell collapsing>{this.specialNameEffect(item.createdBy)}</Table.Cell>
                 <Table.Cell collapsing>
