@@ -2,7 +2,6 @@ systems to create:
 
 +100 weight for all
 
-ability to hide certain ids from main list (until any changes on them)
 log system
     timestamp - added - id - title - ...
     maybe i can get removed WIs
@@ -11,9 +10,14 @@ show mine wis before others option
     (-20 weight)
 add isMine option to WI itself
 
+ability to hide certain ids from main list (until any changes on them)
 favorites list (same as hide)
     mark them purple or some color too
     (-40 weight)
+
+deferred list (+40 weight, gray)
+
+manage all lists in single view
 
 settings page
     q to watch
@@ -21,3 +25,5 @@ settings page
     others (app, lang)
 
 dont show same notif twice (store shown id and rev and check id)
+
+change all 'save' to 'ok'
