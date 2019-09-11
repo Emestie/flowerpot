@@ -27,3 +27,5 @@ settings page
 dont show same notif twice (store shown id and rev and check id)
 
 change all 'save' to 'ok'
+
+copy wi in clipboard

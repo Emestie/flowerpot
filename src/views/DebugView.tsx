@@ -48,6 +48,7 @@ export default class DebugView extends React.Component<IProps, IState> {
                     <Button onClick={() => store.switchView("settings")}>settings</Button>
                     <Button onClick={() => store.switchView("credentials")}>credentials</Button>
                     <Button onClick={() => store.switchView("selectqueries")}>selectqueries</Button>
+                    <Button onClick={() => store.switchView("lists")}>lists</Button>
                     <Header as="h3" dividing>
                         Icon levels
                     </Header>

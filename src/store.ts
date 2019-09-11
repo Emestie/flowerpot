@@ -4,7 +4,7 @@ import { IQuery } from "./helpers/Query";
 import Electron from "./helpers/Electron";
 import { IWorkItem } from "./helpers/WorkItem";
 
-type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug";
+type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug" | "lists";
 type TUpdateStatus = "none" | "downloading" | "ready" | "checking";
 export type TLocale = "auto" | "en" | "ru";
 
@@ -23,7 +23,7 @@ class Store {
         sortPattern: "default",
         notificationsMode: "all",
         iconChangesOnMyWorkItemsOnly: false,
-        queries: []
+        queries: [],
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
