@@ -1,5 +1,5 @@
 import { observable, action, reaction } from "mobx";
-import Settings, { ISettings } from "./helpers/Settings";
+import Settings, { ISettings, TLists } from "./helpers/Settings";
 import { IQuery } from "./helpers/Query";
 import Electron from "./helpers/Electron";
 import { IWorkItem } from "./helpers/WorkItem";
@@ -23,7 +23,14 @@ class Store {
         sortPattern: "default",
         notificationsMode: "all",
         iconChangesOnMyWorkItemsOnly: false,
+        mineOnTop: true,
         queries: [],
+        lists: {
+            permawatch: [],
+            favorites: [],
+            deferred: [],
+            hidden: []
+        }
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
@@ -38,6 +45,12 @@ class Store {
     @observable getWIHasChanges(workItem: IWorkItem) {
         return !!this._changesCollection[workItem.id];
     }
+    @observable getList(list: TLists) {
+        return this.copy(this.settings.lists[list]).sort((a, b) => a - b);
+    }
+    @observable getAllLists() {
+        return [...this.getList("deferred"), ...this.getList("favorites"), ...this.getList("hidden"), ...this.getList("permawatch")];
+    }
 
     intervalStorage = {};
 
@@ -48,6 +61,11 @@ class Store {
     private onRateChange = reaction(() => this.settings.refreshRate, Settings.pushToWindow);
     private onNotifChange = reaction(() => this.settings.notificationsMode, Settings.pushToWindow);
     private onIconEventsChange = reaction(() => this.settings.iconChangesOnMyWorkItemsOnly, Settings.pushToWindow);
+    private onMineOnTopChange = reaction(() => this.settings.mineOnTop, Settings.pushToWindow);
+    private onListsDChange = reaction(() => this.settings.lists.deferred.length, Settings.pushToWindow);
+    private onListsFChange = reaction(() => this.settings.lists.favorites.length, Settings.pushToWindow);
+    private onListsHChange = reaction(() => this.settings.lists.hidden.length, Settings.pushToWindow);
+    private onListsPChange = reaction(() => this.settings.lists.permawatch.length, Settings.pushToWindow);
     private onQueriesChange = reaction(() => this.settings.queries, Settings.pushToWindow);
     private onLocaleChange = reaction(() => this.locale, Electron.changeLocale);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);

@@ -102,17 +102,12 @@ export default class WorkItemRow extends React.Component<IProps> {
             case "Bug":
                 return <Icon name="bug" />;
             case "Task":
-                return <Icon name="tasks" />;
+                return <Icon name="check" />;
             case "Issue":
                 return <Icon name="question" />;
             default:
                 return <span></span>;
         }
-    }
-
-    get isMine() {
-        let me = store.settings.tfsUser.toLowerCase();
-        return this.props.item.assignedToFull.toLowerCase().indexOf(me) !== -1;
     }
 
     specialNameEffect(name: string) {
@@ -131,13 +126,22 @@ export default class WorkItemRow extends React.Component<IProps> {
         store.setWIHasChanges(this.props.item, false);
     };
 
+    getClass = () => {
+        let item = this.props.item;
+        if (item.list === "favorites") return "workItemFavorite";
+        if (item.list === "deferred") return "workItemDeferred";
+        if (item.list === "permawatch") return "workItemPermawatch";
+        if (item.isMine) return "workItemIsMine";
+        return "workItemHasNoCanges";
+    };
+
     render() {
         let item = this.props.item;
         let hasChanges = store.getWIHasChanges(item);
 
         return (
             <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
-                <Table.Cell collapsing className={hasChanges ? "hasChangesCell" : this.isMine ? "workItemIsMine" : "hasNoChangesCell"}>
+                <Table.Cell collapsing className={hasChanges ? "workItemHasCanges" : this.getClass()}>
                     {this.typeEl} {item.id}
                 </Table.Cell>
                 <Table.Cell collapsing>

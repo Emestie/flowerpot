@@ -3,6 +3,7 @@ import { ILocalizedStrings } from "./Strings";
 const en: ILocalizedStrings = {
     //settings view
     refresh1m: "1 minute",
+    refresh3m: "3 minutes",
     refresh5m: "5 minutes",
     refresh10m: "10 minutes",
     refreshdebug: "(debug) 10 seconds",
@@ -21,9 +22,9 @@ const en: ILocalizedStrings = {
     updateStateNone: "Check for updates",
     settingsHeader: "Settings",
     editTfsSettingsBtn: "Edit TFS & Account settings",
-    settingsBackButton: "Save",
+    settingsBackButton: "OK",
     settingsQueriesHeader: "Queries to watch",
-    settingsOthersHeader: "Other settings",
+    settingsOthersHeader: "Others",
     ddLocalesLabel: "Language: ",
     ddRefreshLabel: "Queries refresh rate: ",
     ddShowNotifLabel: "Show notifications: ",
@@ -70,7 +71,7 @@ const en: ILocalizedStrings = {
     tfsUser: "TFS username (with domain)",
     tfsPath: "TFS path with collection name (must start with 'http://' and end with '/')",
     credsHeader: "Credentials",
-    save: "Save",
+    save: "OK",
     tfsHeader: "TFS & Account settings",
     credsState1: "Not validated yet",
     credsState2: "Validating...",
@@ -95,7 +96,22 @@ const en: ILocalizedStrings = {
     ignoreIcon: "Ignore Icon",
     queryName: "Query name",
     teamProject: "Team project",
-    sortPattern: "Query results sort pattern: "
+    sortPattern: "Work Items sort pattern: ",
+    //lists
+    manageLists: "Manage custom lists",
+    mineOnTop: "Show my Work Items on top",
+    settingsWIHeader: "Work Items",
+    listsHeader: "Lists",
+    favoritesDescription: "IDs of Work Items you will see on top of query results",
+    favorites: "Favorites",
+    deferredDescription: "IDs of Work Items you will see at the bottom of query results",
+    deferred: "Deferred",
+    hiddenDescription: "IDs of Work Items that will be hidden from result list until something will be changed in them",
+    hidden: "Hidden",
+    permawatchDescription: "IDs of Work Items that will be placed in separated query and stay there until manual remove",
+    permawatch: "Permawatch",
+    listsNote:
+        "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one."
 };
 
 export default en;

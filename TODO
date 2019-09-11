@@ -1,14 +1,8 @@
 systems to create:
 
-+100 weight for all
-
 log system
     timestamp - added - id - title - ...
     maybe i can get removed WIs
-
-show mine wis before others option
-    (-20 weight)
-add isMine option to WI itself
 
 ability to hide certain ids from main list (until any changes on them)
 favorites list (same as hide)
@@ -20,14 +14,5 @@ permawatch list (shadow query?, show anytime if not empty, weight 99999), dont l
 add state to permawatch list
 
 manage all lists in single view
-
-settings page
-    q to watch
-    work items
-    others (app, lang)
-
-dont show same notif twice (store shown id and rev and check id)
-
-change all 'save' to 'ok'
 
 copy wi in clipboard

@@ -10,6 +10,7 @@ import MainView from "./views/MainView";
 import LoadingView from "./views/LoadingView";
 import DebugView from "./views/DebugView";
 import Electron from "./helpers/Electron";
+import ListsView from "./views/ListsView";
 
 @observer
 export default class App extends React.Component {
@@ -21,8 +22,8 @@ export default class App extends React.Component {
         Electron.checkForUpdates(true);
 
         if (Electron.isDev()) {
-            store.view = "debug";
-            //store.view = "main";
+            //store.view = "debug";
+            store.view = "lists";
         } else {
             if (store.settings.credentialsChecked) store.view = "main";
             else store.view = "credentials";
@@ -43,6 +44,8 @@ export default class App extends React.Component {
                 return <CredentialsView />;
             case "selectqueries":
                 return <SelectQueriesView />;
+            case "lists":
+                return <ListsView />;
             case "debug":
                 return <DebugView />;
             default:

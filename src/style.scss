@@ -43,16 +43,28 @@ $flowerGreen: #3cb371;
     font-weight: bold;
 }
 
-.hasChangesCell {
+.workItemHasCanges {
     border-left: 3px solid $flowerGreen;
 }
 
-.hasNoChangesCell {
+.workItemHasNoCanges {
     border-left: 3px solid transparent;
 }
 
 .workItemIsMine {
     border-left: 3px solid skyblue;
+}
+
+.workItemDeferred {
+    border-left: 3px solid gray;
+}
+
+.workItemFavorite {
+    border-left: 3px solid rgb(128, 38, 146);
+}
+
+.workItemPermawatch {
+    border-left: 3px solid #c2305c;
 }
 
 .hasChangesText {

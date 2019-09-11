@@ -4,6 +4,7 @@ import Electron from "./Electron";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
+export type TLists = "permawatch" | "favorites" | "deferred" | "hidden";
 
 export interface ISettings {
     tfsPath: string;
@@ -14,7 +15,11 @@ export interface ISettings {
     sortPattern: TSortPattern;
     notificationsMode: TNotificationsMode;
     iconChangesOnMyWorkItemsOnly: boolean;
+    mineOnTop: boolean;
     queries: IQuery[];
+    lists: {
+        [K in TLists]: number[];
+    };
 }
 
 export default class Settings {

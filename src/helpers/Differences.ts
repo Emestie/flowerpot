@@ -5,7 +5,14 @@ import Loaders from "./Loaders";
 import Electron from "./Electron";
 import { s } from "../values/Strings";
 
+interface IShownWI {
+    id: number;
+    rev: number;
+}
+
 export default class Differences {
+    private static shownWI: IShownWI[] = [];
+
     public static clearWiStorage() {
         (window as any).wiStorage = undefined;
     }
@@ -54,10 +61,16 @@ export default class Differences {
 
         console.log("New WIs", news.length, "Changed WIs", changed.length);
 
+        //dont show same notifs twice
+        news = news.filter(wi => !this.shownWI.find(x => (x.id === wi.id && x.rev === wi.rev)));
+        changed = changed.filter(wi => !this.shownWI.find(x => (x.id === wi.id && x.rev === wi.rev)));
+        this.shownWI.push(...news.map(wi => ({ id: wi.id, rev: wi.rev })), ...changed.map(wi => ({ id: wi.id, rev: wi.rev })));
+
         news.forEach(n => {
             if (
                 store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" && n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
+                (store.settings.notificationsMode === "mine" &&
+                    n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
             ) {
                 this.showNotif(this.createTextForWI(n), "new");
             }
@@ -66,7 +79,8 @@ export default class Differences {
         changed.forEach(c => {
             if (
                 store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" && c.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
+                (store.settings.notificationsMode === "mine" &&
+                    c.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
             ) {
                 this.showNotif(this.createTextForWI(c), "change");
             }

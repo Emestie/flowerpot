@@ -22,8 +22,9 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     refreshRates: DropdownItemProps[] = [
         { key: 1, text: s("refresh1m"), value: 60 },
-        { key: 2, text: s("refresh5m"), value: 300 },
-        { key: 3, text: s("refresh10m"), value: 600 }
+        { key: 2, text: s("refresh3m"), value: 180 },
+        { key: 3, text: s("refresh5m"), value: 300 },
+        { key: 4, text: s("refresh10m"), value: 600 }
     ];
 
     sortPatterns: DropdownItemProps[] = [
@@ -72,6 +73,10 @@ export default class SettingsView extends React.Component<IProps, IState> {
         store.settings.iconChangesOnMyWorkItemsOnly = !store.settings.iconChangesOnMyWorkItemsOnly;
     };
 
+    toggleMineOnTop = () => {
+        store.settings.mineOnTop = !store.settings.mineOnTop;
+    };
+
     onSave = () => {
         store.switchView("main");
     };
@@ -83,7 +88,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     render() {
         if (Electron.isDev()) {
-            if (this.refreshRates.length !== 4) this.refreshRates.push({ key: Math.random(), text: s("refreshdebug"), value: 10 });
+            if (this.refreshRates.length !== 5) this.refreshRates.push({ key: Math.random(), text: s("refreshdebug"), value: 10 });
         }
 
         let updateLabel = undefined;
@@ -127,22 +132,9 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         {s("settingsQueriesHeader")}
                     </Header>
                     <QueriesSettingsTable />
-                    <Form.Select
-                        label={s("sortPattern")}
-                        options={this.sortPatterns}
-                        value={store.settings.sortPattern}
-                        onChange={(e, { value }) => this.onSortSelect(value as TSortPattern)}
-                    />
                     <Header as="h3" dividing>
-                        {s("settingsOthersHeader")}
+                        {s("settingsWIHeader")}
                     </Header>
-                    <Form.Select
-                        label={s("ddLocalesLabel")}
-                        options={this.locales}
-                        value={store.locale}
-                        onChange={(e, { value }) => this.onLocaleSelect(value as TLocale)}
-                    />
-                    <br />
                     <Form.Select
                         label={s("ddRefreshLabel")}
                         options={this.refreshRates}
@@ -150,6 +142,12 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         onChange={(e, { value }) => this.onRateSelect(value as number)}
                     />
                     <br />
+                    <Form.Select
+                        label={s("sortPattern")}
+                        options={this.sortPatterns}
+                        value={store.settings.sortPattern}
+                        onChange={(e, { value }) => this.onSortSelect(value as TSortPattern)}
+                    /><br/>
                     <Form.Select
                         label={s("ddShowNotifLabel")}
                         options={this.notificationsModes}
@@ -163,9 +161,21 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         onChange={this.toggleIconColor}
                     />
                     <br />
-                    <Form.Checkbox label={s("cbAutostartLabel")} checked={store.autostart} onChange={this.toggleAutostart} />
+                    <Form.Checkbox label={s("mineOnTop")} checked={store.settings.mineOnTop} onChange={this.toggleMineOnTop} />
                     <br />
 
+                    <Header as="h3" dividing>
+                        {s("settingsOthersHeader")}
+                    </Header>
+                    <Form.Select
+                        label={s("ddLocalesLabel")}
+                        options={this.locales}
+                        value={store.locale}
+                        onChange={(e, { value }) => this.onLocaleSelect(value as TLocale)}
+                    />
+                    <br />
+                    <Form.Checkbox label={s("cbAutostartLabel")} checked={store.autostart} onChange={this.toggleAutostart} />
+                    <br />
                     <Header as="h3" dividing>
                         {s("settingsCreditsHeader")}
                     </Header>

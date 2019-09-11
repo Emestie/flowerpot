@@ -3,6 +3,7 @@ import { ILocalizedStrings } from "./Strings";
 const ru: ILocalizedStrings = {
     //settings view
     refresh1m: "1 минута",
+    refresh3m: "3 минуты",
     refresh5m: "5 минут",
     refresh10m: "10 минут",
     refreshdebug: "(debug) 10 секунд",
@@ -21,9 +22,9 @@ const ru: ILocalizedStrings = {
     updateStateNone: "Проверить наличие обновлений",
     settingsHeader: "Настройки",
     editTfsSettingsBtn: "Настройки TFS и учетной записи",
-    settingsBackButton: "Сохранить",
+    settingsBackButton: "OK",
     settingsQueriesHeader: "Отслеживаемые запросы",
-    settingsOthersHeader: "Другие настройки",
+    settingsOthersHeader: "Другие",
     ddLocalesLabel: "Язык: ",
     ddRefreshLabel: "Интервал обновления запросов: ",
     ddShowNotifLabel: "Показывать уведомления: ",
@@ -70,7 +71,7 @@ const ru: ILocalizedStrings = {
     tfsUser: "Имя пользователя TFS (с доменом)",
     tfsPath: "Путь к TFS с именем коллекции (должен начинаться с 'http://' и заканчиваться '/')",
     credsHeader: "Учетные данные",
-    save: "Сохранить",
+    save: "OK",
     tfsHeader: "Настройки TFS и учетной записи",
     credsState1: "Не проверены",
     credsState2: "Проверка...",
@@ -95,7 +96,23 @@ const ru: ILocalizedStrings = {
     ignoreIcon: "Игнор. икон.",
     queryName: "Название запроса",
     teamProject: "Проект",
-    sortPattern: "Сортировка результатов запроса: "
+    sortPattern: "Сортировка результатов запроса: ",
+    //lists
+    manageLists: "Управление списками",
+    mineOnTop: "Показывать мои рабочие элементы первыми",
+    settingsWIHeader: "Рабочие элементы",
+    listsHeader: "Списки",
+    favoritesDescription: "ID рабочих элементов, которые будут отображаться вверху списка",
+    favorites: "Избранные",
+    deferredDescription: "ID рабочих элементов, которые будут отображаться внизу списка",
+    deferred: "Отложенные",
+    hiddenDescription: "ID рабочих элементов, которые будут скрыты из списка (до тех пор, пока в них не будут внесены изменения)",
+    hidden: "Скрытые",
+    permawatchDescription:
+        "ID рабочих элементов, которые будут добавлены в специальный запрос и будут находиться там до тех пор, пока не будут вручную удалены",
+    permawatch: "Особо наблюдаемые",
+    listsNote:
+        "Один и тот же элемент не может присутствовать в разных списках. Добавление элемента в новый список удалит его из старого."
 };
 
 export default ru;
