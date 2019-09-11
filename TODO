@@ -4,3 +4,6 @@ ability to hide certain ids from main list (until any changes on them)
 log system
     timestamp - added - id - title - ...
     maybe i can get removed WIs
+
+show mine wis before others option
+    (+20 weight for all that not mine)
