@@ -7,3 +7,9 @@ log system
 
 show mine wis before others option
     (+20 weight for all that not mine)
+add isMine option to WI itself
+
+settings page
+    q to watch
+    work items
+    others (app, lang)
