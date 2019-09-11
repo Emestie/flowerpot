@@ -57,32 +57,30 @@ export default class Differences {
         news.forEach(n => {
             if (
                 store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" &&
-                    n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
+                (store.settings.notificationsMode === "mine" && n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
             ) {
-                this.showNotif(this.createTitleForWI(n), "new");
+                this.showNotif(this.createTextForWI(n), "new");
             }
         });
 
         changed.forEach(c => {
             if (
                 store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" &&
-                    c.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
+                (store.settings.notificationsMode === "mine" && c.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
             ) {
-                this.showNotif(this.createTitleForWI(c), "change");
+                this.showNotif(this.createTextForWI(c), "change");
             }
         });
 
         wiStorage[query.queryId] = store.copy(workItems);
     }
 
-    private static createTitleForWI(wi: IWorkItem) {
+    private static createTextForWI(wi: IWorkItem) {
         let text = wi.title;
         let id = wi.id;
         let promptness = wi.promptness && wi.promptness < 3 ? `(${wi.promptnessText})` : "";
         let rank = wi.rank && wi.rank === 1 ? `(Rank 1)` : "";
-        return `${promptness}${rank} ${id}: ${text}`;
+        return `${promptness}${rank} [${wi.rev}] ${id}: ${text}`;
     }
 
     private static getWIById(storage: IWorkItem[], id: number) {

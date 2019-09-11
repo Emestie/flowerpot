@@ -110,6 +110,11 @@ export default class WorkItemRow extends React.Component<IProps> {
         }
     }
 
+    get isMine() {
+        let me = store.settings.tfsUser.toLowerCase();
+        return this.props.item.assignedToFull.toLowerCase().indexOf(me) !== -1;
+    }
+
     specialNameEffect(name: string) {
         if (name.indexOf("Шершнёв") !== -1) {
             return <Popup content="Этот человек предпочитает функциональное программирование" trigger={<span>{name}</span>} />;
@@ -132,7 +137,7 @@ export default class WorkItemRow extends React.Component<IProps> {
 
         return (
             <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
-                <Table.Cell collapsing className={hasChanges ? "hasChangesCell" : "hasNoChangesCell"}>
+                <Table.Cell collapsing className={hasChanges ? "hasChangesCell" : this.isMine ? "workItemIsMine" : "hasNoChangesCell"}>
                     {this.typeEl} {item.id}
                 </Table.Cell>
                 <Table.Cell collapsing>

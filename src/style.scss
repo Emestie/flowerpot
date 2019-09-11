@@ -51,6 +51,10 @@ $flowerGreen: #3cb371;
     border-left: 3px solid transparent;
 }
 
+.workItemIsMine {
+    border-left: 3px solid skyblue;
+}
+
 .hasChangesText {
     font-weight: bold;
 }

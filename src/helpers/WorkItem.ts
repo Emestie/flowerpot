@@ -138,6 +138,8 @@ export default class WorkItem {
 
         if (resp.fields["System.WorkItemType"] === "Task") {
             if (resp.fields["Microsoft.VSTS.Common.Rank"] === "1") weight += 1;
+            else if (resp.fields["Microsoft.VSTS.Common.Rank"] === "2") weight += 2;
+            else if (!resp.fields["Microsoft.VSTS.Common.Rank"]) weight += 4;
             else weight += 3;
         }
 
