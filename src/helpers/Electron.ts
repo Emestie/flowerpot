@@ -25,8 +25,8 @@ export default class Electron {
     public static getAppLocale(): TLocale {
         if ((window as any).electronApp) {
             let locale = (window as any).electronApp.getAppLocale();
-            if (locale !== "ru") return "en";
-            else return locale;
+            if (locale.indexOf("ru") === -1) return "en";
+            else return "ru";
         } else return "en";
     }
 

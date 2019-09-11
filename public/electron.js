@@ -33,7 +33,7 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
     });
 
     if (!isDev) wnd.setMenu(null);
@@ -43,7 +43,7 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true
+            slashes: true,
         });
     wnd.loadURL(startUrl);
 
@@ -137,7 +137,8 @@ function buildTrayIcon() {
     let locale = store.get("locale");
     if (locale === "auto") {
         locale = app.getLocale();
-        if (locale !== "ru") locale = "en";
+        if (locale.indexOf("ru") === -1) locale = "en";
+        else locale = "ru";
     }
 
     tray = new Tray(buildIconPath(4, false));
@@ -146,7 +147,7 @@ function buildTrayIcon() {
             label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
                 wnd.show();
-            }
+            },
         },
         {
             label: locale === "ru" ? "Выход" : "Quit",
@@ -154,8 +155,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            }
-        }
+            },
+        },
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -178,7 +179,7 @@ function registerAutostart() {
     if (!isDev) {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe")
+            path: app.getPath("exe"),
         });
     }
 }
