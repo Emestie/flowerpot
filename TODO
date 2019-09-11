@@ -19,3 +19,5 @@ settings page
     q to watch
     work items
     others (app, lang)
+
+dont show same notif twice (store shown id and rev and check id)
