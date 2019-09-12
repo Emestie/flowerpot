@@ -41,33 +41,41 @@ export default class Loaders {
         let wis: IWorkItem[] = [];
 
         try {
-            let queryInfo = (await this.request(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
-
-            // eslint-disable-next-line
-            if (!queryInfo) throw s("throwQueryLoading");
             let preparedWIs: IResponseQueryWI[] = [];
+            if (query.queryId !== "___permawatch") {
+                let queryInfo = (await this.request(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
 
-            //query results can be tree
-            if (queryInfo.queryType === "flat") preparedWIs = queryInfo.workItems;
-            else {
-                if (queryInfo.workItemRelations) {
-                    for (let x in queryInfo.workItemRelations) {
-                        if (!queryInfo.workItemRelations[x] || !queryInfo.workItemRelations[x].target) continue;
-                        preparedWIs.push(queryInfo.workItemRelations[x].target);
+                // eslint-disable-next-line
+                if (!queryInfo) throw s("throwQueryLoading");
+
+                //query results can be tree
+                if (queryInfo.queryType === "flat") preparedWIs = queryInfo.workItems;
+                else {
+                    if (queryInfo.workItemRelations) {
+                        for (let x in queryInfo.workItemRelations) {
+                            if (!queryInfo.workItemRelations[x] || !queryInfo.workItemRelations[x].target) continue;
+                            preparedWIs.push(queryInfo.workItemRelations[x].target);
+                        }
                     }
                 }
+            } else {
+                preparedWIs = store.getList("permawatch").map(x => ({ id: x.id, url: "" }));
             }
 
             let qwi = preparedWIs;
 
             for (let x in qwi) {
                 let wi = (await this.request("_apis/wit/workItems/" + qwi[x].id)) as IResponseWorkItem;
+                if (!wi.id) {
+                    Lists.deleteFromList("permawatch", qwi[x].id);
+                    continue;
+                }
 
                 if (Lists.isIn("hidden", wi.id, wi.rev)) {
                     continue;
                 }
                 Lists.deleteFromList("hidden", wi.id);
-                
+
                 wis.push(WorkItem.buildFromResponse(wi));
             }
 

@@ -10,6 +10,7 @@ export type TLocale = "auto" | "en" | "ru";
 
 class Store {
     @observable _routinesRestart: number = 0;
+    @observable _permawatchUpdate: number = 0;
 
     @observable view: TView = "loading";
     @observable errorMessage: string = "";
@@ -19,7 +20,7 @@ class Store {
         tfsUser: "",
         tfsPwd: "",
         credentialsChecked: false,
-        refreshRate: 60,
+        refreshRate: 180,
         sortPattern: "default",
         notificationsMode: "all",
         iconChangesOnMyWorkItemsOnly: false,
@@ -29,8 +30,8 @@ class Store {
             permawatch: [],
             favorites: [],
             deferred: [],
-            hidden: []
-        }
+            hidden: [],
+        },
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
@@ -66,7 +67,13 @@ class Store {
     private onListsDChange = reaction(() => this.settings.lists.deferred.length, Settings.pushToWindow);
     private onListsFChange = reaction(() => this.settings.lists.favorites.length, Settings.pushToWindow);
     private onListsHChange = reaction(() => this.settings.lists.hidden.length, Settings.pushToWindow);
-    private onListsPChange = reaction(() => this.settings.lists.permawatch.length, Settings.pushToWindow);
+    private onListsPChange = reaction(
+        () => this.settings.lists.permawatch.length,
+        () => {
+            if (this.settings.lists.permawatch.length) this._permawatchUpdate += 1;
+            Settings.pushToWindow();
+        }
+    );
     private onQueriesChange = reaction(() => this.settings.queries, Settings.pushToWindow);
     private onLocaleChange = reaction(() => this.locale, Electron.changeLocale);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);

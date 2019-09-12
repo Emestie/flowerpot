@@ -1,18 +1,1 @@
 systems to create:
-
-log system
-    timestamp - added - id - title - ...
-    maybe i can get removed WIs
-
-ability to hide certain ids from main list (until any changes on them)
-favorites list (same as hide)
-    mark them purple or some color too
-    (-40 weight)
-
-deferred list (+40 weight, gray)
-permawatch list (shadow query?, show anytime if not empty, weight 99999), dont load query but load wis from list instead (mark pink)
-add state to permawatch list
-
-manage all lists in single view
-
-copy wi in clipboard

@@ -5,10 +5,14 @@ import Electron from "../helpers/Electron";
 import store from "../store";
 import { observer } from "mobx-react";
 import { s } from "../values/Strings";
+import { ContextMenuTrigger } from "react-contextmenu";
+import WorkItemRowContextMenu from "./WorkItemRowContextMenu";
+import Lists from "../helpers/Lists";
 
 interface IProps {
     item: IWorkItem;
     isPermawatch: boolean;
+    onUpdate: (wi: IWorkItem) => void;
 }
 
 @observer
@@ -129,36 +133,83 @@ export default class WorkItemRow extends React.Component<IProps> {
 
     getClass = () => {
         let item = this.props.item;
-        if (item.list === "favorites") return "workItemFavorite";
-        if (item.list === "deferred") return "workItemDeferred";
-        if (item.list === "permawatch") return "workItemPermawatch";
+        if (Lists.isIn("favorites", item.id)) return "workItemFavorite";
+        if (Lists.isIn("deferred", item.id)) return "workItemDeferred";
+        if (Lists.isIn("permawatch", item.id)) return "workItemPermawatch";
         if (item.isMine) return "workItemIsMine";
         return "workItemHasNoCanges";
+    };
+
+    getListIndocator = () => {
+        let item = this.props.item;
+
+        if (Lists.isIn("permawatch", item.id))
+            return (
+                <span className="wiIndicatorPermawatch">
+                    <Icon name="eye" />
+                </span>
+            );
+
+        if (Lists.isIn("deferred", item.id))
+            return (
+                <span className="wiIndicatorDeferred">
+                    <Icon name="clock outline" />
+                </span>
+            );
+
+        if (Lists.isIn("favorites", item.id))
+            return (
+                <span className="wiIndicatorFavorite">
+                    <Icon name="star" />
+                </span>
+            );
+
+        return undefined;
     };
 
     render() {
         let item = this.props.item;
         let hasChanges = store.getWIHasChanges(item);
+        let uid = this.props.item.id + Math.random();
 
         return (
             <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
                 <Table.Cell collapsing className={hasChanges ? "workItemHasCanges" : this.getClass()}>
-                    {this.typeEl} {item.id}
+                    <ContextMenuTrigger id={uid + ""}>
+                        {this.typeEl} {item.id}
+                    </ContextMenuTrigger>
+
+                    <WorkItemRowContextMenu uid={uid} workItem={item} onUpdate={this.props.onUpdate} />
                 </Table.Cell>
                 <Table.Cell collapsing>
-                    {this.importanceEl} {this.promptnessEl} {this.rankEl}
+                    <ContextMenuTrigger id={uid + ""}>
+                        {this.importanceEl} {this.promptnessEl} {this.rankEl}
+                    </ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell>
-                    <span className="IterationInTitle">{item.iterationPath}</span>
-                    <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>
-                        {item.titleFull}
-                    </span>
+                    <ContextMenuTrigger id={uid + ""}>
+                        {this.getListIndocator()}
+                        <span className="IterationInTitle">{item.iterationPath}</span>
+                        <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>
+                            {item.titleFull}
+                        </span>
+                    </ContextMenuTrigger>
                 </Table.Cell>
-                {this.props.isPermawatch && <Table.Cell collapsing>{item.state}</Table.Cell>}
-                <Table.Cell collapsing>{this.specialNameEffect(item.assignedTo)}</Table.Cell>
-                <Table.Cell collapsing>{this.specialNameEffect(item.createdBy)}</Table.Cell>
+                {this.props.isPermawatch && (
+                    <Table.Cell collapsing>
+                        <ContextMenuTrigger id={uid + ""}>{item.state}</ContextMenuTrigger>
+                    </Table.Cell>
+                )}
                 <Table.Cell collapsing>
-                    {this.revEl} {this.freshnessEl}
+                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.assignedTo)}</ContextMenuTrigger>
+                </Table.Cell>
+                <Table.Cell collapsing>
+                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.createdBy)}</ContextMenuTrigger>
+                </Table.Cell>
+                <Table.Cell collapsing>
+                    <ContextMenuTrigger id={uid + ""}>
+                        {this.revEl} {this.freshnessEl}
+                    </ContextMenuTrigger>
                 </Table.Cell>
             </Table.Row>
         );

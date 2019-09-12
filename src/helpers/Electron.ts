@@ -30,6 +30,10 @@ export default class Electron {
         } else return "en";
     }
 
+    public static copyString(s: string) {
+        if ((window as any).electronClipboard) (window as any).electronClipboard.writeText(s);
+    }
+
     public static changeLocale() {
         Electron.setStoreProp("locale", store.locale);
     }

@@ -82,7 +82,7 @@ export default class WorkItem {
                 "EOS.QA.Tester": "Громова Юлия Николаевна <EOSSOFT\\Cherry>",
                 "System.Description":
                     '<p>В настройках пользователя на вкладке поручения высьавлен параметр Добавить в ЖПД автора</p>\n<p><img src="http://tfs:8080/tfs/DefaultCollection/WorkItemTracking/v1.0/AttachFileHandler.ashx?FileNameGUID=4eba9229-fbf8-4f4a-b3c4-b77d4274799b&amp;FileName=tmp3EBA.png" width=450><br></p>\n<p>Открыла РК. Ввела поручение (резолюцию или проект резолюции). Направила на исполнение. Взяла его же на редактирование. Добавила второй пункт. При сохранении ошибка:</p>\n<p><img src="http://tfs:8080/tfs/DefaultCollection/WorkItemTracking/v1.0/AttachFileHandler.ashx?FileNameGUID=bab51bca-51ce-4cb3-b2bf-03cb39ec578f&amp;FileName=tmpABEF.png" width=737><br></p>',
-                "System.History": "The Fixed In field was updated as part of associating work items with the build."
+                "System.History": "The Fixed In field was updated as part of associating work items with the build.",
             },
             _links: {
                 self: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715" },
@@ -91,11 +91,11 @@ export default class WorkItem {
                 workItemHistory: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715/history" },
                 html: { href: "http://tfs:8080/tfs/web/wi.aspx?pcguid=4e3f53b6-9166-4ec9-bf6f-47ed01daa449&id=107715" },
                 workItemType: {
-                    href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/dc1312ac-8ecb-48dd-9bdb-25c2d15e2375/_apis/wit/workItemTypes/Bug"
+                    href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/dc1312ac-8ecb-48dd-9bdb-25c2d15e2375/_apis/wit/workItemTypes/Bug",
                 },
-                fields: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/fields" }
+                fields: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/fields" },
             },
-            url: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715"
+            url: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715",
         } as IResponseWorkItem;
 
         return this.buildFromResponse(fish);
@@ -125,7 +125,7 @@ export default class WorkItem {
             weight: this.calcWeight(resp, isMine),
             isMine: isMine,
             state: resp.fields["System.State"],
-            list: this.getListName(resp.id)
+            list: this.getListName(resp.id),
         };
         return item;
     }
@@ -139,19 +139,12 @@ export default class WorkItem {
     }
 
     private static calcWeight(resp: IResponseWorkItem, isMine: boolean) {
-        let weight = store.settings.mineOnTop && isMine ? 80 : 100;
-
-        if (Lists.isIn("deferred", resp.id)) weight += 40;
-        if (Lists.isIn("favorites", resp.id)) weight -= 40;
+        let weight = 100;
 
         let promptness =
-            this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) ||
-            this.extractLevel(resp.fields["Microsoft.VSTS.Common.Priority"]) ||
-            0;
+            this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) || this.extractLevel(resp.fields["Microsoft.VSTS.Common.Priority"]) || 0;
         let importance =
-            this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) ||
-            this.extractLevel(resp.fields["Microsoft.VSTS.Common.Severity"]) ||
-            0;
+            this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) || this.extractLevel(resp.fields["Microsoft.VSTS.Common.Severity"]) || 0;
 
         if (promptness) {
             weight += promptness;

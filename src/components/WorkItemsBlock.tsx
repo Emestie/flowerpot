@@ -8,6 +8,8 @@ import { IWorkItem } from "../helpers/WorkItem";
 import Loaders from "../helpers/Loaders";
 import Electron from "../helpers/Electron";
 import { s } from "../values/Strings";
+import Lists from "../helpers/Lists";
+import { reaction } from "mobx";
 
 interface IProps {
     query: IQuery;
@@ -22,6 +24,12 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
     state: IState = { workItems: [], isLoading: true };
 
     // private onRoutinesRestart = reaction(() => store._routinesRestart, () => this.routineStart());
+    private onPermawatchUpdate = reaction(
+        () => store._permawatchUpdate,
+        () => {
+            if (this.props.query.queryId === "___permawatch") this.loadWorkItemsForThisQuery();
+        }
+    );
 
     componentWillUnmount() {
         store.clearInterval(this.props.query);
@@ -62,15 +70,15 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
     }
 
     get totalItems() {
-        return this.state.workItems.length;
+        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).length;
     }
 
     get redItems() {
-        return this.state.workItems.filter(wi => wi.promptness === 1 || wi.rank === 1).length;
+        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).filter(wi => wi.promptness === 1 || wi.rank === 1).length;
     }
 
     get orangeItems() {
-        return this.state.workItems.filter(wi => wi.promptness === 2).length;
+        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).filter(wi => wi.promptness === 2).length;
     }
 
     get atLeastOneWiHasChanges() {
@@ -108,7 +116,25 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         }
     };
 
+    sortByLists(a: IWorkItem, b: IWorkItem) {
+        if (a.list === "deferred" && b.list !== "deferred") return 1;
+        else if (a.list !== "deferred" && b.list === "deferred") return -1;
+
+        if (a.list === "favorites" && b.list !== "favorites") return -1;
+        else if (a.list !== "favorites" && b.list === "favorites") return 1;
+
+        if (store.settings.mineOnTop) {
+            if (a.isMine && !b.isMine) return -1;
+            else if (!a.isMine && b.isMine) return 1;
+        }
+
+        return undefined;
+    }
+
     sortPatternDefault = (a: IWorkItem, b: IWorkItem) => {
+        let listRes = this.sortByLists(a, b);
+        if (listRes) return listRes;
+
         if (a.weight < b.weight) return -1;
         else if (a.weight > b.weight) return 1;
 
@@ -117,6 +143,9 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
     };
 
     sortPatternAssignedTo = (a: IWorkItem, b: IWorkItem) => {
+        let listRes = this.sortByLists(a, b);
+        if (listRes) return listRes;
+
         if (a.assignedTo < b.assignedTo) return -1;
         else if (a.assignedTo > b.assignedTo) return 1;
 
@@ -125,6 +154,9 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
     };
 
     sortPatternId = (a: IWorkItem, b: IWorkItem) => {
+        let listRes = this.sortByLists(a, b);
+        if (listRes) return listRes;
+
         if (a.id < b.id) return -1;
         else return 1;
     };
@@ -135,11 +167,18 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         });
     };
 
+    updateWorkItems = (wi: IWorkItem) => {
+        let newList = this.state.workItems.filter(w => w.id !== wi.id);
+        newList.push(wi);
+        this.setState({ workItems: newList });
+    };
+
     render() {
         let query = this.props.query;
         let workItems = this.state.workItems
             .sort(this.getSortPattern())
-            .map(wi => <WorkItemRow key={wi.id} item={wi} isPermawatch={this.isPermawatch} />);
+            .filter(wi => !Lists.isIn("hidden", wi.id, wi.rev))
+            .map(wi => <WorkItemRow key={wi.id} item={wi} isPermawatch={this.isPermawatch} onUpdate={this.updateWorkItems} />);
 
         let iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 

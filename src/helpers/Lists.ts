@@ -1,7 +1,5 @@
 import { TLists } from "./Settings";
 import store from "../store";
-import { IQuery } from "./Query";
-import { s } from "../values/Strings";
 
 export default class Lists {
     public static push(list: TLists, id: number, rev?: number) {

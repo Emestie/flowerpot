@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, Menu, Tray, Notification } = require("electron");
+const Splashscreen = require("@trodi/electron-splashscreen");
 const { autoUpdater } = require("electron-updater");
 const isDev = require("electron-is-dev");
 const path = require("path");
@@ -24,7 +25,7 @@ function createWindow() {
 
     registerAutostart();
 
-    wnd = new BrowserWindow({
+    const windowOptions = {
         title: "Flowerpot",
         icon: buildIconPath(4),
         width: width,
@@ -34,7 +35,17 @@ function createWindow() {
         x: x,
         y: y,
         webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
-    });
+    };
+    const splashCfg = {
+        windowOpts: windowOptions,
+        templateUrl: `${__dirname}/splash-screen/splash-screen.html`,
+        splashScreenOpts: {
+            width: 280,
+            height: 100,
+        },
+    };
+
+    wnd = Splashscreen.initSplashScreen(splashCfg);
 
     if (!isDev) wnd.setMenu(null);
 

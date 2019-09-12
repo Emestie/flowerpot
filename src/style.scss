@@ -1,4 +1,9 @@
-$flowerGreen: #3cb371;
+$hasChangesColor: #3cb371;
+$hasNoChangesColor: transparent;
+$mineColor: skyblue;
+$deferredColor: rgb(173, 173, 173);
+$favoritesColor: rgb(161, 99, 202);
+$permawatchColor: #e696ae;
 
 .Page {
     user-select: none;
@@ -38,33 +43,40 @@ $flowerGreen: #3cb371;
     margin-right: 4px;
 }
 
-.hasChangesMark {
-    color: orangered;
-    font-weight: bold;
-}
-
 .workItemHasCanges {
-    border-left: 3px solid $flowerGreen;
+    border-left: 4px solid $hasChangesColor;
 }
 
 .workItemHasNoCanges {
-    border-left: 3px solid transparent;
+    border-left: 4px solid $hasNoChangesColor;
 }
 
 .workItemIsMine {
-    border-left: 3px solid skyblue;
+    border-left: 4px solid $mineColor;
 }
 
 .workItemDeferred {
-    border-left: 3px solid gray;
+    border-left: 4px solid $deferredColor;
 }
 
 .workItemFavorite {
-    border-left: 3px solid rgb(128, 38, 146);
+    border-left: 4px solid $favoritesColor;
 }
 
 .workItemPermawatch {
-    border-left: 3px solid #c2305c;
+    border-left: 4px solid $permawatchColor;
+}
+
+.wiIndicatorPermawatch {
+    color: $permawatchColor;
+}
+
+.wiIndicatorDeferred {
+    color: $deferredColor;
+}
+
+.wiIndicatorFavorite {
+    color: $favoritesColor;
 }
 
 .hasChangesText {

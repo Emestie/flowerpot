@@ -1,6 +1,6 @@
 import React from "react";
 import { TLists } from "../helpers/Settings";
-import { Input, Button, Form, Label, Icon } from "semantic-ui-react";
+import { Input, Button, Label, Icon } from "semantic-ui-react";
 import { s } from "../values/Strings";
 import store from "../store";
 import Lists from "../helpers/Lists";
@@ -16,7 +16,7 @@ interface IState {
 @observer
 export default class ListBlock extends React.Component<IProps, IState> {
     state: IState = {
-        inputVal: ""
+        inputVal: "",
     };
 
     get list() {
@@ -53,6 +53,8 @@ export default class ListBlock extends React.Component<IProps, IState> {
                 return undefined;
             case "favorites":
                 return "purple";
+            default:
+                return undefined;
         }
     }
 
@@ -67,7 +69,7 @@ export default class ListBlock extends React.Component<IProps, IState> {
 
     render() {
         let items = this.list.map(l => (
-            <span style={{ marginBottom: 3, marginRight: 3, display: "inline-block" }}>
+            <span key={l.id} style={{ marginBottom: 3, marginRight: 3, display: "inline-block" }}>
                 <Label color={this.color}>
                     {l.id}
                     {this.props.listName === "hidden" && (
