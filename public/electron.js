@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, Tray, Notification } = require("electron");
+const { app, BrowserWindow, ipcMain, Menu, Tray, Notification, remote, globalShortcut } = require("electron");
 const Splashscreen = require("@trodi/electron-splashscreen");
 const { autoUpdater } = require("electron-updater");
 const isDev = require("electron-is-dev");
@@ -34,15 +34,15 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
     };
     const splashCfg = {
         windowOpts: windowOptions,
         templateUrl: `${__dirname}/splash-screen/splash-screen.html`,
         splashScreenOpts: {
-            width: 280,
-            height: 100,
-        },
+            width: 260,
+            height: 100
+        }
     };
 
     wnd = Splashscreen.initSplashScreen(splashCfg);
@@ -54,11 +54,15 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true,
+            slashes: true
         });
     wnd.loadURL(startUrl);
 
     buildTrayIcon();
+
+    globalShortcut.register("CommandOrControl+Shift+8", () => {
+        wnd.toggleDevTools();
+    });
 
     ipcMain.on("update-icon", (e, { level, hasChanges }) => {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
@@ -118,6 +122,10 @@ app.on("window-all-closed", () => {});
 
 app.on("before-quit", () => (app.quitting = true));
 
+app.on("will-quit", () => {
+    globalShortcut.unregisterAll();
+});
+
 app.on("activate", () => {
     if (wnd === null) {
         createWindow();
@@ -147,9 +155,7 @@ autoUpdater.on("update-downloaded", () => {
 function buildTrayIcon() {
     let locale = store.get("locale");
     if (locale === "auto") {
-        locale = app.getLocale();
-        if (locale.indexOf("ru") === -1) locale = "en";
-        else locale = "ru";
+        locale = "en";
     }
 
     tray = new Tray(buildIconPath(4, false));
@@ -158,7 +164,7 @@ function buildTrayIcon() {
             label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
                 wnd.show();
-            },
+            }
         },
         {
             label: locale === "ru" ? "Выход" : "Quit",
@@ -166,8 +172,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            },
-        },
+            }
+        }
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -190,7 +196,7 @@ function registerAutostart() {
     if (!isDev) {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe"),
+            path: app.getPath("exe")
         });
     }
 }

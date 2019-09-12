@@ -6,7 +6,7 @@ import { IWorkItem } from "./helpers/WorkItem";
 
 type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug" | "lists";
 type TUpdateStatus = "none" | "downloading" | "ready" | "checking";
-export type TLocale = "auto" | "en" | "ru";
+export type TLocale = "en" | "ru";
 
 class Store {
     @observable _routinesRestart: number = 0;
@@ -30,12 +30,12 @@ class Store {
             permawatch: [],
             favorites: [],
             deferred: [],
-            hidden: [],
-        },
+            hidden: []
+        }
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
-    @observable locale: TLocale = "auto";
+    @observable locale: TLocale = "en";
 
     @observable getQueries(all?: boolean) {
         let queries = this.copy<IQuery[]>(this.settings.queries).sort((a, b) => a.order - b.order);

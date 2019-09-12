@@ -53,7 +53,7 @@ export default class WorkItemRowContextMenu extends React.Component<iProps, iSta
                                 <span>
                                     <Icon name="delete" />
                                 </span>
-                                {s("removeFromList")}
+                                {s("removeFromList")}"{s(wi.list)}"
                             </Menu.Item>
                         </MenuItem>
                     )}

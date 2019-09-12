@@ -39,11 +39,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
         { key: 3, text: s("notifModeNone"), value: "none" }
     ];
 
-    locales: DropdownItemProps[] = [
-        { key: 1, text: s("localeAuto"), value: "auto" },
-        { key: 2, text: s("localeEn"), value: "en" },
-        { key: 3, text: s("localeRu"), value: "ru" }
-    ];
+    locales: DropdownItemProps[] = [{ key: 2, text: s("localeEn"), value: "en" }, { key: 3, text: s("localeRu"), value: "ru" }];
 
     openCreds = () => {
         store.switchView("credentials");
@@ -147,7 +143,8 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         options={this.sortPatterns}
                         value={store.settings.sortPattern}
                         onChange={(e, { value }) => this.onSortSelect(value as TSortPattern)}
-                    /><br/>
+                    />
+                    <br />
                     <Form.Select
                         label={s("ddShowNotifLabel")}
                         options={this.notificationsModes}

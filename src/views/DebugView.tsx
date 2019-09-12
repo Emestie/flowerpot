@@ -43,7 +43,6 @@ export default class DebugView extends React.Component<IProps, IState> {
                         Electron
                     </Header>
                     <Button onClick={() => Electron.toggleConsole()}>console</Button>
-                    locale: {Electron.getAppLocale()}
                     <Header as="h3" dividing>
                         Views
                     </Header>

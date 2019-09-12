@@ -1,5 +1,5 @@
 import preval from "preval.macro";
-import store, { TLocale } from "../store";
+import store from "../store";
 
 export interface INotificationData {
     title: string;
@@ -20,14 +20,6 @@ export default class Electron {
     public static setStoreProp(prop: string, value: any) {
         let store = this.getElectronStore();
         if (store) store.set(prop, value);
-    }
-
-    public static getAppLocale(): TLocale {
-        if ((window as any).electronApp) {
-            let locale = (window as any).electronApp.getAppLocale();
-            if (locale.indexOf("ru") === -1) return "en";
-            else return "ru";
-        } else return "en";
     }
 
     public static copyString(s: string) {

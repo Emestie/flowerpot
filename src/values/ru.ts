@@ -115,7 +115,7 @@ const ru: ILocalizedStrings = {
     addItemsInListNotice: "Для добавления элементов в этот список воспользуйтесь контекстным меню на главном экране.",
     //context
     copy: "Копировать сводку",
-    removeFromList: "Исключить из списка",
+    removeFromList: "Исключить из ",
     addToP: "Добавить в отслежив.",
     addToF: "Добавить в избранное",
     addToD: "Добавить в отложенные",
