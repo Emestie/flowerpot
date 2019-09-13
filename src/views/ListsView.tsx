@@ -40,6 +40,14 @@ export default class ListsView extends React.Component<iProps, iState> {
                     <ListBlock listName="permawatch" />
                     <Header as="h3" dividing>
                         <span>
+                            <Icon name="eye slash outline" />
+                        </span>
+                        {s("hidden")}
+                    </Header>
+                    {s("hiddenDescription")}
+                    <ListBlock listName="hidden" />
+                    <Header as="h3" dividing>
+                        <span>
                             <Icon name="star" />
                         </span>
                         {s("favorites")}
@@ -54,14 +62,6 @@ export default class ListsView extends React.Component<iProps, iState> {
                     </Header>
                     {s("deferredDescription")}
                     <ListBlock listName="deferred" />
-                    <Header as="h3" dividing>
-                        <span>
-                            <Icon name="eye slash outline" />
-                        </span>
-                        {s("hidden")}
-                    </Header>
-                    {s("hiddenDescription")}
-                    <ListBlock listName="hidden" />
                 </Container>
             </div>
         );
