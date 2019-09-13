@@ -19,6 +19,7 @@ const ru: ILocalizedStrings = {
     updateStateChecking: "Проверка наличия обновлений...",
     updateStateDownloading: "Загрузка обновлений...",
     updateStateReady: "Обновления готовы к установке. Нажмите чтобы начать",
+    updateStateError: "Ошибка при обновлении. Нажмите чтобы попробовать еще раз",
     updateStateNone: "Проверить наличие обновлений",
     settingsHeader: "Настройки",
     editTfsSettingsBtn: "Настройки TFS и учетной записи",

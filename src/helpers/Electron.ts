@@ -102,6 +102,10 @@ export default class Electron {
                 ipcRenderer.removeAllListeners("update_downloaded");
                 store.updateStatus = "ready";
             });
+            ipcRenderer.on("update_error", () => {
+                ipcRenderer.removeAllListeners("update_error");
+                store.updateStatus = "error";
+            });
             ipcRenderer.send("check-for-updates");
         }
     }

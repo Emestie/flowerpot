@@ -155,6 +155,10 @@ autoUpdater.on("update-downloaded", () => {
     wnd.webContents.send("update_downloaded");
 });
 
+autoUpdater.on("error", () => {
+    wnd.webContents.send("update_error");
+});
+
 function iconUpdateTask(level, hasChanges) {
     let pathToIcon = buildIconPath(level, hasChanges);
     tray.setImage(pathToIcon);

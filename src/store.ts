@@ -5,7 +5,7 @@ import Electron from "./helpers/Electron";
 import { IWorkItem } from "./helpers/WorkItem";
 
 type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug" | "lists";
-type TUpdateStatus = "none" | "downloading" | "ready" | "checking";
+type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "error";
 export type TLocale = "en" | "ru";
 
 class Store {
@@ -30,8 +30,8 @@ class Store {
             permawatch: [],
             favorites: [],
             deferred: [],
-            hidden: []
-        }
+            hidden: [],
+        },
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
