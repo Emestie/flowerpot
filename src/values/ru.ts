@@ -121,6 +121,7 @@ const ru: ILocalizedStrings = {
     addToF: "Добавить в избранное",
     addToD: "Добавить в отложенные",
     addToH: "Скрыть до изменений",
+    openExternal: 'Открыть в браузере'
 };
 
 export default ru;

@@ -52,6 +52,7 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
                 this.loadWorkItemsForThisQuery();
             }, store.settings.refreshRate * 1000)
         );
+        //this.setState({ workItems: [WorkItem.fish()], isLoading: false });
     }
 
     async loadWorkItemsForThisQuery() {
@@ -72,7 +73,8 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
     }
 
     get redItems() {
-        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).filter(wi => wi.promptness === 1 || wi.rank === 1).length;
+        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).filter(wi => wi.promptness === 1 || wi.rank === 1)
+            .length;
     }
 
     get orangeItems() {
@@ -92,7 +94,7 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         Query.toggleBoolean(this.props.query, "collapsed");
     };
 
-    onQueryNameClick = () => {
+    onOpenQueryInBrowser = () => {
         let q = this.props.query;
         if (!q.queryPath) return;
 
@@ -183,11 +185,16 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         return (
             <>
                 <Header as="h3" dividing>
+                    {this.state.isLoading && (
+                        <span>
+                            <Icon name="circle notched" loading />
+                        </span>
+                    )}
                     {!this.state.isLoading && !!this.state.workItems.length && !this.isPermawatch && (
                         <span onClick={this.onCollapseClick}>{iconCollapse}</span>
                     )}
                     <span onClick={this.dropAllWiChanges}>
-                        <span className={query.queryPath ? "WorkItemLink" : ""} onClick={this.onQueryNameClick}>
+                        <span onClick={this.onCollapseClick}>
                             {this.isPermawatch && (
                                 <span>
                                     <Icon name="eye" />
@@ -219,7 +226,11 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
                             ✔
                         </Label>
                     )}
-                    {this.state.isLoading && <Label size="small">{s("loading")}</Label>}
+                    {!!query.queryPath && (
+                        <span title={s("openExternal")} className="externalLink" onClick={this.onOpenQueryInBrowser}>
+                            <Icon size="small" name="external share" />
+                        </span>
+                    )}
                 </Header>
                 {!!this.state.workItems.length && !query.collapsed && (
                     <Table compact size="small">

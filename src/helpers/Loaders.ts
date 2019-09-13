@@ -43,7 +43,9 @@ export default class Loaders {
         try {
             let preparedWIs: IResponseQueryWI[] = [];
             if (query.queryId !== "___permawatch") {
-                let queryInfo = (await this.asyncRequest(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
+                let queryInfo = (await this.asyncRequest(
+                    query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0"
+                )) as IResponseQuery;
 
                 // eslint-disable-next-line
                 if (!queryInfo) throw s("throwQueryLoading");
@@ -117,6 +119,7 @@ export default class Loaders {
                     if (!Ntlm.authenticate(url)) {
                         this.outage = true;
                         //reject(s("throwAuth"));
+                        // eslint-disable-next-line
                         throw "no auth";
                     } else {
                         this.auth = true;
@@ -126,6 +129,7 @@ export default class Loaders {
                 let respFinal = await fetch(url);
                 if (!respFinal.ok) {
                     console.log("Bad response", respFinal);
+                    // eslint-disable-next-line
                     throw "Bad response";
                     //reject()
                 }

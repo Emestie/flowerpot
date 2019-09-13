@@ -82,3 +82,12 @@ $permawatchColor: #e696ae;
 .hasChangesText {
     font-weight: bold;
 }
+
+.externalLink {
+    color: rgb(143, 143, 143);
+    float: right;
+    cursor: pointer;
+    &:hover {
+        color: #4798da;
+    }
+}
