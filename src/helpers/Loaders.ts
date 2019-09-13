@@ -13,7 +13,7 @@ export default class Loaders {
     public static async loadAvailableQueries() {
         let queries: IQuery[] = [];
         try {
-            let r = (await this.request("_api/_wit/teamProjects?__v=5")) as any;
+            let r = (await this.syncRequest("_api/_wit/teamProjects?__v=5")) as any;
             // eslint-disable-next-line
             if (!r.projects) throw s("throwNoTeams");
 
@@ -21,7 +21,7 @@ export default class Loaders {
 
             //for each of project we need to load favs
             for (let x in teams) {
-                let rfavs = (await this.request(teams[x].guid + "/_api/_wit/queryFavorites?__v=5")) as any;
+                let rfavs = (await this.syncRequest(teams[x].guid + "/_api/_wit/queryFavorites?__v=5")) as any;
                 if (!rfavs.myFavorites || !rfavs.myFavorites.length) continue;
                 let favs = rfavs.myFavorites as IFavQuery[];
 
@@ -43,7 +43,7 @@ export default class Loaders {
         try {
             let preparedWIs: IResponseQueryWI[] = [];
             if (query.queryId !== "___permawatch") {
-                let queryInfo = (await this.request(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
+                let queryInfo = (await this.asyncRequest(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
 
                 // eslint-disable-next-line
                 if (!queryInfo) throw s("throwQueryLoading");
@@ -65,7 +65,7 @@ export default class Loaders {
             let qwi = preparedWIs;
 
             for (let x in qwi) {
-                let wi = (await this.request("_apis/wit/workItems/" + qwi[x].id)) as IResponseWorkItem;
+                let wi = (await this.asyncRequest("_apis/wit/workItems/" + qwi[x].id)) as IResponseWorkItem;
                 if (!wi.id) {
                     Lists.deleteFromList("permawatch", qwi[x].id);
                     continue;
@@ -89,7 +89,7 @@ export default class Loaders {
 
     public static async checkCredentials() {
         try {
-            await this.request("_api/_wit/teamProjects?__v=5", true);
+            await this.asyncRequest("_api/_wit/teamProjects?__v=5", true);
             return true;
         } catch (ex) {
             return false;
@@ -106,7 +106,57 @@ export default class Loaders {
         }
     }
 
-    private static request(subpath: string, forceAuth?: boolean) {
+    private static async asyncRequest(subpath: string, forceAuth?: boolean) {
+        return new Promise(async (resolve, reject) => {
+            let [domain, user] = store.settings.tfsUser.split("\\");
+            Ntlm.setCredentials(domain, user, store.settings.tfsPwd);
+            var url = store.settings.tfsPath + subpath;
+
+            try {
+                if (!this.auth || forceAuth) {
+                    if (!Ntlm.authenticate(url)) {
+                        this.outage = true;
+                        //reject(s("throwAuth"));
+                        throw "no auth";
+                    } else {
+                        this.auth = true;
+                    }
+                }
+
+                let respFinal = await fetch(url);
+                if (!respFinal.ok) {
+                    console.log("Bad response", respFinal);
+                    throw "Bad response";
+                    //reject()
+                }
+                let json = await respFinal.json();
+
+                resolve(json);
+            } catch (e) {
+                //if (!forceAuth) {
+                this.syncRequest(subpath, true)
+                    .then(x => {
+                        resolve(x);
+                    })
+                    .catch(v => {
+                        //reject(v);
+                        this.syncRequest(subpath, true)
+                            .then(x => {
+                                resolve(x);
+                            })
+                            .catch(q => {
+                                reject(q);
+                            });
+                    });
+                // } else {
+                //     this.outage = true;
+                //     reject(s("throwUnknown"));
+                // }
+            }
+        });
+    }
+
+    private static syncRequest(subpath: string, forceAuth?: boolean) {
         return new Promise((resolve, reject) => {
             let [domain, user] = store.settings.tfsUser.split("\\");
             Ntlm.setCredentials(domain, user, store.settings.tfsPwd);
@@ -126,11 +176,10 @@ export default class Loaders {
                 var request = new XMLHttpRequest();
                 request.open("GET", url, false);
                 request.send(null);
-
                 resolve(JSON.parse(request.responseText));
             } catch (ex) {
                 if (!forceAuth) {
-                    this.request(subpath, true)
+                    this.syncRequest(subpath, true)
                         .then(x => {
                             resolve(x);
                         })

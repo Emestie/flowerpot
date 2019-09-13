@@ -23,7 +23,7 @@ interface IState {
 export default class WorkItemsBlock extends React.Component<IProps, IState> {
     state: IState = { workItems: [], isLoading: true };
 
-    // private onRoutinesRestart = reaction(() => store._routinesRestart, () => this.routineStart());
+    private onRoutinesRestart = reaction(() => store._routinesRestart, () => this.routineStart());
     private onPermawatchUpdate = reaction(
         () => store._permawatchUpdate,
         () => {
@@ -35,10 +35,8 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         store.clearInterval(this.props.query);
     }
 
-    async componentDidMount() {
-        setTimeout(async () => {
-            this.routineStart();
-        }, 100);
+    componentDidMount() {
+        this.routineStart();
     }
 
     async routineStart() {
