@@ -34,15 +34,15 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
     };
     const splashCfg = {
         windowOpts: windowOptions,
         templateUrl: `${__dirname}/splash-screen/splash-screen.html`,
         splashScreenOpts: {
             width: 260,
-            height: 100
-        }
+            height: 100,
+        },
     };
 
     wnd = Splashscreen.initSplashScreen(splashCfg);
@@ -54,7 +54,7 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true
+            slashes: true,
         });
     wnd.loadURL(startUrl);
 
@@ -67,12 +67,7 @@ function createWindow() {
     ipcMain.on("update-icon", (e, { level, hasChanges }) => {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
         currentLevel = level;
-        let pathToIcon = buildIconPath(level, hasChanges);
-        tray.setImage(pathToIcon);
-
-        let pathToDotIcon = buildIconDotPath(level, hasChanges);
-        if (level !== 4) wnd.setOverlayIcon(pathToDotIcon, "dot");
-        else wnd.setOverlayIcon(null, "no-dot");
+        iconUpdateTask(level, hasChanges);
     });
 
     ipcMain.on("check-for-updates", () => {
@@ -94,6 +89,14 @@ function createWindow() {
 
     ipcMain.on("toggle-autostart", () => {
         registerAutostart();
+    });
+
+    ipcMain.on("react-is-ready", () => {
+        iconUpdateTask(currentLevel, false);
+    });
+
+    wnd.on("show", () => {
+        iconUpdateTask(currentLevel, false);
     });
 
     wnd.on("resize", () => {
@@ -152,6 +155,15 @@ autoUpdater.on("update-downloaded", () => {
     wnd.webContents.send("update_downloaded");
 });
 
+function iconUpdateTask(level, hasChanges) {
+    let pathToIcon = buildIconPath(level, hasChanges);
+    tray.setImage(pathToIcon);
+
+    let pathToDotIcon = buildIconDotPath(level, hasChanges);
+    if (level !== 4) wnd.setOverlayIcon(pathToDotIcon, "dot");
+    else wnd.setOverlayIcon(null, "no-dot");
+}
+
 function buildTrayIcon() {
     let locale = store.get("locale");
     if (locale === "auto") {
@@ -164,7 +176,7 @@ function buildTrayIcon() {
             label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
                 wnd.show();
-            }
+            },
         },
         {
             label: locale === "ru" ? "Выход" : "Quit",
@@ -172,8 +184,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            }
-        }
+            },
+        },
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -196,7 +208,7 @@ function registerAutostart() {
     if (!isDev) {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe")
+            path: app.getPath("exe"),
         });
     }
 }

@@ -23,12 +23,16 @@ export default class App extends React.Component {
 
         if (Electron.isDev()) {
             store.switchView("debug");
-            //store.switchView("lists");
+            //store.switchView("main");
         } else {
             if (store.settings.credentialsChecked) store.switchView("main");
             else store.switchView("credentials");
         }
+
+        this.registrator();
     }
+
+    registrator() {}
 
     render() {
         switch (store.view) {
