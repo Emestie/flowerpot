@@ -5,6 +5,7 @@ import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
 import Differences from "./Differences";
 import { s } from "../values/Strings";
 import Lists from "./Lists";
+import httpntlm from "httpntlm";
 
 export default class Loaders {
     private static auth: boolean = false;
@@ -106,6 +107,34 @@ export default class Loaders {
         } catch (ex) {
             return false;
         }
+    }
+
+    private static _asyncRequest(subpath: string) {
+        let [domain, user] = store.settings.tfsUser.split("\\");
+        let pwd = store.settings.tfsPwd;
+        let url = store.settings.tfsPath + subpath;
+
+        return new Promise((resolve, reject) => {
+            httpntlm.get(
+                {
+                    url: url,
+                    username: user,
+                    password: pwd,
+                    workstation: "choose.something",
+                    domain: domain
+                },
+                function(err: any, res: any) {
+                    if (err) {
+                        console.log("NTLM ERROR", err);
+                        reject(err);
+                        return;
+                    }
+
+                    console.log("NTLM RES", res);
+                    resolve(res.body);
+                }
+            );
+        });
     }
 
     private static async asyncRequest(subpath: string, forceAuth?: boolean) {
