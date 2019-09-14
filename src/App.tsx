@@ -17,7 +17,7 @@ export default class App extends React.Component {
     componentDidMount() {
         Electron.reactIsReady();
 
-        Settings.pullFromWindow();
+        Settings.read();
 
         Electron.checkForUpdates(true);
 

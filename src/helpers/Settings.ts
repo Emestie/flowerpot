@@ -28,7 +28,7 @@ export interface ISettings {
 }
 
 export default class Settings {
-    public static pullFromWindow() {
+    public static read() {
         let settings = Electron.getStoreProp("flowerpot");
         console.log("settings pulled", !!settings);
         if (settings) {
@@ -42,7 +42,7 @@ export default class Settings {
         store.locale = Electron.getStoreProp("locale");
     }
 
-    public static pushToWindow() {
+    public static save() {
         try {
             let settingsToStore = JSON.stringify(store.settings);
             Electron.setStoreProp("flowerpot", settingsToStore);
