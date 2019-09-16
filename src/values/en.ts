@@ -116,6 +116,7 @@ const en: ILocalizedStrings = {
     addItemsInListNotice: "To add items in this list use context menu in Queries view.",
     //context
     copy: "Copy info",
+    copyId: "Copy ID",
     removeFromList: "Remove from ",
     addToP: "Add to permawatch",
     addToF: "Add to favorites",

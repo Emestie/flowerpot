@@ -192,7 +192,7 @@ export default class WorkItem {
     }
 
     private static shortTitle(title: string) {
-        return title.substr(0, 50) + (title.length > 50 ? "..." : "");
+        return title.substr(0, 70) + (title.length > 70 ? "..." : "");
     }
 
     private static getTerm(date: string) {

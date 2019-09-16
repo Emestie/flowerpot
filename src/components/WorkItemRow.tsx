@@ -91,7 +91,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     get freshnessEl() {
         return (
             <Popup
-                content={s("timeSinceCreated")}
+                content={s("timeSinceCreated") + " " + `(${new Date(this.props.item.createdDate).toLocaleString()})`}
                 trigger={
                     <span>
                         <Icon name="leaf" />
