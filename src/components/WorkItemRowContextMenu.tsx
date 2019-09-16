@@ -46,20 +46,20 @@ export default class WorkItemRowContextMenu extends React.Component<iProps, iSta
         return (
             <ContextMenu id={this.props.uid + ""}>
                 <Menu vertical>
-                    <MenuItem data={{ action: "copyid" }} onClick={this.onCopyId}>
-                        <Menu.Item>
-                            <span>
-                                <Icon name="copy outline" />
-                            </span>
-                            {s("copyId")}
-                        </Menu.Item>
-                    </MenuItem>
                     <MenuItem data={{ action: "copy" }} onClick={this.onCopy}>
                         <Menu.Item>
                             <span>
                                 <Icon name="copy outline" />
                             </span>
                             {s("copy")}
+                        </Menu.Item>
+                    </MenuItem>
+                    <MenuItem data={{ action: "copyid" }} onClick={this.onCopyId}>
+                        <Menu.Item>
+                            <span>
+                                <Icon name="copy outline" />
+                            </span>
+                            {s("copyId")}
                         </Menu.Item>
                     </MenuItem>
                     {wi.list && (

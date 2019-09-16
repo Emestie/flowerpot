@@ -91,3 +91,14 @@ $permawatchColor: #e696ae;
         color: #4798da;
     }
 }
+
+.react-contextmenu-item {
+    &:focus {
+        outline: none;
+    }
+    
+    &:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+}

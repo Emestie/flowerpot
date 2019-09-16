@@ -52,6 +52,7 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
                 this.loadWorkItemsForThisQuery();
             }, store.settings.refreshRate * 1000)
         );
+
         //this.setState({ workItems: [WorkItem.fish()], isLoading: false });
     }
 
