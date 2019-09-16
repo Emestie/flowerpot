@@ -62,9 +62,9 @@ export default class MainView extends React.Component<IProps, IState> {
                 <div className="TopBar">
                     <Header as="h1">{s("mainHeader")}</Header>
                     <div className="RightTopCorner">
-                        <Button onClick={this.onRefresh} disabled={!this.isRefreshAvailable}>
+                        {/* <Button onClick={this.onRefresh} disabled={!this.isRefreshAvailable}>
                             {s('refresh')}
-                        </Button>
+                        </Button> */}
                         <Button onClick={this.onSettings}>{s("settings")}</Button>
                     </div>
                 </div>

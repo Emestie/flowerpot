@@ -44,9 +44,7 @@ export default class Loaders {
         try {
             let preparedWIs: IResponseQueryWI[] = [];
             if (query.queryId !== "___permawatch") {
-                let queryInfo = (await this.asyncRequest(
-                    query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0"
-                )) as IResponseQuery;
+                let queryInfo = (await this.asyncRequest(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
 
                 // eslint-disable-next-line
                 if (!queryInfo) throw s("throwQueryLoading");
@@ -109,7 +107,7 @@ export default class Loaders {
         }
     }
 
-    private static _asyncRequest(subpath: string) {
+    private static _unstable_asyncRequest(subpath: string, x?: boolean) {
         let [domain, user] = store.settings.tfsUser.split("\\");
         let pwd = store.settings.tfsPwd;
         let url = store.settings.tfsPath + subpath;
@@ -121,7 +119,7 @@ export default class Loaders {
                     username: user,
                     password: pwd,
                     workstation: "choose.something",
-                    domain: domain
+                    domain: domain,
                 },
                 function(err: any, res: any) {
                     if (err) {
