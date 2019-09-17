@@ -115,13 +115,13 @@ export default class WorkItemRow extends React.Component<IProps> {
         }
     }
 
-    specialNameEffect(name: string) {
+    specialNameEffect(name: string, nameFull: string) {
         if (name.indexOf("Шершнёв") !== -1) {
             return <Popup content="Этот человек предпочитает функциональное программирование" trigger={<span>{name}</span>} />;
         }
 
         if (name.indexOf("Тагулова") !== -1) {
-            return <span style={{ color: "rgb(90, 45, 31)" }}>{name}</span>;
+            return <span title={nameFull} style={{ color: "rgb(90, 45, 31)" }}>{name}</span>;
         }
 
         return name;
@@ -201,10 +201,10 @@ export default class WorkItemRow extends React.Component<IProps> {
                     </Table.Cell>
                 )}
                 <Table.Cell collapsing>
-                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.assignedTo)}</ContextMenuTrigger>
+                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.assignedTo, item.assignedToFull)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing>
-                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.createdBy)}</ContextMenuTrigger>
+                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.createdBy, item.createdByFull)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing>
                     <ContextMenuTrigger id={uid + ""}>
