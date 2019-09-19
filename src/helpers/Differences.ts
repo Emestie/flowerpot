@@ -94,7 +94,7 @@ export default class Differences {
         let id = wi.id;
         let promptness = wi.promptness && wi.promptness < 3 ? `(${wi.promptnessText})` : "";
         let rank = wi.rank && wi.rank === 1 ? `(Rank 1)` : "";
-        return `${promptness}${rank} [${wi.rev}] ${id}: ${text}`;
+        return `${promptness}${rank} ${id}: ${text}`;
     }
 
     private static getWIById(storage: IWorkItem[], id: number) {
