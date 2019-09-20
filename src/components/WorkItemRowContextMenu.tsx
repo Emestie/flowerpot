@@ -1,7 +1,7 @@
 import React from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import { TLists } from "../helpers/Settings";
-import { Menu, Icon, Confirm, Input, Dropdown, Radio, Label } from "semantic-ui-react";
+import { Menu, Icon, Confirm, Input, Radio, Label } from "semantic-ui-react";
 import { IWorkItem } from "../helpers/WorkItem";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
