@@ -32,6 +32,7 @@ class Store {
             deferred: [],
             hidden: [],
         },
+        notes: [],
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
@@ -64,6 +65,7 @@ class Store {
     private onNotifChange = reaction(() => this.settings.notificationsMode, Settings.save);
     private onIconEventsChange = reaction(() => this.settings.iconChangesOnMyWorkItemsOnly, Settings.save);
     private onMineOnTopChange = reaction(() => this.settings.mineOnTop, Settings.save);
+    private onNotesChange = reaction(() => this.settings.notes.length, Settings.save);
     private onListsDChange = reaction(() => this.settings.lists.deferred.length, Settings.save);
     private onListsFChange = reaction(() => this.settings.lists.favorites.length, Settings.save);
     private onListsHChange = reaction(() => this.settings.lists.hidden.length, Settings.save);

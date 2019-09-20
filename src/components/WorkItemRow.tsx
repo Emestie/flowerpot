@@ -1,6 +1,6 @@
 import React from "react";
 import { IWorkItem } from "../helpers/WorkItem";
-import { Table, Popup, Icon } from "semantic-ui-react";
+import { Table, Popup, Icon, Label } from "semantic-ui-react";
 import Electron from "../helpers/Electron";
 import store from "../store";
 import { observer } from "mobx-react";
@@ -121,7 +121,11 @@ export default class WorkItemRow extends React.Component<IProps> {
         }
 
         if (name.indexOf("Тагулова") !== -1) {
-            return <span title={nameFull} style={{ color: "rgb(90, 45, 31)" }}>{name}</span>;
+            return (
+                <span title={nameFull} style={{ color: "rgb(90, 45, 31)" }}>
+                    {name}
+                </span>
+            );
         }
 
         return name;
@@ -139,6 +143,11 @@ export default class WorkItemRow extends React.Component<IProps> {
         if (item.isMine) return "workItemIsMine";
         return "workItemHasNoCanges";
     };
+
+    get note() {
+        let note = Lists.getNote(this.props.item.id);
+        return note;
+    }
 
     getListIndocator = () => {
         let item = this.props.item;
@@ -192,6 +201,13 @@ export default class WorkItemRow extends React.Component<IProps> {
                         <span className="IterationInTitle">{item.iterationPath}</span>
                         <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>
                             {item.titleFull}
+                        </span>
+                        <span style={{ marginLeft: 5 }}>
+                            {!!this.note && (
+                                <Label color="teal" size="mini" style={{ padding: "3px 4px" }}>
+                                    {this.note}
+                                </Label>
+                            )}
                         </span>
                     </ContextMenuTrigger>
                 </Table.Cell>

@@ -1,20 +1,28 @@
 import React from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import { TLists } from "../helpers/Settings";
-import { Menu, Icon } from "semantic-ui-react";
+import { Menu, Icon, Confirm, Input } from "semantic-ui-react";
 import { IWorkItem } from "../helpers/WorkItem";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
 import Electron from "../helpers/Electron";
 
-interface iProps {
+interface IProps {
     uid: number;
     workItem: IWorkItem;
     onUpdate: (wi: IWorkItem) => void;
 }
-interface iState {}
+interface IState {
+    showNoteDialog: boolean;
+    noteValue: string;
+}
 
-export default class WorkItemRowContextMenu extends React.Component<iProps, iState> {
+export default class WorkItemRowContextMenu extends React.Component<IProps, IState> {
+    state: IState = {
+        showNoteDialog: false,
+        noteValue: "",
+    };
+
     onListChange = (e: any, data: any) => {
         let list = data.list as TLists | undefined;
         let wi = this.props.workItem;
@@ -41,7 +49,21 @@ export default class WorkItemRowContextMenu extends React.Component<iProps, iSta
         Electron.copyString(s);
     };
 
+    onEditNote = (e: any) => {
+        Lists.setNote(this.props.workItem.id, this.state.noteValue);
+        this.setState({ showNoteDialog: false, noteValue: "" });
+    };
+
     render() {
+        let noteDialogContent = (
+            <div style={{ padding: 20 }}>
+                <div style={{ marginBottom: 20 }}>{s("noteDialog")}</div>
+                <div>
+                    <Input style={{ width: "100%" }} value={this.state.noteValue} onChange={e => this.setState({ noteValue: e.target.value })} />
+                </div>
+            </div>
+        );
+
         let wi = this.props.workItem;
         return (
             <ContextMenu id={this.props.uid + ""}>
@@ -110,6 +132,23 @@ export default class WorkItemRowContextMenu extends React.Component<iProps, iSta
                             {s("addToH")}
                         </Menu.Item>
                     </MenuItem>
+                    <MenuItem
+                        data={{ action: "note" }}
+                        onClick={() => this.setState({ showNoteDialog: true, noteValue: Lists.getNote(this.props.workItem.id) || "" })}
+                    >
+                        <Menu.Item>
+                            <span>
+                                <Icon name="text cursor" />
+                            </span>
+                            {s("noteCommand")}
+                        </Menu.Item>
+                    </MenuItem>
+                    <Confirm
+                        open={this.state.showNoteDialog}
+                        content={noteDialogContent}
+                        onCancel={() => this.setState({ showNoteDialog: false, noteValue: "" })}
+                        onConfirm={this.onEditNote}
+                    />
                 </Menu>
             </ContextMenu>
         );

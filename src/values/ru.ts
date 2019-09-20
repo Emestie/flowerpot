@@ -123,6 +123,9 @@ const ru: ILocalizedStrings = {
     addToD: "Добавить в отложенные",
     addToH: "Скрыть до изменений",
     openExternal: "Открыть в браузере",
+
+    noteCommand: "Заметка",
+    noteDialog: "Текст заметки для рабочего элемента",
 };
 
 export default ru;

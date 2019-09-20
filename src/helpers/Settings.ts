@@ -11,6 +11,11 @@ interface IListItem {
     rev: number;
 }
 
+interface INoteItem {
+    id: number;
+    note: string;
+}
+
 export interface ISettings {
     tfsPath: string;
     tfsUser: string;
@@ -25,6 +30,7 @@ export interface ISettings {
     lists: {
         [K in TLists]: IListItem[];
     };
+    notes: INoteItem[];
 }
 
 export default class Settings {

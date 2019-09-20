@@ -23,4 +23,26 @@ export default class Lists {
     public static isIn(list: TLists, id: number, rev?: number) {
         return !!store.getList(list).find(x => x.id === id && (rev ? x.rev === rev : true));
     }
+
+    public static setNote(id: number, text: string) {
+        let notes = store.copy(store.settings.notes);
+
+        let existingNote = notes.find(n => n.id === id);
+        notes = notes.filter(n => n.id !== id);
+
+        if (text) {
+            if (!existingNote) existingNote = { id: id, note: text };
+            else existingNote.note = text;
+            notes.push(existingNote);
+        }
+
+        store.settings.notes = notes;
+    }
+
+    public static getNote(id: number) {
+        let notes = store.settings.notes;
+        let existingNote = notes.find(n => n.id === id);
+        if (existingNote) return existingNote.note;
+        return undefined;
+    }
 }
