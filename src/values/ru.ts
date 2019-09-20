@@ -126,6 +126,8 @@ const ru: ILocalizedStrings = {
 
     noteCommand: "Заметка",
     noteDialog: "Текст заметки для рабочего элемента",
+
+    hasShelve: 'К этому элементу имеется шелв'
 };
 
 export default ru;

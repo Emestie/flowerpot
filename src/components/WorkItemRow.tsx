@@ -190,6 +190,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                 </Table.Cell>
                 <Table.Cell>
                     <ContextMenuTrigger id={uid + ""}>
+                        {!!item.isHasShelve && <span className="hasShelve" title={s('hasShelve')}><Icon name="cloud upload" /></span>}
                         {this.getListIndocator()}
                         <span className="IterationInTitle">{item.iterationPath}</span>
                         <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>

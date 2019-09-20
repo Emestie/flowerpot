@@ -56,14 +56,6 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
         this.setState({ showNoteDialog: false, noteValue: "", colorValue: undefined });
     };
 
-    onDoneMark = (e : any) => {
-        //done
-    }
-
-    onUndoneMark = (e : any) => {
-        //undone
-    }
-
     colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "brown", "grey"];
 
     render() {
@@ -181,14 +173,6 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                             {s("noteCommand")}
                         </Menu.Item>
                     </MenuItem>
-                    {/* <MenuItem data={{ action: "done" }} onClick={this.onDoneMark}>
-                        <Menu.Item>
-                            <span>
-                                <Icon name="dot circle outline" />
-                            </span>
-                            xx Mark as done
-                        </Menu.Item>
-                    </MenuItem> */}
                     <Confirm
                         open={this.state.showNoteDialog}
                         content={noteDialogContent}

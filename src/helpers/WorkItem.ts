@@ -25,6 +25,7 @@ export interface IWorkItem {
     isMine: boolean;
     state: string;
     list?: TLists;
+    isHasShelve: boolean;
 }
 
 export interface IResponseWorkItem {
@@ -44,6 +45,7 @@ export interface IResponseWorkItem {
         "Microsoft.VSTS.Common.Priority"?: string; //promptness
         "Microsoft.VSTS.Common.Severity"?: string; //importance
         "System.State": string;
+        "System.History": string;
     };
     _links: {
         html: {
@@ -126,8 +128,16 @@ export default class WorkItem {
             isMine: isMine,
             state: resp.fields["System.State"] || "",
             list: this.getListName(resp.id),
+            isHasShelve: this.isHasShelve(resp.fields["System.History"]),
         };
         return item;
+    }
+
+    private static isHasShelve(text: string) {
+        if (!text) return false;
+        if (text.toLowerCase().indexOf("shelve") !== -1) return true;
+        if (text.toLowerCase().indexOf("шелв") !== -1) return true;
+        return false;
     }
 
     private static getListName(id: number): TLists | undefined {

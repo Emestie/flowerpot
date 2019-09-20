@@ -125,6 +125,8 @@ const en: ILocalizedStrings = {
 
     noteCommand: "Edit note",
     noteDialog: "Note for work item",
+
+    hasShelve: "This item has shelve",
 };
 
 export default en;

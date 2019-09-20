@@ -96,9 +96,13 @@ $permawatchColor: #e696ae;
     &:focus {
         outline: none;
     }
-    
+
     &:hover {
         background-color: lightgray;
         cursor: pointer;
     }
+}
+
+.hasShelve {
+    color: $hasChangesColor;
 }
