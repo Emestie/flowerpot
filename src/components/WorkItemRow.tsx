@@ -116,19 +116,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     }
 
     specialNameEffect(name: string, nameFull: string) {
-        if (name.indexOf("Шершнёв") !== -1) {
-            return <Popup content="Этот человек предпочитает функциональное программирование" trigger={<span>{name}</span>} />;
-        }
-
-        if (name.indexOf("Тагулова") !== -1) {
-            return (
-                <span title={nameFull} style={{ color: "rgb(90, 45, 31)" }}>
-                    {name}
-                </span>
-            );
-        }
-
-        return name;
+        return <span title={nameFull}>{name}</span>;
     }
 
     dropChanges = () => {
