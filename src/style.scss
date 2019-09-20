@@ -83,6 +83,10 @@ $permawatchColor: #e696ae;
     font-weight: bold;
 }
 
+.hasShelve {
+    color: $hasChangesColor;
+}
+
 .externalLink {
     color: rgb(143, 143, 143);
     float: right;
@@ -103,6 +107,6 @@ $permawatchColor: #e696ae;
     }
 }
 
-.hasShelve {
-    color: $hasChangesColor;
+.ui.vertical.menu {
+    width: 20rem;
 }
