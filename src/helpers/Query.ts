@@ -63,7 +63,7 @@ export default class Query {
             teamId: team.guid,
             teamName: team.name,
             ignoreIcon: false,
-            ignoreNotif: false
+            ignoreNotif: false,
         };
 
         return query;
@@ -143,19 +143,6 @@ export default class Query {
             if (wiStorage[x]) allWIs = [...allWIs, ...(wiStorage[x] as IWorkItem[])];
         }
 
-        if (store.settings.iconChangesOnMyWorkItemsOnly) {
-            allWIs = allWIs.filter(wi => {
-                return wi.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1;
-            });
-        }
-
-        let level = allWIs.length ? 3 : 4;
-
-        allWIs.forEach(wi => {
-            if (wi.promptness && wi.promptness < level) level = wi.promptness;
-            if (wi.rank === 1) level = wi.rank;
-        });
-
         let hasChanges = false;
         for (let x in allWIs) {
             let wiChanges = store.getWIHasChanges(allWIs[x]);
@@ -164,6 +151,17 @@ export default class Query {
                 break;
             }
         }
+
+        if (store.settings.iconChangesOnMyWorkItemsOnly) {
+            allWIs = allWIs.filter(wi => wi.isMine);
+        }
+
+        let level = allWIs.length ? 3 : 4;
+
+        allWIs.forEach(wi => {
+            if (wi.promptness && wi.promptness < level) level = wi.promptness;
+            if (wi.rank === 1) level = wi.rank;
+        });
 
         Electron.updateTrayIcon(level, hasChanges);
     }
@@ -179,7 +177,7 @@ export default class Query {
             order: 99999,
             queryPath: "",
             teamId: "___permawatch",
-            teamName: ""
+            teamName: "",
         };
     }
 }
