@@ -149,6 +149,11 @@ export default class WorkItemRow extends React.Component<IProps> {
         return note;
     }
 
+    get noteColor() {
+        let color = Lists.getNoteColor(this.props.item.id);
+        return color;
+    }
+
     getListIndocator = () => {
         let item = this.props.item;
 
@@ -204,7 +209,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                         </span>
                         <span style={{ marginLeft: 5 }}>
                             {!!this.note && (
-                                <Label color="teal" size="mini" style={{ padding: "3px 4px" }}>
+                                <Label color={this.noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
                                     {this.note}
                                 </Label>
                             )}

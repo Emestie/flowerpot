@@ -24,15 +24,18 @@ export default class Lists {
         return !!store.getList(list).find(x => x.id === id && (rev ? x.rev === rev : true));
     }
 
-    public static setNote(id: number, text: string) {
+    public static setNote(id: number, note: string, color?: string) {
         let notes = store.copy(store.settings.notes);
 
         let existingNote = notes.find(n => n.id === id);
         notes = notes.filter(n => n.id !== id);
 
-        if (text) {
-            if (!existingNote) existingNote = { id: id, note: text };
-            else existingNote.note = text;
+        if (note) {
+            if (!existingNote) existingNote = { id: id, note: note, color: color };
+            else {
+                existingNote.note = note;
+                existingNote.color = color;
+            }
             notes.push(existingNote);
         }
 
@@ -43,6 +46,13 @@ export default class Lists {
         let notes = store.settings.notes;
         let existingNote = notes.find(n => n.id === id);
         if (existingNote) return existingNote.note;
+        return undefined;
+    }
+
+    public static getNoteColor(id: number) {
+        let notes = store.settings.notes;
+        let existingNote = notes.find(n => n.id === id);
+        if (existingNote) return existingNote.color;
         return undefined;
     }
 }

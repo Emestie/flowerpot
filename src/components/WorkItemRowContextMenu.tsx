@@ -1,7 +1,7 @@
 import React from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import { TLists } from "../helpers/Settings";
-import { Menu, Icon, Confirm, Input } from "semantic-ui-react";
+import { Menu, Icon, Confirm, Input, Dropdown, Radio, Label } from "semantic-ui-react";
 import { IWorkItem } from "../helpers/WorkItem";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
@@ -15,12 +15,14 @@ interface IProps {
 interface IState {
     showNoteDialog: boolean;
     noteValue: string;
+    colorValue: string | undefined;
 }
 
 export default class WorkItemRowContextMenu extends React.Component<IProps, IState> {
     state: IState = {
         showNoteDialog: false,
         noteValue: "",
+        colorValue: undefined,
     };
 
     onListChange = (e: any, data: any) => {
@@ -50,16 +52,38 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
     };
 
     onEditNote = (e: any) => {
-        Lists.setNote(this.props.workItem.id, this.state.noteValue);
-        this.setState({ showNoteDialog: false, noteValue: "" });
+        Lists.setNote(this.props.workItem.id, this.state.noteValue, this.state.colorValue);
+        this.setState({ showNoteDialog: false, noteValue: "", colorValue: undefined });
     };
+
+    colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "brown", "grey"];
 
     render() {
         let noteDialogContent = (
             <div style={{ padding: 20 }}>
                 <div style={{ marginBottom: 20 }}>{s("noteDialog")}</div>
                 <div>
-                    <Input style={{ width: "100%" }} value={this.state.noteValue} onChange={e => this.setState({ noteValue: e.target.value })} />
+                    <Input
+                        style={{ width: "100%" }}
+                        value={this.state.noteValue}
+                        onChange={e => this.setState({ noteValue: e.target.value })}
+                        maxLength="50"
+                    />
+                </div>
+                <div style={{ marginTop: 10 }}>
+                    {this.colorList.map(c => (
+                        <Radio
+                            key={c}
+                            label={
+                                <Label style={{ marginRight: 10, userSelect: "none" }} circular size="small" color={c as any}>
+                                    {this.state.colorValue === c ? "✔" : <span style={{ opacity: 0 }}>✔</span>}
+                                </Label>
+                            }
+                            name="colorGrp"
+                            checked={this.state.colorValue === c}
+                            onChange={() => this.setState({ colorValue: c })}
+                        />
+                    ))}
                 </div>
             </div>
         );
@@ -134,7 +158,13 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                     </MenuItem>
                     <MenuItem
                         data={{ action: "note" }}
-                        onClick={() => this.setState({ showNoteDialog: true, noteValue: Lists.getNote(this.props.workItem.id) || "" })}
+                        onClick={() =>
+                            this.setState({
+                                showNoteDialog: true,
+                                noteValue: Lists.getNote(this.props.workItem.id) || "",
+                                colorValue: Lists.getNoteColor(this.props.workItem.id),
+                            })
+                        }
                     >
                         <Menu.Item>
                             <span>
@@ -146,7 +176,7 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                     <Confirm
                         open={this.state.showNoteDialog}
                         content={noteDialogContent}
-                        onCancel={() => this.setState({ showNoteDialog: false, noteValue: "" })}
+                        onCancel={() => this.setState({ showNoteDialog: false, noteValue: "", colorValue: undefined })}
                         onConfirm={this.onEditNote}
                     />
                 </Menu>

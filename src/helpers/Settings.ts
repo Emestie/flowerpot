@@ -14,6 +14,7 @@ interface IListItem {
 interface INoteItem {
     id: number;
     note: string;
+    color?: string;
 }
 
 export interface ISettings {
