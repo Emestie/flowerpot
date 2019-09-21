@@ -84,11 +84,11 @@ $permawatchColor: #e696ae;
 }
 
 .hasShelve {
-    color: $hasChangesColor;
+    color: green;
 }
 
 .externalLink {
-    color: rgb(143, 143, 143);
+    color: rgb(155, 155, 155);
     float: right;
     cursor: pointer;
     &:hover {
