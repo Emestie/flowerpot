@@ -142,6 +142,8 @@ app.on("second-instance", (event, argv, cwd) => {
         if (wnd.isMinimized()) wnd.restore();
         wnd.focus();
     }
+
+    app.quit();
 });
 
 autoUpdater.on("checking-for-update", () => {
