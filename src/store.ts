@@ -56,6 +56,7 @@ class Store {
     }
 
     intervalStorage = {};
+    @observable errorInterval: any = undefined;
 
     private onPathChange = reaction(() => this.settings.tfsPath, Settings.save);
     private onUserChange = reaction(() => this.settings.tfsUser, Settings.save);

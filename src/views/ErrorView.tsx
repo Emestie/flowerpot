@@ -2,21 +2,24 @@ import React from "react";
 import { Header, Button, Container, Message } from "semantic-ui-react";
 import store from "../store";
 import { s } from "../values/Strings";
+import { observer } from "mobx-react";
 
 interface IProps {}
 interface IState {}
 
+@observer
 export default class ErrorView extends React.Component<IProps, IState> {
-    private interval: NodeJS.Timeout | undefined;
-
     componentDidMount() {
         this.routineStart();
     }
 
     routineStart = () => {
-        if (this.interval) clearInterval(this.interval);
+        if (store.errorInterval) {
+            clearInterval(store.errorInterval);
+            store.errorInterval = undefined;
+        }
 
-        this.interval = setInterval(() => {
+        store.errorInterval = setInterval(() => {
             this.onRefreshClick();
         }, 60000);
     };

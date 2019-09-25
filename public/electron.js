@@ -14,6 +14,8 @@ const store = new Store(storeDefaults);
 let wnd;
 let tray;
 
+app.requestSingleInstanceLock();
+
 function createWindow() {
     let { width, height } = store.get("windowDim");
     let { x, y } = store.get("windowPos");
@@ -132,6 +134,13 @@ app.on("will-quit", () => {
 app.on("activate", () => {
     if (wnd === null) {
         createWindow();
+    }
+});
+
+app.on("second-instance", (event, argv, cwd) => {
+    if (wnd) {
+        if (wnd.isMinimized()) wnd.restore();
+        wnd.focus();
     }
 });
 

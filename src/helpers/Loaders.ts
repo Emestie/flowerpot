@@ -49,6 +49,11 @@ export default class Loaders {
                 // eslint-disable-next-line
                 if (!queryInfo) throw s("throwQueryLoading");
 
+                if ((queryInfo as any) === "__query_was_deleted") {
+                    Query.delete(query);
+                    return [];
+                }
+
                 //query results can be tree
                 if (queryInfo.queryType === "flat") preparedWIs = queryInfo.workItems;
                 else {
@@ -107,34 +112,6 @@ export default class Loaders {
         }
     }
 
-    private static _unstable_asyncRequest(subpath: string, x?: boolean) {
-        let [domain, user] = store.settings.tfsUser.split("\\");
-        let pwd = store.settings.tfsPwd;
-        let url = store.settings.tfsPath + subpath;
-
-        return new Promise((resolve, reject) => {
-            httpntlm.get(
-                {
-                    url: url,
-                    username: user,
-                    password: pwd,
-                    workstation: "choose.something",
-                    domain: domain,
-                },
-                function(err: any, res: any) {
-                    if (err) {
-                        console.log("NTLM ERROR", err);
-                        reject(err);
-                        return;
-                    }
-
-                    console.log("NTLM RES", res);
-                    resolve(res.body);
-                }
-            );
-        });
-    }
-
     private static async asyncRequest(subpath: string, forceAuth?: boolean) {
         return new Promise(async (resolve, reject) => {
             let [domain, user] = store.settings.tfsUser.split("\\");
@@ -155,6 +132,9 @@ export default class Loaders {
 
                 let respFinal = await fetch(url);
                 if (!respFinal.ok) {
+                    if (respFinal.status === 404) {
+                        resolve("__query_was_deleted");
+                    }
                     console.log("Bad response", respFinal);
                     // eslint-disable-next-line
                     throw "Bad response";
