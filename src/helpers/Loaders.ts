@@ -5,7 +5,6 @@ import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
 import Differences from "./Differences";
 import { s } from "../values/Strings";
 import Lists from "./Lists";
-import httpntlm from "httpntlm";
 
 export default class Loaders {
     private static auth: boolean = false;

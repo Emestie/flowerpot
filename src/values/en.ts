@@ -126,7 +126,9 @@ const en: ILocalizedStrings = {
     noteCommand: "Edit note",
     noteDialog: "Note for work item",
 
-    hasShelve: "This item has shelve",
+    hasShelve: "This item has a shelve",
+
+    noAscii: "We're sorry, but for now only ASCII characters are supported in password."
 };
 
 export default en;

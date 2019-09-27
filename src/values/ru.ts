@@ -127,7 +127,9 @@ const ru: ILocalizedStrings = {
     noteCommand: "Заметка",
     noteDialog: "Текст заметки для рабочего элемента",
 
-    hasShelve: 'К этому элементу имеется шелв'
+    hasShelve: "К этому элементу имеется шелв",
+
+    noAscii: "На данный момент в пароле поддерживаются только ASCII символы.",
 };
 
 export default ru;

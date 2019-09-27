@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Container, Button, Form, Label } from "semantic-ui-react";
+import { Header, Container, Button, Form, Label, Message } from "semantic-ui-react";
 import { observer } from "mobx-react";
 import store from "../store";
 import Loaders from "../helpers/Loaders";
@@ -12,6 +12,7 @@ interface IState {
     pathInvalid: boolean;
     userInvalid: boolean;
     pwdInvalid: boolean;
+    pwdNotAscii: boolean;
     credentialsCheckStatus: number;
     debugInputValue: string;
 }
@@ -22,6 +23,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         pathInvalid: false,
         userInvalid: false,
         pwdInvalid: false,
+        pwdNotAscii: false,
         credentialsCheckStatus: 0,
         debugInputValue: "",
     };
@@ -94,6 +96,14 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     validateTfsPwd = (val: string, ignoreStore?: boolean) => {
         this.setCredentialsStatus(0);
         if (!ignoreStore) store.settings.tfsPwd = val;
+
+        //if val has cyrillic characters show notif
+        var ascii = /^[ -~]+$/;
+        if (!ascii.test(val)) {
+            this.setState({ pwdNotAscii: true, pwdInvalid: true });
+        } else {
+            this.setState({ pwdNotAscii: false, pwdInvalid: false });
+        }
     };
 
     onSave = () => {
@@ -173,6 +183,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                                 error={this.state.pwdInvalid}
                             />
                         </Form.Group>
+                        {!!this.state.pwdNotAscii && <Message color="red">{s("noAscii")}</Message>}
                     </Form>
                     <div>
                         <br />
