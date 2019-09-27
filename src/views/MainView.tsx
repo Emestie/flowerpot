@@ -2,20 +2,19 @@ import React from "react";
 import { Header, Container, Message, Button } from "semantic-ui-react";
 import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
+import UpdateBanner from "../components/UpdateBanner";
 import { observer } from "mobx-react";
 import Electron from "../helpers/Electron";
 import { IQuery } from "../helpers/Query";
 import { s } from "../values/Strings";
 
 interface IProps {}
-interface IState {
-    updateInstallInProgress: boolean;
-}
+interface IState {}
 
 @observer
 export default class MainView extends React.Component<IProps, IState> {
     state: IState = {
-        updateInstallInProgress: false
+        updateInstallInProgress: false,
     };
 
     get isRefreshAvailable() {
@@ -23,16 +22,12 @@ export default class MainView extends React.Component<IProps, IState> {
     }
 
     onRefresh = () => {
-        store.restartRoutines();
+        //store.restartRoutines();
+        store.switchView('refreshhelper');
     };
 
     onSettings = () => {
         store.switchView("settings");
-    };
-
-    onUpdate = () => {
-        this.setState({ updateInstallInProgress: true });
-        Electron.updateApp();
     };
 
     queriesSorting = (a: IQuery, b: IQuery) => {
@@ -62,25 +57,14 @@ export default class MainView extends React.Component<IProps, IState> {
                 <div className="TopBar">
                     <Header as="h1">{s("mainHeader")}</Header>
                     <div className="RightTopCorner">
-                        {/* <Button onClick={this.onRefresh} disabled={!this.isRefreshAvailable}>
+                        <Button onClick={this.onRefresh} disabled={!this.isRefreshAvailable}>
                             {s('refresh')}
-                        </Button> */}
+                        </Button>
                         <Button onClick={this.onSettings}>{s("settings")}</Button>
                     </div>
                 </div>
                 <Container fluid>
-                    {store.updateStatus === "ready" && (
-                        <Message positive>
-                            <Message.Header>{s("updateArrived")}</Message.Header>
-                            <p>
-                                {s("updateArrivedText1")}{" "}
-                                <Button compact positive size="tiny" loading={this.state.updateInstallInProgress} onClick={this.onUpdate}>
-                                    {s("install")}
-                                </Button>{" "}
-                                {s("updateArrivedText2")}
-                            </p>
-                        </Message>
-                    )}
+                    <UpdateBanner />
                     {queriesElems}
                 </Container>
             </div>

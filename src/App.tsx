@@ -11,6 +11,7 @@ import LoadingView from "./views/LoadingView";
 import DebugView from "./views/DebugView";
 import Electron from "./helpers/Electron";
 import ListsView from "./views/ListsView";
+import RefreshHelperView from "./views/RefreshHelperView";
 
 @observer
 export default class App extends React.Component {
@@ -50,6 +51,8 @@ export default class App extends React.Component {
                 return <SelectQueriesView />;
             case "lists":
                 return <ListsView />;
+            case "refreshhelper":
+                return <RefreshHelperView />;
             case "debug":
                 return <DebugView />;
             default:
