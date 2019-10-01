@@ -30,10 +30,12 @@ class Store {
             permawatch: [],
             favorites: [],
             deferred: [],
-            hidden: [],
+            hidden: []
         },
         notes: [],
         darkTheme: false,
+        allowTelemetry: true,
+        lastTimeVersion: ""
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;
@@ -79,6 +81,8 @@ class Store {
         }
     );
     private onDarkChange = reaction(() => this.settings.darkTheme, Settings.save);
+    private onTelemetryChange = reaction(() => this.settings.allowTelemetry, Settings.save);
+    private onVerChange = reaction(() => this.settings.lastTimeVersion, Settings.save);
     private onQueriesChange = reaction(() => this.settings.queries, Settings.save);
     private onLocaleChange = reaction(() => this.locale, Electron.changeLocale);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);

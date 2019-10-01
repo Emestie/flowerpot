@@ -111,7 +111,8 @@ const en: ILocalizedStrings = {
     hidden: "Hidden",
     permawatchDescription: "IDs of Work Items that will be placed in separated query and stay there until manual remove.",
     permawatch: "Permawatch",
-    listsNote: "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
+    listsNote:
+        "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
     addItemsInListNotice: "To add items in this list use context menu in Queries view.",
     //context
     copy: "Copy info",
@@ -128,7 +129,9 @@ const en: ILocalizedStrings = {
 
     hasShelve: "This item has a shelve",
 
-    noAscii: "We're sorry, but for now only ASCII characters are supported in password."
+    noAscii: "We're sorry, but for now only ASCII characters are supported in password.",
+    cbTelemetry: "Allow usage stats collection",
+    releaseNotes: "Release notes"
 };
 
 export default en;

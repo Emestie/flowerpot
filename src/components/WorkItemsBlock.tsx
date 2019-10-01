@@ -4,7 +4,7 @@ import store from "../store";
 import Query, { IQuery } from "../helpers/Query";
 import { observer } from "mobx-react";
 import WorkItemRow from "./WorkItemRow";
-import { IWorkItem } from "../helpers/WorkItem";
+import WorkItem, { IWorkItem } from "../helpers/WorkItem";
 import Loaders from "../helpers/Loaders";
 import Electron from "../helpers/Electron";
 import { s } from "../values/Strings";
@@ -42,6 +42,11 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
     async routineStart() {
         this.setState({ workItems: [], isLoading: true });
 
+        if (process.env.REACT_APP_FISHY_WI === "1") {
+            this.setState({ workItems: [WorkItem.fish()], isLoading: false });
+            return;
+        }
+
         store.clearInterval(this.props.query);
 
         await this.loadWorkItemsForThisQuery();
@@ -52,8 +57,6 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
                 this.loadWorkItemsForThisQuery();
             }, store.settings.refreshRate * 1000)
         );
-
-        //this.setState({ workItems: [WorkItem.fish()], isLoading: false });
     }
 
     async loadWorkItemsForThisQuery() {

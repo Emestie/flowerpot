@@ -12,6 +12,7 @@ import DebugView from "./views/DebugView";
 import Electron from "./helpers/Electron";
 import ListsView from "./views/ListsView";
 import RefreshHelperView from "./views/RefreshHelperView";
+import Telemetry from "./helpers/Telemetry";
 
 @observer
 export default class App extends React.Component {
@@ -31,6 +32,12 @@ export default class App extends React.Component {
         }
 
         this.registrator();
+
+        const ver = Electron.getVer();
+        if (!Electron.isDev() && store.settings.lastTimeVersion !== ver) {
+            store.settings.lastTimeVersion = ver;
+            Telemetry.versionUsageInfo();
+        }
     }
 
     registrator() {}

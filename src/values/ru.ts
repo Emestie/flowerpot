@@ -130,6 +130,8 @@ const ru: ILocalizedStrings = {
     hasShelve: "К этому элементу имеется шелв",
 
     noAscii: "На данный момент в пароле поддерживаются только ASCII символы.",
+    cbTelemetry: "Разрешить сбор статистики использования",
+    releaseNotes: "Что нового?"
 };
 
 export default ru;

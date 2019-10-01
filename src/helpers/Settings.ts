@@ -1,6 +1,7 @@
 import store from "../store";
 import { IQuery } from "./Query";
 import Electron from "./Electron";
+import Telemetry from "./Telemetry";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -33,6 +34,8 @@ export interface ISettings {
     };
     notes: INoteItem[];
     darkTheme: boolean;
+    allowTelemetry: boolean;
+    lastTimeVersion: string;
 }
 
 export default class Settings {
@@ -43,7 +46,9 @@ export default class Settings {
             try {
                 let parsedSettings = JSON.parse(settings);
                 store.setSettings(parsedSettings);
-            } catch (e) {}
+            } catch (e) {
+                Telemetry.settingsReadFailed();
+            }
         }
 
         store.autostart = Electron.getStoreProp("autostart");
@@ -54,6 +59,8 @@ export default class Settings {
         try {
             let settingsToStore = JSON.stringify(store.settings);
             Electron.setStoreProp("flowerpot", settingsToStore);
-        } catch (e) {}
+        } catch (e) {
+            Telemetry.settingsWriteFailed();
+        }
     }
 }

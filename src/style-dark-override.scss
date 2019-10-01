@@ -159,4 +159,16 @@ $bg: #252526;
     .ui.table tr td {
         border-top: 1px solid rgba(228, 230, 231, 0.1);
     }
+
+    .ui.table td.warning,
+    .ui.table tr.warning {
+        color: $text !important;
+        background-color: rgb(65, 60, 47) !important;
+    }
+
+    .ui.table td.negative,
+    .ui.table tr.negative {
+        color: $text !important;
+        background-color: rgb(73, 49, 47) !important;
+    }
 }
