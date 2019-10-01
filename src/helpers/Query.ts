@@ -119,6 +119,7 @@ export default class Query {
 
     private static updateAllInStore(queries: IQuery[]) {
         store.settings.queries = store.copy(queries);
+        store.updateSettings();
     }
 
     public static getWIStorage() {

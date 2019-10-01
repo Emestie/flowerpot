@@ -36,6 +36,7 @@ export default class App extends React.Component {
         const ver = Electron.getVer();
         if (!Electron.isDev() && store.settings.lastTimeVersion !== ver) {
             store.settings.lastTimeVersion = ver;
+            store.updateSettings();
             Telemetry.versionUsageInfo();
         }
     }

@@ -25,7 +25,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         pwdInvalid: false,
         pwdNotAscii: false,
         credentialsCheckStatus: 0,
-        debugInputValue: "",
+        debugInputValue: ""
     };
 
     statuses = [
@@ -33,7 +33,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         { color: undefined, text: s("credsState2") },
         { color: "red", text: s("credsState3") },
         { color: "red", text: s("credsState4") },
-        { color: "olive", text: s("credsState5") },
+        { color: "olive", text: s("credsState5") }
     ];
 
     componentDidMount() {
@@ -67,11 +67,15 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     setCredentialsStatus(status: number) {
         store.settings.credentialsChecked = status === 4 ? true : false;
         this.setState({ credentialsCheckStatus: status });
+        store.updateSettings();
     }
 
     validateTfsPath = (val: string, ignoreStore?: boolean) => {
         this.setCredentialsStatus(0);
-        if (!ignoreStore) store.settings.tfsPath = val;
+        if (!ignoreStore) {
+            store.settings.tfsPath = val;
+            store.updateSettings();
+        }
 
         let invalid = false;
         if (val[val.length - 1] !== "/") invalid = true;
@@ -83,7 +87,10 @@ export default class CredentialsView extends React.Component<IProps, IState> {
 
     validateTfsUser = (val: string, ignoreStore?: boolean) => {
         this.setCredentialsStatus(0);
-        if (!ignoreStore) store.settings.tfsUser = val;
+        if (!ignoreStore) {
+            store.settings.tfsUser = val;
+            store.updateSettings();
+        }
 
         let invalid = false;
         if (!val.length) invalid = true;
@@ -95,7 +102,10 @@ export default class CredentialsView extends React.Component<IProps, IState> {
 
     validateTfsPwd = (val: string, ignoreStore?: boolean) => {
         this.setCredentialsStatus(0);
-        if (!ignoreStore) store.settings.tfsPwd = val;
+        if (!ignoreStore) {
+            store.settings.tfsPwd = val;
+            store.updateSettings();
+        }
 
         //if val has cyrillic characters show notif
         var ascii = /^[ -~]+$/;

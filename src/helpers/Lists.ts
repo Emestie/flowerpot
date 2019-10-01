@@ -12,12 +12,14 @@ export default class Lists {
         this.deleteFromList("hidden", id);
 
         store.settings.lists[list].push({ id: id, rev: rev });
+        store.updateSettings();
     }
 
     public static deleteFromList(list: TLists, id: number) {
         let l = store.getList(list);
         l = l.filter(x => x.id !== id);
         store.settings.lists[list] = l;
+        store.updateSettings();
     }
 
     public static isIn(list: TLists, id: number, rev?: number) {
@@ -40,6 +42,7 @@ export default class Lists {
         }
 
         store.settings.notes = notes;
+        store.updateSettings();
     }
 
     public static getNote(id: number) {

@@ -47,14 +47,17 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     onRateSelect(val: number) {
         store.settings.refreshRate = val;
+        store.updateSettings();
     }
 
     onSortSelect(val: TSortPattern) {
         store.settings.sortPattern = val;
+        store.updateSettings();
     }
 
     onNotifModeSelect(val: TNotificationsMode) {
         store.settings.notificationsMode = val;
+        store.updateSettings();
     }
 
     onLocaleSelect(val: TLocale) {
@@ -67,18 +70,22 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     toggleIconColor = () => {
         store.settings.iconChangesOnMyWorkItemsOnly = !store.settings.iconChangesOnMyWorkItemsOnly;
+        store.updateSettings();
     };
 
     toggleMineOnTop = () => {
         store.settings.mineOnTop = !store.settings.mineOnTop;
+        store.updateSettings();
     };
 
     toggleTheme = () => {
         store.settings.darkTheme = !store.settings.darkTheme;
+        store.updateSettings();
     };
 
     toggleTelemetry = () => {
         store.settings.allowTelemetry = !store.settings.allowTelemetry;
+        store.updateSettings();
     };
 
     onSave = () => {
