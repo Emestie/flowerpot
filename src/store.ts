@@ -78,6 +78,7 @@ class Store {
             Settings.save();
         }
     );
+    private onDarkChange = reaction(() => this.settings.darkTheme, Settings.save);
     private onQueriesChange = reaction(() => this.settings.queries, Settings.save);
     private onLocaleChange = reaction(() => this.locale, Electron.changeLocale);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);
