@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, Tray, Notification, remote, globalShortcut } = require("electron");
+const { app, ipcMain, Menu, Tray, Notification, globalShortcut } = require("electron");
 const Splashscreen = require("@trodi/electron-splashscreen");
 const { autoUpdater } = require("electron-updater");
 const isDev = require("electron-is-dev");
@@ -36,15 +36,15 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
     };
     const splashCfg = {
         windowOpts: windowOptions,
         templateUrl: `${__dirname}/splash-screen/splash-screen.html`,
         splashScreenOpts: {
             width: 260,
-            height: 100,
-        },
+            height: 100
+        }
     };
 
     wnd = Splashscreen.initSplashScreen(splashCfg);
@@ -56,7 +56,7 @@ function createWindow() {
         url.format({
             pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
-            slashes: true,
+            slashes: true
         });
     wnd.loadURL(startUrl);
 
@@ -95,6 +95,10 @@ function createWindow() {
 
     ipcMain.on("react-is-ready", () => {
         iconUpdateTask(currentLevel, false);
+    });
+
+    ipcMain.on("save-settings-prop", (e, data) => {
+        store.set(data.prop, data.value);
     });
 
     wnd.on("show", () => {
@@ -191,7 +195,7 @@ function buildTrayIcon() {
             label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
                 wnd.show();
-            },
+            }
         },
         {
             label: locale === "ru" ? "Выход" : "Quit",
@@ -199,8 +203,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            },
-        },
+            }
+        }
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -223,7 +227,7 @@ function registerAutostart() {
     if (!isDev) {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe"),
+            path: app.getPath("exe")
         });
     }
 }

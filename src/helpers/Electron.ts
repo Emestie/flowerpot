@@ -19,7 +19,8 @@ export default class Electron {
 
     public static setStoreProp(prop: string, value: any) {
         let store = this.getElectronStore();
-        if (store) store.set(prop, value);
+        if (store) store.set(prop, value, true);
+        Electron.sendIpcRenderer("save-settings-prop", { prop, value });
     }
 
     public static copyString(s: string) {

@@ -22,8 +22,9 @@ class Store {
     }
 
     // ...and this will set it
-    set(key, val) {
+    set(key, val, dontWriteToFile) {
         this.data[key] = val;
+        if (dontWriteToFile) return;
         // Wait, I thought using the node.js' synchronous APIs was bad form?
         // We're not writing a server so there's not nearly the same IO demand on the process
         // Also if we used an async API and our app was quit before the asynchronous write had a chance to complete,
