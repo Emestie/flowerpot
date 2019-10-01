@@ -32,6 +32,7 @@ export interface ISettings {
         [K in TLists]: IListItem[];
     };
     notes: INoteItem[];
+    darkTheme: boolean;
 }
 
 export default class Settings {

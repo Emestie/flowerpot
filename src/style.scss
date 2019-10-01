@@ -5,6 +5,11 @@ $deferredColor: rgb(173, 173, 173);
 $favoritesColor: rgb(161, 99, 202);
 $permawatchColor: #e696ae;
 
+body,
+#root {
+    height: 100%;
+}
+
 .Page {
     user-select: none;
     padding: 15px;
@@ -96,7 +101,7 @@ $permawatchColor: #e696ae;
     }
 }
 
-.react-contextmenu-item {
+.ui-menu .item {
     &:focus {
         outline: none;
     }

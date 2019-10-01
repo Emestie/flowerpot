@@ -1,0 +1,162 @@
+$text: rgba(255, 255, 255, 0.979);
+$textNoDim: white;
+$bg: #252526;
+
+.FlowerpotDarkTheme {
+    min-height: 100%;
+    background-color: $bg;
+    color: $text;
+
+    .ui.header,
+    .ui.menu .item,
+    .ui.popup,
+    .ui.form .field > label,
+    .TopBar {
+        background-color: $bg;
+        color: $text;
+    }
+
+    .ui.form input:not([type]):focus,
+    .ui.form input[type="date"]:focus,
+    .ui.form input[type="datetime-local"]:focus,
+    .ui.form input[type="email"]:focus,
+    .ui.form input[type="file"]:focus,
+    .ui.form input[type="number"]:focus,
+    .ui.form input[type="password"]:focus,
+    .ui.form input[type="search"]:focus,
+    .ui.form input[type="tel"]:focus,
+    .ui.form input[type="text"]:focus,
+    .ui.form input[type="time"]:focus,
+    .ui.form input[type="url"]:focus {
+        background-color: $bg + #111;
+        color: $textNoDim;
+        border-color: rgba(69, 73, 77, 0.15);
+    }
+
+    .ui.table,
+    .ui.selection.dropdown,
+    .ui.input > input,
+    .ui.input.error > input,
+    .ui.dropdown .menu .item {
+        background-color: $bg + #111;
+        color: $textNoDim;
+        border-color: rgba(69, 73, 77, 0.15);
+    }
+
+    .ui.table thead th,
+    .ui.table tfoot th {
+        background-color: $bg + #1a1a1a;
+        color: $textNoDim;
+    }
+
+    .ui.form .field.error input:not([type]),
+    .ui.form .field.error input[type="date"],
+    .ui.form .field.error input[type="datetime-local"],
+    .ui.form .field.error input[type="email"],
+    .ui.form .field.error input[type="file"],
+    .ui.form .field.error input[type="number"],
+    .ui.form .field.error input[type="password"],
+    .ui.form .field.error input[type="search"],
+    .ui.form .field.error input[type="tel"],
+    .ui.form .field.error input[type="text"],
+    .ui.form .field.error input[type="time"],
+    .ui.form .field.error input[type="url"],
+    .ui.form .field.error select,
+    .ui.form .field.error textarea,
+    .ui.form .fields.error .field input:not([type]),
+    .ui.form .fields.error .field input[type="date"],
+    .ui.form .fields.error .field input[type="datetime-local"],
+    .ui.form .fields.error .field input[type="email"],
+    .ui.form .fields.error .field input[type="file"],
+    .ui.form .fields.error .field input[type="number"],
+    .ui.form .fields.error .field input[type="password"],
+    .ui.form .fields.error .field input[type="search"],
+    .ui.form .fields.error .field input[type="tel"],
+    .ui.form .fields.error .field input[type="text"],
+    .ui.form .fields.error .field input[type="time"],
+    .ui.form .fields.error .field input[type="url"],
+    .ui.form .fields.error .field select,
+    .ui.form .fields.error .field textarea,
+    .ui.form .field.error .input,
+    .ui.form .field.error label,
+    .ui.form .fields.error .field .input,
+    .ui.form .fields.error .field label {
+        color: rgb(199, 68, 68);
+        &:focus {
+            background-color: $bg + #222;
+        }
+    }
+
+    .ui.selection.visible.dropdown > .text:not(.default) {
+        color: $text;
+    }
+
+    .ui.selection.active.dropdown .menu,
+    .ui.selection.active.dropdown:hover,
+    .ui.dropdown .menu .item:hover {
+        border-color: $bg + #111;
+        background-color: $bg + #333;
+    }
+
+    .ui.checkbox .box:before,
+    .ui.checkbox label:before,
+    .ui.checkbox input:focus ~ .box:before,
+    .ui.checkbox input:focus ~ label:before,
+    .ui.checkbox input:checked ~ .box:before,
+    .ui.checkbox input:checked ~ label:before {
+        background-color: $bg + #222;
+        border-color: $bg + #444;
+    }
+
+    .ui.checkbox input:checked:focus ~ .box:after,
+    .ui.checkbox input:checked:focus ~ label:after,
+    .ui.checkbox input:not([type="radio"]):indeterminate:focus ~ .box:after,
+    .ui.checkbox input:not([type="radio"]):indeterminate:focus ~ label:after,
+    .ui.checkbox input:checked ~ .box:after,
+    .ui.checkbox input:checked ~ label:after {
+        color: $text;
+    }
+
+    .ui.menu {
+        border: 1px solid $bg + #111;
+    }
+
+    .ui.menu .item {
+        &:focus {
+            outline: none;
+        }
+
+        &:hover {
+            background-color: $bg + #333;
+            cursor: pointer;
+        }
+    }
+
+    .ui.label,
+    .ui.button:not(.primary):not(.positive):not(.negative) {
+        background-color: $bg + #222;
+        color: $text;
+        &:hover {
+            background-color: $bg + #444;
+        }
+    }
+
+    .ui.checkbox label,
+    .ui.checkbox + label,
+    .ui.checkbox input:focus ~ label {
+        color: $text;
+    }
+
+    .ui.dividing.header {
+        border-bottom: 1px solid $bg + #222;
+    }
+
+    .ui.celled.table tr td,
+    .ui.celled.table tr th {
+        border-left: 1px solid rgba(228, 230, 231, 0.1);
+    }
+
+    .ui.table tr td {
+        border-top: 1px solid rgba(228, 230, 231, 0.1);
+    }
+}

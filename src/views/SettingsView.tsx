@@ -73,6 +73,10 @@ export default class SettingsView extends React.Component<IProps, IState> {
         store.settings.mineOnTop = !store.settings.mineOnTop;
     };
 
+    toggleTheme = () => {
+        store.settings.darkTheme = !store.settings.darkTheme;
+    };
+
     onSave = () => {
         store.switchView("main");
     };
@@ -124,6 +128,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
                 <div className="TopBar">
                     <Header as="h1">{s("settingsHeader")}</Header>
                     <div className="RightTopCorner">
+                        <span style={{ marginRight: 10 }}>
+                            <Button icon onClick={this.toggleTheme}>
+                                {store.settings.darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
+                            </Button>
+                        </span>
                         <Button onClick={this.openCreds}>{s("editTfsSettingsBtn")}</Button>
                         <Button positive onClick={this.onSave}>
                             {s("settingsBackButton")}

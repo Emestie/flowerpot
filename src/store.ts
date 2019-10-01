@@ -33,6 +33,7 @@ class Store {
             hidden: [],
         },
         notes: [],
+        darkTheme: false,
     };
     //! if add something in settings don't forget to add reaction
     @observable autostart: boolean = true;

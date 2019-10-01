@@ -61,7 +61,7 @@ export default class QueriesSettingsTable extends React.Component {
         ));
 
         return (
-            <Table compact celled definition size="small">
+            <Table compact celled size="small">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell></Table.HeaderCell>

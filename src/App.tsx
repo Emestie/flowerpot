@@ -35,7 +35,7 @@ export default class App extends React.Component {
 
     registrator() {}
 
-    render() {
+    getScene() {
         switch (store.view) {
             case "loading":
                 return <LoadingView />;
@@ -58,5 +58,10 @@ export default class App extends React.Component {
             default:
                 return <MainView />;
         }
+    }
+
+    render() {
+        let scene = this.getScene();
+        return <div className={store.settings.darkTheme ? "FlowerpotDarkTheme" : ""}>{scene}</div>;
     }
 }
