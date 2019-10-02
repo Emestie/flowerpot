@@ -115,3 +115,15 @@ body,
 .ui.vertical.menu {
     width: 20rem;
 }
+
+nav {
+    z-index: 10 !important;
+}
+
+.ui.table tr:first-child td {
+    border-top-left-radius: 3px;
+}
+
+.ui.table tr:last-child td {
+    border-bottom-left-radius: 3px;
+}

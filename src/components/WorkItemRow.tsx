@@ -1,6 +1,6 @@
 import React from "react";
 import { IWorkItem } from "../helpers/WorkItem";
-import { Table, Popup, Icon, Label } from "semantic-ui-react";
+import { Table, Icon, Label } from "semantic-ui-react";
 import Electron from "../helpers/Electron";
 import store from "../store";
 import { observer } from "mobx-react";
@@ -28,78 +28,63 @@ export default class WorkItemRow extends React.Component<IProps> {
     get importanceEl() {
         if (!this.props.item.importance) return undefined;
         return (
-            <Popup
-                content={s("severity") + this.props.item.importanceText}
-                trigger={
-                    <span>
-                        <Icon name="exclamation triangle" />
-                        {this.props.item.importance}
-                    </span>
-                }
-            />
+            <span title={s("severity") + this.props.item.importanceText}>
+                <span style={{ fontSize: 12 }}>
+                    <Icon name="exclamation triangle" />
+                </span>
+                {this.props.item.importance}
+            </span>
         );
     }
 
     get promptnessEl() {
         if (!this.props.item.promptness) return undefined;
         return (
-            <Popup
-                content={s("priority") + this.props.item.promptnessText}
-                trigger={
-                    <span>
-                        <Icon name="clock" />
-                        {this.props.item.promptness}
-                    </span>
-                }
-            />
+            <span title={s("priority") + this.props.item.promptnessText} style={{ marginLeft: 4 }}>
+                <span style={{ fontSize: 12 }}>
+                    <Icon name="clock" />
+                </span>
+                {this.props.item.promptness}
+            </span>
         );
     }
 
     get rankEl() {
         if (this.props.item.rank === undefined) return undefined;
         return (
-            <Popup
-                content={"Rank " + this.props.item.rank}
-                trigger={
-                    <span>
-                        <Icon name="chess queen" />
-                        {this.props.item.rank}
-                    </span>
-                }
-            />
+            <span title={"Rank " + this.props.item.rank}>
+                <span style={{ fontSize: 12 }}>
+                    <Icon name="chess queen" />
+                </span>
+                {this.props.item.rank}
+            </span>
         );
     }
 
     get revEl() {
         return (
-            <Popup
-                content={s("revision")}
-                trigger={
-                    <span>
-                        <Icon name="redo" />
-                        {this.props.item.rev}
-                    </span>
-                }
-            />
+            <span title={s("revision")}>
+                <span>
+                    <Icon name="redo" />
+                </span>
+                {this.props.item.rev}
+            </span>
         );
-    }
-
-    get titleEl() {
-        return <Popup content={this.props.item.titleFull} trigger={<span>{this.props.item.title}</span>} />;
     }
 
     get freshnessEl() {
         return (
-            <Popup
-                content={s("timeSinceCreated") + ` (${new Date(this.props.item.createdDate).toLocaleString()})`}
-                trigger={
-                    <span>
-                        <Icon name="leaf" />
-                        {this.props.item.freshness}
-                    </span>
-                }
-            />
+            <span title={s("timeSinceCreated") + ` (${new Date(this.props.item.createdDate).toLocaleString()})`} style={{ marginLeft: 4 }}>
+                <span>
+                    <Icon name="leaf" />
+                </span>
+                {this.props.item.freshness}
+            </span>
         );
+    }
+
+    get titleEl() {
+        return <span title={this.props.item.titleFull}>{this.props.item.title}</span>;
     }
 
     get typeEl() {
@@ -111,12 +96,26 @@ export default class WorkItemRow extends React.Component<IProps> {
             case "Issue":
                 return <Icon name="question" />;
             default:
-                return <span></span>;
+                return <Icon name="fire" />;
         }
     }
 
     specialNameEffect(name: string, nameFull: string) {
-        return <span title={nameFull}>{name}</span>;
+        let addition = <></>;
+
+        if (
+            name.indexOf("Шершнёв") !== -1 &&
+            (this.props.item.titleFull.toLowerCase().indexOf("нп") !== -1 || this.props.item.titleFull.toLowerCase().indexOf("сообщен") !== -1)
+        ) {
+            addition = <Icon name="fire extinguisher" />;
+        }
+
+        return (
+            <span title={nameFull}>
+                {addition}
+                {name}
+            </span>
+        );
     }
 
     dropChanges = () => {
@@ -178,7 +177,9 @@ export default class WorkItemRow extends React.Component<IProps> {
             <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
                 <Table.Cell collapsing className={hasChanges ? "workItemHasCanges" : this.getClass()}>
                     <ContextMenuTrigger id={uid + ""}>
-                        {this.typeEl} {item.id}
+                        <span title={item.type}>
+                            {this.typeEl} {item.id}
+                        </span>
                     </ContextMenuTrigger>
 
                     <WorkItemRowContextMenu uid={uid} workItem={item} onUpdate={this.props.onUpdate} />

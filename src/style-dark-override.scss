@@ -1,6 +1,11 @@
 $text: rgba(255, 255, 255, 0.979);
 $textNoDim: white;
 $bg: #252526;
+$bg1: #353536;
+$bg1a: #404041;
+$bg2: #454546;
+$bg3: #555556;
+$bg4: #656566;
 
 .FlowerpotDarkTheme {
     min-height: 100%;
@@ -28,7 +33,7 @@ $bg: #252526;
     .ui.form input[type="text"]:focus,
     .ui.form input[type="time"]:focus,
     .ui.form input[type="url"]:focus {
-        background-color: $bg + #111;
+        background-color: $bg1;
         color: $textNoDim;
         border-color: rgba(69, 73, 77, 0.15);
     }
@@ -38,14 +43,14 @@ $bg: #252526;
     .ui.input > input,
     .ui.input.error > input,
     .ui.dropdown .menu .item {
-        background-color: $bg + #111;
+        background-color: $bg1;
         color: $textNoDim;
         border-color: rgba(69, 73, 77, 0.15);
     }
 
     .ui.table thead th,
     .ui.table tfoot th {
-        background-color: $bg + #1a1a1a;
+        background-color: $bg1a;
         color: $textNoDim;
     }
 
@@ -83,7 +88,7 @@ $bg: #252526;
     .ui.form .fields.error .field label {
         color: rgb(199, 68, 68);
         &:focus {
-            background-color: $bg + #222;
+            background-color: $bg2;
         }
     }
 
@@ -94,8 +99,8 @@ $bg: #252526;
     .ui.selection.active.dropdown .menu,
     .ui.selection.active.dropdown:hover,
     .ui.dropdown .menu .item:hover {
-        border-color: $bg + #111;
-        background-color: $bg + #333;
+        border-color: $bg1;
+        background-color: $bg3;
     }
 
     .ui.checkbox .box:before,
@@ -104,8 +109,8 @@ $bg: #252526;
     .ui.checkbox input:focus ~ label:before,
     .ui.checkbox input:checked ~ .box:before,
     .ui.checkbox input:checked ~ label:before {
-        background-color: $bg + #222;
-        border-color: $bg + #444;
+        background-color: $bg2;
+        border-color: $bg4;
     }
 
     .ui.checkbox input:checked:focus ~ .box:after,
@@ -118,7 +123,7 @@ $bg: #252526;
     }
 
     .ui.menu {
-        border: 1px solid $bg + #111;
+        border: 1px solid $bg1;
     }
 
     .ui.menu .item {
@@ -127,17 +132,17 @@ $bg: #252526;
         }
 
         &:hover {
-            background-color: $bg + #333;
+            background-color: $bg3;
             cursor: pointer;
         }
     }
 
     .ui.label,
     .ui.button:not(.primary):not(.positive):not(.negative) {
-        background-color: $bg + #222;
+        background-color: $bg2;
         color: $text;
         &:hover {
-            background-color: $bg + #444;
+            background-color: $bg4;
         }
     }
 
@@ -148,7 +153,7 @@ $bg: #252526;
     }
 
     .ui.dividing.header {
-        border-bottom: 1px solid $bg + #222;
+        border-bottom: 1px solid $bg2;
     }
 
     .ui.celled.table tr td,
