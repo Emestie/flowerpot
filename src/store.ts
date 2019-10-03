@@ -37,42 +37,33 @@ class Store {
         allowTelemetry: true,
         lastTimeVersion: ""
     };
-    //! if add something in settings don't forget to add reaction
+    //! if add something in settings outfise of flowerpot section don't forget to add reaction
     @observable autostart: boolean = true;
     @observable locale: TLocale = "en";
 
-    @observable getQueries(all?: boolean) {
+    getQueries(all?: boolean) {
         let queries = this.copy<IQuery[]>(this.settings.queries).sort((a, b) => a.order - b.order);
         if (all) return queries;
         if (this.getList("permawatch").length) queries.push(Query.getFakePermawatchQuery());
         return queries.filter(q => !!q.enabled);
     }
-    @observable _changesCollection: any = {};
-    @observable getWIHasChanges(workItem: IWorkItem) {
-        return !!this._changesCollection[workItem.id];
-    }
-    @observable getList(list: TLists) {
+
+    getList(list: TLists) {
         return this.copy(this.settings.lists[list]).sort((a, b) => a.id - b.id);
     }
-    @observable getAllLists() {
+    
+    getAllLists() {
         return [...this.getList("deferred"), ...this.getList("favorites"), ...this.getList("hidden"), ...this.getList("permawatch")];
+    }
+
+    @observable _changesCollection: any = {};
+    getWIHasChanges(workItem: IWorkItem) {
+        return !!this._changesCollection[workItem.id];
     }
 
     intervalStorage = {};
     @observable errorInterval: any = undefined;
 
-    // private onPathChange = reaction(() => this.settings.tfsPath, Settings.save);
-    // private onUserChange = reaction(() => this.settings.tfsUser, Settings.save);
-    // private onPwdChange = reaction(() => this.settings.tfsPwd, Settings.save);
-    // private onCredsChange = reaction(() => this.settings.credentialsChecked, Settings.save);
-    // private onRateChange = reaction(() => this.settings.refreshRate, Settings.save);
-    // private onNotifChange = reaction(() => this.settings.notificationsMode, Settings.save);
-    // private onIconEventsChange = reaction(() => this.settings.iconChangesOnMyWorkItemsOnly, Settings.save);
-    // private onMineOnTopChange = reaction(() => this.settings.mineOnTop, Settings.save);
-    // private onNotesChange = reaction(() => this.settings.notes.length, Settings.save);
-    // private onListsDChange = reaction(() => this.settings.lists.deferred.length, Settings.save);
-    // private onListsFChange = reaction(() => this.settings.lists.favorites.length, Settings.save);
-    // private onListsHChange = reaction(() => this.settings.lists.hidden.length, Settings.save);
     private onListsPChange = reaction(
         () => this.settings.lists.permawatch.length,
         () => {
@@ -80,10 +71,6 @@ class Store {
             Settings.save();
         }
     );
-    // private onDarkChange = reaction(() => this.settings.darkTheme, Settings.save);
-    // private onTelemetryChange = reaction(() => this.settings.allowTelemetry, Settings.save);
-    // private onVerChange = reaction(() => this.settings.lastTimeVersion, Settings.save);
-    // private onQueriesChange = reaction(() => this.settings.queries, Settings.save);
     private onSettingsChange = reaction(() => this.settings, Settings.save);
     private onLocaleChange = reaction(() => this.locale, Electron.changeLocale);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);
@@ -99,7 +86,6 @@ class Store {
     }
 
     @action setSettings(settings: ISettings) {
-        //merge with default ones in case of new added
         this.settings = { ...this.settings, ...settings };
     }
 
