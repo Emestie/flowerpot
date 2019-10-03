@@ -18,12 +18,4 @@ export default class Telemetry {
     public static versionUsageInfo() {
         this.basicMessage("Version installed");
     }
-
-    public static settingsWriteFailed() {
-        this.basicMessage("Settings write failure");
-    }
-
-    public static settingsReadFailed() {
-        this.basicMessage("Settings read failure");
-    }
 }

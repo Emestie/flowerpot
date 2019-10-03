@@ -46,9 +46,7 @@ export default class Settings {
             try {
                 let parsedSettings = JSON.parse(settings);
                 store.setSettings(parsedSettings);
-            } catch (e) {
-                Telemetry.settingsReadFailed();
-            }
+            } catch (e) {}
         }
 
         store.autostart = Electron.getStoreProp("autostart");
@@ -59,8 +57,6 @@ export default class Settings {
         try {
             let settingsToStore = JSON.stringify(store.settings);
             Electron.setStoreProp("flowerpot", settingsToStore);
-        } catch (e) {
-            Telemetry.settingsWriteFailed();
-        }
+        } catch (e) {}
     }
 }
