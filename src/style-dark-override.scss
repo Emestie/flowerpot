@@ -168,12 +168,12 @@ $bg4: #656566;
     .ui.table td.warning,
     .ui.table tr.warning {
         color: $text !important;
-        background-color: rgb(65, 60, 47) !important;
+        background-color: rgba(133, 116, 69, 0.829) !important;
     }
 
     .ui.table td.negative,
     .ui.table tr.negative {
         color: $text !important;
-        background-color: rgb(73, 49, 47) !important;
+        background-color: rgba(145, 49, 40, 0.836) !important;
     }
 }
