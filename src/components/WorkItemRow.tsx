@@ -105,7 +105,9 @@ export default class WorkItemRow extends React.Component<IProps> {
 
         if (
             name.indexOf("Шершнёв") !== -1 &&
-            (this.props.item.titleFull.toLowerCase().indexOf("нп") !== -1 || this.props.item.titleFull.toLowerCase().indexOf("сообщен") !== -1)
+            (this.props.item.titleFull.toLowerCase().indexOf("нп") !== -1 ||
+                this.props.item.titleFull.toLowerCase().indexOf("сообщен") !== -1 ||
+                this.props.item.titleFull.toLowerCase().indexOf("фигурант") !== -1)
         ) {
             addition = <Icon name="fire extinguisher" />;
         }
