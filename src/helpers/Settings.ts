@@ -1,7 +1,6 @@
 import store from "../store";
 import { IQuery } from "./Query";
 import Electron from "./Electron";
-import Telemetry from "./Telemetry";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
