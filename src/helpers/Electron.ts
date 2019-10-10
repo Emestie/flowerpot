@@ -7,6 +7,10 @@ export interface INotificationData {
 }
 
 export default class Electron {
+    public static isLocal() {
+        return document.location.href.indexOf("build") !== -1;
+    }
+
     private static getElectronStore() {
         if ((window as any).electronStore) return (window as any).electronStore;
         else return null;
@@ -44,7 +48,8 @@ export default class Electron {
     public static getVer() {
         const appVer = process.env.REACT_APP_VERSION;
         const dateTimeStamp = preval`module.exports = new Date().toISOString();`;
-        return `${appVer} (${dateTimeStamp})`;
+        const verType = Electron.isDev() ? "Dev" : Electron.isLocal() ? "Local" : "Remote";
+        return `${appVer} (${dateTimeStamp}) ${verType}`;
     }
 
     public static openUrl(url: string) {

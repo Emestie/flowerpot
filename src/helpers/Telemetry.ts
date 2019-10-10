@@ -16,6 +16,7 @@ export default class Telemetry {
     }
 
     public static versionUsageInfo() {
-        this.basicMessage("Version installed");
+        const theme = store.settings.darkTheme ? "dark" : "light";
+        this.basicMessage("Version installed", `theme=${theme}`);
     }
 }

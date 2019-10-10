@@ -34,7 +34,7 @@ export default class App extends React.Component {
         this.registrator();
 
         const ver = Electron.getVer();
-        if (!Electron.isDev() && store.settings.lastTimeVersion !== ver) {
+        if (!Electron.isDev() && !Electron.isLocal() && store.settings.lastTimeVersion !== ver) {
             store.settings.lastTimeVersion = ver;
             store.updateSettings();
             Telemetry.versionUsageInfo();

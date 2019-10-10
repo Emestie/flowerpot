@@ -5,8 +5,8 @@ const isDev = require("electron-is-dev");
 const path = require("path");
 const url = require("url");
 
-const Store = require("./electron/store");
-const storeDefaults = require("./electron/store-defaults");
+const Store = require("./common/store");
+const storeDefaults = require("./common/store-defaults");
 const store = new Store(storeDefaults);
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -36,7 +36,7 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
+        webPreferences: { webSecurity: false, preload: __dirname + "/common/preload.js" }
     };
     const splashCfg = {
         windowOpts: windowOptions,
@@ -51,14 +51,7 @@ function createWindow() {
 
     if (!isDev) wnd.setMenu(null);
 
-    const startUrl =
-        process.env.ELECTRON_START_URL ||
-        url.format({
-            pathname: path.join(__dirname, "/../build/index.html"),
-            protocol: "file:",
-            slashes: true
-        });
-    wnd.loadURL(startUrl);
+    wnd.loadURL(getStartingUrl());
 
     buildTrayIcon();
 
@@ -99,6 +92,16 @@ function createWindow() {
 
     ipcMain.on("save-settings-prop", (e, data) => {
         store.set(data.prop, data.value);
+    });
+
+    wnd.webContents.on("did-fail-load", function() {
+        const loadUrl = url.format({
+            pathname: path.join(__dirname, "/../build/index.html"),
+            protocol: "file:",
+            slashes: true
+        });
+        console.log("did-fail-load", loadUrl);
+        wnd.loadURL(loadUrl + "#628");
     });
 
     wnd.on("show", () => {
@@ -230,4 +233,12 @@ function registerAutostart() {
             path: app.getPath("exe")
         });
     }
+}
+
+function getStartingUrl() {
+    //three types of starting urls.
+    //If it is dev - use dev. If internet available - use latest web version.
+    //If internet is down - use latest local version with flag to not rewrite saved telemetry version (see event)
+    const startUrl = process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/#628";
+    return startUrl;
 }
