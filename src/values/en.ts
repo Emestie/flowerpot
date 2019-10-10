@@ -131,7 +131,10 @@ const en: ILocalizedStrings = {
 
     noAscii: "We're sorry, but for now only ASCII characters are supported in password.",
     cbTelemetry: "Allow usage stats collection",
-    releaseNotes: "Release notes"
+    releaseNotes: "Release notes",
+
+    localCaption: "Local version",
+    localWarning: "App loaded with local scripts. The reason might be in the internet outage. Not all features available."
 };
 
 export default en;

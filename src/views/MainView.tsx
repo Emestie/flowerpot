@@ -7,6 +7,7 @@ import { observer } from "mobx-react";
 import Electron from "../helpers/Electron";
 import { IQuery } from "../helpers/Query";
 import { s } from "../values/Strings";
+import LocalVersionBanner from "../components/LocalVersionBanner";
 
 interface IProps {}
 interface IState {}
@@ -14,7 +15,7 @@ interface IState {}
 @observer
 export default class MainView extends React.Component<IProps, IState> {
     state: IState = {
-        updateInstallInProgress: false,
+        updateInstallInProgress: false
     };
 
     get isRefreshAvailable() {
@@ -23,7 +24,7 @@ export default class MainView extends React.Component<IProps, IState> {
 
     onRefresh = () => {
         //store.restartRoutines();
-        store.switchView('refreshhelper');
+        store.switchView("refreshhelper");
     };
 
     onSettings = () => {
@@ -57,8 +58,9 @@ export default class MainView extends React.Component<IProps, IState> {
                 <div className="TopBar">
                     <Header as="h1">{s("mainHeader")}</Header>
                     <div className="RightTopCorner">
+                        <LocalVersionBanner />
                         <Button onClick={this.onRefresh} disabled={!this.isRefreshAvailable}>
-                            {s('refresh')}
+                            {s("refresh")}
                         </Button>
                         <Button onClick={this.onSettings}>{s("settings")}</Button>
                     </div>
