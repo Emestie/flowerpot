@@ -6,17 +6,16 @@
         "url": "https://github.com/Emestie"
     },
     "homepage": ".",
-    "main": "electron/electron.js",
+    "main": "public/electron.js",
     "build": {
         "productName": "Flowerpot",
         "appId": "mst.flowerpot",
         "files": [
             "_icons/**/*",
-            "electron/**/*",
             "build/**/*"
         ],
         "win": {
-            "icon": "electron/icon.ico"
+            "icon": "build/favicon.ico"
         },
         "publish": {
             "provider": "github"
@@ -54,9 +53,9 @@
         "start": "react-scripts start",
         "electron": "electron .",
         "build-react": "react-scripts build && DEL /S /Q .\\build\\*.map",
-        "bulid-electron": "npm run build && electron-builder -w --publish never",
-        "deploy-react": "npm run build && firebase deploy",
-        "deploy-electron": "npm run build && electron-builder -w --publish always"
+        "bulid-electron": "npm run build-react && electron-builder -w --publish never",
+        "deploy-react": "npm run build-react && firebase deploy",
+        "deploy-electron": "npm run build-react && electron-builder -w --publish always"
     },
     "eslintConfig": {
         "extends": "react-app"

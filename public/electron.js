@@ -5,8 +5,8 @@ const isDev = require("electron-is-dev");
 const path = require("path");
 const url = require("url");
 
-const Store = require("./common/store");
-const storeDefaults = require("./common/store-defaults");
+const Store = require("./electron/store");
+const storeDefaults = require("./electron/store-defaults");
 const store = new Store(storeDefaults);
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -36,7 +36,7 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/common/preload.js" }
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
     };
     const splashCfg = {
         windowOpts: windowOptions,
@@ -238,7 +238,7 @@ function registerAutostart() {
 function getStartingUrl() {
     //three types of starting urls.
     //If it is dev - use dev. If internet available - use latest web version.
-    //If internet is down - use latest local version with flag to not rewrite saved telemetry version (see event)
+    //If internet is down - use local version with flag to not rewrite saved telemetry version (see event)
     const startUrl = process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/#628";
     return startUrl;
 }
