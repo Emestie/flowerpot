@@ -100,7 +100,6 @@ function createWindow() {
             protocol: "file:",
             slashes: true
         });
-        console.log("did-fail-load", loadUrl);
         wnd.loadURL(loadUrl + "#628");
     });
 
@@ -239,6 +238,6 @@ function getStartingUrl() {
     //three types of starting urls.
     //If it is dev - use dev. If internet available - use latest web version.
     //If internet is down - use local version with flag to not rewrite saved telemetry version (see event)
-    const startUrl = process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/#628";
+    const startUrl = process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/firebase-entry-point.html#628";
     return startUrl;
 }

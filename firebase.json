@@ -8,12 +8,6 @@
       "electron.js",
       "**/electron/**",
       "**/splash-screen/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
     ]
   }
 }
