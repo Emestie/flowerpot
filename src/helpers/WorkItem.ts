@@ -7,6 +7,7 @@ export interface IWorkItem {
     rev: number;
     type: string;
     iterationPath: string;
+    areaPath: string;
     assignedTo: string;
     assignedToFull: string;
     createdDate: string;
@@ -42,6 +43,7 @@ export interface IResponseWorkItem {
         "EOS.QA.ImportanceLevel"?: string;
         "Microsoft.VSTS.Common.Rank"?: string;
         "System.IterationPath": string;
+        "System.AreaPath": string;
         "Microsoft.VSTS.Common.Priority"?: string; //promptness
         "Microsoft.VSTS.Common.Severity"?: string; //importance
         "System.State": string;
@@ -119,6 +121,7 @@ export default class WorkItem {
             title: this.shortTitle(resp.fields["System.Title"]) || "",
             titleFull: resp.fields["System.Title"] || "",
             iterationPath: resp.fields["System.IterationPath"] || "",
+            areaPath: resp.fields["System.AreaPath"] || "",
             promptness: this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]),
             promptnessText: resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"] || "",
             importance: this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"]),

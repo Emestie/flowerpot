@@ -201,7 +201,9 @@ export default class WorkItemRow extends React.Component<IProps> {
                             </span>
                         )}
                         {this.getListIndocator()}
-                        <span className="IterationInTitle">{item.iterationPath}</span>
+                        <span className="IterationInTitle" title={item.areaPath}>
+                            {item.iterationPath}
+                        </span>
                         <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>
                             {item.titleFull}
                         </span>
