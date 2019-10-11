@@ -59,6 +59,10 @@ function createWindow() {
         wnd.toggleDevTools();
     });
 
+    globalShortcut.register("CommandOrControl+Shift+0", () => {
+        loadLocalVersion();
+    });
+
     ipcMain.on("update-icon", (e, { level, hasChanges }) => {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
         currentLevel = level;
@@ -94,13 +98,8 @@ function createWindow() {
         store.set(data.prop, data.value);
     });
 
-    wnd.webContents.on("did-fail-load", function() {
-        const loadUrl = url.format({
-            pathname: path.join(__dirname, "/../build/index.html"),
-            protocol: "file:",
-            slashes: true
-        });
-        wnd.loadURL(loadUrl + "#628");
+    wnd.webContents.on("did-fail-load", () => {
+        loadLocalVersion();
     });
 
     wnd.on("show", () => {
@@ -238,6 +237,15 @@ function getStartingUrl() {
     //three types of starting urls.
     //If it is dev - use dev. If internet available - use latest web version.
     //If internet is down - use local version with flag to not rewrite saved telemetry version (see event)
-    const startUrl = process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/firebase-entry-point.html#628";
+    const startUrl = process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/firebase-entry-point.html";
     return startUrl;
+}
+
+function loadLocalVersion() {
+    const loadUrl = url.format({
+        pathname: path.join(__dirname, "/../build/index.html"),
+        protocol: "file:",
+        slashes: true
+    });
+    wnd.loadURL(loadUrl);
 }

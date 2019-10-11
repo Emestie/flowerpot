@@ -65,7 +65,7 @@ export default class Electron {
         if ((window as any).electronRemote) (window as any).electronRemote.getCurrentWindow().toggleDevTools();
     }
 
-    private static getIpcRenderer() {
+    public static getIpcRenderer() {
         if ((window as any).ipcRenderer) return (window as any).ipcRenderer;
         else return null;
     }
