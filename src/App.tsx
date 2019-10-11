@@ -38,6 +38,7 @@ export default class App extends React.Component {
             store.settings.lastTimeVersion = ver;
             store.updateSettings();
             Telemetry.versionUsageInfo();
+            store.showWhatsNew = true;
         }
     }
 

@@ -3,6 +3,7 @@ import { Header, Container, Message, Button } from "semantic-ui-react";
 import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
 import UpdateBanner from "../components/UpdateBanner";
+import WhatsNewBanner from "../components/WhatsNewBanner";
 import { observer } from "mobx-react";
 import Electron from "../helpers/Electron";
 import { IQuery } from "../helpers/Query";
@@ -67,6 +68,7 @@ export default class MainView extends React.Component<IProps, IState> {
                 </div>
                 <Container fluid>
                     <UpdateBanner />
+                    <WhatsNewBanner />
                     {queriesElems}
                 </Container>
             </div>

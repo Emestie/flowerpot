@@ -15,6 +15,7 @@ class Store {
     @observable view: TView = "loading";
     @observable errorMessage: string = "";
     @observable updateStatus: TUpdateStatus = "none";
+    @observable showWhatsNew: boolean = false;
     @observable settings: ISettings = {
         tfsPath: "http://tfs.eos.loc:8080/tfs/DefaultCollection/",
         tfsUser: "",
