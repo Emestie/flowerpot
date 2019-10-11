@@ -20,7 +20,7 @@ const en: ILocalizedStrings = {
     updateStateDownloading: "Downloading update...",
     updateStateReady: "Update ready. Click to install",
     updateStateNone: "Check for updates",
-    updateStateError: "Update error. Click try again",
+    updateStateError: "Update error. Click to try again",
     settingsHeader: "Settings",
     editTfsSettingsBtn: "Edit TFS & Account settings",
     settingsBackButton: "OK",
