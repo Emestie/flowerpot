@@ -5,3 +5,7 @@ Flowerpot is an electron app that working in background and tracking your TFS qu
 ## Downloads
 
 You can download latest version [here](https://github.com/Emestie/flowerpot/releases/latest).
+
+## Changelog
+
+Changelog (russian version only) can be accessed [here](https://emestie.github.io/flowerpot/changelog).
