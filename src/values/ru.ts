@@ -131,7 +131,15 @@ const ru: ILocalizedStrings = {
 
     noAscii: "На данный момент в пароле поддерживаются только ASCII символы.",
     cbTelemetry: "Разрешить сбор статистики использования",
-    releaseNotes: "Что нового?"
+    releaseNotes: "Что нового?",
+
+    localCaption: "Локальная версия",
+    localWarning:
+        "Приложение использует локальную версию функционала. Причиной может быть отсутствие подключения к интернету. Не все новые функции доступны.",
+
+    justUpdatedMessage1: "Flowerpot обновлен до версии ",
+    justUpdatedMessage2: "Посмотреть изменения",
+    justUpdatedHide: "ОК",
 };
 
 export default ru;

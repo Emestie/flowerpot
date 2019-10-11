@@ -6,6 +6,7 @@ import QueriesSettingsTable from "../components/QueriesSettingsTable";
 import Electron from "../helpers/Electron";
 import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
 import { s } from "../values/Strings";
+import LocalVersionBanner from "../components/LocalVersionBanner";
 
 const avatar = require("../assets/ti.jpg") as string;
 
@@ -139,6 +140,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                 <div className="TopBar">
                     <Header as="h1">{s("settingsHeader")}</Header>
                     <div className="RightTopCorner">
+                        <LocalVersionBanner />
                         <span style={{ marginRight: 10 }}>
                             <Button icon onClick={this.toggleTheme}>
                                 {store.settings.darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}

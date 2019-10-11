@@ -7,6 +7,10 @@ export interface INotificationData {
 }
 
 export default class Electron {
+    public static isLocal() {
+        return document.location.href.indexOf("build") !== -1;
+    }
+
     private static getElectronStore() {
         if ((window as any).electronStore) return (window as any).electronStore;
         else return null;
@@ -43,8 +47,9 @@ export default class Electron {
 
     public static getVer() {
         const appVer = process.env.REACT_APP_VERSION;
-        const dateTimeStamp = preval`module.exports = new Date().toISOString();`;
-        return `${appVer} (${dateTimeStamp})`;
+        const dateTimeStamp = preval`module.exports = new Date().toISOString().substr(0, 16);`;
+        const verType = document.location.href.indexOf("localhost") !== -1 ? "Dev" : Electron.isLocal() ? "Local" : "Remote";
+        return `${appVer} ${verType} (${dateTimeStamp})`;
     }
 
     public static openUrl(url: string) {
@@ -60,7 +65,7 @@ export default class Electron {
         if ((window as any).electronRemote) (window as any).electronRemote.getCurrentWindow().toggleDevTools();
     }
 
-    private static getIpcRenderer() {
+    public static getIpcRenderer() {
         if ((window as any).ipcRenderer) return (window as any).ipcRenderer;
         else return null;
     }

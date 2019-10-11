@@ -35,6 +35,6 @@ export default class UpdateBanner extends React.Component<IProps, IState> {
                     </p>
                 </Message>
             );
-        else return <></>;
+        else return null;
     }
 }

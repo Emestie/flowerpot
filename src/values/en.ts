@@ -20,7 +20,7 @@ const en: ILocalizedStrings = {
     updateStateDownloading: "Downloading update...",
     updateStateReady: "Update ready. Click to install",
     updateStateNone: "Check for updates",
-    updateStateError: "Update error. Click try again",
+    updateStateError: "Update error. Click to try again",
     settingsHeader: "Settings",
     editTfsSettingsBtn: "Edit TFS & Account settings",
     settingsBackButton: "OK",
@@ -131,7 +131,14 @@ const en: ILocalizedStrings = {
 
     noAscii: "We're sorry, but for now only ASCII characters are supported in password.",
     cbTelemetry: "Allow usage stats collection",
-    releaseNotes: "Release notes"
+    releaseNotes: "Release notes",
+
+    localCaption: "Local version",
+    localWarning: "App loaded with local scripts. The reason might be in the internet outage. Not all features available.",
+
+    justUpdatedMessage1: 'Flowerpot has been updated to version ',
+    justUpdatedMessage2: 'Check release notes',
+    justUpdatedHide: 'Hide',
 };
 
 export default en;

@@ -36,34 +36,31 @@ function createWindow() {
         minHeight: 600,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
     };
     const splashCfg = {
         windowOpts: windowOptions,
         templateUrl: `${__dirname}/splash-screen/splash-screen.html`,
         splashScreenOpts: {
             width: 260,
-            height: 100
-        }
+            height: 100,
+        },
     };
 
     wnd = Splashscreen.initSplashScreen(splashCfg);
 
     if (!isDev) wnd.setMenu(null);
 
-    const startUrl =
-        process.env.ELECTRON_START_URL ||
-        url.format({
-            pathname: path.join(__dirname, "/../build/index.html"),
-            protocol: "file:",
-            slashes: true
-        });
-    wnd.loadURL(startUrl);
+    wnd.loadURL(getStartingUrl());
 
     buildTrayIcon();
 
     globalShortcut.register("CommandOrControl+Shift+8", () => {
         wnd.toggleDevTools();
+    });
+
+    globalShortcut.register("CommandOrControl+Shift+0", () => {
+        loadLocalVersion();
     });
 
     ipcMain.on("update-icon", (e, { level, hasChanges }) => {
@@ -99,6 +96,10 @@ function createWindow() {
 
     ipcMain.on("save-settings-prop", (e, data) => {
         store.set(data.prop, data.value);
+    });
+
+    wnd.webContents.on("did-fail-load", () => {
+        loadLocalVersion();
     });
 
     wnd.on("show", () => {
@@ -195,7 +196,7 @@ function buildTrayIcon() {
             label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
                 wnd.show();
-            }
+            },
         },
         {
             label: locale === "ru" ? "Выход" : "Quit",
@@ -203,8 +204,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            }
-        }
+            },
+        },
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -227,7 +228,27 @@ function registerAutostart() {
     if (!isDev) {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe")
+            path: app.getPath("exe"),
         });
     }
+}
+
+function getStartingUrl() {
+    //three types of starting urls.
+    //If it is dev - use dev. If internet available - use latest web version.
+    //If internet is down - use local version with flag to not rewrite saved telemetry version (see event)
+
+    //adding salt to url to avoid version caching. looking for another way too
+    const salt = Math.floor(Math.random() * 100000);
+    const startUrl = process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=" + salt;
+    return startUrl;
+}
+
+function loadLocalVersion() {
+    const loadUrl = url.format({
+        pathname: path.join(__dirname, "/../build/index.html"),
+        protocol: "file:",
+        slashes: true,
+    });
+    wnd.loadURL(loadUrl);
 }

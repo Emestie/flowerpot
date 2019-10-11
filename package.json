@@ -11,17 +11,17 @@
         "productName": "Flowerpot",
         "appId": "mst.flowerpot",
         "files": [
-            "build/**/*",
-            "_icons/**/*"
+            "_icons/**/*",
+            "build/**/*"
         ],
         "win": {
-            "icon": "build/icon.ico"
+            "icon": "build/favicon.ico"
         },
         "publish": {
             "provider": "github"
         }
     },
-    "version": "0.1.25",
+    "version": "0.2.0-2",
     "dependencies": {
         "@trodi/electron-splashscreen": "^0.3.4",
         "electron-updater": "^4.1.2",
@@ -51,10 +51,11 @@
     "scripts": {
         "dev": "nf start",
         "start": "react-scripts start",
-        "build": "react-scripts build",
         "electron": "electron .",
-        "electron-bulid": "npm run build && electron-builder -w --publish never",
-        "electron-deploy": "npm run build && electron-builder -w --publish always"
+        "build-react": "react-scripts build && DEL /S /Q .\\build\\*.map && copy .\\build\\index.html .\\build\\firebase-entry-point.html",
+        "bulid-electron": "npm run build-react && electron-builder -w --publish never",
+        "deploy-react": "npm run build-react && firebase deploy",
+        "deploy-electron": "npm run build-react && electron-builder -w --publish always"
     },
     "eslintConfig": {
         "extends": "react-app"

@@ -77,8 +77,7 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
     }
 
     get redItems() {
-        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).filter(wi => wi.promptness === 1 || wi.rank === 1)
-            .length;
+        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).filter(wi => wi.promptness === 1 || wi.rank === 1).length;
     }
 
     get orangeItems() {
@@ -210,26 +209,28 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
                             <span style={{ marginLeft: 10, color: "gray" }}>{query.teamName}</span>
                         </small>
                     </span>
-                    {!!this.redItems && (
-                        <Label size="small" circular color="red">
-                            {this.redItems}
-                        </Label>
-                    )}
-                    {!!this.orangeItems && (
-                        <Label size="small" circular color="orange">
-                            {this.orangeItems}
-                        </Label>
-                    )}
-                    {!!this.totalItems && (
-                        <Label size="small" circular>
-                            {this.totalItems}
-                        </Label>
-                    )}
-                    {!this.totalItems && !this.state.isLoading && (
-                        <Label size="small" circular color="green">
-                            ✔
-                        </Label>
-                    )}
+                    <span className="WICounts">
+                        {!!this.redItems && (
+                            <Label size="mini" circular color="red">
+                                {this.redItems}
+                            </Label>
+                        )}
+                        {!!this.orangeItems && (
+                            <Label size="mini" circular color="orange">
+                                {this.orangeItems}
+                            </Label>
+                        )}
+                        {!!this.totalItems && (
+                            <Label size="mini" circular>
+                                {this.totalItems}
+                            </Label>
+                        )}
+                        {!this.totalItems && !this.state.isLoading && (
+                            <Label size="small" circular color="green">
+                                ✔
+                            </Label>
+                        )}
+                    </span>
                     {!!query.queryPath && (
                         <span title={s("openExternal")} className="externalLink" onClick={this.onOpenQueryInBrowser}>
                             <Icon size="small" name="external share" />
