@@ -48,8 +48,8 @@ export default class Electron {
     public static getVer() {
         const appVer = process.env.REACT_APP_VERSION;
         const dateTimeStamp = preval`module.exports = new Date().toISOString().substr(0, 16);`;
-        const verType = document.location.href.indexOf("localhost") !== -1 ? "Dev" : Electron.isLocal() ? "Local" : "Remote";
-        return `${appVer} ${verType} (${dateTimeStamp})`;
+        const verType = document.location.href.indexOf("localhost") !== -1 ? " Dev" : Electron.isLocal() ? " Local" : "";
+        return `${appVer}${verType} (${dateTimeStamp})`;
     }
 
     public static openUrl(url: string) {
