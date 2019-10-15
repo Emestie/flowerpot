@@ -89,6 +89,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
         store.updateSettings();
     };
 
+    toggleWhatsNewOnUpdate = () => {
+        store.settings.showWhatsNewOnUpdate = !store.settings.showWhatsNewOnUpdate;
+        store.updateSettings();
+    }
+
     onSave = () => {
         store.switchView("main");
     };
@@ -203,6 +208,8 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Form.Checkbox label={s("cbAutostartLabel")} checked={store.autostart} onChange={this.toggleAutostart} />
                     <br />
                     <Form.Checkbox label={s("cbTelemetry")} checked={store.settings.allowTelemetry} onChange={this.toggleTelemetry} />
+                    <br />
+                    <Form.Checkbox label={s("cbWhatsNew")} checked={store.settings.showWhatsNewOnUpdate} onChange={this.toggleWhatsNewOnUpdate} />
                     <br />
                     <Header as="h3" dividing>
                         {s("settingsCreditsHeader")}

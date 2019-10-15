@@ -9,6 +9,8 @@ type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "error";
 export type TLocale = "en" | "ru";
 
 class Store {
+    public useFishWIs = 1;
+
     @observable _routinesRestart: number = 0;
     @observable _permawatchUpdate: number = 0;
 
@@ -36,6 +38,7 @@ class Store {
         notes: [],
         darkTheme: false,
         allowTelemetry: true,
+        showWhatsNewOnUpdate: true,
         lastTimeVersion: ""
     };
     //! if add something in settings outfise of flowerpot section don't forget to add reaction

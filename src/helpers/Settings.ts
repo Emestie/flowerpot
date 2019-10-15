@@ -34,6 +34,7 @@ export interface ISettings {
     notes: INoteItem[];
     darkTheme: boolean;
     allowTelemetry: boolean;
+    showWhatsNewOnUpdate: boolean;
     lastTimeVersion: string;
 }
 

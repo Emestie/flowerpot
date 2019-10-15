@@ -32,17 +32,20 @@ export default class App extends React.Component {
         }
 
         this.registrator();
+        this.afterUpdateHandler();
+    }
 
+    registrator() {}
+
+    afterUpdateHandler() {
         const ver = Electron.getVer();
         if (!Electron.isDev() && !Electron.isLocal() && store.settings.lastTimeVersion !== ver) {
             store.settings.lastTimeVersion = ver;
             store.updateSettings();
             Telemetry.versionUsageInfo();
-            store.showWhatsNew = true;
+            if (store.settings.showWhatsNewOnUpdate) store.showWhatsNew = true;
         }
     }
-
-    registrator() {}
 
     getScene() {
         switch (store.view) {

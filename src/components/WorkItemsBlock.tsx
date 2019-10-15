@@ -42,7 +42,7 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
     async routineStart() {
         this.setState({ workItems: [], isLoading: true });
 
-        if (process.env.REACT_APP_FISHY_WI === "1") {
+        if (store.useFishWIs === 1 && Electron.isDev()) {
             this.setState({ workItems: [WorkItem.fish()], isLoading: false });
             return;
         }

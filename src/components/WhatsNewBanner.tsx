@@ -17,6 +17,12 @@ export default observer(() => {
         hideMessage();
     };
 
+    const neverShowNotesAgain = () => {
+        hideMessage();
+        store.settings.showWhatsNewOnUpdate = false;
+        store.updateSettings();
+    };
+
     return (
         <Message info size="mini">
             {s("justUpdatedMessage1")} <i>{Electron.getVer()}</i>.
@@ -27,6 +33,9 @@ export default observer(() => {
                 <Button compact size="mini" onClick={hideMessage}>
                     {s("justUpdatedHide")}
                 </Button>
+                <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={neverShowNotesAgain}>
+                    {s("justUpdatedNeverShow")}
+                </span>
             </span>
         </Message>
     );

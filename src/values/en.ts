@@ -136,9 +136,12 @@ const en: ILocalizedStrings = {
     localCaption: "Local version",
     localWarning: "App loaded with local scripts. The reason might be in the internet outage. Not all features available.",
 
-    justUpdatedMessage1: 'Flowerpot has been updated to version ',
-    justUpdatedMessage2: 'Check release notes',
-    justUpdatedHide: 'Hide',
+    justUpdatedMessage1: "Flowerpot has been updated to version ",
+    justUpdatedMessage2: "Release notes",
+    justUpdatedHide: "Hide",
+    justUpdatedNeverShow: 'Never show this again',
+
+    cbWhatsNew: "Show release notes after app update"
 };
 
 export default en;
