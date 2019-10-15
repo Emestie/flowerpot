@@ -124,8 +124,8 @@ const ru: ILocalizedStrings = {
     addToH: "Скрыть до изменений",
     openExternal: "Открыть в браузере",
 
-    noteCommand: "Заметка",
-    noteDialog: "Текст заметки для рабочего элемента",
+    noteCommand: "Локальная заметка",
+    noteDialog: "Текст локальной заметки для рабочего элемента",
 
     hasShelve: "К этому элементу имеется шелв",
 
@@ -142,7 +142,15 @@ const ru: ILocalizedStrings = {
     justUpdatedHide: "ОК",
     justUpdatedNeverShow: "Больше не показывать такие сообщения",
 
-    cbWhatsNew: "Показывать патчноуты после обновлений"
+    cbWhatsNew: "Показывать патчноуты после обновлений",
+
+    listsClearAll: "Очистить все",
+
+    itemIsDone: "Выполнено пользователем ",
+    done: "Выполнено",
+
+    localNoteHint: "Локальная заметка",
+    globalNoteHint: "Глобальная заметка, написанная "
 };
 
 export default ru;

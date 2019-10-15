@@ -175,6 +175,8 @@ export default class WorkItemRow extends React.Component<IProps> {
         let hasChanges = store.getWIHasChanges(item);
         let uid = this.props.item.id + Math.random();
 
+        let [isDone, doneByUser] = [false, "user"];
+
         return (
             <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
                 <Table.Cell collapsing className={hasChanges ? "workItemHasCanges" : this.getClass()}>
@@ -193,6 +195,13 @@ export default class WorkItemRow extends React.Component<IProps> {
                 </Table.Cell>
                 <Table.Cell>
                     <ContextMenuTrigger id={uid + ""}>
+                        {isDone && (
+                            <span className="hasShelve" title={s("itemIsDone") + doneByUser}>
+                                <Label color="blue" size="mini" style={{ padding: "3px 4px", marginRight: 5 }}>
+                                    {s("done")}
+                                </Label>
+                            </span>
+                        )}
                         {!!item.isHasShelve && (
                             <span className="hasShelve" title={s("hasShelve")}>
                                 <Label color="green" size="mini" style={{ padding: "3px 4px", marginRight: 5 }}>
@@ -207,13 +216,13 @@ export default class WorkItemRow extends React.Component<IProps> {
                         <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>
                             {item.titleFull}
                         </span>
-                        <span style={{ marginLeft: 5 }}>
-                            {!!this.note && (
-                                <Label color={this.noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
+                        {!!this.note && (
+                            <span style={{ marginLeft: 5 }} title={s('localNoteHint')}>
+                                <Label basic color={this.noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
                                     {this.note}
                                 </Label>
-                            )}
-                        </span>
+                            </span>
+                        )}
                     </ContextMenuTrigger>
                 </Table.Cell>
                 {this.props.isPermawatch && (

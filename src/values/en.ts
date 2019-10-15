@@ -124,8 +124,8 @@ const en: ILocalizedStrings = {
     addToH: "Hide until changes",
     openExternal: "Open in browser",
 
-    noteCommand: "Edit note",
-    noteDialog: "Note for work item",
+    noteCommand: "Edit local note",
+    noteDialog: "Local note for work item",
 
     hasShelve: "This item has a shelve",
 
@@ -139,9 +139,17 @@ const en: ILocalizedStrings = {
     justUpdatedMessage1: "Flowerpot has been updated to version ",
     justUpdatedMessage2: "Release notes",
     justUpdatedHide: "Hide",
-    justUpdatedNeverShow: 'Never show this again',
+    justUpdatedNeverShow: "Never show this again",
 
-    cbWhatsNew: "Show release notes after app update"
+    cbWhatsNew: "Show release notes after app update",
+
+    listsClearAll: "Clear all",
+
+    itemIsDone: "Done by ",
+    done: "Done",
+
+    localNoteHint: "Local note made by you",
+    globalNoteHint: "Global note made by "
 };
 
 export default en;

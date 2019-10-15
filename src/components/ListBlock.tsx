@@ -16,7 +16,7 @@ interface IState {
 @observer
 export default class ListBlock extends React.Component<IProps, IState> {
     state: IState = {
-        inputVal: "",
+        inputVal: ""
     };
 
     get list() {
@@ -67,6 +67,10 @@ export default class ListBlock extends React.Component<IProps, IState> {
         Lists.deleteFromList(this.props.listName, id);
     };
 
+    onClear = () => {
+        Lists.clearList(this.props.listName);
+    };
+
     render() {
         let items = this.list.map(l => (
             <span key={l.id} style={{ marginBottom: 3, marginRight: 3, display: "inline-block" }}>
@@ -108,6 +112,11 @@ export default class ListBlock extends React.Component<IProps, IState> {
                 )}
                 <br />
                 <br />
+                {!!items.length && (
+                    <Button size="mini" onClick={this.onClear}>
+                        {s("listsClearAll")}
+                    </Button>
+                )}
                 {items}
             </div>
         );

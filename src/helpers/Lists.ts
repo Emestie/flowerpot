@@ -22,6 +22,11 @@ export default class Lists {
         store.updateSettings();
     }
 
+    public static clearList(list: TLists) {
+        store.settings.lists[list] = [];
+        store.updateSettings();
+    }
+
     public static isIn(list: TLists, id: number, rev?: number) {
         return !!store.getList(list).find(x => x.id === id && (rev ? x.rev === rev : true));
     }

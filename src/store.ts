@@ -45,6 +45,10 @@ class Store {
     @observable autostart: boolean = true;
     @observable locale: TLocale = "en";
 
+    isEosTfs() {
+        return this.settings.tfsPath.toLowerCase().indexOf("tfs.eos.loc:8080") !== -1;
+    }
+
     getQueries(all?: boolean) {
         let queries = this.copy<IQuery[]>(this.settings.queries).sort((a, b) => a.order - b.order);
         if (all) return queries;
@@ -55,7 +59,7 @@ class Store {
     getList(list: TLists) {
         return this.copy(this.settings.lists[list]).sort((a, b) => a.id - b.id);
     }
-    
+
     getAllLists() {
         return [...this.getList("deferred"), ...this.getList("favorites"), ...this.getList("hidden"), ...this.getList("permawatch")];
     }
