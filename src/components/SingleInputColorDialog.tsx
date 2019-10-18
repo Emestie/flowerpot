@@ -44,7 +44,7 @@ export default (p: IProps) => {
         <div
             style={{ padding: 20 }}
             onKeyPress={e => {
-                if (e.charCode == 13) onConfirm();
+                if (e.charCode === 13) onConfirm();
             }}
         >
             <div style={{ marginBottom: 20 }}>{p.caption}</div>
@@ -65,9 +65,13 @@ export default (p: IProps) => {
                         <Radio
                             key={c}
                             label={
-                                <Label basic={p.basic} style={{ marginRight: 10, userSelect: "none" }} circular size="mini" color={c as any}>
-                                    {colorValue === c ? "✔" : <span style={{ opacity: 0 }}>✔</span>}
-                                </Label>
+                                <Label
+                                    basic={colorValue !== c}
+                                    style={{ marginRight: 10, userSelect: "none" }}
+                                    circular
+                                    size="mini"
+                                    color={c as any}
+                                ></Label>
                             }
                             name="colorGrp"
                             checked={colorValue === c}
