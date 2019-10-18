@@ -5,3 +5,5 @@ keep notifs in windows notif center
 firebase:
     mark as done
     global notes
+
+open item by id

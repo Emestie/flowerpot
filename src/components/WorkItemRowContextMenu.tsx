@@ -1,11 +1,12 @@
 import React from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import { TLists } from "../helpers/Settings";
-import { Menu, Icon, Confirm, Input, Radio, Label } from "semantic-ui-react";
+import { Menu, Icon } from "semantic-ui-react";
 import { IWorkItem } from "../helpers/WorkItem";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
 import Electron from "../helpers/Electron";
+import SingleInputColorDialog from "./SingleInputColorDialog";
 
 interface IProps {
     uid: number;
@@ -14,15 +15,15 @@ interface IProps {
 }
 interface IState {
     showNoteDialog: boolean;
-    noteValue: string;
-    colorValue: string | undefined;
+    noteInitialText: string | undefined;
+    noteInitialColor: string | undefined;
 }
 
 export default class WorkItemRowContextMenu extends React.Component<IProps, IState> {
     state: IState = {
         showNoteDialog: false,
-        noteValue: "",
-        colorValue: undefined,
+        noteInitialText: undefined,
+        noteInitialColor: undefined,
     };
 
     onListChange = (e: any, data: any) => {
@@ -51,43 +52,12 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
         Electron.copyString(s);
     };
 
-    onEditNote = (e: any) => {
-        Lists.setNote(this.props.workItem.id, this.state.noteValue, this.state.colorValue);
-        this.setState({ showNoteDialog: false, noteValue: "", colorValue: undefined });
+    onEditNote = (text: string, color?: string) => {
+        Lists.setNote(this.props.workItem.id, text, color);
+        this.setState({ showNoteDialog: false });
     };
 
-    colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "brown", "grey"];
-
     render() {
-        let noteDialogContent = (
-            <div style={{ padding: 20 }}>
-                <div style={{ marginBottom: 20 }}>{s("noteDialog")}</div>
-                <div>
-                    <Input
-                        style={{ width: "100%" }}
-                        value={this.state.noteValue}
-                        onChange={e => this.setState({ noteValue: e.target.value })}
-                        maxLength="50"
-                    />
-                </div>
-                <div style={{ marginTop: 10 }}>
-                    {this.colorList.map(c => (
-                        <Radio
-                            key={c}
-                            label={
-                                <Label style={{ marginRight: 10, userSelect: "none" }} circular size="small" color={c as any}>
-                                    {this.state.colorValue === c ? "✔" : <span style={{ opacity: 0 }}>✔</span>}
-                                </Label>
-                            }
-                            name="colorGrp"
-                            checked={this.state.colorValue === c}
-                            onChange={() => this.setState({ colorValue: c })}
-                        />
-                    ))}
-                </div>
-            </div>
-        );
-
         let wi = this.props.workItem;
         return (
             <ContextMenu id={this.props.uid + ""}>
@@ -161,8 +131,8 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                         onClick={() =>
                             this.setState({
                                 showNoteDialog: true,
-                                noteValue: Lists.getNote(this.props.workItem.id) || "",
-                                colorValue: Lists.getNoteColor(this.props.workItem.id),
+                                noteInitialText: Lists.getNote(this.props.workItem.id),
+                                noteInitialColor: Lists.getNoteColor(this.props.workItem.id),
                             })
                         }
                     >
@@ -173,11 +143,15 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                             {s("noteCommand")}
                         </Menu.Item>
                     </MenuItem>
-                    <Confirm
-                        open={this.state.showNoteDialog}
-                        content={noteDialogContent}
-                        onCancel={() => this.setState({ showNoteDialog: false, noteValue: "", colorValue: undefined })}
-                        onConfirm={this.onEditNote}
+                    <SingleInputColorDialog
+                        show={this.state.showNoteDialog}
+                        caption={s("noteDialog")}
+                        onClose={() => this.setState({ showNoteDialog: false })}
+                        onOk={this.onEditNote}
+                        initialText={this.state.noteInitialText}
+                        initialColor={this.state.noteInitialColor}
+                        basic
+                        showColors
                     />
                 </Menu>
             </ContextMenu>

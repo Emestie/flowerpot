@@ -9,7 +9,7 @@ type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "error";
 export type TLocale = "en" | "ru";
 
 class Store {
-    public useFishWIs = 1;
+    public useFishWIs = 0;
 
     @observable _routinesRestart: number = 0;
     @observable _permawatchUpdate: number = 0;
