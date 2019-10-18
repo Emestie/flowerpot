@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Input, Radio, Label, Confirm } from "semantic-ui-react";
 
 interface IProps {
@@ -17,14 +17,36 @@ const colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", 
 export default (p: IProps) => {
     const [textValue, setTextValue] = useState("");
     const [colorValue, setColorValue] = useState<string | undefined>(undefined);
+    const inputRef = useRef();
 
     useEffect(() => {
         setTextValue(p.initialText || "");
         setColorValue(p.initialColor);
     }, [p.initialColor, p.initialText]);
 
+    useEffect(() => {
+        if (p.show && inputRef && inputRef.current) (inputRef.current as any).focus();
+    }, [p.show]);
+
+    const onConfirm = () => {
+        p.onOk(textValue, colorValue);
+        setColorValue(undefined);
+        setTextValue("");
+    };
+
+    const onCancel = () => {
+        setColorValue(undefined);
+        setTextValue("");
+        p.onClose();
+    };
+
     const singleLabelDialogContent = (
-        <div style={{ padding: 20 }}>
+        <div
+            style={{ padding: 20 }}
+            onKeyPress={e => {
+                if (e.charCode == 13) onConfirm();
+            }}
+        >
             <div style={{ marginBottom: 20 }}>{p.caption}</div>
             <div>
                 <Input
@@ -34,6 +56,7 @@ export default (p: IProps) => {
                         setTextValue(e.target.value);
                     }}
                     maxLength="50"
+                    ref={inputRef as any}
                 />
             </div>
             {!!p.showColors && (
@@ -56,20 +79,5 @@ export default (p: IProps) => {
         </div>
     );
 
-    return (
-        <Confirm
-            open={p.show}
-            content={singleLabelDialogContent}
-            onCancel={() => {
-                setColorValue(undefined);
-                setTextValue("");
-                p.onClose();
-            }}
-            onConfirm={() => {
-                p.onOk(textValue, colorValue);
-                setColorValue(undefined);
-                setTextValue("");
-            }}
-        />
-    );
+    return <Confirm open={p.show} content={singleLabelDialogContent} onCancel={onCancel} onConfirm={onConfirm} />;
 };

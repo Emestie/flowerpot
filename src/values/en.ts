@@ -111,8 +111,7 @@ const en: ILocalizedStrings = {
     hidden: "Hidden",
     permawatchDescription: "IDs of Work Items that will be placed in separated query and stay there until manual remove.",
     permawatch: "Permawatch",
-    listsNote:
-        "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
+    listsNote: "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
     addItemsInListNotice: "To add items in this list use context menu in Queries view.",
     //context
     copy: "Copy info",
@@ -149,7 +148,10 @@ const en: ILocalizedStrings = {
     done: "Done",
 
     localNoteHint: "Local note made by you",
-    globalNoteHint: "Global note made by "
+    globalNoteHint: "Global note made by ",
+
+    openById: "Open by ID",
+    openByIdText: "Enter Work Item ID to open",
 };
 
 export default en;

@@ -150,7 +150,10 @@ const ru: ILocalizedStrings = {
     done: "Выполнено",
 
     localNoteHint: "Локальная заметка",
-    globalNoteHint: "Глобальная заметка, написанная "
+    globalNoteHint: "Глобальная заметка, написанная ",
+
+    openById: "Открыть по ID",
+    openByIdText: "Введите ID рабочего элемента, который нужно открыть",
 };
 
 export default ru;
