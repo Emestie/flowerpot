@@ -91,7 +91,8 @@ export default class Electron {
 
             setInterval(() => {
                 if (store.updateStatus !== "ready" && store.updateStatus !== "downloading" && !Electron.isDev() && store.view === "main") {
-                    document.location.href = document.location.href += "x";
+                    const href = "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=" + Math.floor(Math.random() * 1000000);
+                    document.location.href = href;
                 }
             }, 1000 * 60 * 61);
         }
