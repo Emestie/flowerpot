@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Header, Container, Message, Button } from "semantic-ui-react";
+import { Header, Container, Message, Button, Icon } from "semantic-ui-react";
 import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
-import UpdateBanner from "../components/UpdateBanner";
 import WhatsNewBanner from "../components/WhatsNewBanner";
 import { observer } from "mobx-react";
 import Electron from "../helpers/Electron";
@@ -31,6 +30,8 @@ export default observer(() => {
         setIdDial(false);
     };
 
+    const updateApp = () => Electron.updateApp();
+
     const queriesSorting = (a: IQuery, b: IQuery) => {
         if (a.empty === b.empty) return 0;
         if (!a.empty && b.empty) return -1;
@@ -58,6 +59,11 @@ export default observer(() => {
                 <Header as="h1">{s("mainHeader")}</Header>
                 <div className="RightTopCorner">
                     <LocalVersionBanner />
+                    {store.updateStatus === "ready" && (
+                        <Button icon positive onClick={updateApp} title={s("updateArrived")}>
+                            <Icon name="refresh" />
+                        </Button>
+                    )}
                     <Button onClick={onOpenById}>{s("openById")}</Button>
                     <Button onClick={onRefresh} disabled={!isRefreshAvailable}>
                         {s("refresh")}
@@ -67,7 +73,6 @@ export default observer(() => {
             </div>
             <Container fluid>
                 <SingleInputColorDialog show={idDial} onClose={() => setIdDial(false)} onOk={openById} caption={s("openByIdText")} />
-                <UpdateBanner />
                 <WhatsNewBanner />
                 {queriesElems}
             </Container>

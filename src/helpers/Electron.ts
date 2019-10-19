@@ -88,6 +88,12 @@ export default class Electron {
             setInterval(() => {
                 this.checkForUpdates();
             }, 1000 * 60 * 60);
+
+            setInterval(() => {
+                if (store.updateStatus !== "ready" && store.updateStatus !== "downloading" && !Electron.isDev() && store.view === "main") {
+                    document.location.href = document.location.href += "x";
+                }
+            }, 1000 * 60 * 61);
         }
 
         let ipcRenderer = Electron.getIpcRenderer();
