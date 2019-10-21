@@ -33,13 +33,14 @@ class Store {
             permawatch: [],
             favorites: [],
             deferred: [],
-            hidden: []
+            hidden: [],
         },
         notes: [],
         darkTheme: false,
         allowTelemetry: true,
         showWhatsNewOnUpdate: true,
-        lastTimeVersion: ""
+        lastTimeVersion: "",
+        lastTimeVersionLong: "",
     };
     //! if add something in settings outfise of flowerpot section don't forget to add reaction
     @observable autostart: boolean = true;

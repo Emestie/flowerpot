@@ -1,12 +1,12 @@
-import Electron from "./Electron";
 import store from "../store";
+import Version from "./Version";
 
 export default class Telemetry {
     private static async basicMessage(reason: string, extraInfo?: string) {
         if (!store.settings.allowTelemetry) return;
 
         try {
-            const ver = Electron.getVerLong();
+            const ver = Version.long;
             const name = store.settings.tfsUser;
 
             const encodedString = btoa(JSON.stringify({ reason, name, ver, extraInfo }));

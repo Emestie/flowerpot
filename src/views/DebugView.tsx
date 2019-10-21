@@ -3,6 +3,7 @@ import { Header, Button, Container } from "semantic-ui-react";
 import store from "../store";
 import Electron from "../helpers/Electron";
 import WorkItem from "../helpers/WorkItem";
+import Version from "../helpers/Version";
 
 interface IProps {}
 interface IState {}
@@ -70,8 +71,7 @@ export default class DebugView extends React.Component<IProps, IState> {
                     </Header>
                     <Button onClick={() => this.setChanges()}>Set changes to WI</Button>
                     <div>
-                        {Electron.getVerLong()} / {Electron.getVerShort()}
-                        {JSON.stringify(process.env)}
+                        {Version.long} / {Version.short}
                     </div>
                 </Container>
             </div>

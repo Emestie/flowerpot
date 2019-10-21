@@ -10,9 +10,9 @@ import MainView from "./views/MainView";
 import LoadingView from "./views/LoadingView";
 import DebugView from "./views/DebugView";
 import Electron from "./helpers/Electron";
+import Version from "./helpers/Version";
 import ListsView from "./views/ListsView";
 import RefreshHelperView from "./views/RefreshHelperView";
-import Telemetry from "./helpers/Telemetry";
 
 @observer
 export default class App extends React.Component {
@@ -38,12 +38,9 @@ export default class App extends React.Component {
     registrator() {}
 
     afterUpdateHandler() {
-        const ver = Electron.getVerShort();
-        if (!Electron.isDev() && !Electron.isLocal() && store.settings.lastTimeVersion !== ver) {
-            store.settings.lastTimeVersion = ver;
-            store.updateSettings();
-            Telemetry.versionUsageInfo();
-            if (store.settings.showWhatsNewOnUpdate) store.showWhatsNew = true;
+        if (!Electron.isDev() && !Electron.isLocal() && Version.isChangedLong()) {
+            Version.storeInSettings();
+            if (store.settings.showWhatsNewOnUpdate && Version.isChangedShort()) store.showWhatsNew = true;
         }
     }
 

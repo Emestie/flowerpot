@@ -7,6 +7,7 @@ import Electron from "../helpers/Electron";
 import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
 import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
+import Version from "../helpers/Version";
 
 const avatar = require("../assets/ti.jpg") as string;
 
@@ -18,26 +19,26 @@ interface IState {
 @observer
 export default class SettingsView extends React.Component<IProps, IState> {
     state: IState = {
-        updateInstallInProgress: false
+        updateInstallInProgress: false,
     };
 
     refreshRates: DropdownItemProps[] = [
         { key: 1, text: s("refresh1m"), value: 60 },
         { key: 2, text: s("refresh3m"), value: 180 },
         { key: 3, text: s("refresh5m"), value: 300 },
-        { key: 4, text: s("refresh10m"), value: 600 }
+        { key: 4, text: s("refresh10m"), value: 600 },
     ];
 
     sortPatterns: DropdownItemProps[] = [
         { key: 1, text: s("sortPatternWeight"), value: "default" },
         { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
-        { key: 3, text: s("sortPatternId"), value: "id" }
+        { key: 3, text: s("sortPatternId"), value: "id" },
     ];
 
     notificationsModes: DropdownItemProps[] = [
         { key: 1, text: s("notifModeAll"), value: "all" },
         { key: 2, text: s("notifModeMine"), value: "mine" },
-        { key: 3, text: s("notifModeNone"), value: "none" }
+        { key: 3, text: s("notifModeNone"), value: "none" },
     ];
 
     locales: DropdownItemProps[] = [{ key: 2, text: s("localeEn"), value: "en" }, { key: 3, text: s("localeRu"), value: "ru" }];
@@ -92,7 +93,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
     toggleWhatsNewOnUpdate = () => {
         store.settings.showWhatsNewOnUpdate = !store.settings.showWhatsNewOnUpdate;
         store.updateSettings();
-    }
+    };
 
     onSave = () => {
         store.switchView("main");
@@ -186,11 +187,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         onChange={(e, { value }) => this.onNotifModeSelect(value as TNotificationsMode)}
                     />
                     <br />
-                    <Form.Checkbox
-                        label={s("cbIconLabel")}
-                        checked={store.settings.iconChangesOnMyWorkItemsOnly}
-                        onChange={this.toggleIconColor}
-                    />
+                    <Form.Checkbox label={s("cbIconLabel")} checked={store.settings.iconChangesOnMyWorkItemsOnly} onChange={this.toggleIconColor} />
                     <br />
                     <Form.Checkbox label={s("mineOnTop")} checked={store.settings.mineOnTop} onChange={this.toggleMineOnTop} />
                     <br />
@@ -221,7 +218,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     </Label>
                     <Label>
                         {s("versionWord")}
-                        <Label.Detail>{Electron.getVerLong()}</Label.Detail>
+                        <Label.Detail>{Version.long}</Label.Detail>
                     </Label>
                     <Label as="a" onClick={() => Electron.openUrl("https://emestie.github.io/flowerpot/changelog")}>
                         {s("releaseNotes")}

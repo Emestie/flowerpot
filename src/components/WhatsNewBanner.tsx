@@ -4,6 +4,7 @@ import { Message, Button } from "semantic-ui-react";
 import { s } from "../values/Strings";
 import Electron from "../helpers/Electron";
 import { observer } from "mobx-react-lite";
+import Version from "../helpers/Version";
 
 export default observer(() => {
     if (!store.showWhatsNew) return null;
@@ -25,7 +26,7 @@ export default observer(() => {
 
     return (
         <Message info size="mini">
-            {s("justUpdatedMessage1")} <i>{Electron.getVerLong()}</i>.
+            {s("justUpdatedMessage1")} <i>{Version.long}</i>.
             <span style={{ marginLeft: 10 }}>
                 <Button compact size="mini" onClick={showNotes}>
                     {s("justUpdatedMessage2")}

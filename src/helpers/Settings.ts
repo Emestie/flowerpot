@@ -36,6 +36,7 @@ export interface ISettings {
     allowTelemetry: boolean;
     showWhatsNewOnUpdate: boolean;
     lastTimeVersion: string;
+    lastTimeVersionLong: string;
 }
 
 export default class Settings {
