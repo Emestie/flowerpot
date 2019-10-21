@@ -6,7 +6,7 @@ export default class Telemetry {
         if (!store.settings.allowTelemetry) return;
 
         try {
-            const ver = Electron.getVer();
+            const ver = Electron.getVerLong();
             const name = store.settings.tfsUser;
 
             const encodedString = btoa(JSON.stringify({ reason, name, ver, extraInfo }));

@@ -38,7 +38,7 @@ export default class App extends React.Component {
     registrator() {}
 
     afterUpdateHandler() {
-        const ver = Electron.getVer();
+        const ver = Electron.getVerShort();
         if (!Electron.isDev() && !Electron.isLocal() && store.settings.lastTimeVersion !== ver) {
             store.settings.lastTimeVersion = ver;
             store.updateSettings();

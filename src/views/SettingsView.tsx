@@ -221,7 +221,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     </Label>
                     <Label>
                         {s("versionWord")}
-                        <Label.Detail>{Electron.getVer()}</Label.Detail>
+                        <Label.Detail>{Electron.getVerLong()}</Label.Detail>
                     </Label>
                     <Label as="a" onClick={() => Electron.openUrl("https://emestie.github.io/flowerpot/changelog")}>
                         {s("releaseNotes")}

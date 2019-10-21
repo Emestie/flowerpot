@@ -25,7 +25,7 @@ export default observer(() => {
 
     return (
         <Message info size="mini">
-            {s("justUpdatedMessage1")} <i>{Electron.getVer()}</i>.
+            {s("justUpdatedMessage1")} <i>{Electron.getVerLong()}</i>.
             <span style={{ marginLeft: 10 }}>
                 <Button compact size="mini" onClick={showNotes}>
                     {s("justUpdatedMessage2")}

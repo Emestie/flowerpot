@@ -45,11 +45,16 @@ export default class Electron {
         Electron.sendIpcRenderer("update-icon", { level: level, hasChanges: !!hasChanges });
     }
 
-    public static getVer() {
+    public static getVerLong() {
         const appVer = process.env.REACT_APP_VERSION;
         const dateTimeStamp = preval`module.exports = new Date().toISOString().substr(0, 16);`;
         const verType = document.location.href.indexOf("localhost") !== -1 ? " Dev" : Electron.isLocal() ? " Local" : "";
         return `${appVer}${verType} (${dateTimeStamp})`;
+    }
+
+    public static getVerShort() {
+        const appVer = process.env.REACT_APP_VERSION || "";
+        return appVer.split("+")[0];
     }
 
     public static openUrl(url: string) {
