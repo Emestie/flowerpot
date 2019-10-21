@@ -3,7 +3,6 @@ import { Header, Button, Container } from "semantic-ui-react";
 import store from "../store";
 import Electron from "../helpers/Electron";
 import WorkItem from "../helpers/WorkItem";
-import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
 interface IProps {}
 interface IState {}
@@ -70,21 +69,10 @@ export default class DebugView extends React.Component<IProps, IState> {
                         More
                     </Header>
                     <Button onClick={() => this.setChanges()}>Set changes to WI</Button>
-                    <ContextMenuTrigger id="lalala">
-                        <div>lalala</div>
-                    </ContextMenuTrigger>
-                    <ContextMenu id="lalala">
-                        <MenuItem data={{ foo: "bar" }} onClick={this.handleClick}>
-                            ContextMenu Item 1
-                        </MenuItem>
-                        <MenuItem data={{ foo: "bar" }} onClick={this.handleClick}>
-                            ContextMenu Item 2
-                        </MenuItem>
-                        <MenuItem divider />
-                        <MenuItem data={{ foo: "bar" }} onClick={this.handleClick}>
-                            ContextMenu Item 3
-                        </MenuItem>
-                    </ContextMenu>
+                    <div>
+                        {Electron.getVerLong()} / {Electron.getVerShort()}
+                        {JSON.stringify(process.env)}
+                    </div>
                 </Container>
             </div>
         );
