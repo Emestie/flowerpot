@@ -39,8 +39,8 @@ export default class App extends React.Component {
 
     afterUpdateHandler() {
         if (!Electron.isDev() && !Electron.isLocal() && Version.isChangedLong()) {
-            Version.storeInSettings();
             if (store.settings.showWhatsNewOnUpdate && Version.isChangedShort()) store.showWhatsNew = true;
+            Version.storeInSettings();
         }
     }
 
