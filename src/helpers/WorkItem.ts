@@ -215,4 +215,8 @@ export default class WorkItem {
         if (diff < _24h) return Math.floor(diff / 1000 / 60 / 60) + "h";
         else return Math.floor(diff / 1000 / 60 / 60 / 24) + "d";
     }
+
+    public static getTextName(fullName: string) {
+        return fullName.split(' <')[0];
+    }
 }

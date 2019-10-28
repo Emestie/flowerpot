@@ -1,5 +1,5 @@
 import React from "react";
-import { IWorkItem } from "../helpers/WorkItem";
+import WorkItem, { IWorkItem } from "../helpers/WorkItem";
 import { Table, Icon, Label } from "semantic-ui-react";
 import Electron from "../helpers/Electron";
 import store from "../store";
@@ -179,7 +179,13 @@ export default class WorkItemRow extends React.Component<IProps> {
 
         return (
             <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
-                <Table.Cell collapsing className={hasChanges ? "workItemHasCanges" : this.getClass()}>
+                <Table.Cell
+                    collapsing
+                    className={hasChanges ? "workItemHasCanges" : this.getClass()}
+                    onDoubleClick={() => {
+                        Electron.copyString(item.id.toString());
+                    }}
+                >
                     <ContextMenuTrigger id={uid + ""}>
                         <span title={item.type}>
                             {this.typeEl} {item.id}
@@ -217,7 +223,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                             {item.titleFull}
                         </span>
                         {!!this.note && (
-                            <span style={{ marginLeft: 5 }} title={s('localNoteHint')}>
+                            <span style={{ marginLeft: 5 }} title={s("localNoteHint")}>
                                 <Label basic color={this.noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
                                     {this.note}
                                 </Label>
@@ -230,10 +236,10 @@ export default class WorkItemRow extends React.Component<IProps> {
                         <ContextMenuTrigger id={uid + ""}>{item.state}</ContextMenuTrigger>
                     </Table.Cell>
                 )}
-                <Table.Cell collapsing>
+                <Table.Cell collapsing onDoubleClick={() => Electron.copyString(WorkItem.getTextName(item.assignedToFull))}>
                     <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.assignedTo, item.assignedToFull)}</ContextMenuTrigger>
                 </Table.Cell>
-                <Table.Cell collapsing>
+                <Table.Cell collapsing onDoubleClick={() => Electron.copyString(WorkItem.getTextName(item.createdByFull))}>
                     <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.createdBy, item.createdByFull)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing>
