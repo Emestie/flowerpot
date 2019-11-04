@@ -4,6 +4,7 @@ const { autoUpdater } = require("electron-updater");
 const isDev = require("electron-is-dev");
 const path = require("path");
 const url = require("url");
+const nativeImage = require("electron").nativeImage;
 
 const Store = require("./electron/store");
 const storeDefaults = require("./electron/store-defaults");
@@ -177,11 +178,16 @@ autoUpdater.on("error", () => {
 
 function iconUpdateTask(level, hasChanges) {
     let pathToIcon = buildIconPath(level, hasChanges);
-    tray.setImage(pathToIcon);
-
     let pathToDotIcon = buildIconDotPath(level, hasChanges);
-    if (level !== 4) wnd.setOverlayIcon(pathToDotIcon, "dot");
-    else wnd.setOverlayIcon(null, "no-dot");
+
+    try {
+        let ni = nativeImage.createFromPath(pathToIcon);
+        tray.setImage(ni);
+
+        let nidot = nativeImage.createFromPath(pathToDotIcon)
+        if (level !== 4) wnd.setOverlayIcon(nidot, "dot");
+        else wnd.setOverlayIcon(null, "no-dot");
+    } catch (ex) {}
 }
 
 function buildTrayIcon() {
