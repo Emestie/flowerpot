@@ -108,7 +108,10 @@ class Store {
     }
 
     @action setWIHasChanges(workItem: IWorkItem, hasChanges: boolean) {
-        this._changesCollection[workItem.id] = hasChanges;
+        let cc = this.copy(this._changesCollection);
+        cc[workItem.id] = hasChanges ? true : undefined;
+        this._changesCollection = cc;
+        localStorage.setItem('WIChangesCollection', JSON.stringify(cc));
     }
 
     getInterval(query: IQuery): NodeJS.Timeout | null {

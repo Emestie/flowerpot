@@ -123,9 +123,16 @@ export default class Query {
     }
 
     public static getWIStorage() {
-        if (!(window as any).wiStorage) (window as any).wiStorage = {};
-        let wiStorage = (window as any).wiStorage as IWIStorage;
-        return wiStorage;
+        // if (!(window as any).wiStorage) (window as any).wiStorage = {};
+        // let wiStorage = (window as any).wiStorage as IWIStorage;
+        // return wiStorage;
+        let ls = localStorage.getItem("WIStorage");
+        if (!ls) return {};
+        else return JSON.parse(ls);
+    }
+
+    public static saveWIStorage(wis: IWIStorage) {
+        localStorage.setItem("WIStorage", JSON.stringify(wis));
     }
 
     public static calculateIconLevel(query: IQuery, workItems: IWorkItem[]) {
