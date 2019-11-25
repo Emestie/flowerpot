@@ -3,6 +3,7 @@ import { Header } from "semantic-ui-react";
 import { s } from "../values/Strings";
 import store, { TView } from "../store";
 import { observer } from "mobx-react-lite";
+import FestivalBanner from "./FestivalBanner";
 
 interface P {
     children?: React.ReactNode;
@@ -34,6 +35,7 @@ export default observer((p: P) => {
         <div className="TopBar">
             <Header as="h1">{getHeaderTextByViewName(store.view)}</Header>
             <div className="RightTopCorner">{p.children}</div>
+            <FestivalBanner />
         </div>
     );
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Button, Container, Message } from "semantic-ui-react";
+import { Button, Container, Message } from "semantic-ui-react";
 import store from "../store";
 import { s } from "../values/Strings";
 import { observer } from "mobx-react";

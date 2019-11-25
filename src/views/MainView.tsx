@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Header, Container, Message, Button, Icon } from "semantic-ui-react";
+import { Container, Message, Button, Icon } from "semantic-ui-react";
 import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
 import WhatsNewBanner from "../components/WhatsNewBanner";
