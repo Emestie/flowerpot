@@ -31,11 +31,16 @@ export default class App extends React.Component {
             else store.switchView("credentials");
         }
 
-        this.registrator();
+        this.setWIChangesCollection();
         this.afterUpdateHandler();
     }
 
-    registrator() {}
+    setWIChangesCollection() {
+        let ls = localStorage.getItem("WIChangesCollection");
+        if (!ls) return;
+
+        store._changesCollection = JSON.parse(ls);
+    }
 
     afterUpdateHandler() {
         if (!Electron.isDev() && !Electron.isLocal() && Version.isChangedLong()) {

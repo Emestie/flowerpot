@@ -38,6 +38,7 @@ export default class Differences {
 
         if (!wiStorage[query.queryId]) {
             wiStorage[query.queryId] = store.copy(workItems);
+            Query.saveWIStorage(wiStorage);
             return;
         }
 
@@ -87,6 +88,7 @@ export default class Differences {
         });
 
         wiStorage[query.queryId] = store.copy(workItems);
+        Query.saveWIStorage(wiStorage);
     }
 
     private static createTextForWI(wi: IWorkItem) {
