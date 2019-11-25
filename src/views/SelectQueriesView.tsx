@@ -5,6 +5,7 @@ import store from "../store";
 import Query, { IQuery } from "../helpers/Query";
 import Loaders from "../helpers/Loaders";
 import { s } from "../values/Strings";
+import ViewHeading from "../components/ViewHeading";
 
 interface IProps {}
 interface IState {
@@ -85,15 +86,12 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
 
         return (
             <div className="Page">
-                <div className="TopBar">
-                    <Header as="h1">{s("selQHeader")}</Header>
-                    <div className="RightTopCorner">
-                        <Button onClick={this.onCancel}>{s("cancel")}</Button>
-                        <Button onClick={this.onAdd} positive disabled={!this.isAddAvailable}>
-                            {s("add")}
-                        </Button>
-                    </div>
-                </div>
+                <ViewHeading>
+                    <Button onClick={this.onCancel}>{s("cancel")}</Button>
+                    <Button onClick={this.onAdd} positive disabled={!this.isAddAvailable}>
+                        {s("add")}
+                    </Button>
+                </ViewHeading>
                 <Container fluid>
                     <Label color="orange">{s("note")}</Label> {s("selqNote1")}
                     <b>{s("selqNote2")}</b>

@@ -6,6 +6,7 @@ import Loaders from "../helpers/Loaders";
 import Electron from "../helpers/Electron";
 import { s } from "../values/Strings";
 import UpdateBanner from "../components/UpdateBanner";
+import ViewHeading from "../components/ViewHeading";
 
 interface IProps {}
 interface IState {
@@ -152,15 +153,11 @@ export default class CredentialsView extends React.Component<IProps, IState> {
 
         return (
             <div className="Page">
-                <div className="TopBar">
-                    <Header as="h1">{s("tfsHeader")}</Header>
-                    <div className="RightTopCorner">
-                        <Button positive disabled={this.isBackUnavailable} onClick={this.onSave}>
-                            {s("save")}
-                        </Button>
-                    </div>
-                </div>
-
+                <ViewHeading>
+                    <Button positive disabled={this.isBackUnavailable} onClick={this.onSave}>
+                        {s("save")}
+                    </Button>
+                </ViewHeading>
                 <Container fluid>
                     <Header as="h3" dividing>
                         {s("credsHeader")}

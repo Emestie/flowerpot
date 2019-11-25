@@ -4,6 +4,7 @@ import { Header, Container, Button, Icon, Label } from "semantic-ui-react";
 import { s } from "../values/Strings";
 import store from "../store";
 import ListBlock from "../components/ListBlock";
+import ViewHeading from "../components/ViewHeading";
 
 interface iProps {}
 interface iState {}
@@ -17,14 +18,11 @@ export default class ListsView extends React.Component<iProps, iState> {
     render() {
         return (
             <div className="Page">
-                <div className="TopBar">
-                    <Header as="h1">{s("listsHeader")}</Header>
-                    <div className="RightTopCorner">
-                        <Button positive onClick={this.onSave}>
-                            {s("save")}
-                        </Button>
-                    </div>
-                </div>
+                <ViewHeading>
+                    <Button positive onClick={this.onSave}>
+                        {s("save")}
+                    </Button>
+                </ViewHeading>
                 <Container fluid>
                     <Label color="orange">
                         <span>{s("note")}</span>

@@ -4,6 +4,7 @@ import store from "../store";
 import Electron from "../helpers/Electron";
 import WorkItem from "../helpers/WorkItem";
 import Version from "../helpers/Version";
+import ViewHeading from "../components/ViewHeading";
 
 interface IProps {}
 interface IState {}
@@ -34,10 +35,7 @@ export default class DebugView extends React.Component<IProps, IState> {
     render() {
         return (
             <div className="Page">
-                <div className="TopBar">
-                    <Header as="h1">DebugView</Header>
-                    <div className="RightTopCorner"></div>
-                </div>
+                <ViewHeading />
                 <Container fluid>
                     <Header as="h3" dividing>
                         Electron

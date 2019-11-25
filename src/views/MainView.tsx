@@ -9,6 +9,7 @@ import { IQuery } from "../helpers/Query";
 import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
 import SingleInputColorDialog from "../components/SingleInputColorDialog";
+import ViewHeading from "../components/ViewHeading";
 
 export default observer(() => {
     const [idDial, setIdDial] = useState(false);
@@ -55,22 +56,19 @@ export default observer(() => {
 
     return (
         <div className="Page">
-            <div className="TopBar">
-                <Header as="h1">{s("mainHeader")}</Header>
-                <div className="RightTopCorner">
-                    <LocalVersionBanner />
-                    {store.updateStatus === "ready" && (
-                        <Button icon positive onClick={updateApp} title={s("updateArrived")}>
-                            <Icon name="refresh" />
-                        </Button>
-                    )}
-                    <Button onClick={onOpenById}>{s("openById")}</Button>
-                    <Button onClick={onRefresh} disabled={!isRefreshAvailable}>
-                        {s("refresh")}
+            <ViewHeading>
+                <LocalVersionBanner />
+                {store.updateStatus === "ready" && (
+                    <Button icon positive onClick={updateApp} title={s("updateArrived")}>
+                        <Icon name="refresh" />
                     </Button>
-                    <Button onClick={onSettings}>{s("settings")}</Button>
-                </div>
-            </div>
+                )}
+                <Button onClick={onOpenById}>{s("openById")}</Button>
+                <Button onClick={onRefresh} disabled={!isRefreshAvailable}>
+                    {s("refresh")}
+                </Button>
+                <Button onClick={onSettings}>{s("settings")}</Button>
+            </ViewHeading>
             <Container fluid>
                 <SingleInputColorDialog show={idDial} onClose={() => setIdDial(false)} onOk={openById} caption={s("openByIdText")} />
                 <WhatsNewBanner />

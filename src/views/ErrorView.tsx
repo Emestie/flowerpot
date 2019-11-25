@@ -3,6 +3,7 @@ import { Header, Button, Container, Message } from "semantic-ui-react";
 import store from "../store";
 import { s } from "../values/Strings";
 import { observer } from "mobx-react";
+import ViewHeading from "../components/ViewHeading";
 
 interface IProps {}
 interface IState {}
@@ -35,10 +36,7 @@ export default class ErrorView extends React.Component<IProps, IState> {
     render() {
         return (
             <div className="Page">
-                <div className="TopBar">
-                    <Header as="h1">{s("errorHeader")}</Header>
-                    <div className="RightTopCorner"></div>
-                </div>
+                <ViewHeading />
                 <Container fluid>
                     <Message negative>
                         <Message.Header>{s("errorMsg")}</Message.Header>

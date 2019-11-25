@@ -4,8 +4,8 @@ import Query, { IQuery } from "./helpers/Query";
 import Electron from "./helpers/Electron";
 import { IWorkItem } from "./helpers/WorkItem";
 
-type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug" | "lists" | "refreshhelper";
-type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "error";
+export type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug" | "lists" | "refreshhelper";
+export type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "error";
 export type TLocale = "en" | "ru";
 
 class Store {
