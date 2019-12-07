@@ -17,6 +17,7 @@ export default class Telemetry {
 
     public static versionUsageInfo() {
         const theme = store.settings.darkTheme ? "dark" : "light";
-        this.basicMessage("Version installed", `theme=${theme}`);
+        const lang = store.locale;
+        this.basicMessage("Version installed", `theme=${theme}, lang=${lang}`);
     }
 }
