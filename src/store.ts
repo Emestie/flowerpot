@@ -33,14 +33,14 @@ class Store {
             permawatch: [],
             favorites: [],
             deferred: [],
-            hidden: [],
+            hidden: []
         },
         notes: [],
         darkTheme: false,
         allowTelemetry: true,
         showWhatsNewOnUpdate: true,
         lastTimeVersion: "",
-        lastTimeVersionLong: "",
+        lastTimeVersionLong: ""
     };
     //! if add something in settings outfise of flowerpot section don't forget to add reaction
     @observable autostart: boolean = true;
@@ -87,6 +87,9 @@ class Store {
     @action switchView(view: TView) {
         this.errorMessage = "";
         this.view = view;
+
+        const pageCollection = document.getElementsByClassName("Page");
+        if (pageCollection && pageCollection[0]) pageCollection[0].scrollIntoView();
     }
 
     @action showErrorPage(text: string) {
@@ -111,7 +114,7 @@ class Store {
         let cc = this.copy(this._changesCollection);
         cc[workItem.id] = hasChanges ? true : undefined;
         this._changesCollection = cc;
-        localStorage.setItem('WIChangesCollection', JSON.stringify(cc));
+        localStorage.setItem("WIChangesCollection", JSON.stringify(cc));
     }
 
     getInterval(query: IQuery): NodeJS.Timeout | null {
