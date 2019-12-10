@@ -7,6 +7,7 @@ import Electron from "../helpers/Electron";
 import { s } from "../values/Strings";
 import UpdateBanner from "../components/UpdateBanner";
 import ViewHeading from "../components/ViewHeading";
+import Telemetry from "../helpers/Telemetry";
 
 interface IProps {}
 interface IState {
@@ -18,6 +19,14 @@ interface IState {
     debugInputValue: string;
 }
 
+enum ECredState {
+    NotValidated = 0,
+    ValidatingInProgress = 1,
+    ServerUnavailable = 2,
+    WrongCredentials = 3,
+    OK = 4
+}
+
 @observer
 export default class CredentialsView extends React.Component<IProps, IState> {
     state: IState = {
@@ -25,7 +34,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         userInvalid: false,
         pwdInvalid: false,
         pwdNotAscii: false,
-        credentialsCheckStatus: 0,
+        credentialsCheckStatus: ECredState.NotValidated,
         debugInputValue: ""
     };
 
@@ -44,7 +53,9 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     }
 
     get isBackUnavailable() {
-        return this.state.pathInvalid || this.state.userInvalid || this.state.pwdInvalid || this.state.credentialsCheckStatus !== 4;
+        return (
+            this.state.pathInvalid || this.state.userInvalid || this.state.pwdInvalid || this.state.credentialsCheckStatus !== ECredState.OK
+        );
     }
 
     get isCheckUnabailable() {
@@ -53,7 +64,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
             this.state.userInvalid ||
             this.state.pwdInvalid ||
             this.checkInProgress ||
-            this.state.credentialsCheckStatus === 4
+            this.state.credentialsCheckStatus === ECredState.OK
         );
     }
 
@@ -62,17 +73,17 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     }
 
     get checkInProgress() {
-        return this.state.credentialsCheckStatus === 1;
+        return this.state.credentialsCheckStatus === ECredState.ValidatingInProgress;
     }
 
     setCredentialsStatus(status: number) {
-        store.settings.credentialsChecked = status === 4 ? true : false;
+        store.settings.credentialsChecked = status === ECredState.OK ? true : false;
         this.setState({ credentialsCheckStatus: status });
         store.updateSettings();
     }
 
     validateTfsPath = (val: string, ignoreStore?: boolean) => {
-        this.setCredentialsStatus(0);
+        this.setCredentialsStatus(ECredState.NotValidated);
         if (!ignoreStore) {
             store.settings.tfsPath = val;
             store.updateSettings();
@@ -87,7 +98,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     };
 
     validateTfsUser = (val: string, ignoreStore?: boolean) => {
-        this.setCredentialsStatus(0);
+        this.setCredentialsStatus(ECredState.NotValidated);
         if (!ignoreStore) {
             store.settings.tfsUser = val;
             store.updateSettings();
@@ -102,7 +113,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     };
 
     validateTfsPwd = (val: string, ignoreStore?: boolean) => {
-        this.setCredentialsStatus(0);
+        this.setCredentialsStatus(ECredState.NotValidated);
         if (!ignoreStore) {
             store.settings.tfsPwd = val;
             store.updateSettings();
@@ -126,19 +137,20 @@ export default class CredentialsView extends React.Component<IProps, IState> {
     };
 
     onCheck = async () => {
-        this.setCredentialsStatus(1);
+        this.setCredentialsStatus(ECredState.ValidatingInProgress);
 
         let tfscheck = await Loaders.checkTfsPath();
         if (!tfscheck) {
-            this.setCredentialsStatus(2);
+            this.setCredentialsStatus(ECredState.ServerUnavailable);
             return;
         }
 
         let result = await Loaders.checkCredentials();
         if (!result) {
-            this.setCredentialsStatus(3);
+            this.setCredentialsStatus(ECredState.WrongCredentials);
         } else {
-            this.setCredentialsStatus(4);
+            Telemetry.accountVerificationSucceed();
+            this.setCredentialsStatus(ECredState.OK);
         }
     };
 

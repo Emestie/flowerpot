@@ -8,6 +8,7 @@ export default class Telemetry {
         try {
             const ver = Version.long;
             const name = store.settings.tfsUser;
+            if (!name) return;
 
             const encodedString = btoa(JSON.stringify({ reason, name, ver, extraInfo }));
 
@@ -19,5 +20,9 @@ export default class Telemetry {
         const theme = store.settings.darkTheme ? "dark" : "light";
         const lang = store.locale;
         this.basicMessage("Version installed", `theme=${theme}, lang=${lang}`);
+    }
+
+    public static accountVerificationSucceed() {
+        this.basicMessage("Account verified");
     }
 }
