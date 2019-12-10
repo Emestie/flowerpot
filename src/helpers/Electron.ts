@@ -44,6 +44,10 @@ export default class Electron {
         Electron.sendIpcRenderer("update-icon", { level: level, hasChanges: !!hasChanges });
     }
 
+    public static updateTrayIconDot(hasChanges: boolean) {
+        Electron.sendIpcRenderer("update-icon-dot-only", !!hasChanges);
+    }
+
     public static openUrl(url: string) {
         if ((window as any).shell && (window as any).shell.openExternal) (window as any).shell.openExternal(url);
     }

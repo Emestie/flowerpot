@@ -70,6 +70,12 @@ class Store {
     getWIHasChanges(workItem: IWorkItem) {
         return !!this._changesCollection[workItem.id];
     }
+    private changesCollectionReaction = reaction(
+        () => JSON.stringify(this._changesCollection),
+        () => {
+            Electron.updateTrayIconDot(this.isChangesCollectionHasItems());
+        }
+    );
 
     intervalStorage = {};
     @observable errorInterval: any = undefined;
@@ -84,6 +90,16 @@ class Store {
     private onSettingsChange = reaction(() => this.settings, Settings.save);
     private onLocaleChange = reaction(() => this.locale, Electron.changeLocale);
     private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);
+
+    @observable isChangesCollectionHasItems() {
+        let hasItems = false;
+        let ccx = this.copy(this._changesCollection);
+        for (let x in ccx) {
+            if (ccx[x]) hasItems = true;
+            break;
+        }
+        return hasItems;
+    }
 
     @action switchView(view: TView) {
         this.errorMessage = "";

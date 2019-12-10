@@ -68,7 +68,7 @@ export default observer(() => {
                     </Button>
                 )}
                 <Button onClick={onOpenById}>{s("openById")}</Button>
-                {!!store.settings.showUnreads && Object.keys(store._changesCollection).length > 0 && (
+                {!!store.settings.showUnreads && store.isChangesCollectionHasItems() && (
                     <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
                         <Icon name="check circle outline" />
                     </Button>

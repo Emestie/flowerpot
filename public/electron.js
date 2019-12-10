@@ -37,15 +37,15 @@ function createWindow() {
         minHeight: 700,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" },
+        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
     };
     const splashCfg = {
         windowOpts: windowOptions,
         templateUrl: `${__dirname}/splash-screen/splash-screen.html`,
         splashScreenOpts: {
             width: 260,
-            height: 100,
-        },
+            height: 100
+        }
     };
 
     wnd = Splashscreen.initSplashScreen(splashCfg);
@@ -68,6 +68,10 @@ function createWindow() {
         if (!tray || !level || !+level || level < 1 || level > 4) return;
         currentLevel = level;
         iconUpdateTask(level, hasChanges);
+    });
+
+    ipcMain.on("update-icon-dot-only", (e, hasChanges) => {
+        iconUpdateTask(currentLevel, hasChanges);
     });
 
     ipcMain.on("check-for-updates", () => {
@@ -184,7 +188,7 @@ function iconUpdateTask(level, hasChanges) {
         let ni = nativeImage.createFromPath(pathToIcon);
         tray.setImage(ni);
 
-        let nidot = nativeImage.createFromPath(pathToDotIcon)
+        let nidot = nativeImage.createFromPath(pathToDotIcon);
         if (level !== 4) wnd.setOverlayIcon(nidot, "dot");
         else wnd.setOverlayIcon(null, "no-dot");
     } catch (ex) {}
@@ -202,7 +206,7 @@ function buildTrayIcon() {
             label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
                 wnd.show();
-            },
+            }
         },
         {
             label: locale === "ru" ? "Выход" : "Quit",
@@ -210,8 +214,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            },
-        },
+            }
+        }
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -234,7 +238,7 @@ function registerAutostart() {
     if (!isDev) {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe"),
+            path: app.getPath("exe")
         });
     }
 }
@@ -254,7 +258,7 @@ function loadLocalVersion() {
     const loadUrl = url.format({
         pathname: path.join(__dirname, "/../build/index.html"),
         protocol: "file:",
-        slashes: true,
+        slashes: true
     });
     wnd.loadURL(loadUrl);
 }
