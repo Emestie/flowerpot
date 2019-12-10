@@ -39,6 +39,7 @@ class Store {
         darkTheme: false,
         allowTelemetry: true,
         showWhatsNewOnUpdate: true,
+        showUnreads: true,
         lastTimeVersion: "",
         lastTimeVersionLong: ""
     };
@@ -113,6 +114,12 @@ class Store {
     @action setWIHasChanges(workItem: IWorkItem, hasChanges: boolean) {
         let cc = this.copy(this._changesCollection);
         cc[workItem.id] = hasChanges ? true : undefined;
+        this._changesCollection = cc;
+        localStorage.setItem("WIChangesCollection", JSON.stringify(cc));
+    }
+
+    @action clearAllChanges() {
+        let cc = {};
         this._changesCollection = cc;
         localStorage.setItem("WIChangesCollection", JSON.stringify(cc));
     }

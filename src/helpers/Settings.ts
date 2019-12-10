@@ -35,6 +35,7 @@ export interface ISettings {
     darkTheme: boolean;
     allowTelemetry: boolean;
     showWhatsNewOnUpdate: boolean;
+    showUnreads: boolean;
     lastTimeVersion: string;
     lastTimeVersionLong: string;
 }
@@ -42,7 +43,6 @@ export interface ISettings {
 export default class Settings {
     public static read() {
         let settings = Electron.getStoreProp("flowerpot");
-        console.log("settings pulled", !!settings);
         if (settings) {
             try {
                 let parsedSettings = JSON.parse(settings);

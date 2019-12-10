@@ -33,6 +33,10 @@ export default observer(() => {
 
     const updateApp = () => Electron.updateApp();
 
+    const markAllAsRead = () => {
+        store.clearAllChanges();
+    };
+
     const queriesSorting = (a: IQuery, b: IQuery) => {
         if (a.empty === b.empty) return 0;
         if (!a.empty && b.empty) return -1;
@@ -64,6 +68,11 @@ export default observer(() => {
                     </Button>
                 )}
                 <Button onClick={onOpenById}>{s("openById")}</Button>
+                {!!store.settings.showUnreads && Object.keys(store._changesCollection).length > 0 && (
+                    <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
+                        <Icon name="check circle outline" />
+                    </Button>
+                )}
                 <Button onClick={onRefresh} disabled={!isRefreshAvailable}>
                     {s("refresh")}
                 </Button>

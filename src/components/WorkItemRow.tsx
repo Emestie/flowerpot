@@ -173,7 +173,7 @@ export default class WorkItemRow extends React.Component<IProps> {
 
     render() {
         let item = this.props.item;
-        let hasChanges = store.getWIHasChanges(item);
+        let hasChanges = store.settings.showUnreads ? store.getWIHasChanges(item) : false;
         let uid = this.props.item.id + Math.random();
 
         let [isDone, doneByUser] = [false, "user"];
