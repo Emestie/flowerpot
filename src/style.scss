@@ -8,6 +8,7 @@ $permawatchColor: #e696ae;
 body,
 #root {
     height: 100%;
+    overflow: overlay;
 }
 
 .Page {
@@ -28,7 +29,7 @@ body,
     top: 0;
     left: 0;
     padding: 15px;
-    width: 100%;
+    width: calc(100% - 10px);
     background-color: white;
     z-index: 10;
     height: 60px;
