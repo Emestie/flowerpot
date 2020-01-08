@@ -8,7 +8,7 @@ const getSrc = () => {
     const day = now.getDate();
     const month = now.getMonth() + 1;
 
-    if ((month === 1 && day <= 11) || (month === 12 && day >= 19)) return santaHat;
+    if ((month === 1 && day <= 8) || (month === 12 && day >= 20)) return santaHat;
 
     return null;
 };
