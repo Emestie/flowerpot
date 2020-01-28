@@ -113,6 +113,10 @@ export default class WorkItemRow extends React.Component<IProps> {
             addition = <Icon name="fire extinguisher" />;
         }
 
+        if (name.indexOf('Селихова') !== -1) {
+            addition = <Icon name='paw' />
+        }
+
         return (
             <span title={nameFull}>
                 {addition}
