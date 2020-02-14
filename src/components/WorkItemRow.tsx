@@ -8,6 +8,7 @@ import { s } from "../values/Strings";
 import { ContextMenuTrigger } from "react-contextmenu";
 import WorkItemRowContextMenu from "./WorkItemRowContextMenu";
 import Lists from "../helpers/Lists";
+import Festival from "../helpers/Festival";
 
 interface IProps {
     item: IWorkItem;
@@ -101,6 +102,9 @@ export default class WorkItemRow extends React.Component<IProps> {
     }
 
     specialNameEffect(name: string, nameFull: string) {
+        let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull);
+        if (festivalNameBanner) return festivalNameBanner;
+
         let addition = <></>;
 
         if (
@@ -113,8 +117,8 @@ export default class WorkItemRow extends React.Component<IProps> {
             addition = <Icon name="fire extinguisher" />;
         }
 
-        if (name.indexOf('Селихова') !== -1) {
-            addition = <Icon name='paw' />
+        if (name.indexOf("Селихова") !== -1) {
+            addition = <Icon name="paw" />;
         }
 
         return (
