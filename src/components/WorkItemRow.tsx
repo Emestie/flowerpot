@@ -101,8 +101,8 @@ export default class WorkItemRow extends React.Component<IProps> {
         }
     }
 
-    specialNameEffect(name: string, nameFull: string) {
-        let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull);
+    specialNameEffect(name: string, nameFull: string, mode: number) {
+        let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
         if (festivalNameBanner) return festivalNameBanner;
 
         let addition = <></>;
@@ -246,10 +246,10 @@ export default class WorkItemRow extends React.Component<IProps> {
                     </Table.Cell>
                 )}
                 <Table.Cell collapsing onDoubleClick={() => Electron.copyString(WorkItem.getTextName(item.assignedToFull))}>
-                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.assignedTo, item.assignedToFull)}</ContextMenuTrigger>
+                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.assignedTo, item.assignedToFull, 0)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing onDoubleClick={() => Electron.copyString(WorkItem.getTextName(item.createdByFull))}>
-                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.createdBy, item.createdByFull)}</ContextMenuTrigger>
+                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.createdBy, item.createdByFull, 1)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing>
                     <ContextMenuTrigger id={uid + ""}>

@@ -10,6 +10,7 @@ export enum Eve {
     Feb23,
     Mar8,
     Apr1,
+    Feb17,
 }
 
 export default class Festival {
@@ -32,6 +33,8 @@ export default class Festival {
                 return month === 2 && day === 21;
             case Eve.Mar8:
                 return month === 3 && day === 6;
+            case Eve.Feb17:
+                return month === 2 && day === 17;
             default:
                 return false;
         }
@@ -45,7 +48,11 @@ export default class Festival {
         return null;
     }
 
-    public static getFestivalNameBanner(name: string, nameFull: string) {
+    public static getFestivalNameBanner(name: string, nameFull: string, mode: number) {
+        if (this.isEveNow(Eve.Feb17) && mode === 0 && store.settings.tfsUser.includes("sharshneu")) {
+            return <span title={nameFull}>Шершнёв А. Ю.</span>;
+        }
+
         if (this.isEveNow(Eve.Mar8) && (name.includes("Грамович") || name.includes("Якубовская") || name.includes("Селихова"))) {
             const flower1 = require("../assets/flower1.svg") as string;
             const flower2 = require("../assets/flower2.svg") as string;
