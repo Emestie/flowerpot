@@ -4,6 +4,7 @@ $mineColor: skyblue;
 $deferredColor: rgb(173, 173, 173);
 $favoritesColor: rgb(161, 99, 202);
 $permawatchColor: #e696ae;
+$rowItemHover: darken(white, 5%);
 
 body,
 #root {
@@ -119,6 +120,11 @@ body,
 
 nav {
     z-index: 10 !important;
+}
+
+.ui.table tr:hover  {
+    background-color: $rowItemHover;
+    box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.05);
 }
 
 .ui.table tr:first-child td {
