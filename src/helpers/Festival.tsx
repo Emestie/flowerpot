@@ -1,9 +1,15 @@
 import React from "react";
 import store from "../store";
+import { IWorkItem } from "./WorkItem";
+import { Icon } from "semantic-ui-react";
 
 const santaHat = require("../assets/santa-hat.svg") as string;
 const feb23 = require("../assets/feb23.svg") as string;
 const mar8 = require("../assets/mar8.svg") as string;
+
+const flower1 = require("../assets/flower1.svg") as string;
+const flower2 = require("../assets/flower2.svg") as string;
+const flower3 = require("../assets/flower3.svg") as string;
 
 export enum Eve {
     NewYear,
@@ -14,6 +20,24 @@ export enum Eve {
 }
 
 export default class Festival {
+    private static nameEffectsDictionary = [
+        {
+            rule: (name: string, item: IWorkItem) =>
+                name.indexOf("Шершнёв") !== -1 &&
+                (item.titleFull.toLowerCase().indexOf("нп") !== -1 ||
+                    item.titleFull.toLowerCase().indexOf("сообщен") !== -1 ||
+                    item.titleFull.toLowerCase().indexOf("фигурант") !== -1 ||
+                    item.createdByFull.toLowerCase().indexOf("тагулова") !== -1),
+            icon: <Icon name="fire extinguisher" />,
+        },
+        { rule: (name: string, item: IWorkItem) => name.indexOf("Селихова") !== -1, icon: <Icon name="paw" /> },
+        { rule: (name: string, item: IWorkItem) => name.indexOf("Жданович") !== -1, icon: <Icon name="transgender" /> },
+        {
+            rule: (name: string, item: IWorkItem) => name.indexOf("Якубовская") !== -1,
+            icon: <img style={{ width: 14, height: 14, marginRight: 3 }} src={flower3} alt="" />,
+        },
+    ];
+
     private static getHumanDate() {
         const now = new Date();
 
@@ -54,10 +78,6 @@ export default class Festival {
         }
 
         if (this.isEveNow(Eve.Mar8) && (name.includes("Грамович") || name.includes("Якубовская") || name.includes("Селихова"))) {
-            const flower1 = require("../assets/flower1.svg") as string;
-            const flower2 = require("../assets/flower2.svg") as string;
-            const flower3 = require("../assets/flower3.svg") as string;
-
             let src = name.includes("Грамович") ? flower1 : name.includes("Якубовская") ? flower3 : flower2;
 
             let addition = <img style={{ width: 16, height: 16, marginRight: 3 }} src={src} alt="" />;
@@ -71,5 +91,26 @@ export default class Festival {
         }
 
         return null;
+    }
+
+    public static getSpecialNameEffect(item: IWorkItem, mode: number) {
+        const name = mode === 1 ? item.createdBy : item.assignedTo;
+        const nameFull = mode === 1 ? item.createdByFull : item.assignedToFull;
+
+        let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
+        if (festivalNameBanner) return festivalNameBanner;
+
+        let addition = <></>;
+
+        this.nameEffectsDictionary.forEach(ned => {
+            if (ned.rule(name, item)) addition = ned.icon;
+        });
+
+        return (
+            <span title={nameFull}>
+                {addition}
+                {name}
+            </span>
+        );
     }
 }

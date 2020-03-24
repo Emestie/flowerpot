@@ -101,38 +101,6 @@ export default class WorkItemRow extends React.Component<IProps> {
         }
     }
 
-    specialNameEffect(name: string, nameFull: string, mode: number) {
-        let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
-        if (festivalNameBanner) return festivalNameBanner;
-
-        let addition = <></>;
-
-        if (
-            name.indexOf("Шершнёв") !== -1 &&
-            (this.props.item.titleFull.toLowerCase().indexOf("нп") !== -1 ||
-                this.props.item.titleFull.toLowerCase().indexOf("сообщен") !== -1 ||
-                this.props.item.titleFull.toLowerCase().indexOf("фигурант") !== -1 ||
-                this.props.item.createdByFull.toLowerCase().indexOf("тагулова") !== -1)
-        ) {
-            addition = <Icon name="fire extinguisher" />;
-        }
-
-        if (name.indexOf("Селихова") !== -1) {
-            addition = <Icon name="paw" />;
-        }
-        
-        if (name.indexOf("Жданович") !== -1) {
-            addition = <Icon name="transgender" />;
-        }
-
-        return (
-            <span title={nameFull}>
-                {addition}
-                {name}
-            </span>
-        );
-    }
-
     dropChanges = () => {
         store.setWIHasChanges(this.props.item, false);
     };
@@ -250,10 +218,10 @@ export default class WorkItemRow extends React.Component<IProps> {
                     </Table.Cell>
                 )}
                 <Table.Cell collapsing onDoubleClick={() => Electron.copyString(WorkItem.getTextName(item.assignedToFull))}>
-                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.assignedTo, item.assignedToFull, 0)}</ContextMenuTrigger>
+                    <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 0)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing onDoubleClick={() => Electron.copyString(WorkItem.getTextName(item.createdByFull))}>
-                    <ContextMenuTrigger id={uid + ""}>{this.specialNameEffect(item.createdBy, item.createdByFull, 1)}</ContextMenuTrigger>
+                    <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 1)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing>
                     <ContextMenuTrigger id={uid + ""}>
