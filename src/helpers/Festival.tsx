@@ -20,7 +20,7 @@ export enum Eve {
 }
 
 export default class Festival {
-    private static nameEffectsDictionary = [
+    private static nameIconsDictionary = [
         {
             rule: (name: string, item: IWorkItem) =>
                 name.indexOf("Шершнёв") !== -1 &&
@@ -102,8 +102,8 @@ export default class Festival {
 
         let addition = <></>;
 
-        this.nameEffectsDictionary.forEach(ned => {
-            if (ned.rule(name, item)) addition = ned.icon;
+        this.nameIconsDictionary.forEach(nameIconRule => {
+            if (nameIconRule.rule(name, item)) addition = nameIconRule.icon;
         });
 
         return (
