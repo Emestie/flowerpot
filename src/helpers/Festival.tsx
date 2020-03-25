@@ -34,9 +34,11 @@ export default class Festival {
         { rule: (name: string, item: IWorkItem) => name.indexOf("Жданович") !== -1, icon: <Icon name="transgender" /> },
         {
             rule: (name: string, item: IWorkItem) => name.indexOf("Якубовская") !== -1,
-            icon: <img style={{ width: 14, height: 14, marginRight: 3 }} src={flower3} alt="" />,
+            icon: <Icon name="bell" />,
         },
     ];
+
+    /*<img style={{ width: 14, height: 14, marginRight: 3 }} src={flower3} alt="" />*/
 
     private static getHumanDate() {
         const now = new Date();
