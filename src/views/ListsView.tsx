@@ -38,6 +38,14 @@ export default class ListsView extends React.Component<iProps, iState> {
                     <ListBlock listName="permawatch" />
                     <Header as="h3" dividing>
                         <span>
+                            <Icon name="tags" />
+                        </span>
+                        {s("keywords")}
+                    </Header>
+                    {s("keywordsDescription")}
+                    <ListBlock listName="keywords" />                    
+                    <Header as="h3" dividing>
+                        <span>
                             <Icon name="eye slash outline" />
                         </span>
                         {s("hidden")}

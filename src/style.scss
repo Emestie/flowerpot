@@ -4,6 +4,7 @@ $mineColor: skyblue;
 $deferredColor: rgb(173, 173, 173);
 $favoritesColor: rgb(161, 99, 202);
 $permawatchColor: #e696ae;
+$keywordColor: #4287f5;
 $rowItemHover: darken(white, 5%);
 
 body,
@@ -72,6 +73,13 @@ body,
 
 .workItemPermawatch {
     border-left: 4px solid $permawatchColor;
+}
+
+tr.workItemKeyword{
+    background-color: #6280b17e;
+}
+td.workItemKeyword{
+    border-left: 4px solid $keywordColor;
 }
 
 .wiIndicatorPermawatch {

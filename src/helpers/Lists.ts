@@ -2,7 +2,7 @@ import { TLists } from "./Settings";
 import store from "../store";
 
 export default class Lists {
-    public static push(list: TLists, id: number, rev?: number) {
+    public static push(list: TLists, id:number, rev?: number) {
         if (!rev) rev = 0;
 
         //remove from other lists if item in them
@@ -12,6 +12,12 @@ export default class Lists {
         this.deleteFromList("hidden", id);
 
         store.settings.lists[list].push({ id: id, rev: rev });
+        store.updateSettings();
+    }
+
+    public static pushStrings(list: TLists, word: string){
+        if (!store.settings.lists[list]) store.settings.lists[list] = [];
+        store.settings.lists[list].push({id: Math.random(), rev: 0, word: word});
         store.updateSettings();
     }
 
@@ -27,8 +33,16 @@ export default class Lists {
         store.updateSettings();
     }
 
-    public static isIn(list: TLists, id: number, rev?: number) {
-        return !!store.getList(list).find(x => x.id === id && (rev ? x.rev === rev : true));
+    public static isIn(list: TLists, id: number, rev?: number, word?: string) {
+        return !!store.getList(list).find(x => {
+            if (list === "keywords" && x.word && word) return x.word.toLowerCase() === word.toLowerCase();
+            else return x.id === id && (rev ? x.rev === rev : true)});
+    }
+
+    public static isInText(list: TLists, name: string) {
+        return !!store.getList(list).find(x => {
+            if (list === "keywords" && x.word) return name.toLowerCase().indexOf(x.word.toLowerCase()) !== -1;
+        })
     }
 
     public static setNote(id: number, note: string, color?: string) {
