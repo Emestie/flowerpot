@@ -110,6 +110,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         if (Lists.isIn("favorites", item.id)) return "workItemFavorite";
         if (Lists.isIn("deferred", item.id)) return "workItemDeferred";
         if (Lists.isIn("permawatch", item.id)) return "workItemPermawatch";
+        if (Lists.isInText("keywords", item.titleFull)) return "workItemKeyword";
         if (item.isMine) return "workItemIsMine";
         return "workItemHasNoCanges";
     };
@@ -159,7 +160,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         let [isDone, doneByUser] = [false, "user"];
 
         return (
-            <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges}>
+            <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges} className={this.getClass()}>
                 <Table.Cell
                     collapsing
                     className={hasChanges ? "workItemHasCanges" : this.getClass()}

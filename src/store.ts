@@ -33,7 +33,8 @@ class Store {
             permawatch: [],
             favorites: [],
             deferred: [],
-            hidden: []
+            hidden: [],
+            keywords: [],
         },
         notes: [],
         darkTheme: false,
@@ -59,11 +60,11 @@ class Store {
     }
 
     getList(list: TLists) {
-        return this.copy(this.settings.lists[list]).sort((a, b) => a.id - b.id);
+        return this.copy(this.settings.lists[list] || []).sort((a, b) => {if (list !== "keywords") return a.id - b.id; else return 0});
     }
 
     getAllLists() {
-        return [...this.getList("deferred"), ...this.getList("favorites"), ...this.getList("hidden"), ...this.getList("permawatch")];
+        return [...this.getList("deferred"), ...this.getList("favorites"), ...this.getList("hidden"), ...this.getList("permawatch"), ...this.getList("keywords")];
     }
 
     @observable _changesCollection: any = {};

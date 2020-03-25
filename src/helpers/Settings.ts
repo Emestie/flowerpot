@@ -4,11 +4,12 @@ import Electron from "./Electron";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
-export type TLists = "permawatch" | "favorites" | "deferred" | "hidden";
+export type TLists = "permawatch" | "favorites" | "deferred" | "hidden"| "keywords";
 
 interface IListItem {
     id: number;
     rev: number;
+    word?: string;
 }
 
 interface INoteItem {
