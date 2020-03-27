@@ -113,8 +113,7 @@ const en: ILocalizedStrings = {
     permawatch: "Permawatch",
     keywords: "Keywords",
     keywordsDescription: "Work Items that contain keywords will be selected with blue.",
-    listsNote:
-        "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
+    listsNote: "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
     addItemsInListNotice: "To add items in this list use context menu in Queries view.",
     //context
     copy: "Copy info",
@@ -157,7 +156,9 @@ const en: ILocalizedStrings = {
     openByIdText: "Enter Work Item ID to open",
 
     showUnreads: "Mark new work items",
-    markAllAsRead: "Mark all new items as read"
+    markAllAsRead: "Mark all new items as read",
+
+    contributors: "Fellow contributors: ",
 };
 
 export default en;

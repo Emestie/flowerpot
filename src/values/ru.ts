@@ -158,7 +158,9 @@ const ru: ILocalizedStrings = {
     openByIdText: "Введите ID рабочего элемента, который нужно открыть",
 
     showUnreads: "Помечать новые рабочие элементы",
-    markAllAsRead: "Отметить все новые рабочие элементы как прочитанные"
+    markAllAsRead: "Отметить все новые рабочие элементы как прочитанные",
+
+    contributors: "Участники: ",
 };
 
 export default ru;

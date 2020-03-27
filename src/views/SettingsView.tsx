@@ -20,31 +20,31 @@ interface IState {
 @observer
 export default class SettingsView extends React.Component<IProps, IState> {
     state: IState = {
-        updateInstallInProgress: false
+        updateInstallInProgress: false,
     };
 
     refreshRates: DropdownItemProps[] = [
         { key: 1, text: s("refresh1m"), value: 60 },
         { key: 2, text: s("refresh3m"), value: 180 },
         { key: 3, text: s("refresh5m"), value: 300 },
-        { key: 4, text: s("refresh10m"), value: 600 }
+        { key: 4, text: s("refresh10m"), value: 600 },
     ];
 
     sortPatterns: DropdownItemProps[] = [
         { key: 1, text: s("sortPatternWeight"), value: "default" },
         { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
-        { key: 3, text: s("sortPatternId"), value: "id" }
+        { key: 3, text: s("sortPatternId"), value: "id" },
     ];
 
     notificationsModes: DropdownItemProps[] = [
         { key: 1, text: s("notifModeAll"), value: "all" },
         { key: 2, text: s("notifModeMine"), value: "mine" },
-        { key: 3, text: s("notifModeNone"), value: "none" }
+        { key: 3, text: s("notifModeNone"), value: "none" },
     ];
 
     locales: DropdownItemProps[] = [
         { key: 2, text: s("localeEn"), value: "en" },
-        { key: 3, text: s("localeRu"), value: "ru" }
+        { key: 3, text: s("localeRu"), value: "ru" },
     ];
 
     openCreds = () => {
@@ -193,17 +193,13 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         onChange={(e, { value }) => this.onNotifModeSelect(value as TNotificationsMode)}
                     />
                     <br />
-                    <Form.Checkbox
-                        label={s("cbIconLabel")}
-                        checked={store.settings.iconChangesOnMyWorkItemsOnly}
-                        onChange={this.toggleIconColor}
-                    />
+                    <Form.Checkbox label={s("cbIconLabel")} checked={store.settings.iconChangesOnMyWorkItemsOnly} onChange={this.toggleIconColor} />
                     <br />
                     <Form.Checkbox label={s("mineOnTop")} checked={store.settings.mineOnTop} onChange={this.toggleMineOnTop} />
                     <br />
                     <Form.Checkbox label={s("showUnreads")} checked={store.settings.showUnreads} onChange={this.toggleShowUnreads} />
                     <br />
-                    
+
                     <Header as="h3" dividing>
                         {s("settingsOthersHeader")}
                     </Header>
@@ -218,11 +214,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <br />
                     <Form.Checkbox label={s("cbTelemetry")} checked={store.settings.allowTelemetry} onChange={this.toggleTelemetry} />
                     <br />
-                    <Form.Checkbox
-                        label={s("cbWhatsNew")}
-                        checked={store.settings.showWhatsNewOnUpdate}
-                        onChange={this.toggleWhatsNewOnUpdate}
-                    />
+                    <Form.Checkbox label={s("cbWhatsNew")} checked={store.settings.showWhatsNewOnUpdate} onChange={this.toggleWhatsNewOnUpdate} />
                     <br />
                     <Header as="h3" dividing>
                         {s("settingsCreditsHeader")}
@@ -240,6 +232,17 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         {s("releaseNotes")}
                     </Label>
                     {updateLabel}
+                    <br />
+                    <br />
+                    {s("contributors")}
+                    <Label size="tiny" as="a" onClick={() => Electron.openUrl("https://github.com/Stassras")}>
+                        <Icon name="github" />
+                        Stassras
+                    </Label>
+                    <Label size="tiny" as="a" onClick={() => Electron.openUrl("https://github.com/selikhovamary")}>
+                        <Icon name="github" />
+                        selikhovamary
+                    </Label>
                 </Container>
             </div>
         );
