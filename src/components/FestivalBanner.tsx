@@ -2,12 +2,12 @@ import React from "react";
 import Festival from "../helpers/Festival";
 
 export default () => {
-    const src = Festival.getFestivalHeaderIcon();
+    const [src, top, left, width, height] = Festival.getFestivalHeaderIcon();
     if (!src) return null;
 
     return (
-        <div className="FestivalBannerContainer">
-            <img src={src} alt="" />
+        <div style={{ position: "absolute", top: top || 8, left: left || 6, width: width || 25, height }}>
+            <img src={src as string} alt="" />
         </div>
     );
 };

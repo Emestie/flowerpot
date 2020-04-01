@@ -6,6 +6,7 @@ import { Icon } from "semantic-ui-react";
 const santaHat = require("../assets/santa-hat.svg") as string;
 const feb23 = require("../assets/feb23.svg") as string;
 const mar8 = require("../assets/mar8.svg") as string;
+const coronavirus = require('../assets/coronavirus.svg') as string;
 
 const flower1 = require("../assets/flower1.svg") as string;
 const flower2 = require("../assets/flower2.svg") as string;
@@ -67,11 +68,11 @@ export default class Festival {
     }
 
     public static getFestivalHeaderIcon() {
-        if (this.isEveNow(Eve.NewYear)) return santaHat;
-        if (this.isEveNow(Eve.Feb23)) return feb23;
-        if (this.isEveNow(Eve.Mar8)) return mar8;
+        if (this.isEveNow(Eve.NewYear)) return [santaHat];
+        if (this.isEveNow(Eve.Feb23)) return [feb23];
+        if (this.isEveNow(Eve.Mar8)) return [mar8];
 
-        return null;
+        return [coronavirus, 23, 14];
     }
 
     public static getFestivalNameBanner(name: string, nameFull: string, mode: number) {
