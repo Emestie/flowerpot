@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Header, Label, Table, Icon } from "semantic-ui-react";
 import store from "../store";
 import Query, { IQuery } from "../helpers/Query";
@@ -14,112 +14,103 @@ import { reaction } from "mobx";
 interface IProps {
     query: IQuery;
 }
-interface IState {
-    workItems: IWorkItem[];
-    isLoading: boolean;
-}
 
-@observer
-export default class WorkItemsBlock extends React.Component<IProps, IState> {
-    state: IState = { workItems: [], isLoading: true };
+export default observer((props: IProps) => {
+    const [workItems, setWorkItems] = useState<IWorkItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    private onRoutinesRestart = reaction(() => store._routinesRestart, () => this.routineStart());
-    private onPermawatchUpdate = reaction(
+    const onRoutinesRestart = reaction(
+        () => store._routinesRestart,
+        () => routineStart()
+    );
+    const onPermawatchUpdate = reaction(
         () => store._permawatchUpdate,
         () => {
-            if (this.props.query.queryId === "___permawatch") this.loadWorkItemsForThisQuery();
+            if (props.query.queryId === "___permawatch") loadWorkItemsForThisQuery();
         }
     );
 
-    componentWillUnmount() {
-        store.clearInterval(this.props.query);
-    }
+    useEffect(() => {
+        routineStart();
+        return () => {
+            store.clearInterval(props.query);
+        };
+    }, []);
 
-    componentDidMount() {
-        this.routineStart();
-    }
-
-    async routineStart() {
-        this.setState({ workItems: [], isLoading: true });
+    const routineStart = async () => {
+        setIsLoading(true);
+        setWorkItems([]);
 
         if (store.useFishWIs === 1 && Electron.isDev()) {
-            this.setState({ workItems: [WorkItem.fish(), WorkItem.fish(), WorkItem.fish()], isLoading: false });
+            setIsLoading(false);
+            setWorkItems([WorkItem.fish(), WorkItem.fish(), WorkItem.fish()]);
             return;
         }
 
-        store.clearInterval(this.props.query);
+        store.clearInterval(props.query);
 
-        await this.loadWorkItemsForThisQuery();
-
+        await loadWorkItemsForThisQuery();
         store.setInterval(
-            this.props.query,
+            props.query,
             setInterval(() => {
-                this.loadWorkItemsForThisQuery();
+                loadWorkItemsForThisQuery();
             }, store.settings.refreshRate * 1000)
         );
-    }
+    };
 
-    async loadWorkItemsForThisQuery() {
-        console.log("updating query", this.props.query.queryId);
-        let wis = await Loaders.loadQueryWorkItems(this.props.query);
-        Query.calculateIconLevel(this.props.query, wis);
+    const loadWorkItemsForThisQuery = async () => {
+        console.log("updating query", props.query.queryId);
+        let wis = await Loaders.loadQueryWorkItems(props.query);
+        Query.calculateIconLevel(props.query, wis);
         //set query emptiness to sort them
-        Query.toggleBoolean(this.props.query, "empty", !wis.length);
-        this.setState({ workItems: wis, isLoading: false });
-    }
+        Query.toggleBoolean(props.query, "empty", !wis.length);
+        setWorkItems(wis);
+        setIsLoading(false);
+    };
 
-    get isPermawatch() {
-        return this.props.query.queryId === "___permawatch";
-    }
+    const isPermawatch = props.query.queryId === "___permawatch";
 
-    get totalItems() {
-        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).length;
-    }
+    const totalItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).length;
 
-    get redItems() {
-        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).filter(wi => wi.promptness === 1 || wi.rank === 1).length;
-    }
+    const redItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
 
-    get orangeItems() {
-        return this.state.workItems.filter(wi => !Lists.isIn("hidden", wi.id, wi.rev)).filter(wi => wi.promptness === 2).length;
-    }
+    const orangeItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 2).length;
 
-    get atLeastOneWiHasChanges() {
-        let wis = this.state.workItems;
+    const atLeastOneWiHasChanges = (() => {
+        let wis = workItems;
         let changes = false;
-        wis.forEach(wi => {
+        wis.forEach((wi) => {
             if (!changes) changes = store.getWIHasChanges(wi);
         });
         return changes;
-    }
+    })();
 
-    onCollapseClick = () => {
-        Query.toggleBoolean(this.props.query, "collapsed");
+    const onCollapseClick = () => {
+        Query.toggleBoolean(props.query, "collapsed");
     };
 
-    onOpenQueryInBrowser = () => {
-        let q = this.props.query;
+    const onOpenQueryInBrowser = () => {
+        let q = props.query;
         if (!q.queryPath) return;
 
-        let encodedPath = encodeURI(q.queryPath)
-            .replace("/", "%2F")
-            .replace("&", "%26");
+        let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
         Electron.openUrl(store.settings.tfsPath + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
     };
 
-    getSortPattern = () => {
+    const getSortPattern = () => {
         switch (store.settings.sortPattern) {
             case "assignedto":
-                return this.sortPatternAssignedTo;
+                return sortPatternAssignedTo;
             case "id":
-                return this.sortPatternId;
+                return sortPatternId;
             default:
-                return this.sortPatternDefault;
+                return sortPatternDefault;
         }
     };
 
-    sortByLists(a: IWorkItem, b: IWorkItem) {
+    //todo: move patterns to helper
+    const sortByLists = (a: IWorkItem, b: IWorkItem) => {
         if (a.list === "deferred" && b.list !== "deferred") return 1;
         else if (a.list !== "deferred" && b.list === "deferred") return -1;
 
@@ -132,10 +123,10 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         }
 
         return undefined;
-    }
+    };
 
-    sortPatternDefault = (a: IWorkItem, b: IWorkItem) => {
-        let listRes = this.sortByLists(a, b);
+    const sortPatternDefault = (a: IWorkItem, b: IWorkItem) => {
+        let listRes = sortByLists(a, b);
         if (listRes) return listRes;
 
         if (a.weight < b.weight) return -1;
@@ -145,8 +136,8 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         else return 1;
     };
 
-    sortPatternAssignedTo = (a: IWorkItem, b: IWorkItem) => {
-        let listRes = this.sortByLists(a, b);
+    const sortPatternAssignedTo = (a: IWorkItem, b: IWorkItem) => {
+        let listRes = sortByLists(a, b);
         if (listRes) return listRes;
 
         if (a.assignedTo < b.assignedTo) return -1;
@@ -156,93 +147,89 @@ export default class WorkItemsBlock extends React.Component<IProps, IState> {
         else return 1;
     };
 
-    sortPatternId = (a: IWorkItem, b: IWorkItem) => {
-        let listRes = this.sortByLists(a, b);
+    const sortPatternId = (a: IWorkItem, b: IWorkItem) => {
+        let listRes = sortByLists(a, b);
         if (listRes) return listRes;
 
         if (a.id < b.id) return -1;
         else return 1;
     };
 
-    dropAllWiChanges = () => {
-        this.state.workItems.forEach(wi => {
+    const dropAllWiChanges = () => {
+        workItems.forEach((wi) => {
             store.setWIHasChanges(wi, false);
         });
     };
 
-    updateWorkItems = (wi: IWorkItem) => {
-        let newList = this.state.workItems.filter(w => w.id !== wi.id);
+    const updateWorkItems = (wi: IWorkItem) => {
+        let newList = workItems.filter((w) => w.id !== wi.id);
         newList.push(wi);
-        this.setState({ workItems: newList });
+        setWorkItems(newList);
     };
 
-    render() {
-        let query = this.props.query;
-        let workItems = this.state.workItems
-            .sort(this.getSortPattern())
-            .filter(wi => !Lists.isIn("hidden", wi.id, wi.rev))
-            .map(wi => <WorkItemRow key={wi.id} item={wi} isPermawatch={this.isPermawatch} onUpdate={this.updateWorkItems} />);
+    const query = props.query;
+    const workItemsComponents = workItems
+        .sort(getSortPattern())
+        .filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev))
+        .map((wi) => <WorkItemRow key={wi.id} item={wi} isPermawatch={isPermawatch} onUpdate={updateWorkItems} />);
 
-        let iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
+    const iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 
-        return (
-            <>
-                <Header as="h3" dividing>
-                    {this.state.isLoading && (
-                        <span>
-                            <Icon name="circle notched" loading />
-                        </span>
-                    )}
-                    {!this.state.isLoading && !!this.state.workItems.length && !this.isPermawatch && (
-                        <span onClick={this.onCollapseClick}>{iconCollapse}</span>
-                    )}
-                    <span onClick={this.dropAllWiChanges}>
-                        <span onClick={this.onCollapseClick}>
-                            {this.isPermawatch && (
-                                <span>
-                                    <Icon name="eye" />
-                                </span>
-                            )}
-                            {query.queryName}
-                        </span>
-                        <small>
-                            <span style={{ marginLeft: 10, color: "gray" }}>{query.teamName}</span>
-                        </small>
+    return (
+        <>
+            <Header as="h3" dividing>
+                {isLoading && (
+                    <span>
+                        <Icon name="circle notched" loading />
                     </span>
-                    <span className="WICounts">
-                        {!!this.redItems && (
-                            <Label size="mini" circular color="red">
-                                {this.redItems}
-                            </Label>
-                        )}
-                        {!!this.orangeItems && (
-                            <Label size="mini" circular color="orange">
-                                {this.orangeItems}
-                            </Label>
-                        )}
-                        {!!this.totalItems && (
-                            <Label size="mini" circular>
-                                {this.totalItems}
-                            </Label>
-                        )}
-                        {!this.totalItems && !this.state.isLoading && (
-                            <Label size="small" circular color="green">
-                                ✔
-                            </Label>
-                        )}
-                    </span>
-                    {!!query.queryPath && (
-                        <span title={s("openExternal")} className="externalLink" onClick={this.onOpenQueryInBrowser}>
-                            <Icon size="small" name="external share" />
-                        </span>
-                    )}
-                </Header>
-                {!!this.state.workItems.length && !query.collapsed && (
-                    <Table compact size="small">
-                        <tbody>{workItems}</tbody>
-                    </Table>
                 )}
-            </>
-        );
-    }
-}
+                {!isLoading && !!workItems.length && !isPermawatch && <span onClick={onCollapseClick}>{iconCollapse}</span>}
+                <span onClick={dropAllWiChanges}>
+                    <span onClick={onCollapseClick}>
+                        {isPermawatch && (
+                            <span>
+                                <Icon name="eye" />
+                            </span>
+                        )}
+                        {query.queryName}
+                    </span>
+                    <small>
+                        <span style={{ marginLeft: 10, color: "gray" }}>{query.teamName}</span>
+                    </small>
+                </span>
+                <span className="WICounts">
+                    {!!redItems && (
+                        <Label size="mini" circular color="red">
+                            {redItems}
+                        </Label>
+                    )}
+                    {!!orangeItems && (
+                        <Label size="mini" circular color="orange">
+                            {orangeItems}
+                        </Label>
+                    )}
+                    {!!totalItems && (
+                        <Label size="mini" circular>
+                            {totalItems}
+                        </Label>
+                    )}
+                    {!totalItems && !isLoading && (
+                        <Label size="small" circular color="green">
+                            ✔
+                        </Label>
+                    )}
+                </span>
+                {!!query.queryPath && (
+                    <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
+                        <Icon size="small" name="external share" />
+                    </span>
+                )}
+            </Header>
+            {!!workItems.length && !query.collapsed && (
+                <Table compact size="small">
+                    <tbody>{workItemsComponents}</tbody>
+                </Table>
+            )}
+        </>
+    );
+});
