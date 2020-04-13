@@ -159,6 +159,10 @@ const en: ILocalizedStrings = {
     markAllAsRead: "Mark all new items as read",
 
     contributors: "Fellow contributors: ",
+    keyword: "Keyword",
+
+    itemsWasChanged: " work items was changed",
+    itemsNew: " new work items",
 };
 
 export default en;

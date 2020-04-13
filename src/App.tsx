@@ -1,5 +1,5 @@
-import React from "react";
-import store from "./store";
+import React, { useEffect } from "react";
+import store, { TView } from "./store";
 import { observer } from "mobx-react";
 import Settings from "./helpers/Settings";
 import SettingsView from "./views/SettingsView";
@@ -14,9 +14,33 @@ import Version from "./helpers/Version";
 import ListsView from "./views/ListsView";
 import RefreshHelperView from "./views/RefreshHelperView";
 
-@observer
-export default class App extends React.Component {
-    componentDidMount() {
+const getScene = (view: TView) => {
+    switch (view) {
+        case "loading":
+            return <LoadingView />;
+        case "error":
+            return <ErrorView />;
+        case "main":
+            return <MainView />;
+        case "settings":
+            return <SettingsView />;
+        case "credentials":
+            return <CredentialsView />;
+        case "selectqueries":
+            return <SelectQueriesView />;
+        case "lists":
+            return <ListsView />;
+        case "refreshhelper":
+            return <RefreshHelperView />;
+        case "debug":
+            return <DebugView />;
+        default:
+            return <MainView />;
+    }
+};
+
+export default observer(() => {
+    useEffect(() => {
         Electron.reactIsReady();
 
         Settings.read();
@@ -31,51 +55,25 @@ export default class App extends React.Component {
             else store.switchView("credentials");
         }
 
-        this.setWIChangesCollection();
-        this.afterUpdateHandler();
-    }
+        setWIChangesCollection();
+        afterUpdateHandler();
+    }, []);
 
-    setWIChangesCollection() {
-        let ls = localStorage.getItem("WIChangesCollection");
+    const setWIChangesCollection = () => {
+        const ls = localStorage.getItem("WIChangesCollection");
         if (!ls) return;
 
         store._changesCollection = JSON.parse(ls);
-    }
+    };
 
-    afterUpdateHandler() {
+    const afterUpdateHandler = () => {
         if (!Electron.isDev() && !Electron.isLocal() && Version.isChangedLong()) {
             if (store.settings.showWhatsNewOnUpdate && Version.isChangedShort()) store.showWhatsNew = true;
             Version.storeInSettings();
         }
-    }
+    };
 
-    getScene() {
-        switch (store.view) {
-            case "loading":
-                return <LoadingView />;
-            case "error":
-                return <ErrorView />;
-            case "main":
-                return <MainView />;
-            case "settings":
-                return <SettingsView />;
-            case "credentials":
-                return <CredentialsView />;
-            case "selectqueries":
-                return <SelectQueriesView />;
-            case "lists":
-                return <ListsView />;
-            case "refreshhelper":
-                return <RefreshHelperView />;
-            case "debug":
-                return <DebugView />;
-            default:
-                return <MainView />;
-        }
-    }
-
-    render() {
-        let scene = this.getScene();
-        return <div className={store.settings.darkTheme ? "FlowerpotDarkTheme" : ""}>{scene}</div>;
-    }
-}
+    const scene = getScene(store.view);
+    
+    return <div className={store.settings.darkTheme ? "FlowerpotDarkTheme" : ""}>{scene}</div>;
+});

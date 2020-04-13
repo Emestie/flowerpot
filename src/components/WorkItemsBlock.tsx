@@ -1,85 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Header, Label, Table, Icon } from "semantic-ui-react";
 import store from "../store";
 import Query, { IQuery } from "../helpers/Query";
 import { observer } from "mobx-react";
 import WorkItemRow from "./WorkItemRow";
-import WorkItem, { IWorkItem } from "../helpers/WorkItem";
-import Loaders from "../helpers/Loaders";
+import { IWorkItem } from "../helpers/WorkItem";
 import Electron from "../helpers/Electron";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
-import { reaction } from "mobx";
+import useQueryLoader from "../hooks/useQueryLoader";
 
 interface IProps {
     query: IQuery;
 }
 
 export default observer((props: IProps) => {
-  //  const [workItems, setWorkItems] = useState<IWorkItem[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const isLoading = useQueryLoader(props.query);
     const workItems = store.getWorkItemsForQuery(props.query);
 
-    const onRoutinesRestart = reaction(
-        () => store._routinesRestart,
-        () => routineStart()
-    );
-    const onPermawatchUpdate = reaction(
-        () => store._permawatchUpdate,
-        () => {
-            if (props.query.queryId === "___permawatch") loadWorkItemsForThisQuery();
-        }
-    );
-
-    useEffect(() => {
-        routineStart();
-        return () => {
-            store.clearInterval(props.query);
-        };
-    }, []);
-
-    const routineStart = async () => {
-        setIsLoading(true);
-        //setWorkItems([]);
-        //store.setWorkItemsForQuery
-
-
-        if (store.useFishWIs === 1 && Electron.isDev()) {
-            setIsLoading(false);
-            //setWorkItems([WorkItem.fish(props.query.queryId), WorkItem.fish(props.query.queryId), WorkItem.fish(props.query.queryId)]);
-            store.setWorkItemsForQuery(props.query, [WorkItem.fish(props.query.queryId), WorkItem.fish(props.query.queryId), WorkItem.fish(props.query.queryId)])
-            return;
-        }
-
-        store.clearInterval(props.query);
-
-        await loadWorkItemsForThisQuery();
-        store.setInterval(
-            props.query,
-            setInterval(() => {
-                setIsLoading(true);
-                loadWorkItemsForThisQuery();
-            }, store.settings.refreshRate * 1000)
-        );
-    };
-
-    const loadWorkItemsForThisQuery = async () => {
-        console.log("updating query", props.query.queryId);
-        let wis = await Loaders.loadQueryWorkItems(props.query);
-        Query.calculateIconLevel(props.query, wis);
-        //set query emptiness to sort them
-        Query.toggleBoolean(props.query, "empty", !wis.length);
-        //setWorkItems(wis);
-        store.setWorkItemsForQuery(props.query, wis);
-        setIsLoading(false);
-    };
-
     const isPermawatch = props.query.queryId === "___permawatch";
-
     const totalItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).length;
-
     const redItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
-
     const orangeItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 2).length;
 
     const atLeastOneWiHasChanges = (() => {

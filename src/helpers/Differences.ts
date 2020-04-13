@@ -23,8 +23,8 @@ export default class Differences {
         //clear unused and ignored queries
         let allQueriesIds = store
             .getQueries()
-            .filter(q => !q.ignoreNotif)
-            .map(q => q.queryId);
+            .filter((q) => !q.ignoreNotif)
+            .map((q) => q.queryId);
 
         for (let x in wiStorage) {
             if (!allQueriesIds.includes(x)) wiStorage[x] = undefined;
@@ -46,7 +46,7 @@ export default class Differences {
         let news: IWorkItem[] = [];
         let changed: IWorkItem[] = [];
 
-        workItems.forEach(wi => {
+        workItems.forEach((wi) => {
             if (!storage) return;
             let stored = this.getWIById(storage, wi.id);
             if (!stored) {
@@ -63,32 +63,34 @@ export default class Differences {
         console.log("New WIs", news.length, "Changed WIs", changed.length);
 
         //dont show same notifs twice
-        news = news.filter(wi => !this.shownWI.find(x => (x.id === wi.id && x.rev === wi.rev)));
-        changed = changed.filter(wi => !this.shownWI.find(x => (x.id === wi.id && x.rev === wi.rev)));
-        this.shownWI.push(...news.map(wi => ({ id: wi.id, rev: wi.rev })), ...changed.map(wi => ({ id: wi.id, rev: wi.rev })));
+        news = news.filter((wi) => !this.shownWI.find((x) => x.id === wi.id && x.rev === wi.rev));
+        changed = changed.filter((wi) => !this.shownWI.find((x) => x.id === wi.id && x.rev === wi.rev));
+        this.shownWI.push(...news.map((wi) => ({ id: wi.id, rev: wi.rev })), ...changed.map((wi) => ({ id: wi.id, rev: wi.rev })));
 
-        news.forEach(n => {
-            if (
-                store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" &&
-                    n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
-            ) {
-                this.showNotif(this.createTextForWI(n), "new");
-            }
-        });
-
-        changed.forEach(c => {
-            if (
-                store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" &&
-                    c.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
-            ) {
-                this.showNotif(this.createTextForWI(c), "change");
-            }
-        });
+        this.operateNotifsToShow(news, "new");
+        this.operateNotifsToShow(changed, "change");
 
         wiStorage[query.queryId] = store.copy(workItems);
         Query.saveWIStorage(wiStorage);
+    }
+
+    private static operateNotifsToShow(wis: IWorkItem[], type: "new" | "change") {
+        const wisToShow: IWorkItem[] = [];
+        wis.forEach((n) => {
+            if (
+                store.settings.notificationsMode === "all" ||
+                (store.settings.notificationsMode === "mine" && n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
+            ) {
+                wisToShow.push(n);
+            }
+        });
+
+        if (wisToShow.length < 2) {
+            wisToShow.forEach((nts) => this.showNotif(this.createTextForWI(nts), type));
+        } else {
+            const count = wisToShow.length;
+            this.showNotif(count + (type === "new" ? s("itemsNew") : s("itemsWasChanged")), type);
+        }
     }
 
     private static createTextForWI(wi: IWorkItem) {
@@ -100,7 +102,7 @@ export default class Differences {
     }
 
     private static getWIById(storage: IWorkItem[], id: number) {
-        return storage.find(wi => wi.id === id);
+        return storage.find((wi) => wi.id === id);
     }
 
     private static showNotif(text: string, reason?: "new" | "change") {

@@ -128,7 +128,7 @@ export default class ListBlock extends React.Component<IProps, IState> {
                     <>
                     <Input
                         size="small"
-                        placeholder="Word"
+                        placeholder={s('keyword')}
                         value={this.state.inputVal}
                         onChange={e => this.setState({ inputVal: e.target.value })}
                         error={this.inputError}
