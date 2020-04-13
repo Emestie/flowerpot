@@ -81,7 +81,7 @@ export default class Loaders {
                 }
                 Lists.deleteFromList("hidden", wi.id);
 
-                wis.push(WorkItem.buildFromResponse(wi));
+                wis.push(WorkItem.buildFromResponse(wi, query.queryId));
             }
 
             Differences.put(query, wis);

@@ -23,10 +23,11 @@ export interface IWorkItem {
     rank?: number;
     weight: number;
     url: string;
-    isMine: boolean;
     state: string;
-    list?: TLists;
-    isHasShelve: boolean;
+    _isMine: boolean;
+    _list?: TLists;
+    _isHasShelve: boolean;
+    _queryId: string;
 }
 
 export interface IResponseWorkItem {
@@ -57,7 +58,7 @@ export interface IResponseWorkItem {
 }
 
 export default class WorkItem {
-    public static fish() {
+    public static fish(_queryId: string) {
         let fish = {
             id: 107715,
             rev: 7,
@@ -102,10 +103,10 @@ export default class WorkItem {
             url: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715",
         } as IResponseWorkItem;
 
-        return this.buildFromResponse(fish);
+        return this.buildFromResponse(fish, _queryId);
     }
 
-    public static buildFromResponse(resp: IResponseWorkItem) {
+    public static buildFromResponse(resp: IResponseWorkItem, queryId: string) {
         let isMine = (resp.fields["System.AssignedTo"] || "").toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1;
         let item: IWorkItem = {
             id: resp.id,
@@ -128,10 +129,11 @@ export default class WorkItem {
             importanceText: resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"] || "",
             rank: this.rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]),
             weight: this.calcWeight(resp, isMine),
-            isMine: isMine,
             state: resp.fields["System.State"] || "",
-            list: this.getListName(resp.id),
-            isHasShelve: this.isHasShelve(resp.fields["System.History"]),
+            _isMine: isMine,
+            _list: this.getListName(resp.id),
+            _isHasShelve: this.isHasShelve(resp.fields["System.History"]),
+            _queryId: queryId
         };
         return item;
     }
@@ -217,6 +219,6 @@ export default class WorkItem {
     }
 
     public static getTextName(fullName: string) {
-        return fullName.split(' <')[0];
+        return fullName.split(" <")[0];
     }
 }

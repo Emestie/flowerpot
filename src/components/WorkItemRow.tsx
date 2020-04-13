@@ -111,7 +111,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         if (Lists.isIn("deferred", item.id)) return "workItemDeferred";
         if (Lists.isIn("permawatch", item.id)) return "workItemPermawatch";
         if (Lists.isInText("keywords", item.titleFull)) return "workItemKeyword";
-        if (item.isMine) return "workItemIsMine";
+        if (item._isMine) return "workItemIsMine";
         return "workItemHasNoCanges";
     };
 
@@ -190,7 +190,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                                 </Label>
                             </span>
                         )}
-                        {!!item.isHasShelve && (
+                        {!!item._isHasShelve && (
                             <span className="hasShelve" title={s("hasShelve")}>
                                 <Label color="green" size="mini" style={{ padding: "3px 4px", marginRight: 5 }}>
                                     Shelve

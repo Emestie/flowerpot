@@ -161,7 +161,7 @@ export default class Query {
         }
 
         if (store.settings.iconChangesOnMyWorkItemsOnly) {
-            allWIs = allWIs.filter(wi => wi.isMine);
+            allWIs = allWIs.filter(wi => wi._isMine);
         }
 
         let level = allWIs.length ? 3 : 4;

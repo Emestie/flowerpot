@@ -31,9 +31,9 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
         let wi = this.props.workItem;
 
         if (list) Lists.push(list, wi.id, wi.rev);
-        else if (wi.list) Lists.deleteFromList(wi.list, wi.id);
+        else if (wi._list) Lists.deleteFromList(wi._list, wi.id);
 
-        wi.list = list;
+        wi._list = list;
 
         this.props.onUpdate(wi);
     };
@@ -78,17 +78,17 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                             {s("copyId")}
                         </Menu.Item>
                     </MenuItem>
-                    {wi.list && (
+                    {wi._list && (
                         <MenuItem data={{ list: undefined }} onClick={this.onListChange}>
                             <Menu.Item>
                                 <span>
                                     <Icon name="delete" />
                                 </span>
-                                {s("removeFromList")}"{s(wi.list)}"
+                                {s("removeFromList")}"{s(wi._list)}"
                             </Menu.Item>
                         </MenuItem>
                     )}
-                    {wi.list !== "permawatch" && (
+                    {wi._list !== "permawatch" && (
                         <MenuItem data={{ list: "permawatch" }} onClick={this.onListChange}>
                             <Menu.Item>
                                 <span>
@@ -98,7 +98,7 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                             </Menu.Item>
                         </MenuItem>
                     )}
-                    {wi.list !== "favorites" && (
+                    {wi._list !== "favorites" && (
                         <MenuItem data={{ list: "favorites" }} onClick={this.onListChange}>
                             <Menu.Item>
                                 <span>
@@ -108,7 +108,7 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                             </Menu.Item>
                         </MenuItem>
                     )}
-                    {wi.list !== "deferred" && (
+                    {wi._list !== "deferred" && (
                         <MenuItem data={{ list: "deferred" }} onClick={this.onListChange}>
                             <Menu.Item>
                                 <span>

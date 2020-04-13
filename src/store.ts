@@ -14,6 +14,8 @@ class Store {
     @observable _routinesRestart: number = 0;
     @observable _permawatchUpdate: number = 0;
 
+    @observable allWorkItems: IWorkItem[] = [];
+
     @observable view: TView = "loading";
     @observable errorMessage: string = "";
     @observable updateStatus: TUpdateStatus = "none";
@@ -42,7 +44,7 @@ class Store {
         showWhatsNewOnUpdate: true,
         showUnreads: true,
         lastTimeVersion: "",
-        lastTimeVersionLong: ""
+        lastTimeVersionLong: "",
     };
     //! if add something in settings outfise of flowerpot section don't forget to add reaction
     @observable autostart: boolean = true;
@@ -56,15 +58,24 @@ class Store {
         let queries = this.copy<IQuery[]>(this.settings.queries).sort((a, b) => a.order - b.order);
         if (all) return queries;
         if (this.getList("permawatch").length) queries.push(Query.getFakePermawatchQuery());
-        return queries.filter(q => !!q.enabled);
+        return queries.filter((q) => !!q.enabled);
     }
 
     getList(list: TLists) {
-        return this.copy(this.settings.lists[list] || []).sort((a, b) => {if (list !== "keywords") return a.id - b.id; else return 0});
+        return this.copy(this.settings.lists[list] || []).sort((a, b) => {
+            if (list !== "keywords") return a.id - b.id;
+            else return 0;
+        });
     }
 
     getAllLists() {
-        return [...this.getList("deferred"), ...this.getList("favorites"), ...this.getList("hidden"), ...this.getList("permawatch"), ...this.getList("keywords")];
+        return [
+            ...this.getList("deferred"),
+            ...this.getList("favorites"),
+            ...this.getList("hidden"),
+            ...this.getList("permawatch"),
+            ...this.getList("keywords"),
+        ];
     }
 
     @observable _changesCollection: any = {};
@@ -100,6 +111,16 @@ class Store {
             break;
         }
         return hasItems;
+    }
+
+    @observable getWorkItemsForQuery(query: IQuery) {
+        return this.allWorkItems.filter(wi => wi._queryId === query.queryId);
+    }
+
+    @observable setWorkItemsForQuery(query: IQuery, items: IWorkItem[]) {
+        const oldItems = this.allWorkItems.filter((wi) => wi._queryId !== query.queryId);
+
+        this.allWorkItems = [...oldItems, ...items];
     }
 
     @action switchView(view: TView) {

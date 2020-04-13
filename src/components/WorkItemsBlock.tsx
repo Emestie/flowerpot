@@ -16,8 +16,9 @@ interface IProps {
 }
 
 export default observer((props: IProps) => {
-    const [workItems, setWorkItems] = useState<IWorkItem[]>([]);
+  //  const [workItems, setWorkItems] = useState<IWorkItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const workItems = store.getWorkItemsForQuery(props.query);
 
     const onRoutinesRestart = reaction(
         () => store._routinesRestart,
@@ -39,11 +40,14 @@ export default observer((props: IProps) => {
 
     const routineStart = async () => {
         setIsLoading(true);
-        setWorkItems([]);
+        //setWorkItems([]);
+        //store.setWorkItemsForQuery
+
 
         if (store.useFishWIs === 1 && Electron.isDev()) {
             setIsLoading(false);
-            setWorkItems([WorkItem.fish(), WorkItem.fish(), WorkItem.fish()]);
+            //setWorkItems([WorkItem.fish(props.query.queryId), WorkItem.fish(props.query.queryId), WorkItem.fish(props.query.queryId)]);
+            store.setWorkItemsForQuery(props.query, [WorkItem.fish(props.query.queryId), WorkItem.fish(props.query.queryId), WorkItem.fish(props.query.queryId)])
             return;
         }
 
@@ -53,6 +57,7 @@ export default observer((props: IProps) => {
         store.setInterval(
             props.query,
             setInterval(() => {
+                setIsLoading(true);
                 loadWorkItemsForThisQuery();
             }, store.settings.refreshRate * 1000)
         );
@@ -64,7 +69,8 @@ export default observer((props: IProps) => {
         Query.calculateIconLevel(props.query, wis);
         //set query emptiness to sort them
         Query.toggleBoolean(props.query, "empty", !wis.length);
-        setWorkItems(wis);
+        //setWorkItems(wis);
+        store.setWorkItemsForQuery(props.query, wis);
         setIsLoading(false);
     };
 
@@ -111,15 +117,15 @@ export default observer((props: IProps) => {
 
     //todo: move patterns to helper
     const sortByLists = (a: IWorkItem, b: IWorkItem) => {
-        if (a.list === "deferred" && b.list !== "deferred") return 1;
-        else if (a.list !== "deferred" && b.list === "deferred") return -1;
+        if (a._list === "deferred" && b._list !== "deferred") return 1;
+        else if (a._list !== "deferred" && b._list === "deferred") return -1;
 
-        if (a.list === "favorites" && b.list !== "favorites") return -1;
-        else if (a.list !== "favorites" && b.list === "favorites") return 1;
+        if (a._list === "favorites" && b._list !== "favorites") return -1;
+        else if (a._list !== "favorites" && b._list === "favorites") return 1;
 
         if (store.settings.mineOnTop) {
-            if (a.isMine && !b.isMine) return -1;
-            else if (!a.isMine && b.isMine) return 1;
+            if (a._isMine && !b._isMine) return -1;
+            else if (!a._isMine && b._isMine) return 1;
         }
 
         return undefined;
@@ -164,7 +170,8 @@ export default observer((props: IProps) => {
     const updateWorkItems = (wi: IWorkItem) => {
         let newList = workItems.filter((w) => w.id !== wi.id);
         newList.push(wi);
-        setWorkItems(newList);
+        //setWorkItems(newList);
+        store.setWorkItemsForQuery(props.query, newList);
     };
 
     const query = props.query;
