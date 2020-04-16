@@ -54,6 +54,14 @@ export default class ListsView extends React.Component<iProps, iState> {
                     <ListBlock listName="hidden" />
                     <Header as="h3" dividing>
                         <span>
+                            <Icon name="pin" />
+                        </span>
+                        {s("pinned")}
+                    </Header>
+                    {s("pinnedDescription")}
+                    <ListBlock listName="pinned" />
+                    <Header as="h3" dividing>
+                        <span>
                             <Icon name="star" />
                         </span>
                         {s("favorites")}

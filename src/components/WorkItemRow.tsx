@@ -108,6 +108,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     getClass = () => {
         let item = this.props.item;
         if (Lists.isIn("favorites", item.id)) return "workItemFavorite";
+        if (Lists.isIn("pinned", item.id)) return "workItemPinned";
         if (Lists.isIn("deferred", item.id)) return "workItemDeferred";
         if (Lists.isIn("permawatch", item.id)) return "workItemPermawatch";
         if (Lists.isInText("keywords", item.titleFull)) return "workItemKeyword";
@@ -125,7 +126,7 @@ export default class WorkItemRow extends React.Component<IProps> {
         return color;
     }
 
-    getListIndocator = () => {
+    getListIndicator = () => {
         let item = this.props.item;
 
         if (Lists.isIn("permawatch", item.id))
@@ -149,15 +150,33 @@ export default class WorkItemRow extends React.Component<IProps> {
                 </span>
             );
 
+        if (Lists.isIn("pinned", item.id))
+            return (
+                <span className="wiIndicatorPinned">
+                    <Icon name="pin" />
+                </span>
+            );
+
         return undefined;
     };
 
     render() {
-        let item = this.props.item;
-        let hasChanges = store.settings.showUnreads ? store.getWIHasChanges(item) : false;
-        let uid = this.props.item.id + Math.random();
+        const item = this.props.item;
+        const hasChanges = store.settings.showUnreads ? store.getWIHasChanges(item) : false;
+        const uid = this.props.item.id + Math.random();
 
-        let [isDone, doneByUser] = [false, "user"];
+        const [isDone, doneByUser] = [false, "user"];
+
+        const tags = item.tags
+            ? item.tags
+                  .split(";")
+                  .map((x) => x.trim())
+                  .map((x) => (
+                      <Label key={Math.random()} size="mini" basic style={{ padding: "3px 4px", marginRight: 2 }}>
+                          {x}
+                      </Label>
+                  ))
+            : null;
 
         return (
             <Table.Row warning={this.isOrange} negative={this.isRed} onClick={this.dropChanges} className={this.getClass()}>
@@ -197,9 +216,19 @@ export default class WorkItemRow extends React.Component<IProps> {
                                 </Label>
                             </span>
                         )}
-                        {this.getListIndocator()}
+                        {this.getListIndicator()}
                         <span className="IterationInTitle" title={item.areaPath}>
                             {item.iterationPath}
+                        </span>
+                        <span>
+                            {!!item._isMoveToProd && (
+                                <span className="hasShelve" title={s("moveToProd")}>
+                                    <Label color="teal" basic size="mini" style={{ padding: "3px 4px", marginRight: 2 }}>
+                                        -> Prod
+                                    </Label>
+                                </span>
+                            )}
+                            {tags}
                         </span>
                         <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>
                             {item.titleFull}

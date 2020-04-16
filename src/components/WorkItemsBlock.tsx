@@ -56,13 +56,12 @@ export default observer((props: IProps) => {
         }
     };
 
-    //todo: move patterns to helper
     const sortByLists = (a: IWorkItem, b: IWorkItem) => {
         if (a._list === "deferred" && b._list !== "deferred") return 1;
         else if (a._list !== "deferred" && b._list === "deferred") return -1;
 
-        if (a._list === "favorites" && b._list !== "favorites") return -1;
-        else if (a._list !== "favorites" && b._list === "favorites") return 1;
+        if (a._list === "pinned" && b._list !== "pinned") return -1;
+        else if (a._list !== "pinned" && b._list === "pinned") return 1;
 
         if (store.settings.mineOnTop) {
             if (a._isMine && !b._isMine) return -1;

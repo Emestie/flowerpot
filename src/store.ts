@@ -37,6 +37,7 @@ class Store {
             deferred: [],
             hidden: [],
             keywords: [],
+            pinned: [],
         },
         notes: [],
         darkTheme: false,

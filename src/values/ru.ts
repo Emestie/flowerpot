@@ -103,8 +103,10 @@ const ru: ILocalizedStrings = {
     mineOnTop: "Показывать мои рабочие элементы первыми",
     settingsWIHeader: "Рабочие элементы",
     listsHeader: "Списки",
-    favoritesDescription: "ID рабочих элементов, которые будут отображаться вверху списка.",
+    favoritesDescription: "ID рабочих элементов, которые будут помечены звездочкой.",
     favorites: "Избранные",
+    pinnedDescription: "ID рабочих элементов, которые будут отображаться вверху списка.",
+    pinned: "Закрепленные",
     deferredDescription: "ID рабочих элементов, которые будут отображаться внизу списка.",
     deferred: "Отложенные",
     hiddenDescription: "ID рабочих элементов, которые будут скрыты из списка (до тех пор, пока в них не будут внесены изменения).",
@@ -124,6 +126,8 @@ const ru: ILocalizedStrings = {
     addToF: "Добавить в избранное",
     addToD: "Добавить в отложенные",
     addToH: "Скрыть до изменений",
+    addToPinned: "Закрепить",
+
     openExternal: "Открыть в браузере",
 
     noteCommand: "Локальная заметка",
@@ -165,6 +169,8 @@ const ru: ILocalizedStrings = {
 
     itemsWasChanged: " элемента(ов) изменено",
     itemsNew: " элемента(ов) добавлено",
+
+    moveToProd: "Запрос на перенос",
 };
 
 export default ru;

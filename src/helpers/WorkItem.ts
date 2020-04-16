@@ -24,9 +24,11 @@ export interface IWorkItem {
     weight: number;
     url: string;
     state: string;
+    tags: string;
     _isMine: boolean;
     _list?: TLists;
     _isHasShelve: boolean;
+    _isMoveToProd: boolean;
     _queryId: string;
 }
 
@@ -49,6 +51,7 @@ export interface IResponseWorkItem {
         "Microsoft.VSTS.Common.Severity"?: string; //importance
         "System.State": string;
         "System.History": string;
+        "System.Tags": string;
     };
     _links: {
         html: {
@@ -88,6 +91,7 @@ export default class WorkItem {
                 "System.Description":
                     '<p>В настройках пользователя на вкладке поручения высьавлен параметр Добавить в ЖПД автора</p>\n<p><img src="http://tfs:8080/tfs/DefaultCollection/WorkItemTracking/v1.0/AttachFileHandler.ashx?FileNameGUID=4eba9229-fbf8-4f4a-b3c4-b77d4274799b&amp;FileName=tmp3EBA.png" width=450><br></p>\n<p>Открыла РК. Ввела поручение (резолюцию или проект резолюции). Направила на исполнение. Взяла его же на редактирование. Добавила второй пункт. При сохранении ошибка:</p>\n<p><img src="http://tfs:8080/tfs/DefaultCollection/WorkItemTracking/v1.0/AttachFileHandler.ashx?FileNameGUID=bab51bca-51ce-4cb3-b2bf-03cb39ec578f&amp;FileName=tmpABEF.png" width=737><br></p>',
                 "System.History": "The Fixed shelve In field was updated as part of associating work items with the build.",
+                "System.Tags": "",
             },
             _links: {
                 self: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715" },
@@ -130,10 +134,12 @@ export default class WorkItem {
             rank: this.rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]),
             weight: this.calcWeight(resp, isMine),
             state: resp.fields["System.State"] || "",
+            tags: resp.fields["System.Tags"] || "",
             _isMine: isMine,
             _list: this.getListName(resp.id),
             _isHasShelve: this.isHasShelve(resp.fields["System.History"]),
-            _queryId: queryId
+            _isMoveToProd: this.isMoveToProd(resp.fields['System.History']),
+            _queryId: queryId,
         };
         return item;
     }
@@ -145,9 +151,19 @@ export default class WorkItem {
         return false;
     }
 
+    private static isMoveToProd(text: string) {
+        if (!text) return false;
+        if (text.toLowerCase().indexOf(" prod") !== -1) return true;
+        if (text.toLowerCase().indexOf(" прод") !== -1) return true;
+        if (text.toLowerCase().indexOf(" продакшен") !== -1) return true;
+        if (text.toLowerCase().indexOf(" продакшн") !== -1) return true;
+        return false;
+    }
+
     private static getListName(id: number): TLists | undefined {
         if (Lists.isIn("deferred", id)) return "deferred";
         if (Lists.isIn("favorites", id)) return "favorites";
+        if (Lists.isIn("pinned", id)) return "pinned";
         if (Lists.isIn("hidden", id)) return "hidden";
         if (Lists.isIn("permawatch", id)) return "permawatch";
         return undefined;

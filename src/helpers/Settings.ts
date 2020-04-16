@@ -4,7 +4,7 @@ import Electron from "./Electron";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
-export type TLists = "permawatch" | "favorites" | "deferred" | "hidden"| "keywords";
+export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned";
 
 interface IListItem {
     id: number;

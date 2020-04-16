@@ -16,7 +16,7 @@ interface IState {
 @observer
 export default class ListBlock extends React.Component<IProps, IState> {
     state: IState = {
-        inputVal: ""
+        inputVal: "",
     };
 
     get list() {
@@ -25,32 +25,27 @@ export default class ListBlock extends React.Component<IProps, IState> {
 
     get inputError() {
         if (this.props.listName === "permawatch") {
-        return (
-            (!+this.state.inputVal && this.state.inputVal !== "") ||
-            Lists.isIn(this.props.listName, +this.state.inputVal.trim()) ||
-            this.state.inputVal.indexOf(".") !== -1 ||
-            (this.state.inputVal !== "" && +this.state.inputVal < 1) ||
-            this.state.inputVal.length > 7
-        );
+            return (
+                (!+this.state.inputVal && this.state.inputVal !== "") ||
+                Lists.isIn(this.props.listName, +this.state.inputVal.trim()) ||
+                this.state.inputVal.indexOf(".") !== -1 ||
+                (this.state.inputVal !== "" && +this.state.inputVal < 1) ||
+                this.state.inputVal.length > 7
+            );
         }
-
     }
 
     get blockButton() {
         if (this.props.listName === "permawatch") {
-        return (
-            !+this.state.inputVal ||
-            Lists.isIn(this.props.listName, +this.state.inputVal.trim()) ||
-            this.state.inputVal.indexOf(".") !== -1 ||
-            (this.state.inputVal !== "" && +this.state.inputVal < 1) ||
-            this.state.inputVal.length > 7
-        );
-        }
-        else if (this.props.listName === "keywords") {
             return (
-                this.state.inputVal.trim() === "" ||
-                Lists.isIn(this.props.listName, 0, 0, this.state.inputVal.trim())
-            )
+                !+this.state.inputVal ||
+                Lists.isIn(this.props.listName, +this.state.inputVal.trim()) ||
+                this.state.inputVal.indexOf(".") !== -1 ||
+                (this.state.inputVal !== "" && +this.state.inputVal < 1) ||
+                this.state.inputVal.length > 7
+            );
+        } else if (this.props.listName === "keywords") {
+            return this.state.inputVal.trim() === "" || Lists.isIn(this.props.listName, 0, 0, this.state.inputVal.trim());
         }
     }
 
@@ -64,6 +59,8 @@ export default class ListBlock extends React.Component<IProps, IState> {
                 return undefined;
             case "favorites":
                 return "purple";
+            case "pinned":
+                return "orange";
             case "keywords":
                 return "blue";
             default:
@@ -73,9 +70,8 @@ export default class ListBlock extends React.Component<IProps, IState> {
 
     onAdd = () => {
         if (this.props.listName === "permawatch") {
-        Lists.push(this.props.listName, +this.state.inputVal);
-        }
-        else if (this.props.listName === "keywords") {
+            Lists.push(this.props.listName, +this.state.inputVal);
+        } else if (this.props.listName === "keywords") {
             Lists.pushStrings(this.props.listName, this.state.inputVal);
         }
         this.setState({ inputVal: "" });
@@ -90,7 +86,7 @@ export default class ListBlock extends React.Component<IProps, IState> {
     };
 
     render() {
-        let items = this.list.map(l => (
+        let items = this.list.map((l) => (
             <span key={l.id} style={{ marginBottom: 3, marginRight: 3, display: "inline-block" }}>
                 <Label color={this.color}>
                     {this.props.listName === "keywords" ? l.word : l.id}
@@ -109,13 +105,13 @@ export default class ListBlock extends React.Component<IProps, IState> {
         return (
             <div>
                 <br></br>
-                {this.props.listName === "permawatch"  ? (
+                {this.props.listName === "permawatch" ? (
                     <>
                         <Input
                             size="small"
                             placeholder="ID"
                             value={this.state.inputVal}
-                            onChange={e => this.setState({ inputVal: e.target.value })}
+                            onChange={(e) => this.setState({ inputVal: e.target.value })}
                             error={this.inputError}
                             maxLength="7"
                         />{" "}
@@ -123,23 +119,21 @@ export default class ListBlock extends React.Component<IProps, IState> {
                             {s("add")}
                         </Button>
                     </>
-                ) 
-                : this.props.listName === "keywords" ? (
+                ) : this.props.listName === "keywords" ? (
                     <>
-                    <Input
-                        size="small"
-                        placeholder={s('keyword')}
-                        value={this.state.inputVal}
-                        onChange={e => this.setState({ inputVal: e.target.value })}
-                        error={this.inputError}
-                        //maxLength="7"
-                    />{" "}
-                    <Button size="small" onClick={this.onAdd} disabled={this.blockButton}>
-                        {s("add")}
-                    </Button>
-                </>
-                )
-                : (<span>
+                        <Input
+                            size="small"
+                            placeholder={s("keyword")}
+                            value={this.state.inputVal}
+                            onChange={(e) => this.setState({ inputVal: e.target.value })}
+                            error={this.inputError}
+                        />{" "}
+                        <Button size="small" onClick={this.onAdd} disabled={this.blockButton}>
+                            {s("add")}
+                        </Button>
+                    </>
+                ) : (
+                    <span>
                         <i>{s("addItemsInListNotice")}</i>
                     </span>
                 )}

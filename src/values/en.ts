@@ -103,8 +103,10 @@ const en: ILocalizedStrings = {
     mineOnTop: "Show my Work Items on top",
     settingsWIHeader: "Work Items",
     listsHeader: "Lists",
-    favoritesDescription: "IDs of Work Items you will see on top of query results.",
+    favoritesDescription: "IDs of Work Items you will see marked with a star.",
     favorites: "Favorites",
+    pinnedDescription: "IDs of Work Items you will see on top of query results.",
+    pinned: "Pinned",
     deferredDescription: "IDs of Work Items you will see at the bottom of query results.",
     deferred: "Deferred",
     hiddenDescription: "IDs of Work Items that will be hidden from result list until something will be changed in them.",
@@ -123,6 +125,7 @@ const en: ILocalizedStrings = {
     addToF: "Add to favorites",
     addToD: "Add to deferred",
     addToH: "Hide until changes",
+    addToPinned: "Pin",
     openExternal: "Open in browser",
 
     noteCommand: "Edit local note",
@@ -163,6 +166,8 @@ const en: ILocalizedStrings = {
 
     itemsWasChanged: " work items was changed",
     itemsNew: " new work items",
+
+    moveToProd: "Move request",
 };
 
 export default en;

@@ -98,6 +98,16 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                             </Menu.Item>
                         </MenuItem>
                     )}
+                    {wi._list !== "pinned" && (
+                        <MenuItem data={{ list: "pinned" }} onClick={this.onListChange}>
+                            <Menu.Item>
+                                <span>
+                                    <Icon name="pin" />
+                                </span>
+                                {s("addToPinned")}
+                            </Menu.Item>
+                        </MenuItem>
+                    )}
                     {wi._list !== "favorites" && (
                         <MenuItem data={{ list: "favorites" }} onClick={this.onListChange}>
                             <Menu.Item>

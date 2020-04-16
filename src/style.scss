@@ -5,6 +5,7 @@ $deferredColor: rgb(173, 173, 173);
 $favoritesColor: rgb(161, 99, 202);
 $permawatchColor: #e696ae;
 $keywordColor: #4287f5;
+$pinnedColor: #eca06e;
 $rowItemHover: darken(white, 5%);
 
 body,
@@ -71,6 +72,10 @@ body,
     border-left: 4px solid $favoritesColor;
 }
 
+.workItemPinned {
+    border-left: 4px solid $pinnedColor;
+}
+
 .workItemPermawatch {
     border-left: 4px solid $permawatchColor;
 }
@@ -92,6 +97,10 @@ td.workItemKeyword{
 
 .wiIndicatorFavorite {
     color: $favoritesColor;
+}
+
+.wiIndicatorPinned {
+    color: $pinnedColor;
 }
 
 .hasChangesText {
