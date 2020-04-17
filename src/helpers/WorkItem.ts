@@ -157,6 +157,7 @@ export default class WorkItem {
         if (text.toLowerCase().indexOf(" прод") !== -1) return true;
         if (text.toLowerCase().indexOf(" продакшен") !== -1) return true;
         if (text.toLowerCase().indexOf(" продакшн") !== -1) return true;
+        if (text.toLowerCase().indexOf(" переносить") !== -1) return true;
         return false;
     }
 
