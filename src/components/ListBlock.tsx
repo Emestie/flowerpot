@@ -32,7 +32,7 @@ export default class ListBlock extends React.Component<IProps, IState> {
                 (this.state.inputVal !== "" && +this.state.inputVal < 1) ||
                 this.state.inputVal.length > 7
             );
-        }
+        } else return undefined;
     }
 
     get blockButton() {
@@ -46,7 +46,7 @@ export default class ListBlock extends React.Component<IProps, IState> {
             );
         } else if (this.props.listName === "keywords") {
             return this.state.inputVal.trim() === "" || Lists.isIn(this.props.listName, 0, 0, this.state.inputVal.trim());
-        }
+        } else return undefined;
     }
 
     get color() {

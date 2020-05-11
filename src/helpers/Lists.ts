@@ -44,6 +44,7 @@ export default class Lists {
     public static isInText(list: TLists, name: string) {
         return !!store.getList(list).find((x) => {
             if (list === "keywords" && x.word) return name.toLowerCase().indexOf(x.word.toLowerCase()) !== -1;
+            else return null;
         });
     }
 

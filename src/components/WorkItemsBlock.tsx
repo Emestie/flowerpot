@@ -23,14 +23,14 @@ export default observer((props: IProps) => {
     const redItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
     const orangeItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 2).length;
 
-    const atLeastOneWiHasChanges = (() => {
-        let wis = workItems;
-        let changes = false;
-        wis.forEach((wi) => {
-            if (!changes) changes = store.getWIHasChanges(wi);
-        });
-        return changes;
-    })();
+    // const atLeastOneWiHasChanges = (() => {
+    //     let wis = workItems;
+    //     let changes = false;
+    //     wis.forEach((wi) => {
+    //         if (!changes) changes = store.getWIHasChanges(wi);
+    //     });
+    //     return changes;
+    // })();
 
     const onCollapseClick = () => {
         Query.toggleBoolean(props.query, "collapsed");
