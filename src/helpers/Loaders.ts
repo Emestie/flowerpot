@@ -1,6 +1,6 @@
 import store from "../store";
 import { Ntlm } from "../lib/ntlm";
-import Query, { IQuery, ITeam, IFavQuery, IResponseQuery, IResponseQueryWI } from "./Query";
+import Query, { IQuery, ITeam, IResponseQuery, IResponseQueryWI } from "./Query";
 import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
 import Differences from "./Differences";
 import { s } from "../values/Strings";
@@ -18,16 +18,15 @@ export default class Loaders {
             if (!r.projects) throw s("throwNoTeams");
 
             let teams = r.projects as ITeam[];
-
             //for each of project we need to load favs
             for (let x in teams) {
-                let rfavs = (await this.syncRequest(teams[x].guid + "/_api/_wit/queryFavorites?__v=5")) as any;
-                if (!rfavs.myFavorites || !rfavs.myFavorites.length) continue;
-                let favs = rfavs.myFavorites as IFavQuery[];
+                let res = (await this.syncRequest(teams[x].guid + "/_apis/wit/queries?$depth=2&api-version=5.1")) as any;
+                res = res.value || [];
+                const children = res.flatMap((rf: any) => rf.children || []);
+                const all = [...res, ...children].filter((f) => !f.isPublic && !f.isFolder);
 
-                favs = favs.filter(f => !f.queryItem.isFolder);
-
-                favs.forEach(f => {
+                const favs = all.map((a: any) => ({ queryItem: a }));
+                favs.forEach((f) => {
                     queries.push(Query.buildFromResponse(f, teams[x]));
                 });
             }
@@ -64,7 +63,7 @@ export default class Loaders {
                     }
                 }
             } else {
-                preparedWIs = store.getList("permawatch").map(x => ({ id: x.id, url: "" }));
+                preparedWIs = store.getList("permawatch").map((x) => ({ id: x.id, url: "" }));
             }
 
             let qwi = preparedWIs;
@@ -145,16 +144,16 @@ export default class Loaders {
             } catch (e) {
                 //if (!forceAuth) {
                 this.syncRequest(subpath, true)
-                    .then(x => {
+                    .then((x) => {
                         resolve(x);
                     })
-                    .catch(v => {
+                    .catch((v) => {
                         //reject(v);
                         this.syncRequest(subpath, true)
-                            .then(x => {
+                            .then((x) => {
                                 resolve(x);
                             })
-                            .catch(q => {
+                            .catch((q) => {
                                 reject(q);
                             });
                     });
@@ -190,10 +189,10 @@ export default class Loaders {
             } catch (ex) {
                 if (!forceAuth) {
                     this.syncRequest(subpath, true)
-                        .then(x => {
+                        .then((x) => {
                             resolve(x);
                         })
-                        .catch(v => {
+                        .catch((v) => {
                             reject(v);
                         });
                 } else {

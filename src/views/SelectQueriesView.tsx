@@ -37,7 +37,7 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
             Loaders.loadAvailableQueries().then(queries => {
                 let currentQueriesIds = store.settings.queries.map(q => q.queryId);
                 let queriesToSelect = queries.filter(q => !currentQueriesIds.includes(q.queryId)) as ISelectableQuery[];
-                queriesToSelect.forEach(q => (q.checked = true));
+                queriesToSelect.forEach(q => (q.checked = false));
                 this.setState({ availableQueries: queriesToSelect, isLoading: false });
             });
         }, 50);
@@ -94,8 +94,6 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
                 </ViewHeading>
                 <Container fluid>
                     <Label color="orange">{s("note")}</Label> {s("selqNote1")}
-                    <b>{s("selqNote2")}</b>
-                    {s("selqNote3")}
                     <b>{s("selqNote4")}</b>
                     {s("selqNote5")}
                     <Header as="h3" dividing>
