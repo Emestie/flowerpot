@@ -162,6 +162,7 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                         initialColor={this.state.noteInitialColor}
                         basic
                         showColors
+                        area
                     />
                 </Menu>
             </ContextMenu>

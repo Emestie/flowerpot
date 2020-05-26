@@ -118,6 +118,9 @@ export default class WorkItemRow extends React.Component<IProps> {
 
     get note() {
         let note = Lists.getNote(this.props.item.id);
+        if (note && note.length > 50) {
+            note = note.slice(0, 50) + "...";
+        }
         return note;
     }
 
