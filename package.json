@@ -21,7 +21,7 @@
             "provider": "github"
         }
     },
-    "version": "0.2.11",
+    "version": "0.2.12",
     "dependencies": {
         "@trodi/electron-splashscreen": "^0.3.4",
         "electron-updater": "^4.1.2",
