@@ -111,7 +111,10 @@ export default class WorkItem {
     }
 
     public static buildFromResponse(resp: IResponseWorkItem, queryId: string) {
-        let isMine = this.parseNameField(resp.fields["System.AssignedTo"] || "").toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1;
+        let isMine =
+            this.parseNameField(resp.fields["System.AssignedTo"] || "")
+                .toLowerCase()
+                .indexOf(store.settings.tfsUser.toLowerCase()) !== -1;
         let item: IWorkItem = {
             id: resp.id,
             rev: resp.rev,
@@ -121,7 +124,7 @@ export default class WorkItem {
             assignedToFull: this.parseNameField(resp.fields["System.AssignedTo"] || ""),
             createdDate: resp.fields["System.CreatedDate"],
             freshness: this.getTerm(resp.fields["System.CreatedDate"]),
-            createdBy: this.shortName(this.parseNameField(resp.fields["System.CreatedBy"] || '')) || "",
+            createdBy: this.shortName(this.parseNameField(resp.fields["System.CreatedBy"] || "")) || "",
             createdByFull: this.parseNameField(resp.fields["System.CreatedBy"] || ""),
             title: this.shortTitle(resp.fields["System.Title"]) || "",
             titleFull: resp.fields["System.Title"] || "",
@@ -138,14 +141,15 @@ export default class WorkItem {
             _isMine: isMine,
             _list: this.getListName(resp.id),
             _isHasShelve: this.isHasShelve(resp.fields["System.History"]),
-            _isMoveToProd: this.isMoveToProd(resp.fields['System.History']),
+            _isMoveToProd: this.isMoveToProd(resp.fields["System.History"]),
             _queryId: queryId,
         };
         return item;
     }
 
     private static parseNameField(nameField: any) {
-        if(typeof nameField === 'string') return nameField;
+        if (!nameField) return "";
+        if (typeof nameField === "string") return nameField;
 
         return `${nameField.displayName} <${nameField.uniqueName}>`;
     }
