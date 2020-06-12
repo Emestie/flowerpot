@@ -51,6 +51,8 @@ class Store {
     @observable autostart: boolean = true;
     @observable locale: TLocale = "en";
 
+    @observable loadingInProgressList : string[] = [];
+
     isEosTfs() {
         return this.settings.tfsPath.toLowerCase().indexOf("tfs.eos.loc:8080") !== -1;
     }

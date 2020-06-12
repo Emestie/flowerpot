@@ -14,7 +14,7 @@ import ViewHeading from "../components/ViewHeading";
 export default observer(() => {
     const [idDial, setIdDial] = useState(false);
 
-    const isRefreshAvailable = !!store.getQueries().length;
+    const isRefreshAvailable = !!store.getQueries().length && !store.loadingInProgressList.length;
 
     const onRefresh = () => {
         store.switchView("refreshhelper");

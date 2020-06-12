@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Header, Label, Table, Icon } from "semantic-ui-react";
 import store from "../store";
 import Query, { IQuery } from "../helpers/Query";
@@ -22,6 +22,16 @@ export default observer((props: IProps) => {
     const totalItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).length;
     const redItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
     const orangeItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 2).length;
+
+    useEffect(() => {
+        let newProgressList = store.copy(store.loadingInProgressList);
+        if (isLoading) {
+            newProgressList.push(props.query.queryId);
+        } else {
+            newProgressList = newProgressList.filter((x) => x !== props.query.queryId);
+        }
+        store.loadingInProgressList = newProgressList;
+    }, [isLoading]);
 
     const onCollapseClick = () => {
         Query.toggleBoolean(props.query, "collapsed");
