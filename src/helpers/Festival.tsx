@@ -72,7 +72,7 @@ export default class Festival {
         if (this.isEveNow(Eve.Feb23)) return [feb23];
         if (this.isEveNow(Eve.Mar8)) return [mar8];
 
-        return [coronavirus, 23, 14];
+        return [null];//[coronavirus, 23, 14];
     }
 
     public static getFestivalNameBanner(name: string, nameFull: string, mode: number) {

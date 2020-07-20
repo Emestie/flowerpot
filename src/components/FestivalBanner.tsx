@@ -6,7 +6,7 @@ export default () => {
     if (!src) return null;
 
     return (
-        <div style={{ position: "absolute", top: top || 8, left: left || 6, width: width || 25, height }}>
+        <div style={{ position: "absolute", top: top || 8, left: left || 6, width: width || 25, height: height || 25 }}>
             <img src={src as string} alt="" />
         </div>
     );
