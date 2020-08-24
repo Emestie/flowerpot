@@ -53,6 +53,7 @@ class Store {
 
     @observable loadingInProgressList : string[] = [];
     @observable isFestivalOn: boolean = false;
+    @observable festivalHeaderOffset: number = 0;
 
     isEosTfs() {
         return this.settings.tfsPath.toLowerCase().indexOf("tfs.eos.loc:8080") !== -1;

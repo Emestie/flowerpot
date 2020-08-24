@@ -3,9 +3,12 @@ import Festival from "../helpers/Festival";
 import store from "../store";
 
 export default () => {
-    const [src, top, left, width, height] = Festival.getFestivalHeaderIcon();
+    const [src, top, left, width, height, headerOffset] = Festival.getFestivalHeaderIcon();
     if (!src) return null;
-    if (src) store.isFestivalOn = true;
+    if (src) {
+        store.isFestivalOn = true;
+        store.festivalHeaderOffset = headerOffset ? +headerOffset : 36;
+    }
 
     return (
         <div style={{ position: "absolute", top: top || 8, left: left || 6, width: width || 25, height: height || 25 }}>
