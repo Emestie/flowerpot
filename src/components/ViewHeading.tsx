@@ -33,7 +33,9 @@ const getHeaderTextByViewName = (viewName: TView) => {
 export default observer((p: P) => {
     return (
         <div className="TopBar">
-            <Header as="h1">{getHeaderTextByViewName(store.view)}</Header>
+            <Header as="h1" style={{ marginLeft: store.isFestivalOn ? 36 : 0 }}>
+                {getHeaderTextByViewName(store.view)}
+            </Header>
             <div className="RightTopCorner">{p.children}</div>
             <FestivalBanner />
         </div>

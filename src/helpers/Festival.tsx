@@ -6,7 +6,8 @@ import { Icon } from "semantic-ui-react";
 const santaHat = require("../assets/santa-hat.svg") as string;
 const feb23 = require("../assets/feb23.svg") as string;
 const mar8 = require("../assets/mar8.svg") as string;
-const coronavirus = require('../assets/coronavirus.svg') as string;
+const coronavirus = require("../assets/coronavirus.svg") as string;
+const longLiveBelarus = require("../assets/wrw-128.png") as string;
 
 const flower1 = require("../assets/flower1.svg") as string;
 const flower2 = require("../assets/flower2.svg") as string;
@@ -72,7 +73,8 @@ export default class Festival {
         if (this.isEveNow(Eve.Feb23)) return [feb23];
         if (this.isEveNow(Eve.Mar8)) return [mar8];
 
-        return [null];//[coronavirus, 23, 14];
+        return [longLiveBelarus, undefined, 13, 40, 46];
+        //return [coronavirus, 23, 14];
     }
 
     public static getFestivalNameBanner(name: string, nameFull: string, mode: number) {
@@ -105,7 +107,7 @@ export default class Festival {
 
         let addition = <></>;
 
-        this.nameIconsDictionary.forEach(nameIconRule => {
+        this.nameIconsDictionary.forEach((nameIconRule) => {
             if (nameIconRule.rule(name, item)) addition = nameIconRule.icon;
         });
 
