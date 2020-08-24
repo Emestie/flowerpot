@@ -10,25 +10,38 @@ export default class Loaders {
     private static auth: boolean = false;
     public static outage: boolean = false;
 
+    public static async loadCollections() {
+        const cols = (await this.asyncRequest(
+            "_api/_common/GetJumpList?showTeamsOnly=false&__v=5&navigationContextPackage={}&showStoppedCollections=false"
+        )) as any;
+
+        const names = (cols.__wrappedArray || []).map((x: any) => x.name);
+        return names;
+    }
+
     public static async loadAvailableQueries() {
         let queries: IQuery[] = [];
         try {
-            let r = (await this.syncRequest("_api/_wit/teamProjects?__v=5")) as any;
-            // eslint-disable-next-line
-            if (!r.projects) throw s("throwNoTeams");
+            const collections = await this.loadCollections();
 
-            let teams = r.projects as ITeam[];
-            //for each of project we need to load favs
-            for (let x in teams) {
-                let res = (await this.syncRequest(teams[x].guid + "/_apis/wit/queries?$depth=2&api-version=5.1")) as any;
-                res = res.value || [];
-                const children = res.flatMap((rf: any) => rf.children || []);
-                const all = [...res, ...children].filter((f) => !f.isPublic && !f.isFolder);
+            for (let c in collections) {
+                let r = (await this.syncRequest(collections[c] + "/_api/_wit/teamProjects?__v=5")) as any;
+                // eslint-disable-next-line
+                if (!r.projects) throw s("throwNoTeams");
 
-                const favs = all.map((a: any) => ({ queryItem: a }));
-                favs.forEach((f) => {
-                    queries.push(Query.buildFromResponse(f, teams[x]));
-                });
+                let teams = r.projects as ITeam[];
+                //for each of project we need to load favs
+                for (let x in teams) {
+                    let res = (await this.syncRequest(collections[c] + "/" + teams[x].guid + "/_apis/wit/queries?$depth=2&api-version=5.1")) as any;
+                    res = res.value || [];
+                    const children = res.flatMap((rf: any) => rf.children || []);
+                    const all = [...res, ...children].filter((f) => !f.isPublic && !f.isFolder);
+
+                    const favs = all.map((a: any) => ({ queryItem: a }));
+                    favs.forEach((f) => {
+                        queries.push(Query.buildFromResponse(f, teams[x], collections[c]));
+                    });
+                }
             }
         } catch (ex) {
             store.showErrorPage(ex);
@@ -42,7 +55,9 @@ export default class Loaders {
         try {
             let preparedWIs: IResponseQueryWI[] = [];
             if (query.queryId !== "___permawatch") {
-                let queryInfo = (await this.asyncRequest(query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0")) as IResponseQuery;
+                let queryInfo = (await this.asyncRequest(
+                    query.collectionName + "/" + query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0"
+                )) as IResponseQuery;
 
                 // eslint-disable-next-line
                 if (!queryInfo) throw s("throwQueryLoading");
@@ -63,24 +78,28 @@ export default class Loaders {
                     }
                 }
             } else {
-                preparedWIs = store.getList("permawatch").map((x) => ({ id: x.id, url: "" }));
+                preparedWIs = store.getList("permawatch").map((x) => ({ id: x.id, url: "", collection: x.collection }));
             }
 
             let qwi = preparedWIs;
 
             for (let x in qwi) {
-                let wi = (await this.asyncRequest("_apis/wit/workItems/" + qwi[x].id)) as IResponseWorkItem;
+                let wi = (await this.asyncRequest(
+                    (qwi[x].collection || query.collectionName) + "/" + "_apis/wit/workItems/" + qwi[x].id
+                )) as IResponseWorkItem;
                 if (!wi.id) {
-                    Lists.deleteFromList("permawatch", qwi[x].id);
+                    Lists.deleteFromList("permawatch", qwi[x].id, qwi[x].collection || "");
                     continue;
                 }
 
-                if (Lists.isIn("hidden", wi.id, wi.rev)) {
+                if (Lists.isIn("hidden", qwi[x].collection || "", wi.id, wi.rev)) {
                     continue;
                 }
-                Lists.deleteFromList("hidden", wi.id);
+                Lists.deleteFromList("hidden", wi.id, qwi[x].collection || "");
 
-                wis.push(WorkItem.buildFromResponse(wi, query.queryId));
+                if (!query.collectionName) query.collectionName = qwi[x].collection || "";
+
+                wis.push(WorkItem.buildFromResponse(wi, query));
             }
 
             Differences.put(query, wis);
@@ -93,7 +112,8 @@ export default class Loaders {
 
     public static async checkCredentials() {
         try {
-            await this.asyncRequest("_api/_wit/teamProjects?__v=5", true);
+            //await this.asyncRequest("_api/_wit/teamProjects?__v=5", true);
+            await this.loadCollections();
             return true;
         } catch (ex) {
             return false;

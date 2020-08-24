@@ -9,16 +9,16 @@ import { reaction } from "mobx";
 export default function useQueryLoader(query: IQuery) {
     const [isLoading, setIsLoading] = useState(true);
 
-    const onRoutinesRestart = reaction(
-        () => store._routinesRestart,
-        () => routineStart()
-    );
-    const onPermawatchUpdate = reaction(
-        () => store._permawatchUpdate,
-        () => {
-            if (query.queryId === "___permawatch") loadWorkItemsForThisQuery();
-        }
-    );
+    // const onRoutinesRestart = reaction(
+    //     () => store._routinesRestart,
+    //     () => routineStart()
+    // );
+    // const onPermawatchUpdate = reaction(
+    //     () => store._permawatchUpdate,
+    //     () => {
+    //         if (query.queryId === "___permawatch") loadWorkItemsForThisQuery();
+    //     }
+    // );
 
     useEffect(() => {
         routineStart();
@@ -32,7 +32,7 @@ export default function useQueryLoader(query: IQuery) {
 
         if (store.useFishWIs === 1 && Electron.isDev()) {
             setIsLoading(false);
-            store.setWorkItemsForQuery(query, [WorkItem.fish(query.queryId), WorkItem.fish(query.queryId), WorkItem.fish(query.queryId)]);
+            store.setWorkItemsForQuery(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)]);
             return;
         }
 

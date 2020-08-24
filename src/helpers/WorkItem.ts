@@ -1,6 +1,7 @@
 import store from "../store";
 import Lists from "./Lists";
 import { TLists } from "./Settings";
+import { IQuery } from "./Query";
 
 export interface IWorkItem {
     id: number;
@@ -30,6 +31,7 @@ export interface IWorkItem {
     _isHasShelve: boolean;
     _isMoveToProd: boolean;
     _queryId: string;
+    _collectionName: string;
 }
 
 export interface IResponseWorkItem {
@@ -61,7 +63,7 @@ export interface IResponseWorkItem {
 }
 
 export default class WorkItem {
-    public static fish(_queryId: string) {
+    public static fish(queryfish: IQuery) {
         let fish = {
             id: 107715,
             rev: 7,
@@ -107,10 +109,10 @@ export default class WorkItem {
             url: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715",
         } as IResponseWorkItem;
 
-        return this.buildFromResponse(fish, _queryId);
+        return this.buildFromResponse(fish, queryfish);
     }
 
-    public static buildFromResponse(resp: IResponseWorkItem, queryId: string) {
+    public static buildFromResponse(resp: IResponseWorkItem, query: IQuery) {
         let isMine =
             this.parseNameField(resp.fields["System.AssignedTo"] || "")
                 .toLowerCase()
@@ -139,10 +141,11 @@ export default class WorkItem {
             state: resp.fields["System.State"] || "",
             tags: resp.fields["System.Tags"] || "",
             _isMine: isMine,
-            _list: this.getListName(resp.id),
+            _list: this.getListName(resp.id, query.collectionName),
             _isHasShelve: this.isHasShelve(resp.fields["System.History"]),
             _isMoveToProd: this.isMoveToProd(resp.fields["System.History"]),
-            _queryId: queryId,
+            _queryId: query.queryId,
+            _collectionName: query.collectionName,
         };
         return item;
     }
@@ -171,12 +174,13 @@ export default class WorkItem {
         return false;
     }
 
-    private static getListName(id: number): TLists | undefined {
-        if (Lists.isIn("deferred", id)) return "deferred";
-        if (Lists.isIn("favorites", id)) return "favorites";
-        if (Lists.isIn("pinned", id)) return "pinned";
-        if (Lists.isIn("hidden", id)) return "hidden";
-        if (Lists.isIn("permawatch", id)) return "permawatch";
+    private static getListName(id: number, collectionName: string): TLists | undefined {
+        if (Lists.isIn("deferred", collectionName, id)) return "deferred";
+        if (Lists.isIn("favorites", collectionName, id)) return "favorites";
+        if (Lists.isIn("pinned", collectionName, id)) return "pinned";
+        if (Lists.isIn("hidden", collectionName, id)) return "hidden";
+        if (Lists.isIn("permawatch", collectionName, id)) return "permawatch";
+
         return undefined;
     }
 

@@ -7,10 +7,13 @@ import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
 import Electron from "../helpers/Electron";
 import SingleInputColorDialog from "./SingleInputColorDialog";
+import { IQuery } from "../helpers/Query";
+import store from "../store";
 
 interface IProps {
     uid: number;
     workItem: IWorkItem;
+    query: IQuery;
     onUpdate: (wi: IWorkItem) => void;
 }
 interface IState {
@@ -30,8 +33,13 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
         let list = data.list as TLists | undefined;
         let wi = this.props.workItem;
 
-        if (list) Lists.push(list, wi.id, wi.rev);
-        else if (wi._list) Lists.deleteFromList(wi._list, wi.id);
+        if (list) {
+            Lists.push(list, wi._collectionName, wi.id, wi.rev);
+        } else if (wi._list) Lists.deleteFromList(wi._list, wi.id, wi._collectionName);
+
+        if (list === "permawatch" || wi._list === "permawatch") {
+            store.switchView("refreshhelper");
+        }
 
         wi._list = list;
 

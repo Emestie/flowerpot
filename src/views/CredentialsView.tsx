@@ -179,7 +179,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
                         <Form.Input
                             fluid
                             label={s("tfsPath")}
-                            placeholder="http://tfs.eos.loc:8080/tfs/DefaultCollection/"
+                            placeholder="http://tfs:8080/tfs/"
                             value={store.settings.tfsPath}
                             onChange={e => this.validateTfsPath(e.target.value)}
                             error={this.state.pathInvalid}

@@ -23,7 +23,7 @@ export default class DebugView extends React.Component<IProps, IState> {
     };
 
     setChanges = () => {
-        let wi = WorkItem.fish(store.settings.queries[0].queryId);
+        let wi = WorkItem.fish(store.settings.queries[0]);
         wi.id = 108920;
         store.setWIHasChanges(wi, true);
     };

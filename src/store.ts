@@ -21,7 +21,7 @@ class Store {
     @observable updateStatus: TUpdateStatus = "none";
     @observable showWhatsNew: boolean = false;
     @observable settings: ISettings = {
-        tfsPath: "http://tfs.eos.loc:8080/tfs/DefaultCollection/",
+        tfsPath: "http://tfs:8080/tfs/",
         tfsUser: "",
         tfsPwd: "",
         credentialsChecked: false,
@@ -146,6 +146,8 @@ class Store {
     @action updateSettings(settings?: ISettings) {
         const newSettings = this.copy(settings || this.settings);
         this.settings = newSettings;
+        //thin place
+        console.log(newSettings)
     }
 
     @action restartRoutines() {

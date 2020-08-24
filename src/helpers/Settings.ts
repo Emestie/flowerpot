@@ -10,6 +10,7 @@ interface IListItem {
     id: number;
     rev: number;
     word?: string;
+    collection?: string;
 }
 
 interface INoteItem {

@@ -70,7 +70,7 @@ const en: ILocalizedStrings = {
     credsNoteText: "You must validate credentials you entered before leaving this page.",
     tfsPwd: "TFS password",
     tfsUser: "TFS username (with domain)",
-    tfsPath: "TFS path with collection name (must start with 'http://' and end with '/')",
+    tfsPath: "TFS path (must start with 'http://' and end with '/')",
     credsHeader: "Credentials",
     save: "OK",
     tfsHeader: "TFS & Account settings",

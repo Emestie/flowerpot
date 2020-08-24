@@ -21,7 +21,7 @@ interface ISelectableQuery extends IQuery {
 export default class SelectQueriesView extends React.Component<IProps, IState> {
     state: IState = {
         isLoading: true,
-        availableQueries: []
+        availableQueries: [],
     };
 
     componentDidMount() {
@@ -29,22 +29,22 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
     }
 
     get isAddAvailable() {
-        return !!this.state.availableQueries.filter(q => q.checked).length;
+        return !!this.state.availableQueries.filter((q) => q.checked).length;
     }
 
     loadQueries() {
         setTimeout(() => {
-            Loaders.loadAvailableQueries().then(queries => {
-                let currentQueriesIds = store.settings.queries.map(q => q.queryId);
-                let queriesToSelect = queries.filter(q => !currentQueriesIds.includes(q.queryId)) as ISelectableQuery[];
-                queriesToSelect.forEach(q => (q.checked = false));
+            Loaders.loadAvailableQueries().then((queries) => {
+                let currentQueriesIds = store.settings.queries.map((q) => q.queryId);
+                let queriesToSelect = queries.filter((q) => !currentQueriesIds.includes(q.queryId)) as ISelectableQuery[];
+                queriesToSelect.forEach((q) => (q.checked = false));
                 this.setState({ availableQueries: queriesToSelect, isLoading: false });
             });
         }, 50);
     }
 
     onAdd = () => {
-        this.state.availableQueries.filter(q => q.checked).forEach(q => Query.add(q));
+        this.state.availableQueries.filter((q) => q.checked).forEach((q) => Query.add(q));
         this.setState({ isLoading: true, availableQueries: [] });
         store.switchView("settings");
     };
@@ -61,7 +61,7 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
 
     toggleCheck = (query: ISelectableQuery) => {
         let all = this.state.availableQueries;
-        let index = all.findIndex(q => q.queryId === query.queryId);
+        let index = all.findIndex((q) => q.queryId === query.queryId);
         all[index].checked = !all[index].checked;
         this.setState({ availableQueries: all });
     };
@@ -73,9 +73,13 @@ export default class SelectQueriesView extends React.Component<IProps, IState> {
                 <Message.Content> {s("loading")}</Message.Content>
             </Message>
         ) : this.state.availableQueries.length ? (
-            this.state.availableQueries.map(q => (
+            this.state.availableQueries.map((q) => (
                 <div key={q.queryId} style={{ marginBottom: 5 }}>
-                    <Checkbox label={q.teamName + " / " + q.queryName} checked={q.checked} onChange={() => this.toggleCheck(q)} />
+                    <Checkbox
+                        label={q.collectionName + " / " + q.teamName + " / " + q.queryName}
+                        checked={q.checked}
+                        onChange={() => this.toggleCheck(q)}
+                    />
                 </div>
             ))
         ) : (
