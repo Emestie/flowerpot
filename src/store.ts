@@ -46,12 +46,13 @@ class Store {
         showUnreads: true,
         lastTimeVersion: "",
         lastTimeVersionLong: "",
+        migrationsDone: [],
     };
     //! if add something in settings outfise of flowerpot section don't forget to add reaction
     @observable autostart: boolean = true;
     @observable locale: TLocale = "en";
 
-    @observable loadingInProgressList : string[] = [];
+    @observable loadingInProgressList: string[] = [];
     @observable isFestivalOn: boolean = false;
     @observable festivalHeaderOffset: number = 0;
 
@@ -119,7 +120,7 @@ class Store {
     }
 
     @observable getWorkItemsForQuery(query: IQuery) {
-        return this.allWorkItems.filter(wi => wi._queryId === query.queryId);
+        return this.allWorkItems.filter((wi) => wi._queryId === query.queryId);
     }
 
     @observable setWorkItemsForQuery(query: IQuery, items: IWorkItem[]) {
@@ -149,7 +150,6 @@ class Store {
         const newSettings = this.copy(settings || this.settings);
         this.settings = newSettings;
         //thin place
-        console.log(newSettings)
     }
 
     @action restartRoutines() {

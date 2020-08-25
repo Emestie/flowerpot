@@ -1,14 +1,22 @@
 import store from "../store";
 
 export default class Migration {
+    private static setMigrationAsDone(name: string, dontSaveSettings?: boolean) {
+        store.settings.migrationsDone.push(name);
+        if (!dontSaveSettings) store.updateSettings();
+    }
+
     public static perform() {
-        this.v0_2_12_to_v0_2_13();
+        const migrations = store.settings.migrationsDone || [];
+
+        if (!migrations.includes("v0_2_12_to_v0_2_13")) this.v0_2_12_to_v0_2_13();
+        if (!migrations.includes("v0_2_13_notes")) this.v0_2_13_notes();
     }
 
     private static v0_2_12_to_v0_2_13() {
         //check if tfs path contains collection
         const path = store.settings.tfsPath;
-        if (path.indexOf("Collection") === -1) return;
+        if (path.indexOf("Collection") === -1) return this.setMigrationAsDone("v0_2_12_to_v0_2_13");
 
         console.log("Migration v0_2_12_to_v0_2_13");
 
@@ -27,6 +35,19 @@ export default class Migration {
         store.settings.lists.hidden = (store.settings.lists.hidden || []).map((x) => ({ ...x, collection: x.collection || collectionName }));
         store.settings.lists.pinned = (store.settings.lists.pinned || []).map((x) => ({ ...x, collection: x.collection || collectionName }));
 
-        store.updateSettings();
+        //store.updateSettings();
+        this.setMigrationAsDone("v0_2_12_to_v0_2_13");
+    }
+
+    private static v0_2_13_notes() {
+        console.log("Migration v0_2_13_notes");
+
+        store.settings.notes = (store.settings.notes || []).map((x) => {
+            if (!x.collection) x.collection = "DefaultCollection";
+            return x;
+        });
+
+        this.setMigrationAsDone("v0_2_13_notes");
+        //store.updateSettings();
     }
 }

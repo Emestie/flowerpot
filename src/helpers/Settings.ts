@@ -41,6 +41,7 @@ export interface ISettings {
     showUnreads: boolean;
     lastTimeVersion: string;
     lastTimeVersionLong: string;
+    migrationsDone: string[];
 }
 
 export default class Settings {
