@@ -14,6 +14,7 @@ interface IListItem {
 }
 
 interface INoteItem {
+    collection: string;
     id: number;
     note: string;
     color?: string;

@@ -168,6 +168,8 @@ const en: ILocalizedStrings = {
     itemsNew: " new work items",
 
     moveToProd: "Move request",
+
+    collection: "Collection",
 };
 
 export default en;

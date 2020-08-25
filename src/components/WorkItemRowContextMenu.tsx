@@ -61,7 +61,7 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
     };
 
     onEditNote = (text: string, color?: string) => {
-        Lists.setNote(this.props.workItem.id, text, color);
+        Lists.setNote(this.props.workItem._collectionName, this.props.workItem.id, text, color);
         this.setState({ showNoteDialog: false });
     };
 
@@ -149,8 +149,8 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
                         onClick={() =>
                             this.setState({
                                 showNoteDialog: true,
-                                noteInitialText: Lists.getNote(this.props.workItem.id),
-                                noteInitialColor: Lists.getNoteColor(this.props.workItem.id),
+                                noteInitialText: Lists.getNote(this.props.workItem._collectionName, this.props.workItem.id),
+                                noteInitialColor: Lists.getNoteColor(this.props.workItem._collectionName, this.props.workItem.id),
                             })
                         }
                     >

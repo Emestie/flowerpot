@@ -119,7 +119,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     };
 
     get note() {
-        let note = Lists.getNote(this.props.item.id);
+        let note = Lists.getNote(this.props.item._collectionName, this.props.item.id);
         if (note && note.length > 50) {
             note = note.slice(0, 50) + "...";
         }
@@ -127,7 +127,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     }
 
     get noteColor() {
-        let color = Lists.getNoteColor(this.props.item.id);
+        let color = Lists.getNoteColor(this.props.item._collectionName, this.props.item.id);
         return color;
     }
 

@@ -171,6 +171,8 @@ const ru: ILocalizedStrings = {
     itemsNew: " элемента(ов) добавлено",
 
     moveToProd: "Запрос на перенос",
+
+    collection: "Коллекция",
 };
 
 export default ru;

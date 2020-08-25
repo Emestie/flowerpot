@@ -48,14 +48,14 @@ export default class Lists {
         });
     }
 
-    public static setNote(id: number, note: string, color?: string) {
+    public static setNote(collection: string, id: number, note: string, color?: string) {
         let notes = store.copy(store.settings.notes);
 
-        let existingNote = notes.find((n) => n.id === id);
-        notes = notes.filter((n) => n.id !== id);
+        let existingNote = notes.find((n) => n.id === id && collection === n.collection);
+        notes = notes.filter((x) => `${x.collection}-${x.id}` !== `${collection}-${id}`);
 
         if (note) {
-            if (!existingNote) existingNote = { id: id, note: note, color: color };
+            if (!existingNote) existingNote = { id: id, collection: collection, note: note, color: color };
             else {
                 existingNote.note = note;
                 existingNote.color = color;
@@ -67,16 +67,16 @@ export default class Lists {
         store.updateSettings();
     }
 
-    public static getNote(id: number) {
+    public static getNote(collection: string, id: number) {
         let notes = store.settings.notes;
-        let existingNote = notes.find((n) => n.id === id);
+        let existingNote = notes.find((n) => n.id === id && collection === n.collection);
         if (existingNote) return existingNote.note;
         return undefined;
     }
 
-    public static getNoteColor(id: number) {
+    public static getNoteColor(collection: string, id: number) {
         let notes = store.settings.notes;
-        let existingNote = notes.find((n) => n.id === id);
+        let existingNote = notes.find((n) => n.id === id && collection === n.collection);
         if (existingNote) return existingNote.color;
         return undefined;
     }

@@ -75,6 +75,8 @@ export default class Festival {
 
         return [longLiveBelarus, undefined, 13, 40, 46];
         //return [coronavirus, 23, 14];
+
+        //[icon, top, left, w, h, offset]
     }
 
     public static getFestivalNameBanner(name: string, nameFull: string, mode: number) {
