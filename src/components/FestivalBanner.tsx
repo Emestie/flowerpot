@@ -7,7 +7,7 @@ export default () => {
     if (!src) return null;
     if (src) {
         store.isFestivalOn = true;
-        store.festivalHeaderOffset = headerOffset ? +headerOffset : 36;
+        store.festivalHeaderOffset = headerOffset ? +headerOffset : 40;
     }
 
     return (
