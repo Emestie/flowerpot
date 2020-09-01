@@ -8,6 +8,7 @@ const feb23 = require("../assets/feb23.svg") as string;
 const mar8 = require("../assets/mar8.svg") as string;
 const coronavirus = require("../assets/coronavirus.svg") as string;
 const longLiveBelarus = require("../assets/wrw-128.png") as string;
+const sep3 = require("../assets/sept3.svg") as string;
 
 const flower1 = require("../assets/flower1.svg") as string;
 const flower2 = require("../assets/flower2.svg") as string;
@@ -19,6 +20,7 @@ export enum Eve {
     Mar8,
     Apr1,
     Feb17,
+    Sept3,
 }
 
 export default class Festival {
@@ -63,6 +65,8 @@ export default class Festival {
                 return month === 3 && day === 6;
             case Eve.Feb17:
                 return month === 2 && day === 17;
+            case Eve.Sept3:
+                return month === 9 && day === 3;
             default:
                 return false;
         }
@@ -72,6 +76,7 @@ export default class Festival {
         if (this.isEveNow(Eve.NewYear)) return [santaHat];
         if (this.isEveNow(Eve.Feb23)) return [feb23];
         if (this.isEveNow(Eve.Mar8)) return [mar8];
+        if (this.isEveNow(Eve.Sept3)) return [sep3, 12, 14, 32, 32];
 
         return [longLiveBelarus, undefined, 13, 40, 46];
         //return [coronavirus, 23, 14];
