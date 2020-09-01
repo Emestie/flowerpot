@@ -120,7 +120,6 @@ export default class ListBlock extends React.Component<IProps, IState> {
                 <br></br>
                 {this.props.listName === "permawatch" ? (
                     <Form>
-
                         <Form.Group inline>
                             <Form.Select
                                 label=""

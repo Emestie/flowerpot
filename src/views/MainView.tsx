@@ -26,8 +26,8 @@ export default observer(() => {
 
     const onOpenById = () => setIdDial(true);
 
-    const openById = (id: string) => {
-        Electron.openUrl(store.settings.tfsPath + "QA/_workitems?_a=edit&id=" + id);
+    const openById = (id: string, color?: string, collection?: string) => {
+        Electron.openUrl(store.settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
         setIdDial(false);
     };
 
@@ -44,6 +44,7 @@ export default observer(() => {
     };
 
     const queries = store.getQueries().sort(queriesSorting);
+    const collections = queries.map(x => x.collectionName).filter((i,v,a) => a.indexOf(i) === v);
 
     const queriesElems = queries.length ? (
         queries.map(q => <WorkItemsBlock key={q.queryId} query={q} />)
@@ -79,7 +80,7 @@ export default observer(() => {
                 <Button onClick={onSettings}>{s("settings")}</Button>
             </ViewHeading>
             <Container fluid>
-                <SingleInputColorDialog show={idDial} onClose={() => setIdDial(false)} onOk={openById} caption={s("openByIdText")} />
+                <SingleInputColorDialog show={idDial} onClose={() => setIdDial(false)} onOk={openById} caption={s("openByIdText")} dropdownValues={collections} />
                 <WhatsNewBanner />
                 {queriesElems}
             </Container>
