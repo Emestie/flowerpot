@@ -10,9 +10,11 @@ interface IListItem {
     id: number;
     rev: number;
     word?: string;
+    collection?: string;
 }
 
 interface INoteItem {
+    collection: string;
     id: number;
     note: string;
     color?: string;
@@ -39,6 +41,7 @@ export interface ISettings {
     showUnreads: boolean;
     lastTimeVersion: string;
     lastTimeVersionLong: string;
+    migrationsDone: string[];
 }
 
 export default class Settings {

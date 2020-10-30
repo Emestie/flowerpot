@@ -9,9 +9,11 @@ import { ContextMenuTrigger } from "react-contextmenu";
 import WorkItemRowContextMenu from "./WorkItemRowContextMenu";
 import Lists from "../helpers/Lists";
 import Festival from "../helpers/Festival";
+import { IQuery } from "../helpers/Query";
 
 interface IProps {
     item: IWorkItem;
+    query: IQuery;
     isPermawatch: boolean;
     onUpdate: (wi: IWorkItem) => void;
 }
@@ -107,17 +109,17 @@ export default class WorkItemRow extends React.Component<IProps> {
 
     getClass = () => {
         let item = this.props.item;
-        if (Lists.isIn("favorites", item.id)) return "workItemFavorite";
-        if (Lists.isIn("pinned", item.id)) return "workItemPinned";
-        if (Lists.isIn("deferred", item.id)) return "workItemDeferred";
-        if (Lists.isIn("permawatch", item.id)) return "workItemPermawatch";
+        if (Lists.isIn("favorites", this.props.query.collectionName, item.id)) return "workItemFavorite";
+        if (Lists.isIn("pinned",this.props.query.collectionName, item.id)) return "workItemPinned";
+        if (Lists.isIn("deferred",this.props.query.collectionName, item.id)) return "workItemDeferred";
+        if (Lists.isIn("permawatch", this.props.query.collectionName,item.id)) return "workItemPermawatch";
         if (Lists.isInText("keywords", item.titleFull)) return "workItemKeyword";
         if (item._isMine) return "workItemIsMine";
         return "workItemHasNoCanges";
     };
 
     get note() {
-        let note = Lists.getNote(this.props.item.id);
+        let note = Lists.getNote(this.props.item._collectionName, this.props.item.id);
         if (note && note.length > 50) {
             note = note.slice(0, 50) + "...";
         }
@@ -125,35 +127,35 @@ export default class WorkItemRow extends React.Component<IProps> {
     }
 
     get noteColor() {
-        let color = Lists.getNoteColor(this.props.item.id);
+        let color = Lists.getNoteColor(this.props.item._collectionName, this.props.item.id);
         return color;
     }
 
     getListIndicator = () => {
         let item = this.props.item;
 
-        if (Lists.isIn("permawatch", item.id))
+        if (Lists.isIn("permawatch", this.props.query.collectionName,item.id))
             return (
                 <span className="wiIndicatorPermawatch">
                     <Icon name="eye" />
                 </span>
             );
 
-        if (Lists.isIn("deferred", item.id))
+        if (Lists.isIn("deferred",this.props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorDeferred">
                     <Icon name="clock outline" />
                 </span>
             );
 
-        if (Lists.isIn("favorites", item.id))
+        if (Lists.isIn("favorites",this.props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorFavorite">
                     <Icon name="star" />
                 </span>
             );
 
-        if (Lists.isIn("pinned", item.id))
+        if (Lists.isIn("pinned",this.props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorPinned">
                     <Icon name="pin" />
@@ -196,7 +198,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                         </span>
                     </ContextMenuTrigger>
 
-                    <WorkItemRowContextMenu uid={uid} workItem={item} onUpdate={this.props.onUpdate} />
+                    <WorkItemRowContextMenu uid={uid} query={this.props.query} workItem={item} onUpdate={this.props.onUpdate} />
                 </Table.Cell>
                 <Table.Cell collapsing>
                     <ContextMenuTrigger id={uid + ""}>
@@ -227,7 +229,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                             {!!item._isMoveToProd && (
                                 <span className="hasShelve" title={s("moveToProd")}>
                                     <Label color="teal" basic size="mini" style={{ padding: "3px 4px", marginRight: 2 }}>
-                                        -> Prod
+                                        -&gt; Prod
                                     </Label>
                                 </span>
                             )}

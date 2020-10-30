@@ -28,6 +28,7 @@ export default class QueriesSettingsTable extends React.Component {
                         }}
                     />
                 </Table.Cell>
+                <Table.Cell>{q.collectionName}</Table.Cell>
                 <Table.Cell>{q.teamName}</Table.Cell>
                 <Table.Cell>{q.queryName}</Table.Cell>
                 <Table.Cell collapsing>
@@ -65,6 +66,7 @@ export default class QueriesSettingsTable extends React.Component {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell>{s("collection")}</Table.HeaderCell>
                         <Table.HeaderCell>{s("teamProject")}</Table.HeaderCell>
                         <Table.HeaderCell>{s("queryName")}</Table.HeaderCell>
                         <Table.HeaderCell>{s("ignoreIcon")}</Table.HeaderCell>

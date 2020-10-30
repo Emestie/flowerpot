@@ -7,6 +7,7 @@ import { s } from "../values/Strings";
 type TBoolProps = "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon" | "empty";
 
 export interface IQuery {
+    collectionName: string;
     queryId: string;
     queryName: string;
     queryPath: string;
@@ -28,6 +29,7 @@ export interface ITeam {
 export interface IResponseQueryWI {
     id: number;
     url: string;
+    collection?: string;
 }
 
 export interface IResponseQuery {
@@ -52,8 +54,9 @@ export interface IWIStorage {
 export default class Query {
     //! after any operation update queries array in store
 
-    public static buildFromResponse(favQuery: IFavQuery, team: ITeam): IQuery {
+    public static buildFromResponse(favQuery: IFavQuery, team: ITeam, collectionName: string): IQuery {
         let query: IQuery = {
+            collectionName: collectionName,
             collapsed: false,
             enabled: true,
             order: 99,
@@ -71,7 +74,7 @@ export default class Query {
 
     public static add(query: IQuery) {
         let allQueries = store.getQueries(true);
-        let allOrders = allQueries.map(q => q.order);
+        let allOrders = allQueries.map((q) => q.order);
         let maxOrder = allOrders.length ? Math.max(...allOrders) : 0;
         query.order = maxOrder + 1;
         allQueries.push(query);
@@ -79,7 +82,7 @@ export default class Query {
     }
 
     public static delete(query: IQuery) {
-        let allQueries = store.getQueries(true).filter(q => q.queryId !== query.queryId);
+        let allQueries = store.getQueries(true).filter((q) => q.queryId !== query.queryId);
         this.updateAllInStore(allQueries);
     }
 
@@ -106,7 +109,7 @@ export default class Query {
     }
 
     private static findIndex(query: IQuery) {
-        let exactQueryIndex = store.getQueries(true).findIndex(q => q.queryId === query.queryId);
+        let exactQueryIndex = store.getQueries(true).findIndex((q) => q.queryId === query.queryId);
         return exactQueryIndex;
     }
 
@@ -140,8 +143,8 @@ export default class Query {
 
         wiStorage[query.queryId] = store.copy(workItems);
 
-        let queries = store.getQueries().filter(q => !q.ignoreIcon);
-        let queriesIds = queries.map(q => q.queryId);
+        let queries = store.getQueries().filter((q) => !q.ignoreIcon);
+        let queriesIds = queries.map((q) => q.queryId);
 
         let allWIs: IWorkItem[] = [];
         //clear incative queries in wi
@@ -161,12 +164,12 @@ export default class Query {
         }
 
         if (store.settings.iconChangesOnMyWorkItemsOnly) {
-            allWIs = allWIs.filter(wi => wi._isMine);
+            allWIs = allWIs.filter((wi) => wi._isMine);
         }
 
         let level = allWIs.length ? 3 : 4;
 
-        allWIs.forEach(wi => {
+        allWIs.forEach((wi) => {
             if (wi.promptness && wi.promptness < level) level = wi.promptness;
             if (wi.rank === 1) level = wi.rank;
         });
@@ -176,6 +179,7 @@ export default class Query {
 
     public static getFakePermawatchQuery(): IQuery {
         return {
+            collectionName: "",
             collapsed: false,
             enabled: true,
             ignoreIcon: true,

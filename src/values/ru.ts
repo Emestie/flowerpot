@@ -70,7 +70,7 @@ const ru: ILocalizedStrings = {
     credsNoteText: "Вы должны проверить введенные данные на корректность.",
     tfsPwd: "Пароль TFS",
     tfsUser: "Имя пользователя TFS (с доменом)",
-    tfsPath: "Путь к TFS с именем коллекции (должен начинаться с 'http://' и заканчиваться '/')",
+    tfsPath: "Путь к TFS (должен начинаться с 'http://' и заканчиваться '/')",
     credsHeader: "Учетные данные",
     save: "OK",
     tfsHeader: "Настройки TFS и учетной записи",
@@ -171,6 +171,8 @@ const ru: ILocalizedStrings = {
     itemsNew: " элемента(ов) добавлено",
 
     moveToProd: "Запрос на перенос",
+
+    collection: "Коллекция",
 };
 
 export default ru;

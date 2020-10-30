@@ -19,9 +19,12 @@ export default observer((props: IProps) => {
     const workItems = store.getWorkItemsForQuery(props.query);
 
     const isPermawatch = props.query.queryId === "___permawatch";
-    const totalItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).length;
-    const redItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
-    const orangeItems = workItems.filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev)).filter((wi) => wi.promptness === 2).length;
+    const totalItems = workItems.filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)).length;
+    const redItems = workItems
+        .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
+    const orangeItems = workItems.filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)).filter((wi) => wi.promptness === 2)
+        .length;
 
     useEffect(() => {
         let newProgressList = store.copy(store.loadingInProgressList);
@@ -43,7 +46,7 @@ export default observer((props: IProps) => {
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
-        Electron.openUrl(store.settings.tfsPath + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
+        Electron.openUrl(store.settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
     };
 
     const getSortPattern = () => {
@@ -111,15 +114,14 @@ export default observer((props: IProps) => {
     const updateWorkItems = (wi: IWorkItem) => {
         let newList = workItems.filter((w) => w.id !== wi.id);
         newList.push(wi);
-        //setWorkItems(newList);
         store.setWorkItemsForQuery(props.query, newList);
     };
 
     const query = props.query;
     const workItemsComponents = workItems
         .sort(getSortPattern())
-        .filter((wi) => !Lists.isIn("hidden", wi.id, wi.rev))
-        .map((wi) => <WorkItemRow key={wi.id} item={wi} isPermawatch={isPermawatch} onUpdate={updateWorkItems} />);
+        .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
+        .map((wi) => <WorkItemRow key={wi.id} query={props.query} item={wi} isPermawatch={isPermawatch} onUpdate={updateWorkItems} />);
 
     const iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 
@@ -142,7 +144,9 @@ export default observer((props: IProps) => {
                         {query.queryName}
                     </span>
                     <small>
-                        <span style={{ marginLeft: 10, color: "gray" }}>{query.teamName}</span>
+                        <span style={{ marginLeft: 10, color: "gray" }} title={query.collectionName}>
+                            {query.teamName}
+                        </span>
                     </small>
                 </span>
                 <span className="WICounts">

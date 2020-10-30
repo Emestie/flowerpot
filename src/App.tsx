@@ -2,6 +2,7 @@ import React from "react";
 import store, { TView } from "./store";
 import { observer } from "mobx-react";
 import Settings from "./helpers/Settings";
+import Migration from "./helpers/Migration";
 import SettingsView from "./views/SettingsView";
 import CredentialsView from "./views/CredentialsView";
 import SelectQueriesView from "./views/SelectQueriesView";
@@ -20,7 +21,8 @@ export default class App extends React.Component {
         Electron.reactIsReady();
 
         Settings.read();
-
+        Migration.perform();
+        
         Electron.checkForUpdates(true);
 
         if (Electron.isDev()) {
