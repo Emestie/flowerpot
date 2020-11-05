@@ -44,6 +44,7 @@ class Store {
         allowTelemetry: true,
         showWhatsNewOnUpdate: true,
         showUnreads: true,
+        showAvatars: true,
         lastTimeVersion: "",
         lastTimeVersionLong: "",
         migrationsDone: [],

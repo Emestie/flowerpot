@@ -98,7 +98,7 @@ export default class Loaders {
                 Lists.deleteFromList("hidden", wi.id, qwi[x].collection || "");
 
                 if (!query.collectionName) query.collectionName = qwi[x].collection || "";
-
+                
                 wis.push(WorkItem.buildFromResponse(wi, query));
             }
 

@@ -170,6 +170,8 @@ const en: ILocalizedStrings = {
     moveToProd: "Move request",
 
     collection: "Collection",
+
+    showAvatars: "Show avatars",
 };
 
 export default en;

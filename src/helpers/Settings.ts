@@ -39,6 +39,7 @@ export interface ISettings {
     allowTelemetry: boolean;
     showWhatsNewOnUpdate: boolean;
     showUnreads: boolean;
+    showAvatars: boolean;
     lastTimeVersion: string;
     lastTimeVersionLong: string;
     migrationsDone: string[];

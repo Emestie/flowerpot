@@ -104,6 +104,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
         store.updateSettings();
     };
 
+    toggleShowAvatars = () => {
+        store.settings.showAvatars = !store.settings.showAvatars;
+        store.updateSettings();
+    };
+
     onSave = () => {
         store.switchView("main");
     };
@@ -198,6 +203,8 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Form.Checkbox label={s("mineOnTop")} checked={store.settings.mineOnTop} onChange={this.toggleMineOnTop} />
                     <br />
                     <Form.Checkbox label={s("showUnreads")} checked={store.settings.showUnreads} onChange={this.toggleShowUnreads} />
+                    <br />
+                    <Form.Checkbox label={s("showAvatars")} checked={store.settings.showAvatars} onChange={this.toggleShowAvatars} />
                     <br />
 
                     <Header as="h3" dividing>

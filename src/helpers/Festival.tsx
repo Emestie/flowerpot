@@ -1,7 +1,7 @@
 import React from "react";
 import store from "../store";
 import { IWorkItem } from "./WorkItem";
-import { Icon } from "semantic-ui-react";
+import { Icon, Image, Label } from "semantic-ui-react";
 
 const santaHat = require("../assets/santa-hat.svg") as string;
 const feb23 = require("../assets/feb23.svg") as string;
@@ -118,6 +118,8 @@ export default class Festival {
     public static getSpecialNameEffect(item: IWorkItem, mode: number) {
         const name = mode === 1 ? item.createdBy : item.assignedTo;
         const nameFull = mode === 1 ? item.createdByFull : item.assignedToFull;
+        const nameImg = mode === 1 ? item.createdByImg : item.assignedToImg;
+        const showAvatars = store.settings.showAvatars;
 
         let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
         if (festivalNameBanner) return festivalNameBanner;
@@ -125,13 +127,16 @@ export default class Festival {
         let addition = <></>;
 
         this.nameIconsDictionary.forEach((nameIconRule) => {
-            if (nameIconRule.rule(name, item)) addition = nameIconRule.icon;
+            if (nameIconRule.rule(name, item)) addition = <span style={{ marginLeft: 3 }}> {nameIconRule.icon}</span>;
         });
 
         return (
             <span title={nameFull}>
-                {addition}
-                {name}
+                <Label basic image className="user-label">
+                    {showAvatars && nameImg && <Image className="av-class" avatar spaced="right" src={nameImg} />}
+                    {name}
+                    {addition}
+                </Label>
             </span>
         );
     }

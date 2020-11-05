@@ -11,10 +11,12 @@ export interface IWorkItem {
     areaPath: string;
     assignedTo: string;
     assignedToFull: string;
+    assignedToImg: string;
     createdDate: string;
     freshness: string;
     createdBy: string;
     createdByFull: string;
+    createdByImg: string;
     title: string;
     titleFull: string;
     promptness?: number;
@@ -40,9 +42,9 @@ export interface IResponseWorkItem {
     url: string;
     fields: {
         "System.WorkItemType": string;
-        "System.AssignedTo": string;
+        "System.AssignedTo": any;
         "System.CreatedDate": string;
-        "System.CreatedBy": string;
+        "System.CreatedBy": any;
         "System.Title": string;
         "EOS.QA.PromptnessLevel"?: string;
         "EOS.QA.ImportanceLevel"?: string;
@@ -124,10 +126,12 @@ export default class WorkItem {
             type: resp.fields["System.WorkItemType"] || "",
             assignedTo: this.shortName(this.parseNameField(resp.fields["System.AssignedTo"]) || ""),
             assignedToFull: this.parseNameField(resp.fields["System.AssignedTo"] || ""),
+            assignedToImg: resp.fields["System.AssignedTo"]?.imageUrl || "",
             createdDate: resp.fields["System.CreatedDate"],
             freshness: this.getTerm(resp.fields["System.CreatedDate"]),
             createdBy: this.shortName(this.parseNameField(resp.fields["System.CreatedBy"] || "")) || "",
             createdByFull: this.parseNameField(resp.fields["System.CreatedBy"] || ""),
+            createdByImg: resp.fields["System.CreatedBy"]?.imageUrl || "",
             title: this.shortTitle(resp.fields["System.Title"]) || "",
             titleFull: resp.fields["System.Title"] || "",
             iterationPath: resp.fields["System.IterationPath"] || "",

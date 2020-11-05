@@ -173,6 +173,8 @@ const ru: ILocalizedStrings = {
     moveToProd: "Запрос на перенос",
 
     collection: "Коллекция",
+
+    showAvatars: "Показывать аватары",
 };
 
 export default ru;
