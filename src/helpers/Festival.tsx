@@ -115,10 +115,14 @@ export default class Festival {
         return null;
     }
 
+    private static getSaltValue() {
+        return Math.floor(Math.random() * 10000).toString();
+    }
+
     public static getSpecialNameEffect(item: IWorkItem, mode: number) {
         const name = mode === 1 ? item.createdBy : item.assignedTo;
         const nameFull = mode === 1 ? item.createdByFull : item.assignedToFull;
-        const nameImg = mode === 1 ? item.createdByImg : item.assignedToImg;
+        const nameImg = (mode === 1 ? item.createdByImg : item.assignedToImg) + "?salt=" + this.getSaltValue();
         const showAvatars = store.settings.showAvatars;
 
         let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
