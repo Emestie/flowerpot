@@ -40,10 +40,10 @@ export default class Festival {
         },
         { rule: (name: string, item: IWorkItem) => name.indexOf("Селихова") !== -1, icon: <Icon name="paw" /> },
         { rule: (name: string, item: IWorkItem) => name.indexOf("Жданович") !== -1, icon: <Icon name="transgender" /> },
-        {
-            rule: (name: string, item: IWorkItem) => name.indexOf("Якубовская") !== -1,
-            icon: <Icon name="bell" />,
-        },
+        // {
+        //     rule: (name: string, item: IWorkItem) => name.indexOf("Якубовская") !== -1,
+        //     icon: <Icon name="bell" />,
+        // },
     ];
 
     /*<img style={{ width: 14, height: 14, marginRight: 3 }} src={flower3} alt="" />*/
@@ -122,7 +122,7 @@ export default class Festival {
     public static getSpecialNameEffect(item: IWorkItem, mode: number) {
         const name = mode === 1 ? item.createdBy : item.assignedTo;
         const nameFull = mode === 1 ? item.createdByFull : item.assignedToFull;
-        const nameImg = (mode === 1 ? item.createdByImg : item.assignedToImg) + "?salt=" + this.getSaltValue();
+        const nameImg = mode === 1 ? item.createdByImg : item.assignedToImg; // + "?salt=" + this.getSaltValue();
         const showAvatars = store.settings.showAvatars;
 
         let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
