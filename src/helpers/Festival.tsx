@@ -3,7 +3,7 @@ import store from "../store";
 import { IWorkItem } from "./WorkItem";
 import { Icon, Image, Label } from "semantic-ui-react";
 
-const santaHat = require("../assets/santa-hat.svg") as string;
+const christmasTree = require("../assets/christmas-tree.svg") as string;
 const feb23 = require("../assets/feb23.svg") as string;
 const mar8 = require("../assets/mar8.svg") as string;
 const coronavirus = require("../assets/coronavirus.svg") as string;
@@ -81,7 +81,7 @@ export default class Festival {
     }
 
     public static getFestivalHeaderIcon() {
-        if (this.isEveNow(Eve.NewYear)) return [santaHat];
+        if (this.isEveNow(Eve.NewYear)) return [christmasTree, 12, 14, 32, 32];
         if (this.isEveNow(Eve.Feb23)) return [feb23];
         if (this.isEveNow(Eve.Mar8)) return [mar8];
         if (this.isEveNow(Eve.Sept3)) return [sep3, 12, 14, 32, 32];
