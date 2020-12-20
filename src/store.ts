@@ -20,6 +20,7 @@ class Store {
     @observable errorMessage: string = "";
     @observable updateStatus: TUpdateStatus = "none";
     @observable showWhatsNew: boolean = false;
+    @observable showFlowerbotBanner: boolean = false;
     @observable settings: ISettings = {
         tfsPath: "http://tfs:8080/tfs/",
         tfsUser: "",

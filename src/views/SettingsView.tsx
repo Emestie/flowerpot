@@ -238,6 +238,9 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Label as="a" onClick={() => Electron.openUrl("https://emestie.github.io/flowerpot/changelog")}>
                         {s("releaseNotes")}
                     </Label>
+                    <Label as="a" onClick={() => Electron.openUrl("https://emestie.github.io/flowerpot/bot")}>
+                        {s("flowerbot")}
+                    </Label>
                     {updateLabel}
                     <br />
                     <br />

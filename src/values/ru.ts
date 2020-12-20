@@ -175,6 +175,11 @@ const ru: ILocalizedStrings = {
     collection: "Коллекция",
 
     showAvatars: "Показывать аватары",
+
+    flowerbot: "Настроить Flowerbot",
+
+    flowerbotBanner1: "Встречайте Flowerbot - Telegram-бот для отслеживания ваших ошибок и задач.",
+    flowerbotBanner2: "Попробовать.",
 };
 
 export default ru;

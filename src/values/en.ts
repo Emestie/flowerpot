@@ -115,7 +115,8 @@ const en: ILocalizedStrings = {
     permawatch: "Permawatch",
     keywords: "Keywords",
     keywordsDescription: "Work Items that contain keywords will be selected with blue.",
-    listsNote: "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
+    listsNote:
+        "Same item cannot be in several lists. If you add in list item that already in another list -- it will be removed from previous one.",
     addItemsInListNotice: "To add items in this list use context menu in Queries view.",
     //context
     copy: "Copy info",
@@ -172,6 +173,11 @@ const en: ILocalizedStrings = {
     collection: "Collection",
 
     showAvatars: "Show avatars",
+
+    flowerbot: "Set up Flowerbot",
+
+    flowerbotBanner1: "Meet Flowerbot - a Telegram bot to catch your bugs and tasks.",
+    flowerbotBanner2: "Give it a try.",
 };
 
 export default en;

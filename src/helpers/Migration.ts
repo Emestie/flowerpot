@@ -11,6 +11,7 @@ export default class Migration {
 
         if (!migrations.includes("v0_2_12_to_v0_2_13")) this.v0_2_12_to_v0_2_13();
         if (!migrations.includes("v0_2_13_notes")) this.v0_2_13_notes();
+        if (!migrations.includes("v0_2_14_to_v0_2_15_flowerbotBanner")) this.v0_2_14_to_v0_2_15_flowerbotBanner();
     }
 
     private static v0_2_12_to_v0_2_13() {
@@ -49,5 +50,10 @@ export default class Migration {
 
         this.setMigrationAsDone("v0_2_13_notes");
         //store.updateSettings();
+    }
+
+    private static v0_2_14_to_v0_2_15_flowerbotBanner() {
+        store.showFlowerbotBanner = true;
+        this.setMigrationAsDone("v0_2_14_to_v0_2_15_flowerbotBanner");
     }
 }

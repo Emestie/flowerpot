@@ -10,6 +10,7 @@ import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
 import SingleInputColorDialog from "../components/SingleInputColorDialog";
 import ViewHeading from "../components/ViewHeading";
+import FlowerbotBanner from "../components/FlowerbotBanner";
 
 export default observer(() => {
     const [idDial, setIdDial] = useState(false);
@@ -81,6 +82,7 @@ export default observer(() => {
             </ViewHeading>
             <Container fluid>
                 <SingleInputColorDialog show={idDial} onClose={() => setIdDial(false)} onOk={openById} caption={s("openByIdText")} dropdownValues={collections} />
+                <FlowerbotBanner />
                 <WhatsNewBanner />
                 {queriesElems}
             </Container>

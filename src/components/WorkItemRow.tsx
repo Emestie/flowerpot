@@ -110,19 +110,25 @@ export default class WorkItemRow extends React.Component<IProps> {
     getClass = () => {
         let item = this.props.item;
         if (Lists.isIn("favorites", this.props.query.collectionName, item.id)) return "workItemFavorite";
-        if (Lists.isIn("pinned",this.props.query.collectionName, item.id)) return "workItemPinned";
-        if (Lists.isIn("deferred",this.props.query.collectionName, item.id)) return "workItemDeferred";
-        if (Lists.isIn("permawatch", this.props.query.collectionName,item.id)) return "workItemPermawatch";
+        if (Lists.isIn("pinned", this.props.query.collectionName, item.id)) return "workItemPinned";
+        if (Lists.isIn("deferred", this.props.query.collectionName, item.id)) return "workItemDeferred";
+        if (Lists.isIn("permawatch", this.props.query.collectionName, item.id)) return "workItemPermawatch";
         if (Lists.isInText("keywords", item.titleFull)) return "workItemKeyword";
         if (item._isMine) return "workItemIsMine";
         return "workItemHasNoCanges";
     };
 
     get note() {
-        let note = Lists.getNote(this.props.item._collectionName, this.props.item.id);
+        let note = this.fullNote;
         if (note && note.length > 50) {
             note = note.slice(0, 50) + "...";
         }
+        return note;
+    }
+
+    get fullNote() {
+        let note = Lists.getNote(this.props.item._collectionName, this.props.item.id);
+
         return note;
     }
 
@@ -134,28 +140,28 @@ export default class WorkItemRow extends React.Component<IProps> {
     getListIndicator = () => {
         let item = this.props.item;
 
-        if (Lists.isIn("permawatch", this.props.query.collectionName,item.id))
+        if (Lists.isIn("permawatch", this.props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorPermawatch">
                     <Icon name="eye" />
                 </span>
             );
 
-        if (Lists.isIn("deferred",this.props.query.collectionName, item.id))
+        if (Lists.isIn("deferred", this.props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorDeferred">
                     <Icon name="clock outline" />
                 </span>
             );
 
-        if (Lists.isIn("favorites",this.props.query.collectionName, item.id))
+        if (Lists.isIn("favorites", this.props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorFavorite">
                     <Icon name="star" />
                 </span>
             );
 
-        if (Lists.isIn("pinned",this.props.query.collectionName, item.id))
+        if (Lists.isIn("pinned", this.props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorPinned">
                     <Icon name="pin" />
@@ -239,7 +245,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                             {item.titleFull}
                         </span>
                         {!!this.note && (
-                            <span style={{ marginLeft: 5 }} title={s("localNoteHint")}>
+                            <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + this.fullNote}>
                                 <Label basic color={this.noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
                                     {this.note}
                                 </Label>
