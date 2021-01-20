@@ -31,7 +31,7 @@ export interface IWorkItem {
     _isMine: boolean;
     _list?: TLists;
     _isHasShelve: boolean;
-    _isMoveToProd: boolean;
+    _moveToProdMessage: string | null;
     _queryId: string;
     _collectionName: string;
 }
@@ -147,7 +147,7 @@ export default class WorkItem {
             _isMine: isMine,
             _list: this.getListName(resp.id, query.collectionName),
             _isHasShelve: this.isHasShelve(resp.fields["System.History"]),
-            _isMoveToProd: this.isMoveToProd(resp.fields["System.History"]),
+            _moveToProdMessage: this.getMoveToProdMessage(resp.fields["System.History"]),
             _queryId: query.queryId,
             _collectionName: query.collectionName,
         };
@@ -168,14 +168,14 @@ export default class WorkItem {
         return false;
     }
 
-    private static isMoveToProd(text: string) {
-        if (!text) return false;
-        if (text.toLowerCase().indexOf(" prod") !== -1) return true;
-        if (text.toLowerCase().indexOf(" прод") !== -1) return true;
-        if (text.toLowerCase().indexOf(" продакшен") !== -1) return true;
-        if (text.toLowerCase().indexOf(" продакшн") !== -1) return true;
-        if (text.toLowerCase().indexOf(" переносить") !== -1) return true;
-        return false;
+    private static getMoveToProdMessage(text: string) {
+        if (!text) return null;
+        if (text.toLowerCase().indexOf(" prod") !== -1) return text;
+        if (text.toLowerCase().indexOf(" прод") !== -1) return text;
+        if (text.toLowerCase().indexOf(" продакшен") !== -1) return text;
+        if (text.toLowerCase().indexOf(" продакшн") !== -1) return text;
+        if (text.toLowerCase().indexOf(" переносить") !== -1) return text;
+        return null;
     }
 
     private static getListName(id: number, collectionName: string): TLists | undefined {

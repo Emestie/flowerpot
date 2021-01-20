@@ -232,9 +232,9 @@ export default class WorkItemRow extends React.Component<IProps> {
                             {item.iterationPath}
                         </span>
                         <span>
-                            {!!item._isMoveToProd && (
+                            {!!item._moveToProdMessage && (
                                 <span className="hasShelve" title={s("moveToProd")}>
-                                    <Label color="teal" basic size="mini" style={{ padding: "3px 4px", marginRight: 2 }}>
+                                    <Label color="teal" basic size="mini" title={item._moveToProdMessage} style={{ padding: "3px 4px", marginRight: 2 }}>
                                         -&gt; Prod
                                     </Label>
                                 </span>
