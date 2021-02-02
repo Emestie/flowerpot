@@ -22,7 +22,7 @@ export default observer((props: IProps) => {
     const filteredItems = () => {
         console.log(!filterValue)
         if (!filterValue) return allItems;
-        const filtered = allItems.filter(i => i.titleFull.toLowerCase().indexOf(filterValue) != -1 || i.id.toString().indexOf(filterValue) != -1 || i.assignedToFull.toLowerCase().indexOf(filterValue) != -1 || i.createdByFull.toLowerCase().indexOf(filterValue) != -1);
+        const filtered = allItems.filter(i => (i.titleFull || "").toLowerCase().indexOf(filterValue) != -1 || (i.id || "").toString().indexOf(filterValue) != -1 || (i.assignedToFull || "").toLowerCase().indexOf(filterValue) != -1 || (i.createdByFull || "").toLowerCase().indexOf(filterValue) != -1);
         return filtered;
     }
     const workItems = filteredItems();
