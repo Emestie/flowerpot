@@ -12,11 +12,20 @@ import useQueryLoader from "../hooks/useQueryLoader";
 
 interface IProps {
     query: IQuery;
+    filter: string;
 }
 
 export default observer((props: IProps) => {
     const isLoading = useQueryLoader(props.query);
-    const workItems = store.getWorkItemsForQuery(props.query);
+    const allItems = store.getWorkItemsForQuery(props.query);
+    const filterValue = props.filter && props.filter.trim() ? props.filter.trim().toLowerCase() : "";
+    const filteredItems = () => {
+        console.log(!filterValue)
+        if (!filterValue) return allItems;
+        const filtered = allItems.filter(i => (i.titleFull || "").toLowerCase().indexOf(filterValue) != -1 || (i.id || "").toString().indexOf(filterValue) != -1 || (i.assignedToFull || "").toLowerCase().indexOf(filterValue) != -1 || (i.createdByFull || "").toLowerCase().indexOf(filterValue) != -1);
+        return filtered;
+    }
+    const workItems = filteredItems();
 
     const isPermawatch = props.query.queryId === "___permawatch";
     const totalItems = workItems.filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)).length;

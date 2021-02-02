@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Message, Button, Icon } from "semantic-ui-react";
+import { Container, Message, Button, Icon, Form } from "semantic-ui-react";
 import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
 import WhatsNewBanner from "../components/WhatsNewBanner";
@@ -14,6 +14,7 @@ import FlowerbotBanner from "../components/FlowerbotBanner";
 
 export default observer(() => {
     const [idDial, setIdDial] = useState(false);
+    const [inputValue, setInputValue] = useState("");
 
     const isRefreshAvailable = !!store.getQueries().length && !store.loadingInProgressList.length;
 
@@ -48,7 +49,7 @@ export default observer(() => {
     const collections = queries.map(x => x.collectionName).filter((i,v,a) => a.indexOf(i) === v);
 
     const queriesElems = queries.length ? (
-        queries.map(q => <WorkItemsBlock key={q.queryId} query={q} />)
+        queries.map(q => <WorkItemsBlock key={q.queryId} query={q} filter={inputValue}/>)
     ) : (
         <Message info>
             <Message.Header>{s("noQueriesToWatch")}</Message.Header>
@@ -69,6 +70,17 @@ export default observer(() => {
                         <Icon name="refresh" />
                     </Button>
                 )}
+                <div style={{display: "inline-block", marginRight: 3.5}}>
+                <Form.Input
+                    size="small"
+                    placeholder="Filter work items"
+                    value={inputValue}
+                    onChange={(e) => {
+                        if (e.target.value && !e.target.value.trim()) setInputValue("");
+                        else setInputValue(e.target.value)
+                    }}
+                />
+                </div>
                 <Button onClick={onOpenById}>{s("openById")}</Button>
                 {!!store.settings.showUnreads && store.isChangesCollectionHasItems() && (
                     <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
