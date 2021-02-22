@@ -4,7 +4,7 @@ import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
 import WhatsNewBanner from "../components/WhatsNewBanner";
 import { observer } from "mobx-react";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import { IQuery } from "../helpers/Query";
 import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
@@ -29,11 +29,11 @@ export default observer(() => {
     const onOpenById = () => setIdDial(true);
 
     const openById = (id: string, color?: string, collection?: string) => {
-        Electron.openUrl(store.settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
+        Platform.openUrl(store.settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
         setIdDial(false);
     };
 
-    const updateApp = () => Electron.updateApp();
+    const updateApp = () => Platform.updateApp();
 
     const markAllAsRead = () => {
         store.clearAllChanges();
@@ -58,7 +58,7 @@ export default observer(() => {
     );
 
     if (!queries.length) {
-        Electron.updateTrayIcon(4);
+        Platform.updateTrayIcon(4);
     }
 
     return (

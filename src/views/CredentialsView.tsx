@@ -3,7 +3,7 @@ import { Header, Container, Button, Form, Label, Message } from "semantic-ui-rea
 import { observer } from "mobx-react";
 import store from "../store";
 import Loaders from "../helpers/Loaders";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import { s } from "../values/Strings";
 import UpdateBanner from "../components/UpdateBanner";
 import ViewHeading from "../components/ViewHeading";
@@ -156,7 +156,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
 
     onDebugInputChange = (e: any) => {
         if (e.target.value === "debug") store.switchView("debug");
-        if (e.target.value === "con") Electron.toggleConsole();
+        if (e.target.value === "con") Platform.toggleConsole();
         this.setState({ debugInputValue: e.target.value });
     };
 

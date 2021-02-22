@@ -1,6 +1,6 @@
 import store from "../store";
 import { IWorkItem } from "./WorkItem";
-import Electron from "./Electron";
+import Platform from "./Platform";
 import Loaders from "./Loaders";
 import { s } from "../values/Strings";
 
@@ -174,7 +174,7 @@ export default class Query {
             if (wi.rank === 1) level = wi.rank;
         });
 
-        Electron.updateTrayIcon(level, hasChanges);
+        Platform.updateTrayIcon(level, hasChanges);
     }
 
     public static getFakePermawatchQuery(): IQuery {

@@ -1,5 +1,5 @@
 import preval from "preval.macro";
-import Electron from "./Electron";
+import Platform from "./Platform";
 import Telemetry from "./Telemetry";
 import store from "../store";
 
@@ -7,7 +7,7 @@ export default class Version {
     public static get long() {
         const appVer = process.env.REACT_APP_VERSION;
         const dateTimeStamp = preval`module.exports = new Date().toISOString().substr(0, 16);`;
-        const verType = document.location.href.indexOf("localhost") !== -1 ? " Dev" : Electron.isLocal() ? " Local" : "";
+        const verType = document.location.href.indexOf("localhost") !== -1 ? " Dev" : Platform.isLocal() ? " Local" : "";
         return `${appVer}${verType} (${dateTimeStamp})`;
     }
 

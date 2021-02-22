@@ -2,7 +2,7 @@ import React from "react";
 import store from "../store";
 import { Message, Button } from "semantic-ui-react";
 import { s } from "../values/Strings";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import { observer } from "mobx-react-lite";
 import Version from "../helpers/Version";
 
@@ -14,7 +14,7 @@ export default observer(() => {
     };
 
     const showNotes = () => {
-        Electron.openUrl("https://emestie.github.io/flowerpot/changelog");
+        Platform.openUrl("https://emestie.github.io/flowerpot/changelog");
         hideMessage();
     };
 

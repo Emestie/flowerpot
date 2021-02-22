@@ -1,7 +1,7 @@
 import React from "react";
 import { Header, Button, Container } from "semantic-ui-react";
 import store from "../store";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import WorkItem from "../helpers/WorkItem";
 import Version from "../helpers/Version";
 import ViewHeading from "../components/ViewHeading";
@@ -11,7 +11,7 @@ interface IState {}
 
 export default class DebugView extends React.Component<IProps, IState> {
     changeIconLevel = (level: number, noDot?: boolean) => {
-        Electron.updateTrayIcon(level, !noDot);
+        Platform.updateTrayIcon(level, !noDot);
     };
 
     showNotif = () => {
@@ -19,7 +19,7 @@ export default class DebugView extends React.Component<IProps, IState> {
     };
 
     showNotifNative = () => {
-        Electron.showNativeNotif({ title: "test1", body: "test2" });
+        Platform.showNativeNotif({ title: "test1", body: "test2" });
     };
 
     setChanges = () => {
@@ -40,7 +40,7 @@ export default class DebugView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         Electron
                     </Header>
-                    <Button onClick={() => Electron.toggleConsole()}>console</Button>
+                    <Button onClick={() => Platform.toggleConsole()}>console</Button>
                     <Header as="h3" dividing>
                         Views
                     </Header>

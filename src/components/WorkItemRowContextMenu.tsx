@@ -5,7 +5,7 @@ import { Menu, Icon } from "semantic-ui-react";
 import { IWorkItem } from "../helpers/WorkItem";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import SingleInputColorDialog from "./SingleInputColorDialog";
 import { IQuery } from "../helpers/Query";
 import store from "../store";
@@ -50,14 +50,14 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
         let wi = this.props.workItem;
         let s = `${wi.type} ${wi.id} - ${wi.iterationPath}: ${wi.title} (${wi.url})`;
 
-        Electron.copyString(s);
+        Platform.copyString(s);
     };
 
     onCopyId = (e: any) => {
         let wi = this.props.workItem;
         let s = `${wi.id}`;
 
-        Electron.copyString(s);
+        Platform.copyString(s);
     };
 
     onEditNote = (text: string, color?: string) => {

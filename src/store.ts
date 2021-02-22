@@ -1,7 +1,7 @@
 import { observable, action, reaction } from "mobx";
 import Settings, { ISettings, TLists } from "./helpers/Settings";
 import Query, { IQuery } from "./helpers/Query";
-import Electron from "./helpers/Electron";
+import Platform from "./helpers/Platform";
 import { IWorkItem } from "./helpers/WorkItem";
 
 export type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug" | "lists" | "refreshhelper";
@@ -93,7 +93,7 @@ class Store {
     private changesCollectionReaction = reaction(
         () => JSON.stringify(this._changesCollection),
         () => {
-            Electron.updateTrayIconDot(this.isChangesCollectionHasItems());
+            Platform.updateTrayIconDot(this.isChangesCollectionHasItems());
         }
     );
 
@@ -108,8 +108,8 @@ class Store {
         }
     );
     private onSettingsChange = reaction(() => this.settings, Settings.save);
-    private onLocaleChange = reaction(() => this.locale, Electron.changeLocale);
-    private onAutostartChange = reaction(() => this.autostart, Electron.toggleAutostart);
+    private onLocaleChange = reaction(() => this.locale, Platform.changeLocale);
+    private onAutostartChange = reaction(() => this.autostart, Platform.toggleAutostart);
 
     @observable isChangesCollectionHasItems() {
         let hasItems = false;

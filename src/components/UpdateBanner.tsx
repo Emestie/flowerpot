@@ -1,7 +1,7 @@
 import React from "react";
 import store from "../store";
 import { s } from "../values/Strings";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import { Message, Button } from "semantic-ui-react";
 import { observer } from "mobx-react";
 
@@ -18,7 +18,7 @@ export default class UpdateBanner extends React.Component<IProps, IState> {
 
     onUpdate = () => {
         this.setState({ updateInstallInProgress: true });
-        Electron.updateApp();
+        Platform.updateApp();
     };
 
     render() {

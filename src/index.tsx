@@ -5,11 +5,11 @@ import "./style.scss";
 import "./style-dark-override.scss";
 import App from "./App";
 import UnauthorizedAccess from "./UnauthorizedAccess";
-import Electron from "./helpers/Electron";
+import Platform from "./helpers/Platform";
 
 let appComponent = null;
 
-if (!Electron.getIpcRenderer()) appComponent = <UnauthorizedAccess />;
+if (!Platform.getIpcRenderer()) appComponent = <UnauthorizedAccess />;
 else appComponent = <App />;
 
 ReactDOM.render(appComponent, document.getElementById("root"));

@@ -3,7 +3,7 @@ import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from 
 import { observer } from "mobx-react";
 import store, { TLocale } from "../store";
 import QueriesSettingsTable from "../components/QueriesSettingsTable";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
 import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
@@ -115,11 +115,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     onUpdate = () => {
         this.setState({ updateInstallInProgress: true });
-        Electron.updateApp();
+        Platform.updateApp();
     };
 
     render() {
-        if (Electron.isDev()) {
+        if (Platform.isDev()) {
             if (this.refreshRates.length !== 5) this.refreshRates.push({ key: Math.random(), text: s("refreshdebug"), value: 10 });
         }
 
@@ -142,14 +142,14 @@ export default class SettingsView extends React.Component<IProps, IState> {
                 break;
             case "error":
                 updateLabel = (
-                    <Label as="a" color="red" onClick={() => Electron.checkForUpdates()}>
+                    <Label as="a" color="red" onClick={() => Platform.checkForUpdates()}>
                         {s("updateStateError")}
                     </Label>
                 );
                 break;
             default:
                 updateLabel = (
-                    <Label as="a" onClick={() => Electron.checkForUpdates()}>
+                    <Label as="a" onClick={() => Platform.checkForUpdates()}>
                         {s("updateStateNone")}
                     </Label>
                 );
@@ -226,7 +226,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         {s("settingsCreditsHeader")}
                     </Header>
-                    <Label as="a" image onClick={() => Electron.openUrl("https://github.com/Emestie/flowerpot")}>
+                    <Label as="a" image onClick={() => Platform.openUrl("https://github.com/Emestie/flowerpot")}>
                         <img src={avatar} alt="" />
                         <Icon name="github" />
                         Emestie/flowerpot
@@ -235,21 +235,21 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         {s("versionWord")}
                         <Label.Detail>{Version.long}</Label.Detail>
                     </Label>
-                    <Label as="a" onClick={() => Electron.openUrl("https://emestie.github.io/flowerpot/changelog")}>
+                    <Label as="a" onClick={() => Platform.openUrl("https://emestie.github.io/flowerpot/changelog")}>
                         {s("releaseNotes")}
                     </Label>
-                    <Label as="a" onClick={() => Electron.openUrl("https://emestie.github.io/flowerpot/bot")}>
+                    <Label as="a" onClick={() => Platform.openUrl("https://emestie.github.io/flowerpot/bot")}>
                         {s("flowerbot")}
                     </Label>
                     {updateLabel}
                     <br />
                     <br />
                     {s("contributors")}
-                    <Label size="tiny" as="a" onClick={() => Electron.openUrl("https://github.com/Stassras")}>
+                    <Label size="tiny" as="a" onClick={() => Platform.openUrl("https://github.com/Stassras")}>
                         <Icon name="github" />
                         Stassras
                     </Label>
-                    <Label size="tiny" as="a" onClick={() => Electron.openUrl("https://github.com/selikhovamary")}>
+                    <Label size="tiny" as="a" onClick={() => Platform.openUrl("https://github.com/selikhovamary")}>
                         <Icon name="github" />
                         selikhovamary
                     </Label>

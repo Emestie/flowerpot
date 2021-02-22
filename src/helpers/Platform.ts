@@ -5,7 +5,7 @@ export interface INotificationData {
     body?: string;
 }
 
-export default class Electron {
+export default class Platform {
     public static isLocal() {
         return document.location.href.indexOf("build") !== -1;
     }
@@ -23,7 +23,7 @@ export default class Electron {
     public static setStoreProp(prop: string, value: any) {
         let store = this.getElectronStore();
         if (store) store.set(prop, value, true);
-        Electron.sendIpcRenderer("save-settings-prop", { prop, value });
+        Platform.sendIpcRenderer("save-settings-prop", { prop, value });
     }
 
     public static copyString(s: string) {
@@ -31,21 +31,21 @@ export default class Electron {
     }
 
     public static changeLocale() {
-        Electron.setStoreProp("locale", store.locale);
+        Platform.setStoreProp("locale", store.locale);
     }
 
     public static toggleAutostart() {
-        Electron.setStoreProp("autostart", store.autostart);
-        Electron.sendIpcRenderer("toggle-autostart");
+        Platform.setStoreProp("autostart", store.autostart);
+        Platform.sendIpcRenderer("toggle-autostart");
     }
 
     public static updateTrayIcon(level: number, hasChanges?: boolean) {
         if (!level || !+level || level > 4 || level < 1) level = 4;
-        Electron.sendIpcRenderer("update-icon", { level: level, hasChanges: !!hasChanges });
+        Platform.sendIpcRenderer("update-icon", { level: level, hasChanges: !!hasChanges });
     }
 
     public static updateTrayIconDot(hasChanges: boolean) {
-        Electron.sendIpcRenderer("update-icon-dot-only", !!hasChanges);
+        Platform.sendIpcRenderer("update-icon-dot-only", !!hasChanges);
     }
 
     public static openUrl(url: string) {
@@ -72,11 +72,11 @@ export default class Electron {
     }
 
     public static updateApp() {
-        Electron.sendIpcRenderer("update-app");
+        Platform.sendIpcRenderer("update-app");
     }
 
     public static showNativeNotif(data: INotificationData) {
-        Electron.sendIpcRenderer("show-notification", data);
+        Platform.sendIpcRenderer("show-notification", data);
     }
 
     public static checkForUpdates(cyclic?: boolean) {
@@ -86,14 +86,14 @@ export default class Electron {
             }, 1000 * 60 * 60);
 
             setInterval(() => {
-                if (store.updateStatus !== "ready" && store.updateStatus !== "downloading" && !Electron.isDev() && store.view === "main") {
+                if (store.updateStatus !== "ready" && store.updateStatus !== "downloading" && !Platform.isDev() && store.view === "main") {
                     const href = "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=x" + Math.floor(Math.random() * 100000000);
                     document.location.href = href;
                 }
             }, 1000 * 60 * 61);
         }
 
-        let ipcRenderer = Electron.getIpcRenderer();
+        let ipcRenderer = Platform.getIpcRenderer();
         if (ipcRenderer) {
             ipcRenderer.on("checking_for_update", () => {
                 ipcRenderer.removeAllListeners("checking_for_update");
@@ -120,6 +120,6 @@ export default class Electron {
     }
 
     public static reactIsReady() {
-        Electron.sendIpcRenderer("react-is-ready");
+        Platform.sendIpcRenderer("react-is-ready");
     }
 }

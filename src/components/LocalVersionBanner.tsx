@@ -1,9 +1,9 @@
 import React from "react";
 import { s } from "../values/Strings";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 
 export default () => {
-    if (Electron.isLocal())
+    if (Platform.isLocal())
         return (
             <span className="LocalVersion" title={s("localWarning")}>
                 {s("localCaption")}

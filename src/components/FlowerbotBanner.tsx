@@ -2,7 +2,7 @@ import React from "react";
 import store from "../store";
 import { Message } from "semantic-ui-react";
 import { s } from "../values/Strings";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import { observer } from "mobx-react-lite";
 
 const flowerbotImg = require("../assets/flowerbot-av-48.png") as string;
@@ -15,7 +15,7 @@ export default observer(() => {
     };
 
     const showNotes = () => {
-        Electron.openUrl("https://emestie.github.io/flowerpot/bot");
+        Platform.openUrl("https://emestie.github.io/flowerpot/bot");
         hideMessage();
     };
 

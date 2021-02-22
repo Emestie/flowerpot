@@ -5,7 +5,7 @@ import Query, { IQuery } from "../helpers/Query";
 import { observer } from "mobx-react";
 import WorkItemRow from "./WorkItemRow";
 import { IWorkItem } from "../helpers/WorkItem";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
 import useQueryLoader from "../hooks/useQueryLoader";
@@ -55,7 +55,7 @@ export default observer((props: IProps) => {
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
-        Electron.openUrl(store.settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
+        Platform.openUrl(store.settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
     };
 
     const getSortPattern = () => {

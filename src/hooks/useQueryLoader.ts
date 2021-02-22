@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import store from "../store";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import WorkItem from "../helpers/WorkItem";
 import Loaders from "../helpers/Loaders";
 import Query, { IQuery } from "../helpers/Query";
@@ -30,7 +30,7 @@ export default function useQueryLoader(query: IQuery) {
     const routineStart = async () => {
         setIsLoading(true);
 
-        if (store.useFishWIs === 1 && Electron.isDev()) {
+        if (store.useFishWIs === 1 && Platform.isDev()) {
             setIsLoading(false);
             store.setWorkItemsForQuery(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)]);
             return;

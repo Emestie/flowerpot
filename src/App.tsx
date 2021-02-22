@@ -10,7 +10,7 @@ import ErrorView from "./views/ErrorView";
 import MainView from "./views/MainView";
 import LoadingView from "./views/LoadingView";
 import DebugView from "./views/DebugView";
-import Electron from "./helpers/Electron";
+import Platform from "./helpers/Platform";
 import Version from "./helpers/Version";
 import ListsView from "./views/ListsView";
 import RefreshHelperView from "./views/RefreshHelperView";
@@ -18,14 +18,14 @@ import RefreshHelperView from "./views/RefreshHelperView";
 @observer
 export default class App extends React.Component {
     componentDidMount() {
-        Electron.reactIsReady();
+        Platform.reactIsReady();
 
         Settings.read();
         Migration.perform();
         
-        Electron.checkForUpdates(true);
+        Platform.checkForUpdates(true);
 
-        if (Electron.isDev()) {
+        if (Platform.isDev()) {
             store.switchView("debug");
             //store.switchView("main");
         } else {
@@ -45,7 +45,7 @@ export default class App extends React.Component {
     }
 
     afterUpdateHandler() {
-        if (!Electron.isDev() && !Electron.isLocal() && Version.isChangedLong()) {
+        if (!Platform.isDev() && !Platform.isLocal() && Version.isChangedLong()) {
             if (store.settings.showWhatsNewOnUpdate && Version.isChangedShort()) store.showWhatsNew = true;
             Version.storeInSettings();
         }

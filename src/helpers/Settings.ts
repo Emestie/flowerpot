@@ -1,6 +1,6 @@
 import store from "../store";
 import { IQuery } from "./Query";
-import Electron from "./Electron";
+import Platform from "./Platform";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -47,7 +47,7 @@ export interface ISettings {
 
 export default class Settings {
     public static read() {
-        let settings = Electron.getStoreProp("flowerpot");
+        let settings = Platform.getStoreProp("flowerpot");
         if (settings) {
             try {
                 let parsedSettings = JSON.parse(settings);
@@ -55,14 +55,14 @@ export default class Settings {
             } catch (e) {}
         }
 
-        store.autostart = Electron.getStoreProp("autostart");
-        store.locale = Electron.getStoreProp("locale");
+        store.autostart = Platform.getStoreProp("autostart");
+        store.locale = Platform.getStoreProp("locale");
     }
 
     public static save() {
         try {
             let settingsToStore = JSON.stringify(store.settings);
-            Electron.setStoreProp("flowerpot", settingsToStore);
+            Platform.setStoreProp("flowerpot", settingsToStore);
         } catch (e) {}
     }
 }

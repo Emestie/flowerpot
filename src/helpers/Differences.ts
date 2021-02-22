@@ -2,7 +2,7 @@ import Query, { IQuery } from "./Query";
 import { IWorkItem } from "./WorkItem";
 import store from "../store";
 import Loaders from "./Loaders";
-import Electron from "./Electron";
+import Platform from "./Platform";
 import { s } from "../values/Strings";
 
 interface IShownWI {
@@ -111,6 +111,6 @@ export default class Differences {
             if (reason === "new") title += s("notifNewItem");
             if (reason === "change") title += s("notifChangedItem");
         }
-        Electron.showNativeNotif({ title: title, body: text });
+        Platform.showNativeNotif({ title: title, body: text });
     }
 }

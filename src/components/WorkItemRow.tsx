@@ -1,7 +1,7 @@
 import React from "react";
 import WorkItem, { IWorkItem } from "../helpers/WorkItem";
 import { Table, Icon, Label } from "semantic-ui-react";
-import Electron from "../helpers/Electron";
+import Platform from "../helpers/Platform";
 import store from "../store";
 import { observer } from "mobx-react";
 import { s } from "../values/Strings";
@@ -195,7 +195,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                     collapsing
                     className={hasChanges ? "workItemHasCanges" : this.getClass()}
                     onDoubleClick={() => {
-                        Electron.copyString(item.id.toString());
+                        Platform.copyString(item.id.toString());
                     }}
                 >
                     <ContextMenuTrigger id={uid + ""}>
@@ -241,7 +241,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                             )}
                             {tags}
                         </span>
-                        <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Electron.openUrl(item.url)}>
+                        <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Platform.openUrl(item.url)}>
                             {item.titleFull}
                         </span>
                         {!!this.note && (
@@ -258,10 +258,10 @@ export default class WorkItemRow extends React.Component<IProps> {
                         <ContextMenuTrigger id={uid + ""}>{item.state}</ContextMenuTrigger>
                     </Table.Cell>
                 )}
-                <Table.Cell collapsing onDoubleClick={() => Electron.copyString(WorkItem.getTextName(item.assignedToFull))}>
+                <Table.Cell collapsing onDoubleClick={() => Platform.copyString(WorkItem.getTextName(item.assignedToFull))}>
                     <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 0)}</ContextMenuTrigger>
                 </Table.Cell>
-                <Table.Cell collapsing onDoubleClick={() => Electron.copyString(WorkItem.getTextName(item.createdByFull))}>
+                <Table.Cell collapsing onDoubleClick={() => Platform.copyString(WorkItem.getTextName(item.createdByFull))}>
                     <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 1)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing>
