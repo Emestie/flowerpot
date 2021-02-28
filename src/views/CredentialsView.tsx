@@ -156,7 +156,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
 
     onDebugInputChange = (e: any) => {
         if (e.target.value === "debug") store.switchView("debug");
-        if (e.target.value === "con") Platform.toggleConsole();
+        if (e.target.value === "con") Platform.current.toggleConsole();
         this.setState({ debugInputValue: e.target.value });
     };
 

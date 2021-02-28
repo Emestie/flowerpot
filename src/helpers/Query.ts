@@ -174,7 +174,7 @@ export default class Query {
             if (wi.rank === 1) level = wi.rank;
         });
 
-        Platform.updateTrayIcon(level, hasChanges);
+        Platform.current.updateTrayIcon(level, hasChanges);
     }
 
     public static getFakePermawatchQuery(): IQuery {

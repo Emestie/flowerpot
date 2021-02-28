@@ -195,7 +195,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                     collapsing
                     className={hasChanges ? "workItemHasCanges" : this.getClass()}
                     onDoubleClick={() => {
-                        Platform.copyString(item.id.toString());
+                        Platform.current.copyString(item.id.toString());
                     }}
                 >
                     <ContextMenuTrigger id={uid + ""}>
@@ -241,7 +241,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                             )}
                             {tags}
                         </span>
-                        <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Platform.openUrl(item.url)}>
+                        <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Platform.current.openUrl(item.url)}>
                             {item.titleFull}
                         </span>
                         {!!this.note && (
@@ -258,10 +258,10 @@ export default class WorkItemRow extends React.Component<IProps> {
                         <ContextMenuTrigger id={uid + ""}>{item.state}</ContextMenuTrigger>
                     </Table.Cell>
                 )}
-                <Table.Cell collapsing onDoubleClick={() => Platform.copyString(WorkItem.getTextName(item.assignedToFull))}>
+                <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.assignedToFull))}>
                     <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 0)}</ContextMenuTrigger>
                 </Table.Cell>
-                <Table.Cell collapsing onDoubleClick={() => Platform.copyString(WorkItem.getTextName(item.createdByFull))}>
+                <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.createdByFull))}>
                     <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 1)}</ContextMenuTrigger>
                 </Table.Cell>
                 <Table.Cell collapsing>

@@ -29,11 +29,11 @@ export default observer(() => {
     const onOpenById = () => setIdDial(true);
 
     const openById = (id: string, color?: string, collection?: string) => {
-        Platform.openUrl(store.settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
+        Platform.current.openUrl(store.settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
         setIdDial(false);
     };
 
-    const updateApp = () => Platform.updateApp();
+    const updateApp = () => Platform.current.updateApp();
 
     const markAllAsRead = () => {
         store.clearAllChanges();
@@ -58,7 +58,7 @@ export default observer(() => {
     );
 
     if (!queries.length) {
-        Platform.updateTrayIcon(4);
+        Platform.current.updateTrayIcon(4);
     }
 
     return (

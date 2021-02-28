@@ -50,14 +50,14 @@ export default class WorkItemRowContextMenu extends React.Component<IProps, ISta
         let wi = this.props.workItem;
         let s = `${wi.type} ${wi.id} - ${wi.iterationPath}: ${wi.title} (${wi.url})`;
 
-        Platform.copyString(s);
+        Platform.current.copyString(s);
     };
 
     onCopyId = (e: any) => {
         let wi = this.props.workItem;
         let s = `${wi.id}`;
 
-        Platform.copyString(s);
+        Platform.current.copyString(s);
     };
 
     onEditNote = (text: string, color?: string) => {

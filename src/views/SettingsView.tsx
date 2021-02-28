@@ -115,11 +115,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
 
     onUpdate = () => {
         this.setState({ updateInstallInProgress: true });
-        Platform.updateApp();
+        Platform.current.updateApp();
     };
 
     render() {
-        if (Platform.isDev()) {
+        if (Platform.current.isDev()) {
             if (this.refreshRates.length !== 5) this.refreshRates.push({ key: Math.random(), text: s("refreshdebug"), value: 10 });
         }
 
@@ -142,14 +142,14 @@ export default class SettingsView extends React.Component<IProps, IState> {
                 break;
             case "error":
                 updateLabel = (
-                    <Label as="a" color="red" onClick={() => Platform.checkForUpdates()}>
+                    <Label as="a" color="red" onClick={() => Platform.current.checkForUpdates()}>
                         {s("updateStateError")}
                     </Label>
                 );
                 break;
             default:
                 updateLabel = (
-                    <Label as="a" onClick={() => Platform.checkForUpdates()}>
+                    <Label as="a" onClick={() => Platform.current.checkForUpdates()}>
                         {s("updateStateNone")}
                     </Label>
                 );
@@ -226,7 +226,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         {s("settingsCreditsHeader")}
                     </Header>
-                    <Label as="a" image onClick={() => Platform.openUrl("https://github.com/Emestie/flowerpot")}>
+                    <Label as="a" image onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}>
                         <img src={avatar} alt="" />
                         <Icon name="github" />
                         Emestie/flowerpot
@@ -235,21 +235,21 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         {s("versionWord")}
                         <Label.Detail>{Version.long}</Label.Detail>
                     </Label>
-                    <Label as="a" onClick={() => Platform.openUrl("https://emestie.github.io/flowerpot/changelog")}>
+                    <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/changelog")}>
                         {s("releaseNotes")}
                     </Label>
-                    <Label as="a" onClick={() => Platform.openUrl("https://emestie.github.io/flowerpot/bot")}>
+                    <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/bot")}>
                         {s("flowerbot")}
                     </Label>
                     {updateLabel}
                     <br />
                     <br />
                     {s("contributors")}
-                    <Label size="tiny" as="a" onClick={() => Platform.openUrl("https://github.com/Stassras")}>
+                    <Label size="tiny" as="a" onClick={() => Platform.current.openUrl("https://github.com/Stassras")}>
                         <Icon name="github" />
                         Stassras
                     </Label>
-                    <Label size="tiny" as="a" onClick={() => Platform.openUrl("https://github.com/selikhovamary")}>
+                    <Label size="tiny" as="a" onClick={() => Platform.current.openUrl("https://github.com/selikhovamary")}>
                         <Icon name="github" />
                         selikhovamary
                     </Label>

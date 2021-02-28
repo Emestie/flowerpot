@@ -55,7 +55,7 @@ export default observer((props: IProps) => {
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
-        Platform.openUrl(store.settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
+        Platform.current.openUrl(store.settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
     };
 
     const getSortPattern = () => {

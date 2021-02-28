@@ -47,7 +47,7 @@ export interface ISettings {
 
 export default class Settings {
     public static read() {
-        let settings = Platform.getStoreProp("flowerpot");
+        let settings = Platform.current.getStoreProp("flowerpot");
         if (settings) {
             try {
                 let parsedSettings = JSON.parse(settings);
@@ -55,14 +55,14 @@ export default class Settings {
             } catch (e) {}
         }
 
-        store.autostart = Platform.getStoreProp("autostart");
-        store.locale = Platform.getStoreProp("locale");
+        store.autostart = Platform.current.getStoreProp("autostart");
+        store.locale = Platform.current.getStoreProp("locale");
     }
 
     public static save() {
         try {
             let settingsToStore = JSON.stringify(store.settings);
-            Platform.setStoreProp("flowerpot", settingsToStore);
+            Platform.current.setStoreProp("flowerpot", settingsToStore);
         } catch (e) {}
     }
 }

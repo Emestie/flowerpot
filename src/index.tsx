@@ -9,7 +9,7 @@ import Platform from "./helpers/Platform";
 
 let appComponent = null;
 
-if (!Platform.getIpcRenderer()) appComponent = <UnauthorizedAccess />;
+if (!Platform.current.getIpcRenderer()) appComponent = <UnauthorizedAccess />;
 else appComponent = <App />;
 
 ReactDOM.render(appComponent, document.getElementById("root"));

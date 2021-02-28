@@ -3,7 +3,7 @@ import { s } from "../values/Strings";
 import Platform from "../helpers/Platform";
 
 export default () => {
-    if (Platform.isLocal())
+    if (Platform.current.isLocal())
         return (
             <span className="LocalVersion" title={s("localWarning")}>
                 {s("localCaption")}

@@ -93,7 +93,7 @@ class Store {
     private changesCollectionReaction = reaction(
         () => JSON.stringify(this._changesCollection),
         () => {
-            Platform.updateTrayIconDot(this.isChangesCollectionHasItems());
+            Platform.current.updateTrayIconDot(this.isChangesCollectionHasItems());
         }
     );
 
@@ -108,8 +108,8 @@ class Store {
         }
     );
     private onSettingsChange = reaction(() => this.settings, Settings.save);
-    private onLocaleChange = reaction(() => this.locale, Platform.changeLocale);
-    private onAutostartChange = reaction(() => this.autostart, Platform.toggleAutostart);
+    private onLocaleChange = reaction(() => this.locale, Platform.current.changeLocale);
+    private onAutostartChange = reaction(() => this.autostart, Platform.current.toggleAutostart);
 
     @observable isChangesCollectionHasItems() {
         let hasItems = false;

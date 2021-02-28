@@ -111,6 +111,6 @@ export default class Differences {
             if (reason === "new") title += s("notifNewItem");
             if (reason === "change") title += s("notifChangedItem");
         }
-        Platform.showNativeNotif({ title: title, body: text });
+        Platform.current.showNativeNotif({ title: title, body: text });
     }
 }

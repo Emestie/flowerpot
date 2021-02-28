@@ -15,7 +15,7 @@ export default observer(() => {
     };
 
     const showNotes = () => {
-        Platform.openUrl("https://emestie.github.io/flowerpot/bot");
+        Platform.current.openUrl("https://emestie.github.io/flowerpot/bot");
         hideMessage();
     };
 

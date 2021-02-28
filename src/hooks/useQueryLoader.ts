@@ -30,7 +30,7 @@ export default function useQueryLoader(query: IQuery) {
     const routineStart = async () => {
         setIsLoading(true);
 
-        if (store.useFishWIs === 1 && Platform.isDev()) {
+        if (store.useFishWIs === 1 && Platform.current.isDev()) {
             setIsLoading(false);
             store.setWorkItemsForQuery(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)]);
             return;

@@ -18,14 +18,14 @@ import RefreshHelperView from "./views/RefreshHelperView";
 @observer
 export default class App extends React.Component {
     componentDidMount() {
-        Platform.reactIsReady();
+        Platform.current.reactIsReady();
 
         Settings.read();
         Migration.perform();
         
-        Platform.checkForUpdates(true);
+        Platform.current.checkForUpdates(true);
 
-        if (Platform.isDev()) {
+        if (Platform.current.isDev()) {
             store.switchView("debug");
             //store.switchView("main");
         } else {
@@ -45,7 +45,7 @@ export default class App extends React.Component {
     }
 
     afterUpdateHandler() {
-        if (!Platform.isDev() && !Platform.isLocal() && Version.isChangedLong()) {
+        if (!Platform.current.isDev() && !Platform.current.isLocal() && Version.isChangedLong()) {
             if (store.settings.showWhatsNewOnUpdate && Version.isChangedShort()) store.showWhatsNew = true;
             Version.storeInSettings();
         }

@@ -18,7 +18,7 @@ export default class UpdateBanner extends React.Component<IProps, IState> {
 
     onUpdate = () => {
         this.setState({ updateInstallInProgress: true });
-        Platform.updateApp();
+        Platform.current.updateApp();
     };
 
     render() {

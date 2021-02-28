@@ -11,7 +11,7 @@ interface IState {}
 
 export default class DebugView extends React.Component<IProps, IState> {
     changeIconLevel = (level: number, noDot?: boolean) => {
-        Platform.updateTrayIcon(level, !noDot);
+        Platform.current.updateTrayIcon(level, !noDot);
     };
 
     showNotif = () => {
@@ -19,7 +19,7 @@ export default class DebugView extends React.Component<IProps, IState> {
     };
 
     showNotifNative = () => {
-        Platform.showNativeNotif({ title: "test1", body: "test2" });
+        Platform.current.showNativeNotif({ title: "test1", body: "test2" });
     };
 
     setChanges = () => {
@@ -40,7 +40,7 @@ export default class DebugView extends React.Component<IProps, IState> {
                     <Header as="h3" dividing>
                         Electron
                     </Header>
-                    <Button onClick={() => Platform.toggleConsole()}>console</Button>
+                    <Button onClick={() => Platform.current.toggleConsole()}>console</Button>
                     <Header as="h3" dividing>
                         Views
                     </Header>

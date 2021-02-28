@@ -1,5 +1,6 @@
-import Platform from "../Platform";
+import { IPlatformExtension } from "../Platform";
+import CommonPlatform from "./_Common";
 
-export default class Web extends Platform {
-
+export default class WebPlatform extends CommonPlatform implements IPlatformExtension {
+    
 }
