@@ -7,6 +7,23 @@ export interface INotificationData {
 
 export interface IPlatformExtension {
     isLocal: () => boolean;
+    getStoreProp: (prop:string) => any;
+    setStoreProp: (prop: string, value: any) => void;
+    copyString: (s: string) => void;
+    changeLocale: () => void;
+    toggleAutostart: () => void;
+    updateTrayIcon: (level: number, hasChanges? : boolean) => void;
+    updateTrayIconDot:(hasChanges: boolean) => void;
+    openUrl: (url: string) => void;
+    isDev: () => boolean;
+    toggleConsole: () => void;
+    getIpcRenderer: () => any;
+    sendIpcRenderer: (channel: string, data?: any) => void;
+    updateApp: () => void;
+    showNativeNotif: (data: INotificationData) => void;
+    checkForUpdates: (cyclic?: boolean) => void;
+    reactIsReady: () => void;
+    getSettingsStorage: () => any;
 }
 
 export enum PlatformType {
