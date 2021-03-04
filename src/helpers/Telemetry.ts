@@ -1,4 +1,5 @@
 import store from "../store";
+import Platform from "./Platform";
 import Version from "./Version";
 
 export default class Telemetry {
@@ -19,7 +20,8 @@ export default class Telemetry {
     public static versionUsageInfo() {
         const theme = store.settings.darkTheme ? "dark" : "light";
         const lang = store.locale;
-        this.basicMessage("Version installed", `theme=${theme}, lang=${lang}`);
+        const platform = Platform.type;
+        this.basicMessage("Version installed", `platform=${platform}, theme=${theme}, lang=${lang}`);
     }
 
     public static accountVerificationSucceed() {

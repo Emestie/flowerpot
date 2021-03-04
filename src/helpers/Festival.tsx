@@ -66,7 +66,7 @@ export default class Festival {
             case Eve.Feb23:
                 return month === 2 && day === 21;
             case Eve.Mar8:
-                return month === 3 && day === 6;
+                return (month === 3 && day <= 8) || (month === 3 && day >= 4);
             case Eve.Feb17:
                 return month === 2 && day === 17;
             case Eve.Sept3:
@@ -83,7 +83,7 @@ export default class Festival {
     public static getFestivalHeaderIcon() {
         if (this.isEveNow(Eve.NewYear)) return [christmasTree, 12, 14, 32, 32];
         if (this.isEveNow(Eve.Feb23)) return [feb23];
-        if (this.isEveNow(Eve.Mar8)) return [mar8];
+        if (this.isEveNow(Eve.Mar8)) return [mar8, 12, 14, 32, 32];
         if (this.isEveNow(Eve.Sept3)) return [sep3, 12, 14, 32, 32];
         if (this.isEveNow(Eve.Sept14)) return [sep14, 10, 14, 32, 32];
         if (this.isEveNow(Eve.Haloween)) return [haloween, undefined, undefined, 40, 40];
@@ -99,15 +99,17 @@ export default class Festival {
             return <span title={nameFull}>Шершнёв А. Ю.</span>;
         }
 
-        if (this.isEveNow(Eve.Mar8) && (name.includes("Грамович") || name.includes("Якубовская") || name.includes("Селихова"))) {
-            let src = name.includes("Грамович") ? flower1 : name.includes("Якубовская") ? flower3 : flower2;
+        if (this.isEveNow(Eve.Mar8) && (name.includes("Меницкая") || name.includes("Якубовская") || name.includes("Селихова"))) {
+            let src = name.includes("Меницкая") ? flower1 : name.includes("Якубовская") ? flower3 : flower2;
 
-            let addition = <img style={{ width: 16, height: 16, marginRight: 3 }} src={src} alt="" />;
+            let addition = <img style={{ width: 26, height: 26, marginRight: 5 }} src={src} alt="" />;
 
             return (
-                <span style={{ color: store.settings.darkTheme ? "pink" : "#ca639b" }} title={nameFull}>
-                    {addition}
-                    {name}
+                <span className={"ui avatar right spaced image av-class"} title={nameFull}>
+                    <div className={"ui basic image label user-label"}>
+                        {addition}
+                        <span className={"mar8NameLabel"}>{name}</span>
+                    </div>
                 </span>
             );
         }

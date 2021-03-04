@@ -1,4 +1,5 @@
 import ElectronPlatform from "./platforms/Electron";
+import WebPlatform from "./platforms/Web";
 
 export interface INotificationData {
     title: string;
@@ -7,13 +8,13 @@ export interface INotificationData {
 
 export interface IPlatformExtension {
     isLocal: () => boolean;
-    getStoreProp: (prop:string) => any;
+    getStoreProp: (prop: string) => any;
     setStoreProp: (prop: string, value: any) => void;
     copyString: (s: string) => void;
     changeLocale: () => void;
     toggleAutostart: () => void;
-    updateTrayIcon: (level: number, hasChanges? : boolean) => void;
-    updateTrayIconDot:(hasChanges: boolean) => void;
+    updateTrayIcon: (level: number, hasChanges?: boolean) => void;
+    updateTrayIconDot: (hasChanges: boolean) => void;
     openUrl: (url: string) => void;
     isDev: () => boolean;
     toggleConsole: () => void;
@@ -37,7 +38,11 @@ export default class Platform {
 
     public static get type() {
         if (!this._type) {
-            this._type = PlatformType.Electron;
+            if ((window as any).ipcRenderer) {
+                this._type = PlatformType.Electron;
+            } else {
+                this._type = PlatformType.Web;
+            }
         }
         return this._type;
     }
@@ -49,6 +54,7 @@ export default class Platform {
                 this._current = new ElectronPlatform();
                 break;
             case PlatformType.Web:
+                this._current = new WebPlatform();
                 break;
             default:
                 throw new Error("Unknown Platform.current.");

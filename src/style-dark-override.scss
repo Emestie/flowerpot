@@ -187,4 +187,8 @@ $rowItemHover: lighten($bg, 10%);
         background-color: $rowItemHover;
         box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.2);
     }
-} 
+
+    .mar8NameLabel {
+        color: pink !important;
+    }
+}

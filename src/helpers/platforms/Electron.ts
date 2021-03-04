@@ -12,7 +12,6 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
         else return null;
     }
 
-
     public openUrl(url: string) {
         if ((window as any).shell && (window as any).shell.openExternal) (window as any).shell.openExternal(url);
     }
