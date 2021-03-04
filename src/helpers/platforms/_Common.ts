@@ -16,7 +16,7 @@ export default class CommonPlatform {
     public copyString(s: string) {
         if ((window as any).electronClipboard) (window as any).electronClipboard.writeText(s);
     }
-    
+
     public changeLocale() {
         Platform.current.setStoreProp("locale", store.locale);
     }
