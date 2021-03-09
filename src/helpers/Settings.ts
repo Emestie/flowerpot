@@ -43,6 +43,7 @@ export interface ISettings {
     lastTimeVersion: string;
     lastTimeVersionLong: string;
     migrationsDone: string[];
+    bannersShown: number[];
 }
 
 export default class Settings {

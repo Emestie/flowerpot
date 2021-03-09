@@ -66,7 +66,7 @@ export default class Festival {
             case Eve.Feb23:
                 return month === 2 && day === 21;
             case Eve.Mar8:
-                return (month === 3 && day <= 8) || (month === 3 && day >= 4);
+                return month === 3 && day <= 8 && day >= 4;
             case Eve.Feb17:
                 return month === 2 && day === 17;
             case Eve.Sept3:

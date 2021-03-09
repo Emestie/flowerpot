@@ -178,6 +178,9 @@ const en: ILocalizedStrings = {
 
     flowerbotBanner1: "Meet Flowerbot - a Telegram bot to catch your bugs and tasks.",
     flowerbotBanner2: "Give it a try.",
+
+    ebl2t: "Please take the survey about possible mobile app.",
+    ebl2l: "Take a survey",
 };
 
 export default en;

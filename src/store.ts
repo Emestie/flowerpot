@@ -20,7 +20,6 @@ class Store {
     @observable errorMessage: string = "";
     @observable updateStatus: TUpdateStatus = "none";
     @observable showWhatsNew: boolean = false;
-    @observable showFlowerbotBanner: boolean = false;
     @observable settings: ISettings = {
         tfsPath: "http://tfs:8080/tfs/",
         tfsUser: "",
@@ -49,6 +48,7 @@ class Store {
         lastTimeVersion: "",
         lastTimeVersionLong: "",
         migrationsDone: [],
+        bannersShown: [],
     };
     //! if add something in settings outfise of flowerpot section don't forget to add reaction
     @observable autostart: boolean = true;
