@@ -111,13 +111,13 @@ export default observer(() => {
                     img={flowerbotImg}
                     type="positive"
                 />
-                <ExternalLinkBanner
+                {/* <ExternalLinkBanner
                     id={2}
                     text={s("ebl2t")}
                     linkText={s("ebl2l")}
                     linkUrl={"https://forms.gle/7kLp66vg2iM4KZbW7"}
                     type="positive"
-                />
+                /> */}
                 {queriesElems}
             </Container>
         </div>
