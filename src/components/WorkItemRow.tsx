@@ -178,6 +178,22 @@ export default class WorkItemRow extends React.Component<IProps> {
 
         const [isDone, doneByUser] = [false, "user"];
 
+        const preparedValue = (field: string) => {
+            if (item._filteredBy[field] === undefined) return (item as any)[field];
+
+            const val = (item as any)[field] + "" || "";
+            const splittee = item._filteredBy[field];
+            const pieces = val.split(splittee);
+
+            const returnee: any[] = [];
+            pieces.forEach((x: any) => {
+                returnee.push(<React.Fragment key={Math.random()}>{x}</React.Fragment>);
+                returnee.push(<span key={Math.random()} className="marked">{splittee}</span>);
+            });
+            returnee.pop();
+            return returnee;
+        };
+
         const tags = item.tags
             ? item.tags
                   .split(";")
@@ -200,7 +216,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                 >
                     <ContextMenuTrigger id={uid + ""}>
                         <span title={item.type}>
-                            {this.typeEl} {item.id}
+                            {this.typeEl} {preparedValue("id")}
                         </span>
                     </ContextMenuTrigger>
 
@@ -234,15 +250,24 @@ export default class WorkItemRow extends React.Component<IProps> {
                         <span>
                             {!!item._moveToProdMessage && (
                                 <span className="hasShelve" title={s("moveToProd")}>
-                                    <Label color="teal" basic size="mini" title={item._moveToProdMessage} style={{ padding: "3px 4px", marginRight: 2 }}>
+                                    <Label
+                                        color="teal"
+                                        basic
+                                        size="mini"
+                                        title={item._moveToProdMessage}
+                                        style={{ padding: "3px 4px", marginRight: 2 }}
+                                    >
                                         -&gt; Prod
                                     </Label>
                                 </span>
                             )}
                             {tags}
                         </span>
-                        <span className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} onClick={() => Platform.current.openUrl(item.url)}>
-                            {item.titleFull}
+                        <span
+                            className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}
+                            onClick={() => Platform.current.openUrl(item.url)}
+                        >
+                            {preparedValue("titleFull")}
                         </span>
                         {!!this.note && (
                             <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + this.fullNote}>

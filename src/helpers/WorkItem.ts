@@ -34,6 +34,7 @@ export interface IWorkItem {
     _moveToProdMessage: string | null;
     _queryId: string;
     _collectionName: string;
+    _filteredBy: any;
 }
 
 export interface IResponseWorkItem {
@@ -150,6 +151,7 @@ export default class WorkItem {
             _moveToProdMessage: this.getMoveToProdMessage(resp.fields["System.History"]),
             _queryId: query.queryId,
             _collectionName: query.collectionName,
+            _filteredBy: {},
         };
         return item;
     }
@@ -192,9 +194,13 @@ export default class WorkItem {
         let weight = 100;
 
         let promptness =
-            this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) || this.extractLevel(resp.fields["Microsoft.VSTS.Common.Priority"]) || 0;
+            this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) ||
+            this.extractLevel(resp.fields["Microsoft.VSTS.Common.Priority"]) ||
+            0;
         let importance =
-            this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) || this.extractLevel(resp.fields["Microsoft.VSTS.Common.Severity"]) || 0;
+            this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) ||
+            this.extractLevel(resp.fields["Microsoft.VSTS.Common.Severity"]) ||
+            0;
 
         if (promptness) {
             weight += promptness;

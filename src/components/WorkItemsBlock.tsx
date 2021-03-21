@@ -20,10 +20,51 @@ export default observer((props: IProps) => {
     const allItems = store.getWorkItemsForQuery(props.query);
     const filterValue = props.filter && props.filter.trim() ? props.filter.trim().toLowerCase() : "";
     const filteredItems = () => {
-        if (!filterValue) return allItems;
-        const filtered = allItems.filter(i => (i.titleFull || "").toLowerCase().indexOf(filterValue) != -1 || (i.id || "").toString().indexOf(filterValue) != -1 || (i.assignedToFull || "").toLowerCase().indexOf(filterValue) != -1 || (i.createdByFull || "").toLowerCase().indexOf(filterValue) != -1);
+        if (!filterValue) {
+            allItems.forEach((x) => {
+                x._filteredBy = {};
+            });
+            return allItems;
+        }
+        const filtered = allItems.filter((i) => {
+            let flag = false;
+            const itf = (i.titleFull || "").toLowerCase().indexOf(filterValue);
+            const iid = (i.id || "").toString().indexOf(filterValue);
+            const iatf = (i.assignedToFull || "").toLowerCase().indexOf(filterValue);
+            const icbf = (i.createdByFull || "").toLowerCase().indexOf(filterValue);
+
+            if (itf !== -1) {
+                flag = true;
+                i._filteredBy["titleFull"] = filterValue;
+            } else {
+                i._filteredBy["titleFull"] = undefined;
+            }
+
+            if (iid !== -1) {
+                flag = true;
+                i._filteredBy["id"] = filterValue;
+            } else {
+                i._filteredBy["id"] = undefined;
+            }
+
+            if (iatf !== -1) {
+                flag = true;
+                i._filteredBy["assignedToFull"] = filterValue;
+            } else {
+                i._filteredBy["assignedToFull"] = undefined;
+            }
+
+            if (icbf !== -1) {
+                flag = true;
+                i._filteredBy["createdByFull"] = filterValue;
+            } else {
+                i._filteredBy["createdByFull"] = undefined;
+            }
+
+            return flag;
+        });
         return filtered;
-    }
+    };
     const workItems = filteredItems();
 
     const isPermawatch = props.query.queryId === "___permawatch";
@@ -31,8 +72,9 @@ export default observer((props: IProps) => {
     const redItems = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
-    const orangeItems = workItems.filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)).filter((wi) => wi.promptness === 2)
-        .length;
+    const orangeItems = workItems
+        .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => wi.promptness === 2).length;
 
     useEffect(() => {
         let newProgressList = store.copy(store.loadingInProgressList);
@@ -54,7 +96,9 @@ export default observer((props: IProps) => {
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
-        Platform.current.openUrl(store.settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
+        Platform.current.openUrl(
+            store.settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query"
+        );
     };
 
     const getSortPattern = () => {

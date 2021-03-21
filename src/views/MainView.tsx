@@ -16,7 +16,7 @@ const flowerbotImg = require("../assets/flowerbot-av-48.png") as string;
 
 export default observer(() => {
     const [idDial, setIdDial] = useState(false);
-    const [inputValue, setInputValue] = useState("");
+    const [quickSearchVal, setQuickSearchVal] = useState("");
 
     const isRefreshAvailable = !!store.getQueries().length && !store.loadingInProgressList.length;
 
@@ -51,7 +51,7 @@ export default observer(() => {
     const collections = queries.map((x) => x.collectionName).filter((i, v, a) => a.indexOf(i) === v);
 
     const queriesElems = queries.length ? (
-        queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} filter={inputValue} />)
+        queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} filter={quickSearchVal} />)
     ) : (
         <Message info>
             <Message.Header>{s("noQueriesToWatch")}</Message.Header>
@@ -76,10 +76,10 @@ export default observer(() => {
                     <Form.Input
                         size="small"
                         placeholder={s('quicksearch')}
-                        value={inputValue}
+                        value={quickSearchVal}
                         onChange={(e) => {
-                            if (e.target.value && !e.target.value.trim()) setInputValue("");
-                            else setInputValue(e.target.value);
+                            if (e.target.value && !e.target.value.trim()) setQuickSearchVal("");
+                            else setQuickSearchVal(e.target.value);
                         }}
                     />
                 </div>
