@@ -181,6 +181,8 @@ const en: ILocalizedStrings = {
 
     ebl2t: "Please take the survey about possible mobile app.",
     ebl2l: "Take a survey",
+
+    quicksearch: "Quick Search",
 };
 
 export default en;

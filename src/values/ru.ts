@@ -183,6 +183,8 @@ const ru: ILocalizedStrings = {
 
     ebl2t: "Пройдите опрос о возможном мобильном приложении.",
     ebl2l: "Пройти опрос",
+
+    quicksearch: "Быстрый поиск",
 };
 
 export default ru;

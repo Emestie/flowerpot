@@ -75,7 +75,7 @@ export default observer(() => {
                 <div style={{ display: "inline-block", marginRight: 3.5 }}>
                     <Form.Input
                         size="small"
-                        placeholder="Filter work items"
+                        placeholder={s('quicksearch')}
                         value={inputValue}
                         onChange={(e) => {
                             if (e.target.value && !e.target.value.trim()) setInputValue("");
