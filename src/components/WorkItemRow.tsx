@@ -178,19 +178,37 @@ export default class WorkItemRow extends React.Component<IProps> {
 
         const [isDone, doneByUser] = [false, "user"];
 
-        const preparedValue = (field: string) => {
+        const yellowMarkedVal = (field: string) => {
             if (item._filteredBy[field] === undefined) return (item as any)[field];
 
             const val = (item as any)[field] + "" || "";
             const splittee = item._filteredBy[field];
-            const pieces = val.split(splittee);
+            const pieces = val.toLocaleLowerCase().split(splittee);
+
+            const splitteeLength = splittee.length;
+
+            const trueValPieces: any[] = [];
+
+            let start = 0;
+            pieces.forEach((x) => {
+                const xLen = x.length;
+                const p = val.slice(start, start + xLen);
+                const spl = val.slice(start + xLen , start + xLen  + splitteeLength);
+                trueValPieces.push(p, spl);
+                start = start + xLen + splitteeLength;
+            });
 
             const returnee: any[] = [];
-            pieces.forEach((x: any) => {
-                returnee.push(<React.Fragment key={Math.random()}>{x}</React.Fragment>);
-                returnee.push(<span key={Math.random()} className="marked">{splittee}</span>);
+            trueValPieces.forEach((x: any, i: number) => {
+                if (i % 2 === 0) returnee.push(<React.Fragment key={Math.random()}>{x}</React.Fragment>);
+                else
+                    returnee.push(
+                        <span key={Math.random()} className="marked">
+                            {x}
+                        </span>
+                    );
             });
-            returnee.pop();
+            
             return returnee;
         };
 
@@ -216,7 +234,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                 >
                     <ContextMenuTrigger id={uid + ""}>
                         <span title={item.type}>
-                            {this.typeEl} {preparedValue("id")}
+                            {this.typeEl} {yellowMarkedVal("id")}
                         </span>
                     </ContextMenuTrigger>
 
@@ -267,7 +285,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                             className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}
                             onClick={() => Platform.current.openUrl(item.url)}
                         >
-                            {preparedValue("titleFull")}
+                            {yellowMarkedVal("titleFull")}
                         </span>
                         {!!this.note && (
                             <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + this.fullNote}>
