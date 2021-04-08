@@ -25,7 +25,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     }
 
     get isOrange() {
-        return this.props.item.promptness === 2;
+        return this.props.item.promptness === 2 && this.props.item.importance !== 3;
     }
 
     get importanceEl() {

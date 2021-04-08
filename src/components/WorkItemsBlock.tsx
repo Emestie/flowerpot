@@ -74,7 +74,7 @@ export default observer((props: IProps) => {
         .filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
     const orangeItems = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
-        .filter((wi) => wi.promptness === 2).length;
+        .filter((wi) => wi.promptness === 2 && wi.importance !== 3).length;
 
     useEffect(() => {
         let newProgressList = store.copy(store.loadingInProgressList);
