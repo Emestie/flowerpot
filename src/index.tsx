@@ -9,7 +9,7 @@ import Platform, { PlatformType } from "./helpers/Platform";
 
 let appComponent = null;
 
-if (Platform.type !== PlatformType.Electron) appComponent = <UnauthorizedAccess />;
-else appComponent = <App />;
+/*if (Platform.type !== PlatformType.Electron) appComponent = <UnauthorizedAccess />;
+else*/ appComponent = <App />;
 
 ReactDOM.render(appComponent, document.getElementById("root"));
