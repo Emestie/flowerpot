@@ -3,6 +3,7 @@ import Settings, { ISettings, TLists } from "./helpers/Settings";
 import Query, { IQuery } from "./helpers/Query";
 import Platform from "./helpers/Platform";
 import { IWorkItem } from "./helpers/WorkItem";
+import { Eve } from "./helpers/Festival";
 
 export type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug" | "lists" | "refreshhelper";
 export type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "error";
@@ -56,6 +57,7 @@ class Store {
 
     @observable loadingInProgressList: string[] = [];
     @observable isFestivalOn: boolean = false;
+    @observable currentFestival: Eve = Eve._none;
     @observable festivalHeaderOffset: number = 0;
 
     isEosTfs() {

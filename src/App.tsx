@@ -14,6 +14,7 @@ import Platform from "./helpers/Platform";
 import Version from "./helpers/Version";
 import ListsView from "./views/ListsView";
 import RefreshHelperView from "./views/RefreshHelperView";
+import Festival from "./helpers/Festival";
 
 @observer
 export default class App extends React.Component {
@@ -22,6 +23,7 @@ export default class App extends React.Component {
 
         Settings.read();
         Migration.perform();
+        Festival.findOut();
         
         Platform.current.checkForUpdates(true);
 

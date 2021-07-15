@@ -185,6 +185,8 @@ const ru: ILocalizedStrings = {
     ebl2l: "Пройти опрос",
 
     quicksearch: "Быстрый поиск",
+
+    TenYearsAnny: "10 лет МР",
 };
 
 export default ru;

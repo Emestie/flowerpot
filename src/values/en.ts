@@ -183,6 +183,8 @@ const en: ILocalizedStrings = {
     ebl2l: "Take a survey",
 
     quicksearch: "Quick Search",
+
+    TenYearsAnny: "10 years of MR",
 };
 
 export default en;
