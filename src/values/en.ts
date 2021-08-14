@@ -65,7 +65,7 @@ const en: ILocalizedStrings = {
     errorDesc4: "to check your account and server",
     tfsSettings: "TFS Settings",
     //creds view
-    validate: "Validate",
+    validate: "Validate and save",
     status: "Status: ",
     credsNoteText: "You must validate credentials you entered before leaving this page.",
     tfsPwd: "TFS password",
@@ -179,12 +179,14 @@ const en: ILocalizedStrings = {
     flowerbotBanner1: "Meet Flowerbot - a Telegram bot to catch your bugs and tasks.",
     flowerbotBanner2: "Give it a try.",
 
-    ebl2t: "Please take the survey about possible mobile app.",
-    ebl2l: "Take a survey",
-
     quicksearch: "Quick Search",
 
     TenYearsAnny: "10 years of MR",
+
+    feedbackAlert: "Flowerpot нужны ваши идеи и пожелания!",
+    feedbackAlertButton: "Предложить идею",
+    feedbackSettingsButton: "Feedback & Ideas",
+    feedbackWindowCaption: "Enter your idea, feedback or bug report and press OK",
 };
 
 export default en;
