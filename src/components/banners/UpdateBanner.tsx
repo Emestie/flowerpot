@@ -1,7 +1,7 @@
 import React from "react";
-import store from "../store";
-import { s } from "../values/Strings";
-import Platform from "../helpers/Platform";
+import store from "../../store";
+import { s } from "../../values/Strings";
+import Platform from "../../helpers/Platform";
 import { Message, Button } from "semantic-ui-react";
 import { observer } from "mobx-react";
 

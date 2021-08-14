@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import { Container, Message, Button, Icon, Form } from "semantic-ui-react";
 import store from "../store";
 import WorkItemsBlock from "../components/WorkItemsBlock";
-import WhatsNewBanner from "../components/WhatsNewBanner";
+import WhatsNewBanner from "../components/banners/WhatsNewBanner";
 import { observer } from "mobx-react";
 import Platform from "../helpers/Platform";
 import { IQuery } from "../helpers/Query";
 import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
-import SingleInputColorDialog from "../components/SingleInputColorDialog";
-import ViewHeading from "../components/ViewHeading";
-import ExternalLinkBanner from "../components/ExternalLinkBanner";
+import ViewHeading from "../components/heading/ViewHeading";
+import ActionBannersContainer from "./containers/ActionBannersContainer";
 
-const flowerbotImg = require("../assets/flowerbot-av-48.png") as string;
+export const queriesSorting = (a: IQuery, b: IQuery) => {
+    if (a.empty === b.empty) return 0;
+    if (!a.empty && b.empty) return -1;
+    else return 1;
+};
 
 export default observer(() => {
-    const [idDial, setIdDial] = useState(false);
     const [quickSearchVal, setQuickSearchVal] = useState("");
 
     const isRefreshAvailable = !!store.getQueries().length && !store.loadingInProgressList.length;
@@ -28,11 +30,8 @@ export default observer(() => {
         store.switchView("settings");
     };
 
-    const onOpenById = () => setIdDial(true);
-
-    const openById = (id: string, color?: string, collection?: string) => {
-        Platform.current.openUrl(store.settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
-        setIdDial(false);
+    const onOpenById = () => {
+        store.dialogs.openById = true;
     };
 
     const updateApp = () => Platform.current.updateApp();
@@ -41,14 +40,7 @@ export default observer(() => {
         store.clearAllChanges();
     };
 
-    const queriesSorting = (a: IQuery, b: IQuery) => {
-        if (a.empty === b.empty) return 0;
-        if (!a.empty && b.empty) return -1;
-        else return 1;
-    };
-
     const queries = store.getQueries().sort(queriesSorting);
-    const collections = queries.map((x) => x.collectionName).filter((i, v, a) => a.indexOf(i) === v);
 
     const queriesElems = queries.length ? (
         queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} filter={quickSearchVal} />)
@@ -75,7 +67,7 @@ export default observer(() => {
                 <div style={{ display: "inline-block", marginRight: 3.5 }}>
                     <Form.Input
                         size="small"
-                        placeholder={s('quicksearch')}
+                        placeholder={s("quicksearch")}
                         value={quickSearchVal}
                         onChange={(e) => {
                             if (e.target.value && !e.target.value.trim()) setQuickSearchVal("");
@@ -95,29 +87,8 @@ export default observer(() => {
                 <Button onClick={onSettings}>{s("settings")}</Button>
             </ViewHeading>
             <Container fluid>
-                <SingleInputColorDialog
-                    show={idDial}
-                    onClose={() => setIdDial(false)}
-                    onOk={openById}
-                    caption={s("openByIdText")}
-                    dropdownValues={collections}
-                />
                 <WhatsNewBanner />
-                <ExternalLinkBanner
-                    id={1}
-                    text={s("flowerbotBanner1")}
-                    linkText={s("flowerbotBanner2")}
-                    linkUrl={"https://emestie.github.io/flowerpot/bot"}
-                    img={flowerbotImg}
-                    type="positive"
-                />
-                {/* <ExternalLinkBanner
-                    id={2}
-                    text={s("ebl2t")}
-                    linkText={s("ebl2l")}
-                    linkUrl={"https://forms.gle/7kLp66vg2iM4KZbW7"}
-                    type="positive"
-                /> */}
+                <ActionBannersContainer />
                 {queriesElems}
             </Container>
         </div>

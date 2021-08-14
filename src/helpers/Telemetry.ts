@@ -3,8 +3,8 @@ import Platform from "./Platform";
 import Version from "./Version";
 
 export default class Telemetry {
-    private static async basicMessage(reason: string, extraInfo?: string) {
-        if (!store.settings.allowTelemetry) return;
+    private static async basicMessage(reason: string, extraInfo?: string, ignoreTelemetryDisability?: boolean) {
+        if (!store.settings.allowTelemetry && !ignoreTelemetryDisability) return;
 
         try {
             const ver = Version.long;
@@ -26,5 +26,9 @@ export default class Telemetry {
 
     public static accountVerificationSucceed() {
         this.basicMessage("Account verified");
+    }
+
+    public static sendFeedback(text: string) {
+        this.basicMessage("Feedback", text, true);
     }
 }

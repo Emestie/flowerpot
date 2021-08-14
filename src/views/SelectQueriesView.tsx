@@ -5,7 +5,7 @@ import store from "../store";
 import Query, { IQuery } from "../helpers/Query";
 import Loaders from "../helpers/Loaders";
 import { s } from "../values/Strings";
-import ViewHeading from "../components/ViewHeading";
+import ViewHeading from "../components/heading/ViewHeading";
 
 interface IProps {}
 interface IState {

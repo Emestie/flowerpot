@@ -1,10 +1,10 @@
 import React from "react";
-import store from "../store";
+import store from "../../store";
 import { Message, Button } from "semantic-ui-react";
-import { s } from "../values/Strings";
-import Platform from "../helpers/Platform";
+import { s } from "../../values/Strings";
+import Platform from "../../helpers/Platform";
 import { observer } from "mobx-react-lite";
-import Version from "../helpers/Version";
+import Version from "../../helpers/Version";
 
 export default observer(() => {
     if (!store.showWhatsNew) return null;

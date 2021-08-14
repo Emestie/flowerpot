@@ -8,7 +8,7 @@ import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
 import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
 import Version from "../helpers/Version";
-import ViewHeading from "../components/ViewHeading";
+import ViewHeading from "../components/heading/ViewHeading";
 
 const avatar = require("../assets/ti.jpg") as string;
 
@@ -198,7 +198,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
                         onChange={(e, { value }) => this.onNotifModeSelect(value as TNotificationsMode)}
                     />
                     <br />
-                    <Form.Checkbox label={s("cbIconLabel")} checked={store.settings.iconChangesOnMyWorkItemsOnly} onChange={this.toggleIconColor} />
+                    <Form.Checkbox
+                        label={s("cbIconLabel")}
+                        checked={store.settings.iconChangesOnMyWorkItemsOnly}
+                        onChange={this.toggleIconColor}
+                    />
                     <br />
                     <Form.Checkbox label={s("mineOnTop")} checked={store.settings.mineOnTop} onChange={this.toggleMineOnTop} />
                     <br />
@@ -221,7 +225,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <br />
                     <Form.Checkbox label={s("cbTelemetry")} checked={store.settings.allowTelemetry} onChange={this.toggleTelemetry} />
                     <br />
-                    <Form.Checkbox label={s("cbWhatsNew")} checked={store.settings.showWhatsNewOnUpdate} onChange={this.toggleWhatsNewOnUpdate} />
+                    <Form.Checkbox
+                        label={s("cbWhatsNew")}
+                        checked={store.settings.showWhatsNewOnUpdate}
+                        onChange={this.toggleWhatsNewOnUpdate}
+                    />
                     <br />
                     <Header as="h3" dividing>
                         {s("settingsCreditsHeader")}
@@ -240,6 +248,15 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     </Label>
                     <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/bot")}>
                         {s("flowerbot")}
+                    </Label>
+                    <Label
+                        as="a"
+                        color="yellow"
+                        onClick={() => {
+                            store.dialogs.feedback = true;
+                        }}
+                    >
+                        {s("feedbackSettingsButton")}
                     </Label>
                     {updateLabel}
                     <br />

@@ -5,8 +5,8 @@ import store from "../store";
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
 import { s } from "../values/Strings";
-import UpdateBanner from "../components/UpdateBanner";
-import ViewHeading from "../components/ViewHeading";
+import UpdateBanner from "../components/banners/UpdateBanner";
+import ViewHeading from "../components/heading/ViewHeading";
 import Telemetry from "../helpers/Telemetry";
 
 interface IProps {}
@@ -151,6 +151,7 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         } else {
             Telemetry.accountVerificationSucceed();
             this.setCredentialsStatus(ECredState.OK);
+            this.onSave();
         }
     };
 

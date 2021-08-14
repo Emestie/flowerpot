@@ -4,7 +4,7 @@ import store from "../store";
 import Platform from "../helpers/Platform";
 import WorkItem from "../helpers/WorkItem";
 import Version from "../helpers/Version";
-import ViewHeading from "../components/ViewHeading";
+import ViewHeading from "../components/heading/ViewHeading";
 
 interface IProps {}
 interface IState {}

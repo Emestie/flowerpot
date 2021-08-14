@@ -1,5 +1,6 @@
 {
     "name": "flowerpot",
+    "version": "0.2.19",
     "description": "TFS Query watch tool",
     "author": {
         "name": "Valery Murashko",
@@ -21,7 +22,6 @@
             "provider": "github"
         }
     },
-    "version": "0.2.18",
     "dependencies": {
         "@trodi/electron-splashscreen": "^0.3.4",
         "electron-is-dev": "^1.2.0",

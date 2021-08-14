@@ -55,6 +55,11 @@ class Store {
     @observable autostart: boolean = true;
     @observable locale: TLocale = "en";
 
+    @observable dialogs = {
+        openById: false,
+        feedback: false,
+    };
+
     @observable loadingInProgressList: string[] = [];
     @observable isFestivalOn: boolean = false;
     @observable currentFestival: Eve = Eve._none;

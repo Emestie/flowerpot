@@ -6,7 +6,7 @@ import { IWorkItem } from "../helpers/WorkItem";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
 import Platform from "../helpers/Platform";
-import SingleInputColorDialog from "./SingleInputColorDialog";
+import SingleInputColorDialog from "./dialogs/SingleInputColorDialog";
 import { IQuery } from "../helpers/Query";
 import store from "../store";
 

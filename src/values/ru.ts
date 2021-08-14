@@ -65,7 +65,7 @@ const ru: ILocalizedStrings = {
     errorDesc4: "на предмет корректности",
     tfsSettings: "Настройки TFS",
     //creds view
-    validate: "Проверить",
+    validate: "Проверить и сохранить",
     status: "Статус: ",
     credsNoteText: "Вы должны проверить введенные данные на корректность.",
     tfsPwd: "Пароль TFS",
@@ -181,12 +181,14 @@ const ru: ILocalizedStrings = {
     flowerbotBanner1: "Встречайте Flowerbot - Telegram-бот для отслеживания ваших ошибок и задач.",
     flowerbotBanner2: "Попробовать.",
 
-    ebl2t: "Пройдите опрос о возможном мобильном приложении.",
-    ebl2l: "Пройти опрос",
-
     quicksearch: "Быстрый поиск",
 
     TenYearsAnny: "10 лет МР",
+
+    feedbackAlert: "Flowerpot нужны ваши идеи и пожелания!",
+    feedbackAlertButton: "Предложить идею",
+    feedbackSettingsButton: "Обратная связь и пожелания",
+    feedbackWindowCaption: "Опишите вашу идею, предложение или отзыв и нажмите ОК",
 };
 
 export default ru;

@@ -1,29 +1,30 @@
 import React from "react";
-import store from "../store";
+import store from "../../store";
 import { Message } from "semantic-ui-react";
-import Platform from "../helpers/Platform";
+import Platform from "../../helpers/Platform";
 import { observer } from "mobx-react-lite";
 
-interface P {
+export interface IActionBannerProps {
     id: number;
     text: string;
-    linkText: string;
-    linkUrl?: string;
+    actionText: string;
+    openUrl?: string;
+    action?: () => void;
     img?: string;
     type?: "negative" | "positive" | "info" | "warning";
 }
 
-export default observer((p: P) => {
+export default observer((p: IActionBannerProps) => {
     const hideMessage = () => {
         const allBanners = store.settings.bannersShown;
         store.settings.bannersShown = [...allBanners, p.id];
         store.updateSettings();
     };
 
-    const openUrlAndHideBanner = () => {
-        if (p.linkUrl) {
-            Platform.current.openUrl(p.linkUrl);
-        }
+    const doActionAndHideBanner = () => {
+        if (p.openUrl) Platform.current.openUrl(p.openUrl);
+        if (p.action) p.action();
+
         hideMessage();
     };
 
@@ -39,8 +40,8 @@ export default observer((p: P) => {
             {p.img && <img style={{ position: "absolute", top: 8, left: 8, height: 32, width: 32, borderRadius: "50%" }} src={p.img}></img>}
             <span style={{ marginLeft: p.img ? 32 : 5 }}>
                 {p.text}
-                <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={openUrlAndHideBanner}>
-                    {p.linkText}
+                <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={doActionAndHideBanner}>
+                    {p.actionText}
                 </span>
             </span>
         </Message>

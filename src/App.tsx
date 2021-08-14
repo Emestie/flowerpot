@@ -15,6 +15,7 @@ import Version from "./helpers/Version";
 import ListsView from "./views/ListsView";
 import RefreshHelperView from "./views/RefreshHelperView";
 import Festival from "./helpers/Festival";
+import DialogsContainer from "./views/containers/DialogsContainer";
 
 @observer
 export default class App extends React.Component {
@@ -81,6 +82,11 @@ export default class App extends React.Component {
     render() {
         const scene = this.getScene(store.view);
 
-        return <div className={store.settings.darkTheme ? "FlowerpotDarkTheme" : ""}>{scene}</div>;
+        return (
+            <div className={store.settings.darkTheme ? "FlowerpotDarkTheme" : ""}>
+                <DialogsContainer />
+                {scene}
+            </div>
+        );
     }
 }

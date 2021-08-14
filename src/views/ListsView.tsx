@@ -4,7 +4,7 @@ import { Header, Container, Button, Icon, Label } from "semantic-ui-react";
 import { s } from "../values/Strings";
 import store from "../store";
 import ListBlock from "../components/ListBlock";
-import ViewHeading from "../components/ViewHeading";
+import ViewHeading from "../components/heading/ViewHeading";
 
 interface iProps {}
 interface iState {}
