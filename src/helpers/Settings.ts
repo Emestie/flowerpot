@@ -53,7 +53,7 @@ export default class Settings {
             try {
                 let parsedSettings = JSON.parse(settings);
                 store.setSettings(parsedSettings);
-            } catch (e) {}
+            } catch (e: any) {}
         }
 
         store.autostart = Platform.current.getStoreProp("autostart");
@@ -64,6 +64,6 @@ export default class Settings {
         try {
             let settingsToStore = JSON.stringify(store.settings);
             Platform.current.setStoreProp("flowerpot", settingsToStore);
-        } catch (e) {}
+        } catch (e: any) {}
     }
 }

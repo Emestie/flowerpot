@@ -35,7 +35,7 @@
         "@types/react": "16.9.2",
         "@types/react-dom": "16.9.0",
         "electron": "^9.4.0",
-        "electron-builder": "^21.2.0",
+        "electron-builder": "^22.11.7",
         "foreman": "^3.0.1",
         "mobx": "^5.15.6",
         "mobx-react": "^6.2.5",
@@ -54,7 +54,7 @@
         "start": "react-scripts start",
         "electron": "electron .",
         "build-react": "react-scripts build && DEL /S /Q .\\build\\*.map && copy .\\build\\index.html .\\build\\firebase-entry-point.html",
-        "bulid-electron": "npm run build-react && electron-builder -w --publish never",
+        "build-electron": "npm run build-react && electron-builder -w --publish never",
         "deploy-react": "npm run build-react && firebase deploy",
         "deploy-electron": "npm run build-react && electron-builder -w --publish always"
     },

@@ -43,7 +43,7 @@ export default class Loaders {
                     });
                 }
             }
-        } catch (ex) {
+        } catch (ex: any) {
             store.showErrorPage(ex);
         }
         return queries;
@@ -103,7 +103,7 @@ export default class Loaders {
             }
 
             Differences.put(query, wis);
-        } catch (ex) {
+        } catch (ex: any) {
             store.showErrorPage(ex);
         }
 
@@ -115,7 +115,7 @@ export default class Loaders {
             //await this.asyncRequest("_api/_wit/teamProjects?__v=5", true);
             await this.loadCollections();
             return true;
-        } catch (ex) {
+        } catch (ex: any) {
             return false;
         }
     }
@@ -125,7 +125,7 @@ export default class Loaders {
             let res = await fetch(store.settings.tfsPath);
             if (res.status !== 401 && res.status !== 200) return false;
             else return true;
-        } catch (ex) {
+        } catch (ex: any) {
             return false;
         }
     }
@@ -161,7 +161,7 @@ export default class Loaders {
                 let json = await respFinal.json();
 
                 resolve(json);
-            } catch (e) {
+            } catch (e: any) {
                 //if (!forceAuth) {
                 this.syncRequest(subpath, true)
                     .then((x) => {
@@ -206,7 +206,7 @@ export default class Loaders {
                 request.open("GET", url, false);
                 request.send(null);
                 resolve(JSON.parse(request.responseText));
-            } catch (ex) {
+            } catch (ex: any) {
                 if (!forceAuth) {
                     this.syncRequest(subpath, true)
                         .then((x) => {
