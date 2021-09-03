@@ -1,6 +1,9 @@
 import store from "../store";
 import Platform from "./Platform";
 import Version from "./Version";
+import CyrillicToTranslit from "cyrillic-to-translit-js";
+
+const cyrillicToTranslit = new CyrillicToTranslit();
 
 export default class Telemetry {
     private static async basicMessage(reason: string, extraInfo?: string, ignoreTelemetryDisability?: boolean) {
@@ -29,6 +32,7 @@ export default class Telemetry {
     }
 
     public static sendFeedback(text: string) {
-        this.basicMessage("Feedback", text, true);
+        const transliterated = cyrillicToTranslit.transform(text);
+        this.basicMessage("Feedback", transliterated, true);
     }
 }

@@ -25,7 +25,7 @@ export default class WorkItemRow extends React.Component<IProps> {
     }
 
     get isOrange() {
-        return this.props.item.promptness === 2 && this.props.item.importance !== 3;
+        return this.props.item.type !== "Task" && this.props.item.promptness === 2 && this.props.item.importance !== 3;
     }
 
     get importanceEl() {
@@ -98,6 +98,12 @@ export default class WorkItemRow extends React.Component<IProps> {
                 return <Icon name="check" />;
             case "Issue":
                 return <Icon name="question" />;
+            case "Feature":
+                return <Icon name="trophy" />;
+            case "User Story":
+                return <Icon name="book" />;
+            case "Epic":
+                return <Icon name="chess queen" />;
             default:
                 return <Icon name="fire" />;
         }
@@ -193,7 +199,7 @@ export default class WorkItemRow extends React.Component<IProps> {
             pieces.forEach((x) => {
                 const xLen = x.length;
                 const p = val.slice(start, start + xLen);
-                const spl = val.slice(start + xLen , start + xLen  + splitteeLength);
+                const spl = val.slice(start + xLen, start + xLen + splitteeLength);
                 trueValPieces.push(p, spl);
                 start = start + xLen + splitteeLength;
             });
@@ -208,7 +214,7 @@ export default class WorkItemRow extends React.Component<IProps> {
                         </span>
                     );
             });
-            
+
             return returnee;
         };
 

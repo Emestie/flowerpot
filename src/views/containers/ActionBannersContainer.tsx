@@ -17,7 +17,7 @@ const actionBannersList: IActionBannerProps[] = [
         type: "positive",
     },
     {
-        id: 3,
+        id: 4,
         text: s("feedbackAlert"),
         actionText: s("feedbackAlertButton"),
         action: () => {
@@ -28,7 +28,7 @@ const actionBannersList: IActionBannerProps[] = [
     },
 ];
 
-//! LAST USED INDEX: 3
+//! LAST USED INDEX: 4
 
 export default () => {
     const banners = actionBannersList.map((x) => <ActionBanner {...x} />);
