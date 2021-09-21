@@ -41,11 +41,13 @@ class Store {
             pinned: [],
         },
         notes: [],
+        links: [],
         darkTheme: false,
         allowTelemetry: true,
         showWhatsNewOnUpdate: true,
         showUnreads: true,
         showAvatars: true,
+        showQuickLinks: true,
         lastTimeVersion: "",
         lastTimeVersionLong: "",
         migrationsDone: [],
@@ -58,6 +60,7 @@ class Store {
     @observable dialogs = {
         openById: false,
         feedback: false,
+        addLink: false,
     };
 
     @observable loadingInProgressList: string[] = [];

@@ -10,6 +10,7 @@ import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
 import ViewHeading from "../components/heading/ViewHeading";
 import ActionBannersContainer from "./containers/ActionBannersContainer";
+import QuickLinksContainer from "./containers/QuickLinksContainer";
 
 export const queriesSorting = (a: IQuery, b: IQuery) => {
     if (a.empty === b.empty) return 0;
@@ -55,36 +56,43 @@ export default observer(() => {
         Platform.current.updateTrayIcon(4);
     }
 
+    const qlEnabled = store.settings.showQuickLinks;
+
     return (
-        <div className="Page">
+        <div className="Page" style={{ paddingTop: qlEnabled ? 85 : undefined }}>
             <ViewHeading>
-                <LocalVersionBanner />
-                {store.updateStatus === "ready" && (
-                    <Button icon positive onClick={updateApp} title={s("updateArrived")}>
+                <div>
+                    <LocalVersionBanner />
+                    {store.updateStatus === "ready" && (
+                        <Button icon positive onClick={updateApp} title={s("updateArrived")}>
+                            <Icon name="refresh" />
+                        </Button>
+                    )}
+                    <div style={{ display: "inline-block", marginRight: 3.5 }}>
+                        <Form.Input
+                            size="small"
+                            placeholder={s("quicksearch")}
+                            value={quickSearchVal}
+                            onChange={(e) => {
+                                if (e.target.value && !e.target.value.trim()) setQuickSearchVal("");
+                                else setQuickSearchVal(e.target.value);
+                            }}
+                        />
+                    </div>
+                    <Button onClick={onOpenById}>{s("openById")}</Button>
+                    {!!store.settings.showUnreads && store.isChangesCollectionHasItems() && (
+                        <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
+                            <Icon name="check circle outline" />
+                        </Button>
+                    )}
+                    <Button icon onClick={onRefresh} disabled={!isRefreshAvailable} hint={s("refresh")}>
                         <Icon name="refresh" />
                     </Button>
-                )}
-                <div style={{ display: "inline-block", marginRight: 3.5 }}>
-                    <Form.Input
-                        size="small"
-                        placeholder={s("quicksearch")}
-                        value={quickSearchVal}
-                        onChange={(e) => {
-                            if (e.target.value && !e.target.value.trim()) setQuickSearchVal("");
-                            else setQuickSearchVal(e.target.value);
-                        }}
-                    />
-                </div>
-                <Button onClick={onOpenById}>{s("openById")}</Button>
-                {!!store.settings.showUnreads && store.isChangesCollectionHasItems() && (
-                    <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
-                        <Icon name="check circle outline" />
+                    <Button icon onClick={onSettings} hint={s("settings")}>
+                        <Icon name="setting" />
                     </Button>
-                )}
-                <Button onClick={onRefresh} disabled={!isRefreshAvailable}>
-                    {s("refresh")}
-                </Button>
-                <Button onClick={onSettings}>{s("settings")}</Button>
+                </div>
+                {qlEnabled && <QuickLinksContainer />}
             </ViewHeading>
             <Container fluid>
                 <WhatsNewBanner />

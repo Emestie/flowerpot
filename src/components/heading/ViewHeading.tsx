@@ -31,8 +31,10 @@ const getHeaderTextByViewName = (viewName: TView) => {
 };
 
 export default observer((p: P) => {
+    const extraHeaderHeight = store.view === "main" && store.settings.showQuickLinks;
+
     return (
-        <div className="TopBar">
+        <div className="TopBar" style={{ height: extraHeaderHeight ? 75 : undefined }}>
             <Header as="h1" style={{ marginLeft: store.isFestivalOn ? store.festivalHeaderOffset : 0 }}>
                 {getHeaderTextByViewName(store.view)}
             </Header>

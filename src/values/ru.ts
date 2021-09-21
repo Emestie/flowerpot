@@ -33,6 +33,9 @@ const ru: ILocalizedStrings = {
     cbAutostartLabel: "Запускать вместе с Windows (применяется при перезапуске приложения)",
     settingsCreditsHeader: "Автор и обновления",
     versionWord: "Версия",
+    accountSettingsHeader: "Учетная запись",
+    customListsSettingsHeader: "Списки",
+    quickLinksSettingsHeader: "Быстрые ссылки",
     //sel queries view
     loading: "Загрузка...",
     noQueriesAvailable: "Нет ни одного доступного вам запроса. Убедитесь, что добавили нужные в 'Избранное' в TFS.",
@@ -189,6 +192,20 @@ const ru: ILocalizedStrings = {
     feedbackAlertButton: "Предложить идею",
     feedbackSettingsButton: "Обратная связь и пожелания",
     feedbackWindowCaption: "Опишите вашу идею, предложение или отзыв и нажмите ОК",
+
+    //quicklinks
+    addLink: "Добавить быструю ссылку",
+    linkName: "Имя",
+    linkUrl: "URL",
+    linkColor: "Цвет",
+    linkDialogCaption: "Добавление ссылки в список быстрых ссылок",
+    linkDialogNameLabel: "Отображаемое имя",
+    linkDialogUrlLabel: "URL",
+    wrongCaptionOrUrl: "Имя или URL введены не верно",
+    noLinks: "добавьте быстрые ссылки...",
+    cbQuickLinksLabel: "Показывать быстрые ссылки на главной странице",
+
+    enterID: "Введите ID рабочего элемента, который нужно открыть",
 };
 
 export default ru;

@@ -31,7 +31,7 @@ const actionBannersList: IActionBannerProps[] = [
 //! LAST USED INDEX: 4
 
 export default () => {
-    const banners = actionBannersList.map((x) => <ActionBanner {...x} />);
+    const banners = actionBannersList.map((x) => <ActionBanner key={x.id} {...x} />);
 
     return <>{banners}</>;
 };

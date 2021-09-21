@@ -9,6 +9,7 @@ import { s } from "../values/Strings";
 import LocalVersionBanner from "../components/LocalVersionBanner";
 import Version from "../helpers/Version";
 import ViewHeading from "../components/heading/ViewHeading";
+import LinksSettingsTable from "../components/LinksSettingsTable";
 
 const avatar = require("../assets/ti.jpg") as string;
 
@@ -109,6 +110,11 @@ export default class SettingsView extends React.Component<IProps, IState> {
         store.updateSettings();
     };
 
+    toggleQuickLinks = () => {
+        store.settings.showQuickLinks = !store.settings.showQuickLinks;
+        store.updateSettings();
+    };
+
     onSave = () => {
         store.switchView("main");
     };
@@ -116,6 +122,10 @@ export default class SettingsView extends React.Component<IProps, IState> {
     onUpdate = () => {
         this.setState({ updateInstallInProgress: true });
         Platform.current.updateApp();
+    };
+
+    openListsView = () => {
+        store.switchView("lists");
     };
 
     render() {
@@ -164,16 +174,40 @@ export default class SettingsView extends React.Component<IProps, IState> {
                             {store.settings.darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
                         </Button>
                     </span>
-                    <Button onClick={this.openCreds}>{s("editTfsSettingsBtn")}</Button>
                     <Button positive onClick={this.onSave}>
                         {s("settingsBackButton")}
                     </Button>
                 </ViewHeading>
                 <Container fluid>
                     <Header as="h3" dividing>
+                        {s("accountSettingsHeader")}
+                    </Header>
+                    <Button icon labelPosition="left" onClick={this.openCreds}>
+                        <Icon name="plug" />
+                        {s("editTfsSettingsBtn")}
+                    </Button>
+                    <br />
+                    <Header as="h3" dividing>
                         {s("settingsQueriesHeader")}
                     </Header>
                     <QueriesSettingsTable />
+                    <Header as="h3" dividing>
+                        {s("customListsSettingsHeader")}
+                    </Header>
+                    <Button icon labelPosition="left" onClick={this.openListsView}>
+                        <Icon name="tasks" /> {s("manageLists")}
+                    </Button>
+                    <br />
+                    <Header as="h3" dividing>
+                        {s("quickLinksSettingsHeader")}
+                    </Header>
+                    <LinksSettingsTable />
+                    <Form.Checkbox
+                        label={s("cbQuickLinksLabel")}
+                        checked={store.settings.showQuickLinks}
+                        onChange={this.toggleQuickLinks}
+                    />
+                    <br />
                     <Header as="h3" dividing>
                         {s("settingsWIHeader")}
                     </Header>
@@ -210,7 +244,6 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <br />
                     <Form.Checkbox label={s("showAvatars")} checked={store.settings.showAvatars} onChange={this.toggleShowAvatars} />
                     <br />
-
                     <Header as="h3" dividing>
                         {s("settingsOthersHeader")}
                     </Header>
@@ -261,7 +294,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     {updateLabel}
                     <br />
                     <br />
-                    {s("contributors")}
+                    {/* {s("contributors")}
                     <Label size="tiny" as="a" onClick={() => Platform.current.openUrl("https://github.com/Stassras")}>
                         <Icon name="github" />
                         Stassras
@@ -269,7 +302,7 @@ export default class SettingsView extends React.Component<IProps, IState> {
                     <Label size="tiny" as="a" onClick={() => Platform.current.openUrl("https://github.com/selikhovamary")}>
                         <Icon name="github" />
                         selikhovamary
-                    </Label>
+                    </Label> */}
                 </Container>
             </div>
         );

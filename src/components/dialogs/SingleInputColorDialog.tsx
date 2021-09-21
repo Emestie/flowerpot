@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Radio, Label, Confirm, TextArea, Form } from "semantic-ui-react";
+import { Confirm, TextArea, Form } from "semantic-ui-react";
+import ColorPicker from "../ColorPicker";
 
 interface IProps {
     show: boolean;
@@ -13,8 +14,6 @@ interface IProps {
     area?: boolean;
     dropdownValues?: string[];
 }
-
-const colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "brown", "grey"];
 
 export default (p: IProps) => {
     const [textValue, setTextValue] = useState("");
@@ -96,23 +95,7 @@ export default (p: IProps) => {
             </div>
             {!!p.showColors && (
                 <div style={{ marginTop: 10 }}>
-                    {colorList.map((c) => (
-                        <Radio
-                            key={c}
-                            label={
-                                <Label
-                                    basic={colorValue !== c}
-                                    style={{ marginRight: 10, userSelect: "none" }}
-                                    circular
-                                    size="mini"
-                                    color={c as any}
-                                ></Label>
-                            }
-                            name="colorGrp"
-                            checked={colorValue === c}
-                            onChange={() => setColorValue(c)}
-                        />
-                    ))}
+                    <ColorPicker value={colorValue} onPick={setColorValue} />
                 </div>
             )}
         </div>

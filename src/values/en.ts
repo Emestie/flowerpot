@@ -22,7 +22,7 @@ const en: ILocalizedStrings = {
     updateStateNone: "Check for updates",
     updateStateError: "Update error. Click to try again",
     settingsHeader: "Settings",
-    editTfsSettingsBtn: "Edit TFS & Account settings",
+    editTfsSettingsBtn: "Manage TFS & Account settings",
     settingsBackButton: "OK",
     settingsQueriesHeader: "Queries to watch",
     settingsOthersHeader: "Others",
@@ -33,6 +33,9 @@ const en: ILocalizedStrings = {
     cbAutostartLabel: "Start with Windows (applies on app restart)",
     settingsCreditsHeader: "Credits",
     versionWord: "Version",
+    accountSettingsHeader: "Account",
+    customListsSettingsHeader: "Custom Lists",
+    quickLinksSettingsHeader: "Quick Links",
     //sel queries view
     loading: "Loading...",
     noQueriesAvailable: "You don't have any available queries. Make sure you added desired ones to Favorites in TFS.",
@@ -187,6 +190,20 @@ const en: ILocalizedStrings = {
     feedbackAlertButton: "Предложить идею",
     feedbackSettingsButton: "Feedback & Ideas",
     feedbackWindowCaption: "Enter your idea, feedback or bug report and press OK",
+
+    //quicklinks
+    addLink: "Add quick link",
+    linkName: "Display name",
+    linkUrl: "URL",
+    linkColor: "Color",
+    linkDialogCaption: "Add link to Quick Links area",
+    linkDialogNameLabel: "Link display name",
+    linkDialogUrlLabel: "URL",
+    wrongCaptionOrUrl: "Name or URL is incorrect",
+    noLinks: "add Quick Links here...",
+    cbQuickLinksLabel: "Show Quick Links on Main page",
+
+    enterID: "Enter ID of Work Item to open",
 };
 
 export default en;

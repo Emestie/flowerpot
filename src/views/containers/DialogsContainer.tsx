@@ -6,12 +6,20 @@ import Platform from "../../helpers/Platform";
 import store from "../../store";
 import { queriesSorting } from "../MainView";
 import Telemetry from "../../helpers/Telemetry";
+import LinkAddingDialog from "../../components/dialogs/LinkAddingDialog";
+import Notif from "../../helpers/Notif";
 
 export default observer(() => {
     const queries = store.getQueries().sort(queriesSorting);
     const collections = queries.map((x) => x.collectionName).filter((i, v, a) => a.indexOf(i) === v);
 
     const openById = (id: string, color?: string, collection?: string) => {
+        if (!collection) collection = "DefaultCollection";
+        if (!id) {
+            Notif.show(s("enterID"));
+            return;
+        }
+
         Platform.current.openUrl(store.settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
         store.dialogs.openById = false;
     };
@@ -42,6 +50,13 @@ export default observer(() => {
                 caption={s("feedbackWindowCaption")}
                 area={true}
             />
+            <LinkAddingDialog
+                show={store.dialogs.addLink}
+                onClose={() => {
+                    store.dialogs.addLink = false;
+                }}
+            />
+            <div id="messagePoint"></div>
         </>
     );
 });

@@ -196,3 +196,16 @@ img.av-class {
 .marked {
     background-color: yellow;
 }
+
+.ql-container {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    padding-right: 28px;
+
+    .label {
+        padding: 2px 4px;
+        cursor: pointer;
+    }
+}

@@ -25,7 +25,7 @@ export default class App extends React.Component {
         Settings.read();
         Migration.perform();
         Festival.findOut();
-        
+
         Platform.current.checkForUpdates(true);
 
         if (Platform.current.isDev()) {

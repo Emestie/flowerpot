@@ -11,10 +11,6 @@ export default class QueriesSettingsTable extends React.Component {
         store.switchView("selectqueries");
     };
 
-    openListsView = () => {
-        store.switchView("lists");
-    };
-
     render() {
         let queries = store.getQueries(true);
 
@@ -81,9 +77,6 @@ export default class QueriesSettingsTable extends React.Component {
                         <Table.HeaderCell colSpan="6">
                             <Button icon labelPosition="left" primary size="small" onClick={this.openQuerySelector}>
                                 <Icon name="add" /> {s("addQuery")}
-                            </Button>
-                            <Button icon labelPosition="left" size="small" onClick={this.openListsView}>
-                                <Icon name="tasks" /> {s("manageLists")}
                             </Button>
                         </Table.HeaderCell>
                     </Table.Row>
