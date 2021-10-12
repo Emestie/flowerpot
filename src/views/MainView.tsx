@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Message, Button, Icon, Form } from "semantic-ui-react";
-import store from "../store";
+import store from "../store-mbx";
 import WorkItemsBlock from "../components/WorkItemsBlock";
 import WhatsNewBanner from "../components/banners/WhatsNewBanner";
 import { observer } from "mobx-react";

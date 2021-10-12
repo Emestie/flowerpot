@@ -1,5 +1,5 @@
 import React from "react";
-import store, { TView } from "./store";
+import store, { TView } from "./store-mbx";
 import { observer } from "mobx-react";
 import Settings from "./helpers/Settings";
 import Migration from "./helpers/Migration";

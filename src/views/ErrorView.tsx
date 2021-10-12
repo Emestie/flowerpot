@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container, Message } from "semantic-ui-react";
-import store from "../store";
+import store from "../store-mbx";
 import { s } from "../values/Strings";
 import { observer } from "mobx-react";
 import ViewHeading from "../components/heading/ViewHeading";

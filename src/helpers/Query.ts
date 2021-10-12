@@ -1,4 +1,4 @@
-import store from "../store";
+import store from "../store-mbx";
 import { IWorkItem } from "./WorkItem";
 import Platform from "./Platform";
 import Loaders from "./Loaders";

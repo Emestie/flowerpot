@@ -1,5 +1,5 @@
 import React from "react";
-import store from "../../store";
+import store from "../../store-mbx";
 import { s } from "../../values/Strings";
 import Platform from "../../helpers/Platform";
 import { Message, Button } from "semantic-ui-react";

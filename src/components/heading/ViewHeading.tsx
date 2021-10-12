@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "semantic-ui-react";
 import { s } from "../../values/Strings";
-import store, { TView } from "../../store";
+import store, { TView } from "../../store-mbx";
 import { observer } from "mobx-react-lite";
 import FestivalBanner from "./FestivalBanner";
 

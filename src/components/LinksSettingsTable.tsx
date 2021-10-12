@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Checkbox, Icon, Label, Radio, Table } from "semantic-ui-react";
-import store from "../store";
+import store from "../store-mbx";
 import { observer } from "mobx-react";
 import { s } from "../values/Strings";
 import Links from "../helpers/Links";

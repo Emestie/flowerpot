@@ -1,4 +1,4 @@
-import store from "../store";
+import store from "../store-mbx";
 import { Ntlm } from "../lib/ntlm";
 import Query, { IQuery, ITeam, IResponseQuery, IResponseQueryWI } from "./Query";
 import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";

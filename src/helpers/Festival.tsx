@@ -1,5 +1,5 @@
 import React from "react";
-import store from "../store";
+import store from "../store-mbx";
 import { IWorkItem } from "./WorkItem";
 import { Icon, Image, Label } from "semantic-ui-react";
 import { s } from "../values/Strings";

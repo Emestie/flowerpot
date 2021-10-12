@@ -1,7 +1,7 @@
 import React from "react";
 import { Header, Container, Button, Form, Label, Message } from "semantic-ui-react";
 import { observer } from "mobx-react";
-import store from "../store";
+import store from "../store-mbx";
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
 import { s } from "../values/Strings";

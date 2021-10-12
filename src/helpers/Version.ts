@@ -1,7 +1,7 @@
 import preval from "preval.macro";
 import Platform from "./Platform";
 import Telemetry from "./Telemetry";
-import store from "../store";
+import store from "../store-mbx";
 
 export default class Version {
     public static get long() {

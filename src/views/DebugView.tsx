@@ -1,6 +1,6 @@
 import React from "react";
 import { Header, Button, Container } from "semantic-ui-react";
-import store from "../store";
+import store from "../store-mbx";
 import Platform from "../helpers/Platform";
 import WorkItem from "../helpers/WorkItem";
 import Version from "../helpers/Version";

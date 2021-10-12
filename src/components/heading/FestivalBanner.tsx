@@ -1,6 +1,6 @@
 import React from "react";
 import Festival from "../../helpers/Festival";
-import store from "../../store";
+import store from "../../store-mbx";
 
 export default React.memo(() => {
     const [src, top, left, width, height, headerOffset, altText] = Festival.getFestivalHeaderIcon();

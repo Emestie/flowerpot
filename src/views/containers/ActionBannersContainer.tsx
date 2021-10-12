@@ -1,7 +1,7 @@
 import React from "react";
 import ActionBanner from "../../components/banners/ActionBanner";
 import { IActionBannerProps } from "../../components/banners/ActionBanner";
-import store from "../../store";
+import store from "../../store-mbx";
 import { s } from "../../values/Strings";
 
 const flowerbotImg = require("../../assets/flowerbot-av-48.png") as string;

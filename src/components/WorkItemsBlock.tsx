@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Header, Label, Table, Icon } from "semantic-ui-react";
-import store from "../store";
+import store from "../store-mbx";
 import Query, { IQuery } from "../helpers/Query";
 import { observer } from "mobx-react";
 import WorkItemRow from "./WorkItemRow";

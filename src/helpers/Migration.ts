@@ -1,4 +1,4 @@
-import store from "../store";
+import store from "../store-mbx";
 
 export default class Migration {
     private static setMigrationAsDone(name: string, dontSaveSettings?: boolean) {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
-import store from "../store";
+import store from "../store-mbx";
 import Query from "../helpers/Query";
 import { observer } from "mobx-react";
 import { s } from "../values/Strings";

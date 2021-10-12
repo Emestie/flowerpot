@@ -1,5 +1,5 @@
 import { TLists } from "./Settings";
-import store from "../store";
+import store from "../store-mbx";
 
 export default class Lists {
     public static push(list: TLists, collection: string, id: number, rev?: number) {

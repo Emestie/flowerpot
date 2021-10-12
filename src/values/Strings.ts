@@ -1,6 +1,6 @@
 import en from "./en";
 import ru from "./ru";
-import store, { TLocale } from "../store";
+import store, { TLocale } from "../store-mbx";
 
 export interface ILocalizedStrings {
     [s: string]: string;

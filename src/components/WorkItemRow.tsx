@@ -2,7 +2,7 @@ import React from "react";
 import WorkItem, { IWorkItem } from "../helpers/WorkItem";
 import { Table, Icon, Label } from "semantic-ui-react";
 import Platform from "../helpers/Platform";
-import store from "../store";
+import store from "../store-mbx";
 import { observer } from "mobx-react";
 import { s } from "../values/Strings";
 import { ContextMenuTrigger } from "react-contextmenu";

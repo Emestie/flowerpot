@@ -1,7 +1,7 @@
 import React from "react";
 import { Header, Container, Button, Label, Message, Icon, Checkbox } from "semantic-ui-react";
 import { observer } from "mobx-react";
-import store from "../store";
+import store from "../store-mbx";
 import Query, { IQuery } from "../helpers/Query";
 import Loaders from "../helpers/Loaders";
 import { s } from "../values/Strings";

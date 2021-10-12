@@ -3,7 +3,7 @@ import React from "react";
 import { s } from "../../values/Strings";
 import SingleInputColorDialog from "../../components/dialogs/SingleInputColorDialog";
 import Platform from "../../helpers/Platform";
-import store from "../../store";
+import store from "../../store-mbx";
 import { queriesSorting } from "../MainView";
 import Telemetry from "../../helpers/Telemetry";
 import LinkAddingDialog from "../../components/dialogs/LinkAddingDialog";

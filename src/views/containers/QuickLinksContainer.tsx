@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Label } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import store from "../../store";
+import store from "../../store-mbx";
 import { s } from "../../values/Strings";
 
 export default observer(() => {

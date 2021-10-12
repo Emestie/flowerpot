@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Header, Container, Button, Icon, Label } from "semantic-ui-react";
 import { s } from "../values/Strings";
-import store from "../store";
+import store from "../store-mbx";
 import ListBlock from "../components/ListBlock";
 import ViewHeading from "../components/heading/ViewHeading";
 

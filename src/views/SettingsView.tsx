@@ -1,7 +1,7 @@
 import React from "react";
 import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
 import { observer } from "mobx-react";
-import store, { TLocale } from "../store";
+import store, { TLocale } from "../store-mbx";
 import QueriesSettingsTable from "../components/QueriesSettingsTable";
 import Platform from "../helpers/Platform";
 import { TSortPattern, TNotificationsMode } from "../helpers/Settings";

@@ -1,4 +1,4 @@
-import store from "../store";
+import store from "../store-mbx";
 import Lists from "./Lists";
 import { TLists } from "./Settings";
 import { IQuery } from "./Query";

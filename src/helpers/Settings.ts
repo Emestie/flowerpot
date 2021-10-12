@@ -1,4 +1,4 @@
-import store from "../store";
+import store from "../store-mbx";
 import { IQuery } from "./Query";
 import Platform from "./Platform";
 import { ILinkItem } from "./Links";

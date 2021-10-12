@@ -2,7 +2,7 @@ import React from "react";
 import { TLists } from "../helpers/Settings";
 import { Input, Button, Label, Icon, Form } from "semantic-ui-react";
 import { s } from "../values/Strings";
-import store from "../store";
+import store from "../store-mbx";
 import Lists from "../helpers/Lists";
 import { observer } from "mobx-react";
 

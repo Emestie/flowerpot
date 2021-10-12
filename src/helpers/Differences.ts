@@ -1,6 +1,6 @@
 import Query, { IQuery } from "./Query";
 import { IWorkItem } from "./WorkItem";
-import store from "../store";
+import store from "../store-mbx";
 import Loaders from "./Loaders";
 import Platform from "./Platform";
 import { s } from "../values/Strings";

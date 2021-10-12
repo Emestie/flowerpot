@@ -1,5 +1,5 @@
 import React from "react";
-import store from "../../store";
+import store from "../../store-mbx";
 import { Message } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
 import { observer } from "mobx-react-lite";
