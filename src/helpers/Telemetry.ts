@@ -1,17 +1,18 @@
-import store from "../store-mbx";
 import Platform from "./Platform";
 import Version from "./Version";
 import CyrillicToTranslit from "cyrillic-to-translit-js";
+import { store } from "../redux/store";
 
 const cyrillicToTranslit = new CyrillicToTranslit();
 
 export default class Telemetry {
     private static async basicMessage(reason: string, extraInfo?: string, ignoreTelemetryDisability?: boolean) {
-        if (!store.settings.allowTelemetry && !ignoreTelemetryDisability) return;
+        const { allowTelemetry, tfsUser } = store.getState().settings;
+        if (!allowTelemetry && !ignoreTelemetryDisability) return;
 
         try {
             const ver = Version.long;
-            const name = store.settings.tfsUser;
+            const name = tfsUser;
             if (!name) return;
 
             const encodedString = btoa(JSON.stringify({ reason, name, ver, extraInfo }));
@@ -21,10 +22,12 @@ export default class Telemetry {
     }
 
     public static versionUsageInfo() {
-        const theme = store.settings.darkTheme ? "dark" : "light";
-        const lang = store.locale;
+        const { locale } = store.getState().app;
+        const { darkTheme } = store.getState().settings;
+        const theme = darkTheme ? "dark" : "light";
         const platform = Platform.type;
-        this.basicMessage("Version installed", `platform=${platform}, theme=${theme}, lang=${lang}`);
+
+        this.basicMessage("Version installed", `platform=${platform}, theme=${theme}, locale=${locale}`);
     }
 
     public static accountVerificationSucceed() {

@@ -1,4 +1,4 @@
-import store from "../../store-mbx";
+import { store } from "../../redux/store";
 import Platform, { INotificationData, PlatformType } from "../Platform";
 
 export default class CommonPlatform {
@@ -18,11 +18,13 @@ export default class CommonPlatform {
     }
 
     public changeLocale() {
-        Platform.current.setStoreProp("locale", store.locale);
+        const { locale } = store.getState().app;
+        Platform.current.setStoreProp("locale", locale);
     }
 
     public toggleAutostart() {
-        Platform.current.setStoreProp("autostart", store.autostart);
+        const { autostart } = store.getState().app;
+        Platform.current.setStoreProp("autostart", autostart);
         Platform.current.sendIpcRenderer("toggle-autostart");
     }
 

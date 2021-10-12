@@ -1,8 +1,9 @@
 import React from "react";
-import store from "../store-mbx";
 import { IWorkItem } from "./WorkItem";
 import { Icon, Image, Label } from "semantic-ui-react";
 import { s } from "../values/Strings";
+import { store } from "../redux/store";
+import { appCurrentFestivalSet } from "../redux/actions/appActions";
 
 const christmasTree = require("../assets/christmas-tree.svg") as string;
 const feb23 = require("../assets/feb23.svg") as string;
@@ -94,12 +95,14 @@ export default class Festival {
         };
 
         const currentFestival = findFestival();
-        
-        store.currentFestival = currentFestival;
+
+        //store.currentFestival = currentFestival;
+        store.dispatch(appCurrentFestivalSet(currentFestival));
     }
 
     private static isEveNow(eve: Eve) {
-        return store.currentFestival === eve;
+        const { currentFestival } = store.getState().app;
+        return currentFestival === eve;
         // const [day, month, year] = this.getHumanDate();
 
         // switch (eve) {
@@ -125,7 +128,8 @@ export default class Festival {
     public static getFestivalHeaderIcon(): any {
         //please return [] as default case
 
-        const currentFestival = store.currentFestival;
+        // const currentFestival = store.currentFestival;
+        const { currentFestival } = store.getState().app;
 
         switch (currentFestival) {
             case Eve.NewYear:
@@ -192,7 +196,8 @@ export default class Festival {
         const name = mode === 1 ? item.createdBy : item.assignedTo;
         const nameFull = mode === 1 ? item.createdByFull : item.assignedToFull;
         const nameImg = mode === 1 ? item.createdByImg : item.assignedToImg; // + "?salt=" + this.getSaltValue();
-        const showAvatars = store.settings.showAvatars;
+        const { showAvatars } = store.getState().settings;
+        //const showAvatars = store.settings.showAvatars;
 
         let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
         if (festivalNameBanner) return festivalNameBanner;

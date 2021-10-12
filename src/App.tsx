@@ -1,25 +1,32 @@
-import React from "react";
-import store, { TView } from "./store-mbx";
-import { observer } from "mobx-react";
+import React, { useEffect } from "react";
 import Settings from "./helpers/Settings";
 import Migration from "./helpers/Migration";
 import SettingsView from "./views/SettingsView";
-import CredentialsView from "./views/CredentialsView";
-import SelectQueriesView from "./views/SelectQueriesView";
-import ErrorView from "./views/ErrorView";
-import MainView from "./views/MainView";
-import LoadingView from "./views/LoadingView";
-import DebugView from "./views/DebugView";
+import { CredentialsView } from "./views/CredentialsView";
+import { SelectQueriesView } from "./views/SelectQueriesView";
+import { ErrorView } from "./views/ErrorView";
+import { MainView } from "./views/MainView";
+import { LoadingView } from "./views/LoadingView";
+import { DebugView } from "./views/DebugView";
 import Platform from "./helpers/Platform";
 import Version from "./helpers/Version";
-import ListsView from "./views/ListsView";
-import RefreshHelperView from "./views/RefreshHelperView";
+import { ListsView } from "./views/ListsView";
+import { RefreshHelperView } from "./views/RefreshHelperView";
 import Festival from "./helpers/Festival";
 import DialogsContainer from "./views/containers/DialogsContainer";
+import { useDispatch, useSelector } from "react-redux";
+import { appShowWhatsNewSet, appViewSet } from "./redux/actions/appActions";
+import { settingsSelector } from "./redux/selectors/settingsSelectors";
+import { dataChangesCollectionSet } from "./redux/actions/dataActions";
+import { TView } from "./redux/types";
+import { appSelector } from "./redux/selectors/appSelectors";
 
-@observer
-export default class App extends React.Component {
-    componentDidMount() {
+export function App() {
+    const dispatch = useDispatch();
+    const { view } = useSelector(appSelector);
+    const settings = useSelector(settingsSelector);
+
+    useEffect(() => {
         Platform.current.reactIsReady();
 
         Settings.read();
@@ -29,32 +36,32 @@ export default class App extends React.Component {
         Platform.current.checkForUpdates(true);
 
         if (Platform.current.isDev()) {
-            store.switchView("debug");
-            //store.switchView("main");
+            dispatch(appViewSet("debug"));
+            //dispatch(appViewSet("main"));
         } else {
-            if (store.settings.credentialsChecked) store.switchView("main");
-            else store.switchView("credentials");
+            if (settings.credentialsChecked) dispatch(appViewSet("main"));
+            else dispatch(appViewSet("credentials"));
         }
 
-        this.setWIChangesCollection();
-        this.afterUpdateHandler();
-    }
+        setWIChangesCollection();
+        afterUpdateHandler();
+    }, []);
 
-    setWIChangesCollection() {
+    const setWIChangesCollection = () => {
         const ls = localStorage.getItem("WIChangesCollection");
         if (!ls) return;
 
-        store._changesCollection = JSON.parse(ls);
-    }
+        dispatch(dataChangesCollectionSet(JSON.parse(ls)));
+    };
 
-    afterUpdateHandler() {
+    function afterUpdateHandler() {
         if (!Platform.current.isDev() && !Platform.current.isLocal() && Version.isChangedLong()) {
-            if (store.settings.showWhatsNewOnUpdate && Version.isChangedShort()) store.showWhatsNew = true;
+            if (settings.showWhatsNewOnUpdate && Version.isChangedShort()) dispatch(appShowWhatsNewSet(true));
             Version.storeInSettings();
         }
     }
 
-    getScene(view: TView) {
+    function getScene(view: TView) {
         switch (view) {
             case "loading":
                 return <LoadingView />;
@@ -79,14 +86,12 @@ export default class App extends React.Component {
         }
     }
 
-    render() {
-        const scene = this.getScene(store.view);
+    const scene = getScene(view);
 
-        return (
-            <div className={store.settings.darkTheme ? "FlowerpotDarkTheme" : ""}>
-                <DialogsContainer />
-                {scene}
-            </div>
-        );
-    }
+    return (
+        <div className={settings.darkTheme ? "FlowerpotDarkTheme" : ""}>
+            <DialogsContainer />
+            {scene}
+        </div>
+    );
 }

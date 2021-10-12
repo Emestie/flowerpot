@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
-import { observer } from "mobx-react";
-import store, { TLocale } from "../store-mbx";
 import QueriesSettingsTable from "../components/QueriesSettingsTable";
 import Platform from "../helpers/Platform";
 import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
@@ -10,121 +8,123 @@ import LocalVersionBanner from "../components/LocalVersionBanner";
 import Version from "../helpers/Version";
 import ViewHeading from "../components/heading/ViewHeading";
 import LinksSettingsTable from "../components/LinksSettingsTable";
+import { appSettingsSet, appViewSet } from "../redux/actions/appActions";
+import { useDispatch, useSelector } from "react-redux";
+import { settingsUpdate } from "../redux/actions/settingsActions";
+import { appSelector } from "../redux/selectors/appSelectors";
+import { TLocale } from "../redux/types";
 
-const avatar = require("../assets/ti.jpg") as string;
+const avatar = require("../assets/ti.jpg").default as string;
 
-interface IProps {}
-interface IState {
-    updateInstallInProgress: boolean;
-}
+const refreshRates: DropdownItemProps[] = [
+    { key: 1, text: s("refresh1m"), value: 60 },
+    { key: 2, text: s("refresh3m"), value: 180 },
+    { key: 3, text: s("refresh5m"), value: 300 },
+    { key: 4, text: s("refresh10m"), value: 600 },
+];
 
-@observer
-export default class SettingsView extends React.Component<IProps, IState> {
-    state: IState = {
-        updateInstallInProgress: false,
+const sortPatterns: DropdownItemProps[] = [
+    { key: 1, text: s("sortPatternWeight"), value: "default" },
+    { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
+    { key: 3, text: s("sortPatternId"), value: "id" },
+];
+
+const notificationsModes: DropdownItemProps[] = [
+    { key: 1, text: s("notifModeAll"), value: "all" },
+    { key: 2, text: s("notifModeMine"), value: "mine" },
+    { key: 3, text: s("notifModeNone"), value: "none" },
+];
+
+const locales: DropdownItemProps[] = [
+    { key: 2, text: s("localeEn"), value: "en" },
+    { key: 3, text: s("localeRu"), value: "ru" },
+];
+
+export function SettingsView(){
+    const dispatch = useDispatch();
+    const[updateInstallInProgress, setUpdateInstallInProgress] = useState(false);
+
+    const {autostart, locale} = useSelector(appSelector)
+
+    const openCreds = () => {
+        dispatch(appViewSet('credentials'))
     };
 
-    refreshRates: DropdownItemProps[] = [
-        { key: 1, text: s("refresh1m"), value: 60 },
-        { key: 2, text: s("refresh3m"), value: 180 },
-        { key: 3, text: s("refresh5m"), value: 300 },
-        { key: 4, text: s("refresh10m"), value: 600 },
-    ];
+    const onRateSelect= (val: number) => {
+        const refreshRate = val;
+        dispatch(settingsUpdate({refreshRate}))
+    }
 
-    sortPatterns: DropdownItemProps[] = [
-        { key: 1, text: s("sortPatternWeight"), value: "default" },
-        { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
-        { key: 3, text: s("sortPatternId"), value: "id" },
-    ];
+    const onSortSelect=(val: TSortPattern) =>{
+        const sortPattern = val;
+        dispatch(settingsUpdate({sortPattern}))
+    }
 
-    notificationsModes: DropdownItemProps[] = [
-        { key: 1, text: s("notifModeAll"), value: "all" },
-        { key: 2, text: s("notifModeMine"), value: "mine" },
-        { key: 3, text: s("notifModeNone"), value: "none" },
-    ];
+    const onNotifModeSelect=(val: TNotificationsMode) =>{
+        const notificationsMode = val;
+        dispatch(settingsUpdate({notificationsMode}))
+    }
 
-    locales: DropdownItemProps[] = [
-        { key: 2, text: s("localeEn"), value: "en" },
-        { key: 3, text: s("localeRu"), value: "ru" },
-    ];
+    const onLocaleSelect= (val: TLocale) =>{
+        const locale_ = val;
+        dispatch(appSettingsSet({locale: locale_}))
+    }
 
-    openCreds = () => {
-        store.switchView("credentials");
+    const toggleAutostart = () => {
+        const autostart_ = !autostart;
+        dispatch(appSettingsSet({autostart: autostart_}))
     };
 
-    onRateSelect(val: number) {
-        store.settings.refreshRate = val;
-        store.updateSettings();
-    }
-
-    onSortSelect(val: TSortPattern) {
-        store.settings.sortPattern = val;
-        store.updateSettings();
-    }
-
-    onNotifModeSelect(val: TNotificationsMode) {
-        store.settings.notificationsMode = val;
-        store.updateSettings();
-    }
-
-    onLocaleSelect(val: TLocale) {
-        store.locale = val;
-    }
-
-    toggleAutostart = () => {
-        store.autostart = !store.autostart;
-    };
-
-    toggleIconColor = () => {
+    const toggleIconColor = () => {
         store.settings.iconChangesOnMyWorkItemsOnly = !store.settings.iconChangesOnMyWorkItemsOnly;
         store.updateSettings();
     };
 
-    toggleMineOnTop = () => {
+    const toggleMineOnTop = () => {
         store.settings.mineOnTop = !store.settings.mineOnTop;
         store.updateSettings();
     };
 
-    toggleTheme = () => {
+    const toggleTheme = () => {
         store.settings.darkTheme = !store.settings.darkTheme;
         store.updateSettings();
     };
 
-    toggleTelemetry = () => {
+    const toggleTelemetry = () => {
         store.settings.allowTelemetry = !store.settings.allowTelemetry;
         store.updateSettings();
     };
 
-    toggleWhatsNewOnUpdate = () => {
+    const toggleWhatsNewOnUpdate = () => {
         store.settings.showWhatsNewOnUpdate = !store.settings.showWhatsNewOnUpdate;
         store.updateSettings();
     };
 
-    toggleShowUnreads = () => {
+    const toggleShowUnreads = () => {
         store.settings.showUnreads = !store.settings.showUnreads;
         store.updateSettings();
     };
 
-    toggleShowAvatars = () => {
+    const toggleShowAvatars = () => {
         store.settings.showAvatars = !store.settings.showAvatars;
         store.updateSettings();
     };
 
-    toggleQuickLinks = () => {
+    const toggleQuickLinks = () => {
         store.settings.showQuickLinks = !store.settings.showQuickLinks;
         store.updateSettings();
     };
 
-    onSave = () => {
+    const onSave = () => {
         store.switchView("main");
     };
 
-    onUpdate = () => {
+    const onUpdate = () => {
         this.setState({ updateInstallInProgress: true });
         Platform.current.updateApp();
     };
 
-    openListsView = () => {
+    const openListsView = () => {
         store.switchView("lists");
     };
 

@@ -1,0 +1,34 @@
+import { Eve } from "../../helpers/Festival";
+import { Actions } from "../actions-enum";
+import { store } from "../store";
+import { IAction, TDialog, TLocale, TUpdateStatus, TView } from "../types";
+import { createAction } from "./_common";
+
+export function appViewSet(view: TView): IAction {
+    return createAction(Actions.AppViewSet, { view });
+}
+
+export function appShowWhatsNewSet(showWhatsNew: boolean): IAction {
+    return createAction(Actions.AppShowWhatsNewSet, { showWhatsNew });
+}
+
+//locale, autostart
+export function appSettingsSet(settings: any): IAction {
+    return createAction(Actions.AppSettingsSet, { ...settings });
+}
+
+export function appCurrentFestivalSet(currentFestival: Eve): IAction {
+    return createAction(Actions.AppCurrentFestivalSet, { currentFestival });
+}
+
+export function appUpdateStatusSet(updateStatus: TUpdateStatus): IAction {
+    return createAction(Actions.AppUpdateStatusSet, { updateStatus });
+}
+
+export function appDialogSet(dialogKey: TDialog, value: boolean) {
+    const dialogs = store.getState().app.dialogs;
+
+    dialogs[dialogKey] = value;
+
+    return createAction(Actions.AppDialogSet, { dialogs });
+}

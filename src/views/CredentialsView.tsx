@@ -1,92 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Header, Container, Button, Form, Label, Message } from "semantic-ui-react";
-import { observer } from "mobx-react";
-import store from "../store-mbx";
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
 import { s } from "../values/Strings";
 import UpdateBanner from "../components/banners/UpdateBanner";
 import ViewHeading from "../components/heading/ViewHeading";
 import Telemetry from "../helpers/Telemetry";
-
-interface IProps {}
-interface IState {
-    pathInvalid: boolean;
-    userInvalid: boolean;
-    pwdInvalid: boolean;
-    pwdNotAscii: boolean;
-    credentialsCheckStatus: number;
-    debugInputValue: string;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { settingsUpdate } from "../redux/actions/settingsActions";
+import { appViewSet } from "../redux/actions/appActions";
 
 enum ECredState {
     NotValidated = 0,
     ValidatingInProgress = 1,
     ServerUnavailable = 2,
     WrongCredentials = 3,
-    OK = 4
+    OK = 4,
 }
 
-@observer
-export default class CredentialsView extends React.Component<IProps, IState> {
-    state: IState = {
-        pathInvalid: false,
-        userInvalid: false,
-        pwdInvalid: false,
-        pwdNotAscii: false,
-        credentialsCheckStatus: ECredState.NotValidated,
-        debugInputValue: ""
+const statuses = [
+    { color: undefined, text: s("credsState1") },
+    { color: undefined, text: s("credsState2") },
+    { color: "red", text: s("credsState3") },
+    { color: "red", text: s("credsState4") },
+    { color: "olive", text: s("credsState5") },
+];
+
+export function CredentialsView() {
+    const [pathInvalid, setPathInvalid] = useState(false);
+    const [userInvalid, setUserInvalid] = useState(false);
+    const [pwdInvalid, setPwdInvalid] = useState(false);
+    const [pwdNotAscii, setPwdNotAscii] = useState(false);
+    const [credentialsCheckStatus, setCredentialsCheckStatus] = useState(ECredState.NotValidated);
+    const [debugInputValue, setDebugInputValue] = useState("");
+
+    const settings = useSelector(settingsSelector);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        validateTfsUser(settings.tfsUser, true);
+        validateTfsPath(settings.tfsPath, true);
+        validateTfsPwd(settings.tfsPwd, true);
+    }, []);
+
+    const isBackUnavailable = pathInvalid || userInvalid || pwdInvalid || credentialsCheckStatus !== ECredState.OK;
+
+    const checkInProgress = credentialsCheckStatus === ECredState.ValidatingInProgress;
+
+    const isCheckUnabailable = pathInvalid || userInvalid || pwdInvalid || checkInProgress || credentialsCheckStatus === ECredState.OK;
+
+    const statusParams = statuses[credentialsCheckStatus];
+
+    const setCredentialsStatus = (status: number) => {
+        const credentialsChecked = status === ECredState.OK ? true : false;
+        setCredentialsCheckStatus(status);
+        dispatch(settingsUpdate({ credentialsChecked }));
     };
 
-    statuses = [
-        { color: undefined, text: s("credsState1") },
-        { color: undefined, text: s("credsState2") },
-        { color: "red", text: s("credsState3") },
-        { color: "red", text: s("credsState4") },
-        { color: "olive", text: s("credsState5") }
-    ];
-
-    componentDidMount() {
-        this.validateTfsUser(store.settings.tfsUser, true);
-        this.validateTfsPath(store.settings.tfsPath, true);
-        this.validateTfsPwd(store.settings.tfsPwd, true);
-    }
-
-    get isBackUnavailable() {
-        return (
-            this.state.pathInvalid || this.state.userInvalid || this.state.pwdInvalid || this.state.credentialsCheckStatus !== ECredState.OK
-        );
-    }
-
-    get isCheckUnabailable() {
-        return (
-            this.state.pathInvalid ||
-            this.state.userInvalid ||
-            this.state.pwdInvalid ||
-            this.checkInProgress ||
-            this.state.credentialsCheckStatus === ECredState.OK
-        );
-    }
-
-    get statusParams() {
-        return this.statuses[this.state.credentialsCheckStatus];
-    }
-
-    get checkInProgress() {
-        return this.state.credentialsCheckStatus === ECredState.ValidatingInProgress;
-    }
-
-    setCredentialsStatus(status: number) {
-        store.settings.credentialsChecked = status === ECredState.OK ? true : false;
-        this.setState({ credentialsCheckStatus: status });
-        store.updateSettings();
-    }
-
-    validateTfsPath = (val: string, ignoreStore?: boolean) => {
-        this.setCredentialsStatus(ECredState.NotValidated);
+    const validateTfsPath = (val: string, ignoreStore?: boolean) => {
+        setCredentialsStatus(ECredState.NotValidated);
         if (!ignoreStore) {
-            store.settings.tfsPath = val;
-            store.updateSettings();
+            const tfsPath = val;
+            dispatch(settingsUpdate({ tfsPath }));
         }
 
         let invalid = false;
@@ -94,14 +71,14 @@ export default class CredentialsView extends React.Component<IProps, IState> {
         if (val.indexOf("http") !== 0) invalid = true;
         if (val.indexOf("://") === -1) invalid = true;
         if (val.length < 11) invalid = true;
-        this.setState({ pathInvalid: invalid });
+        setPathInvalid(invalid);
     };
 
-    validateTfsUser = (val: string, ignoreStore?: boolean) => {
-        this.setCredentialsStatus(ECredState.NotValidated);
+    const validateTfsUser = (val: string, ignoreStore?: boolean) => {
+        setCredentialsStatus(ECredState.NotValidated);
         if (!ignoreStore) {
-            store.settings.tfsUser = val;
-            store.updateSettings();
+            const tfsUser = val;
+            dispatch(settingsUpdate({ tfsUser }));
         }
 
         let invalid = false;
@@ -109,128 +86,122 @@ export default class CredentialsView extends React.Component<IProps, IState> {
 
         if (val.indexOf("\\") < 1 || val.indexOf("\\") === val.length - 1 || val.indexOf("@") !== -1) invalid = true;
 
-        this.setState({ userInvalid: invalid });
+        setUserInvalid(invalid);
     };
 
-    validateTfsPwd = (val: string, ignoreStore?: boolean) => {
-        this.setCredentialsStatus(ECredState.NotValidated);
+    const validateTfsPwd = (val: string, ignoreStore?: boolean) => {
+        setCredentialsStatus(ECredState.NotValidated);
         if (!ignoreStore) {
-            store.settings.tfsPwd = val;
-            store.updateSettings();
+            const tfsPwd = val;
+            dispatch(settingsUpdate({ tfsPwd }));
         }
 
         //if val has cyrillic characters show notif
         var ascii = /^[ -~]+$/;
         if (!ascii.test(val)) {
-            this.setState({ pwdNotAscii: true, pwdInvalid: true });
+            setPwdNotAscii(true);
+            setPwdInvalid(true);
         } else {
-            this.setState({ pwdNotAscii: false, pwdInvalid: false });
+            setPwdNotAscii(false);
+            setPwdInvalid(false);
         }
     };
 
-    onSave = () => {
-        store.switchView("settings");
+    const onSave = () => {
+        dispatch(appViewSet("settings"));
     };
 
-    onTest = () => {
-        store.switchView("settings");
+    const onTest = () => {
+        dispatch(appViewSet("settings"));
     };
 
-    onCheck = async () => {
-        this.setCredentialsStatus(ECredState.ValidatingInProgress);
+    const onCheck = async () => {
+        setCredentialsStatus(ECredState.ValidatingInProgress);
 
-        let tfscheck = await Loaders.checkTfsPath();
+        const tfscheck = await Loaders.checkTfsPath();
         if (!tfscheck) {
-            this.setCredentialsStatus(ECredState.ServerUnavailable);
+            setCredentialsStatus(ECredState.ServerUnavailable);
             return;
         }
 
-        let result = await Loaders.checkCredentials();
+        const result = await Loaders.checkCredentials();
         if (!result) {
-            this.setCredentialsStatus(ECredState.WrongCredentials);
+            setCredentialsStatus(ECredState.WrongCredentials);
         } else {
             Telemetry.accountVerificationSucceed();
-            this.setCredentialsStatus(ECredState.OK);
-            this.onSave();
+            setCredentialsStatus(ECredState.OK);
+            onSave();
         }
     };
 
-    onDebugInputChange = (e: any) => {
-        if (e.target.value === "debug") store.switchView("debug");
+    const onDebugInputChange = (e: any) => {
+        if (e.target.value === "debug") dispatch(appViewSet("debug"));
         if (e.target.value === "con") Platform.current.toggleConsole();
-        this.setState({ debugInputValue: e.target.value });
+        setDebugInputValue(e.target.value);
     };
 
-    render() {
-        let debugInputRef = React.createRef();
+    const debugInputRef = React.createRef();
 
-        return (
-            <div className="Page">
-                <ViewHeading>
-                    <Button positive disabled={this.isBackUnavailable} onClick={this.onSave}>
-                        {s("save")}
-                    </Button>
-                </ViewHeading>
-                <Container fluid>
-                    <Header as="h3" dividing>
-                        {s("credsHeader")}
-                    </Header>
-                    <UpdateBanner />
-                    <Form loading={this.checkInProgress}>
+    return (
+        <div className="Page">
+            <ViewHeading>
+                <Button positive disabled={isBackUnavailable} onClick={onSave}>
+                    {s("save")}
+                </Button>
+            </ViewHeading>
+            <Container fluid>
+                <Header as="h3" dividing>
+                    {s("credsHeader")}
+                </Header>
+                <UpdateBanner />
+                <Form loading={checkInProgress}>
+                    <Form.Input
+                        fluid
+                        label={s("tfsPath")}
+                        placeholder="http://tfs:8080/tfs/"
+                        value={settings.tfsPath}
+                        onChange={(e) => validateTfsPath(e.target.value)}
+                        error={pathInvalid}
+                    />
+                    <Form.Group widths="equal">
                         <Form.Input
                             fluid
-                            label={s("tfsPath")}
-                            placeholder="http://tfs:8080/tfs/"
-                            value={store.settings.tfsPath}
-                            onChange={e => this.validateTfsPath(e.target.value)}
-                            error={this.state.pathInvalid}
+                            label={s("tfsUser")}
+                            placeholder="domain\user.name"
+                            value={settings.tfsUser}
+                            onChange={(e) => validateTfsUser(e.target.value)}
+                            error={userInvalid}
                         />
-                        <Form.Group widths="equal">
-                            <Form.Input
-                                fluid
-                                label={s("tfsUser")}
-                                placeholder="domain\user.name"
-                                value={store.settings.tfsUser}
-                                onChange={e => this.validateTfsUser(e.target.value)}
-                                error={this.state.userInvalid}
-                            />
-                            <Form.Input
-                                fluid
-                                label={s("tfsPwd")}
-                                type="password"
-                                value={store.settings.tfsPwd}
-                                onChange={e => this.validateTfsPwd(e.target.value)}
-                                error={this.state.pwdInvalid}
-                            />
-                        </Form.Group>
-                        {!!this.state.pwdNotAscii && <Message color="red">{s("noAscii")}</Message>}
-                    </Form>
-                    <div>
-                        <br />
-                        <Label color="orange">
-                            <span onDoubleClick={() => (debugInputRef.current as any).focus()}>{s("note")}</span>
-                        </Label>{" "}
-                        {s("credsNoteText")}
-                    </div>
+                        <Form.Input
+                            fluid
+                            label={s("tfsPwd")}
+                            type="password"
+                            value={settings.tfsPwd}
+                            onChange={(e) => validateTfsPwd(e.target.value)}
+                            error={pwdInvalid}
+                        />
+                    </Form.Group>
+                    {!!pwdNotAscii && <Message color="red">{s("noAscii")}</Message>}
+                </Form>
+                <div>
                     <br />
-                    <div>
-                        {s("status")}
-                        <Label color={this.statusParams.color as any}>{this.statusParams.text}</Label>
-                    </div>
-                    <br />
-                    <Button primary loading={this.checkInProgress} disabled={this.isCheckUnabailable} onClick={this.onCheck}>
-                        {s("validate")}
-                    </Button>
-                    {/* <Button onClick={this.onTest}>test</Button> */}
-                </Container>
-                <input
-                    style={{ opacity: 0 }}
-                    ref={debugInputRef as any}
-                    type="text"
-                    value={this.state.debugInputValue}
-                    onChange={this.onDebugInputChange}
-                />
-            </div>
-        );
-    }
+                    <Label color="orange">
+                        <span onDoubleClick={() => (debugInputRef.current as any).focus()}>{s("note")}</span>
+                    </Label>{" "}
+                    {s("credsNoteText")}
+                </div>
+                <br />
+                <div>
+                    {s("status")}
+                    <Label color={statusParams.color as any}>{statusParams.text}</Label>
+                </div>
+                <br />
+                <Button primary loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
+                    {s("validate")}
+                </Button>
+                {/* <Button onClick={onTest}>test</Button> */}
+            </Container>
+            <input style={{ opacity: 0 }} ref={debugInputRef as any} type="text" value={debugInputValue} onChange={onDebugInputChange} />
+        </div>
+    );
 }
