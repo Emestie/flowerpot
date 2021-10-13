@@ -21,7 +21,7 @@ export function QuickLinksContainer() {
     };
 
     const items = links.map((x) => (
-        <Label color={x.color as any} onClick={() => openLink(x.url)} size="mini" basic>
+        <Label key={x.url} color={x.color as any} onClick={() => openLink(x.url)} size="mini" basic>
             {x.name}
         </Label>
     ));
@@ -32,7 +32,7 @@ export function QuickLinksContainer() {
 
     if (links.length < 5) {
         items.push(
-            <Label onClick={addNew} size="mini">
+            <Label key={"addlinkkey"} onClick={addNew} size="mini">
                 +
             </Label>
         );

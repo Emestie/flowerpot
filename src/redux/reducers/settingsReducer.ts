@@ -1,4 +1,4 @@
-import { ISettings } from "../../helpers/Settings";
+import Settings, { ISettings } from "../../helpers/Settings";
 import { IAction, Reducers } from "../types";
 import { updateState } from "./_common";
 
@@ -38,5 +38,11 @@ const initialState: ISettingsState = {
 };
 
 export function settingsReducer(state = initialState, action: IAction) {
-    return updateState(Reducers.Settings, state, action);
+    const updatedState = updateState(Reducers.Settings, state, action);
+
+    if (action.type.startsWith(Reducers.Settings + "/")) {
+        Settings.save(updatedState);
+    }
+
+    return updatedState;
 }

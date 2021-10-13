@@ -14,15 +14,11 @@ export default class Lists {
         const hidden = this.deleteFromList("hidden", id, collection, true);
         const pinned = this.deleteFromList("pinned", id, collection, true);
 
-        //const list = store.getState().settings.lists[listName] || [];
         const list = this.deleteFromList(listName, id, collection, true);
         list.push({ id: id, collection: collection, rev: rev });
 
-        //store.settings.lists[list].push({ id: id, collection: collection, rev: rev });
-        //store.updateSettings();
         const lists = { deferred, permawatch, favourites, hidden, pinned, [listName]: list };
         store.dispatch(settingsUpdate({ lists }));
-        //store.dispatch(settingsListUpdate(listName, list));
     }
 
     public static pushStrings(listName: TLists, word: string) {
@@ -36,13 +32,18 @@ export default class Lists {
     //TODO: review stopUpdate
     public static deleteFromList(listName: TLists, id: number, collection: string, stopUpdate?: boolean) {
         let l = getListsSelector(listName)(store.getState()); // store.getList(list);
+
+        if (!l.some((x) => x.id === id && x.collection === collection)) return l;
+
         l = l.filter((x) => `${x.collection}-${x.id}` !== `${collection}-${id}`);
-        if (!stopUpdate) store.dispatch(settingsListUpdate(listName, l));
+        if (!stopUpdate) {
+            store.dispatch(settingsListUpdate(listName, l));
+        }
         return l;
-        //if (!stopUpdate) store.updateSettings();
     }
 
     public static clearList(listName: TLists) {
+        console.log("==CLEAR LIST");
         store.dispatch(settingsListUpdate(listName, []));
     }
 

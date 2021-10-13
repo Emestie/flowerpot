@@ -10,7 +10,7 @@ import { useQueryLoader } from "../hooks/useQueryLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkItemsForQuerySelector } from "../redux/selectors/dataSelectors";
 import { appSelector } from "../redux/selectors/appSelectors";
-import { appSet } from "../redux/actions/appActions";
+import { appLoadingInProgressListSet } from "../redux/actions/appActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
 
@@ -95,7 +95,7 @@ export function WorkItemsBlock(props: IProps) {
             newProgressList = newProgressList.filter((x) => x !== props.query.queryId);
         }
 
-        dispatch(appSet({ loadingInProgressList: newProgressList }));
+        dispatch(appLoadingInProgressListSet(newProgressList));
     }, [isLoading]);
 
     const onCollapseClick = () => {

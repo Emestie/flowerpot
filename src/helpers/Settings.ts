@@ -68,9 +68,9 @@ export default class Settings {
         store.dispatch(appSet({ autostart, locale }));
     }
 
-    public static save() {
+    public static save(settings: ISettings) {
         try {
-            const settingsToStore = JSON.stringify(store.getState().settings);
+            const settingsToStore = JSON.stringify(settings);
             Platform.current.setStoreProp("flowerpot", settingsToStore);
         } catch (e: any) {}
     }

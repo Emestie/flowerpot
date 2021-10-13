@@ -124,13 +124,13 @@ export function WorkItemRow(props: IProps) {
         return "workItemHasNoCanges";
     };
 
-    const note = (() => {
+    const getNote = () => {
         let note = fullNote;
         if (note && note.length > 50) {
             note = note.slice(0, 50) + "...";
         }
         return note;
-    })();
+    };
 
     const fullNote = (() => {
         let note = Lists.getNote(props.item._collectionName, props.item.id);
@@ -291,10 +291,10 @@ export function WorkItemRow(props: IProps) {
                     >
                         {yellowMarkedVal("titleFull")}
                     </span>
-                    {!!note && (
+                    {!!fullNote && (
                         <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + fullNote}>
                             <Label basic color={noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
-                                {note}
+                                {getNote()}
                             </Label>
                         </span>
                     )}
