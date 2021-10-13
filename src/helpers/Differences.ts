@@ -1,9 +1,11 @@
 import Query, { IQuery } from "./Query";
 import { IWorkItem } from "./WorkItem";
-import store from "../store-mbx";
 import Loaders from "./Loaders";
 import Platform from "./Platform";
 import { s } from "../values/Strings";
+import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
+import { store } from "../redux/store";
+import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
 
 interface IShownWI {
     id: number;
@@ -21,8 +23,7 @@ export default class Differences {
         let wiStorage = Query.getWIStorage();
 
         //clear unused and ignored queries
-        let allQueriesIds = store
-            .getQueries()
+        let allQueriesIds = getQueriesSelector()(store.getState())
             .filter((q) => !q.ignoreNotif)
             .map((q) => q.queryId);
 
@@ -37,7 +38,7 @@ export default class Differences {
         }
 
         if (!wiStorage[query.queryId]) {
-            wiStorage[query.queryId] = store.copy(workItems);
+            wiStorage[query.queryId] = [...workItems];
             Query.saveWIStorage(wiStorage);
             return;
         }
@@ -50,12 +51,14 @@ export default class Differences {
             if (!storage) return;
             let stored = this.getWIById(storage, wi.id);
             if (!stored) {
-                store.setWIHasChanges(wi, true);
+                store.dispatch(dataChangesCollectionItemSet(wi, true));
+                //store.setWIHasChanges(wi, true);
                 news.push(wi);
                 return;
             }
             if (stored.rev !== wi.rev) {
-                store.setWIHasChanges(wi, true);
+                store.dispatch(dataChangesCollectionItemSet(wi, true));
+                //store.setWIHasChanges(wi, true);
                 changed.push(wi);
             }
         });
@@ -70,16 +73,18 @@ export default class Differences {
         this.operateNotifsToShow(news, "new");
         this.operateNotifsToShow(changed, "change");
 
-        wiStorage[query.queryId] = store.copy(workItems);
+        wiStorage[query.queryId] = [...workItems];
         Query.saveWIStorage(wiStorage);
     }
 
     private static operateNotifsToShow(wis: IWorkItem[], type: "new" | "change") {
         const wisToShow: IWorkItem[] = [];
+        const settings = store.getState().settings;
+
         wis.forEach((n) => {
             if (
-                store.settings.notificationsMode === "all" ||
-                (store.settings.notificationsMode === "mine" && n.assignedToFull.toLowerCase().indexOf(store.settings.tfsUser.toLowerCase()) !== -1)
+                settings.notificationsMode === "all" ||
+                (settings.notificationsMode === "mine" && n.assignedToFull.toLowerCase().indexOf(settings.tfsUser.toLowerCase()) !== -1)
             ) {
                 wisToShow.push(n);
             }

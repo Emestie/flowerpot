@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Container, Message } from "semantic-ui-react";
 import { s } from "../values/Strings";
-import ViewHeading from "../components/heading/ViewHeading";
+import { ViewHeading } from "../components/heading/ViewHeading";
 import { useDispatch, useSelector } from "react-redux";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { appViewSet } from "../redux/actions/appActions";

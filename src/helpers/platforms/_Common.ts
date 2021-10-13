@@ -1,5 +1,5 @@
 import { store } from "../../redux/store";
-import Platform, { INotificationData, PlatformType } from "../Platform";
+import Platform, { INotificationData } from "../Platform";
 
 export default class CommonPlatform {
     public getStoreProp(prop: string) {

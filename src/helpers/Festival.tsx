@@ -1,23 +1,23 @@
 import React from "react";
 import { IWorkItem } from "./WorkItem";
-import { Icon, Image, Label } from "semantic-ui-react";
+import { Image, Label } from "semantic-ui-react";
 import { s } from "../values/Strings";
 import { store } from "../redux/store";
 import { appCurrentFestivalSet } from "../redux/actions/appActions";
 
-const christmasTree = require("../assets/christmas-tree.svg") as string;
-const feb23 = require("../assets/feb23.svg") as string;
-const mar8 = require("../assets/mar8.svg") as string;
-const coronavirus = require("../assets/coronavirus.svg") as string;
-const longLiveBelarus = require("../assets/wrw-128.png") as string;
-const sep3 = require("../assets/sept3.svg") as string;
-const sep14 = require("../assets/mug.svg") as string;
-const haloween = require("../assets/halloween-bats.svg") as string;
-const tenYearsAnniversaryA = require("../assets/10years-a.svg") as string;
+const christmasTree = require("../assets/christmas-tree.svg").default as string;
+const feb23 = require("../assets/feb23.svg").default as string;
+const mar8 = require("../assets/mar8.svg").default as string;
+//const coronavirus = require("../assets/coronavirus.svg").default as string;
+//const longLiveBelarus = require("../assets/wrw-128.png").default as string;
+const sep3 = require("../assets/sept3.svg").default as string;
+const sep14 = require("../assets/mug.svg").default as string;
+const haloween = require("../assets/halloween-bats.svg").default as string;
+const tenYearsAnniversaryA = require("../assets/10years-a.svg").default as string;
 
-const flower1 = require("../assets/flower1.svg") as string;
-const flower2 = require("../assets/flower2.svg") as string;
-const flower3 = require("../assets/flower3.svg") as string;
+const flower1 = require("../assets/flower1.svg").default as string;
+const flower2 = require("../assets/flower2.svg").default as string;
+const flower3 = require("../assets/flower3.svg").default as string;
 
 export enum Eve {
     _none,

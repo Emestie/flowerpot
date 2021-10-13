@@ -3,13 +3,13 @@ import Platform from "./Platform";
 import { ILinkItem } from "./Links";
 import { store } from "../redux/store";
 import { settingsSet } from "../redux/actions/settingsActions";
-import { appSettingsSet } from "../redux/actions/appActions";
+import { appSet } from "../redux/actions/appActions";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned";
 
-interface IListItem {
+export interface IListItem {
     id: number;
     rev: number;
     word?: string;
@@ -65,7 +65,7 @@ export default class Settings {
         const autostart = Platform.current.getStoreProp("autostart");
         const locale = Platform.current.getStoreProp("locale");
 
-        store.dispatch(appSettingsSet({ autostart, locale }));
+        store.dispatch(appSet({ autostart, locale }));
     }
 
     public static save() {

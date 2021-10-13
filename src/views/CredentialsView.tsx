@@ -3,8 +3,8 @@ import { Header, Container, Button, Form, Label, Message } from "semantic-ui-rea
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
 import { s } from "../values/Strings";
-import UpdateBanner from "../components/banners/UpdateBanner";
-import ViewHeading from "../components/heading/ViewHeading";
+import { UpdateBanner } from "../components/banners/UpdateBanner";
+import { ViewHeading } from "../components/heading/ViewHeading";
 import Telemetry from "../helpers/Telemetry";
 import { useDispatch, useSelector } from "react-redux";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";

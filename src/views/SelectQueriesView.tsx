@@ -3,7 +3,7 @@ import { Header, Container, Button, Label, Message, Icon, Checkbox } from "seman
 import Query, { IQuery } from "../helpers/Query";
 import Loaders from "../helpers/Loaders";
 import { s } from "../values/Strings";
-import ViewHeading from "../components/heading/ViewHeading";
+import { ViewHeading } from "../components/heading/ViewHeading";
 import { useDispatch, useSelector } from "react-redux";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { appViewSet } from "../redux/actions/appActions";

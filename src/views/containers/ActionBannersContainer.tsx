@@ -1,11 +1,12 @@
 import React from "react";
-import ActionBanner from "../../components/banners/ActionBanner";
+import { ActionBanner } from "../../components/banners/ActionBanner";
 import { IActionBannerProps } from "../../components/banners/ActionBanner";
-import store from "../../store-mbx";
+import { appDialogSet } from "../../redux/actions/appActions";
+import { store } from "../../redux/store";
 import { s } from "../../values/Strings";
 
-const flowerbotImg = require("../../assets/flowerbot-av-48.png") as string;
-const idea = require("../../assets/idea.png");
+const flowerbotImg = require("../../assets/flowerbot-av-48.png").default as string;
+const idea = require("../../assets/idea.png").default;
 
 const actionBannersList: IActionBannerProps[] = [
     {
@@ -21,7 +22,7 @@ const actionBannersList: IActionBannerProps[] = [
         text: s("feedbackAlert"),
         actionText: s("feedbackAlertButton"),
         action: () => {
-            store.dialogs.feedback = true;
+            store.dispatch(appDialogSet("feedback", true));
         },
         img: idea,
         type: "warning",
@@ -30,8 +31,8 @@ const actionBannersList: IActionBannerProps[] = [
 
 //! LAST USED INDEX: 4
 
-export default () => {
+export function ActionBannersContainer() {
     const banners = actionBannersList.map((x) => <ActionBanner key={x.id} {...x} />);
 
     return <>{banners}</>;
-};
+}

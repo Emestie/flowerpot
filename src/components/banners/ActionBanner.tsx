@@ -1,8 +1,9 @@
 import React from "react";
-import store from "../../store-mbx";
+import { useDispatch, useSelector } from "react-redux";
 import { Message } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import { observer } from "mobx-react-lite";
+import { settingsUpdate } from "../../redux/actions/settingsActions";
+import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 
 export interface IActionBannerProps {
     id: number;
@@ -14,11 +15,14 @@ export interface IActionBannerProps {
     type?: "negative" | "positive" | "info" | "warning";
 }
 
-export default observer((p: IActionBannerProps) => {
+export function ActionBanner(p: IActionBannerProps) {
+    const settings = useSelector(settingsSelector);
+    const dispatch = useDispatch();
+
     const hideMessage = () => {
-        const allBanners = store.settings.bannersShown;
-        store.settings.bannersShown = [...allBanners, p.id];
-        store.updateSettings();
+        const allBanners = settings.bannersShown;
+        const bannersShown = [...allBanners, p.id];
+        dispatch(settingsUpdate({ bannersShown }));
     };
 
     const doActionAndHideBanner = () => {
@@ -28,7 +32,7 @@ export default observer((p: IActionBannerProps) => {
         hideMessage();
     };
 
-    const bannersShown = store.settings.bannersShown;
+    const bannersShown = settings.bannersShown;
     const isBannerShown = bannersShown.indexOf(p.id) !== -1;
     if (isBannerShown) return null;
 
@@ -37,7 +41,9 @@ export default observer((p: IActionBannerProps) => {
 
     return (
         <Message {...types}>
-            {p.img && <img style={{ position: "absolute", top: 8, left: 8, height: 32, width: 32, borderRadius: "50%" }} src={p.img}></img>}
+            {p.img && (
+                <img alt="" style={{ position: "absolute", top: 8, left: 8, height: 32, width: 32, borderRadius: "50%" }} src={p.img}></img>
+            )}
             <span style={{ marginLeft: p.img ? 32 : 5 }}>
                 {p.text}
                 <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={doActionAndHideBanner}>
@@ -46,4 +52,4 @@ export default observer((p: IActionBannerProps) => {
             </span>
         </Message>
     );
-});
+}

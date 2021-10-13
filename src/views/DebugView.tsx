@@ -3,7 +3,7 @@ import { Header, Button, Container } from "semantic-ui-react";
 import Platform from "../helpers/Platform";
 import WorkItem from "../helpers/WorkItem";
 import Version from "../helpers/Version";
-import ViewHeading from "../components/heading/ViewHeading";
+import { ViewHeading } from "../components/heading/ViewHeading";
 import { useDispatch, useSelector } from "react-redux";
 import { appViewSet } from "../redux/actions/appActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";

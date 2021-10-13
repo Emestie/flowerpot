@@ -1,8 +1,8 @@
 import React from "react";
 import { Header, Container, Button, Icon, Label } from "semantic-ui-react";
 import { s } from "../values/Strings";
-import ListBlock from "../components/ListBlock";
-import ViewHeading from "../components/heading/ViewHeading";
+import { ListBlock } from "../components/ListBlock";
+import { ViewHeading } from "../components/heading/ViewHeading";
 import { useDispatch } from "react-redux";
 import { appViewSet } from "../redux/actions/appActions";
 

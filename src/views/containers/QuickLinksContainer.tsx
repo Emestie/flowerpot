@@ -1,19 +1,23 @@
-import { observer } from "mobx-react";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import store from "../../store-mbx";
+import { appDialogSet } from "../../redux/actions/appActions";
+import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 
-export default observer(() => {
-    const links = store.settings.links.sort((a, b) => (a.order || 0) - (b.order || 0));
+export function QuickLinksContainer() {
+    const settings = useSelector(settingsSelector);
+    const dispatch = useDispatch();
+
+    const links = settings.links.sort((a, b) => (a.order || 0) - (b.order || 0));
 
     const openLink = (url: string) => {
         Platform.current.openUrl(url);
     };
 
     const addNew = () => {
-        store.dialogs.addLink = true;
+        dispatch(appDialogSet("addLink", true));
     };
 
     const items = links.map((x) => (
@@ -39,4 +43,4 @@ export default observer(() => {
             {items}
         </div>
     );
-});
+}

@@ -1,5 +1,6 @@
 export enum Actions {
     AppViewSet = "app/view-set",
+    AppErrorSet = "app/error-set",
     AppShowWhatsNewSet = "app/show-whatsnew-set",
     AppSettingsSet = "app/settings-set",
     AppCurrentFestivalSet = "app/current-fest-set",
@@ -8,7 +9,9 @@ export enum Actions {
     DataChangesCollectionClear = "data/cha-col-clear",
     DataChangesCollectionSet = "data/cha-col-set",
     DataChangesCollectionItemSet = "data/cha-col-item-set",
+    DataWorkItemsForQuerySet = "data/wi-for-query-set",
     SettingsSet = "settings/set",
     SettingsUpdate = "settings/update",
     SettingsMigrationsDonePush = "settings/migrations-done-push",
+    SettingsListUpdate = "settings/list-update",
 }

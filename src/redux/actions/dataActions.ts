@@ -1,3 +1,4 @@
+import { IQuery } from "../../helpers/Query";
 import { IWorkItem } from "../../helpers/WorkItem";
 import { Actions } from "../actions-enum";
 import { store } from "../store";
@@ -19,4 +20,9 @@ export function dataChangesCollectionItemSet(workItem: IWorkItem, hasChanges: bo
 
 export function dataChangesCollectionClear() {
     return createAction(Actions.DataChangesCollectionClear, { changesCollection: {} });
+}
+
+export function dataWorkItemsForQuerySet(query: IQuery, items: IWorkItem[]) {
+    const oldItems = store.getState().data.workItems.filter((wi) => wi._queryId !== query.queryId);
+    return createAction(Actions.DataWorkItemsForQuerySet, { workItems: [...oldItems, ...items] });
 }

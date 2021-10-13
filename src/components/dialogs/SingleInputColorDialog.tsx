@@ -15,7 +15,7 @@ interface IProps {
     dropdownValues?: string[];
 }
 
-export default (p: IProps) => {
+export function SingleInputColorDialog(p: IProps) {
     const [textValue, setTextValue] = useState("");
     const [collectionValue, setCollectionValue] = useState(p.dropdownValues?.[0] || "");
     const [colorValue, setColorValue] = useState<string | undefined>(undefined);
@@ -102,4 +102,4 @@ export default (p: IProps) => {
     );
 
     return <Confirm open={p.show} content={singleLabelDialogContent} onCancel={onCancel} onConfirm={onConfirm} />;
-};
+}

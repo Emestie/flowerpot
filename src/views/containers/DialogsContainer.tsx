@@ -1,16 +1,22 @@
-import { observer } from "mobx-react";
 import React from "react";
 import { s } from "../../values/Strings";
-import SingleInputColorDialog from "../../components/dialogs/SingleInputColorDialog";
+import { SingleInputColorDialog } from "../../components/dialogs/SingleInputColorDialog";
 import Platform from "../../helpers/Platform";
-import store from "../../store-mbx";
 import { queriesSorting } from "../MainView";
 import Telemetry from "../../helpers/Telemetry";
-import LinkAddingDialog from "../../components/dialogs/LinkAddingDialog";
+import { LinkAddingDialog } from "../../components/dialogs/LinkAddingDialog";
 import Notif from "../../helpers/Notif";
+import { useDispatch, useSelector } from "react-redux";
+import { getQueriesSelector, settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { appDialogSet } from "../../redux/actions/appActions";
+import { appSelector } from "../../redux/selectors/appSelectors";
 
-export default observer(() => {
-    const queries = store.getQueries().sort(queriesSorting);
+export function DialogsContainer() {
+    const dispatch = useDispatch();
+    const { dialogs } = useSelector(appSelector);
+    const settings = useSelector(settingsSelector);
+    const queries = useSelector(getQueriesSelector()).sort(queriesSorting);
+
     const collections = queries.map((x) => x.collectionName).filter((i, v, a) => a.indexOf(i) === v);
 
     const openById = (id: string, color?: string, collection?: string) => {
@@ -20,43 +26,43 @@ export default observer(() => {
             return;
         }
 
-        Platform.current.openUrl(store.settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
-        store.dialogs.openById = false;
+        Platform.current.openUrl(settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
+        dispatch(appDialogSet("openById", false));
     };
 
     const feedbackSend = (text: string) => {
         if (text) Telemetry.sendFeedback(text);
 
-        store.dialogs.feedback = false;
+        dispatch(appDialogSet("feedback", false));
     };
 
     return (
         <>
             <SingleInputColorDialog
-                show={store.dialogs.openById}
+                show={dialogs.openById}
                 onClose={() => {
-                    store.dialogs.openById = false;
+                    dispatch(appDialogSet("openById", false));
                 }}
                 onOk={openById}
                 caption={s("openByIdText")}
                 dropdownValues={collections}
             />
             <SingleInputColorDialog
-                show={store.dialogs.feedback}
+                show={dialogs.feedback}
                 onClose={() => {
-                    store.dialogs.feedback = false;
+                    dispatch(appDialogSet("feedback", false));
                 }}
                 onOk={feedbackSend}
                 caption={s("feedbackWindowCaption")}
                 area={true}
             />
             <LinkAddingDialog
-                show={store.dialogs.addLink}
+                show={dialogs.addLink}
                 onClose={() => {
-                    store.dialogs.addLink = false;
+                    dispatch(appDialogSet("addLink", false));
                 }}
             />
             <div id="messagePoint"></div>
         </>
     );
-});
+}

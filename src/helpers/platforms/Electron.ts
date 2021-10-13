@@ -1,6 +1,6 @@
 import { appUpdateStatusSet } from "../../redux/actions/appActions";
 import { store } from "../../redux/store";
-import { INotificationData, IPlatformExtension } from "../Platform";
+import { IPlatformExtension } from "../Platform";
 import CommonPlatform from "./_Common";
 
 export default class ElectronPlatform extends CommonPlatform implements IPlatformExtension {

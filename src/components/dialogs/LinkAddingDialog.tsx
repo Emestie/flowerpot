@@ -10,7 +10,7 @@ interface P {
     onClose: (e?: any) => void;
 }
 
-export default (p: P) => {
+export function LinkAddingDialog(p: P) {
     const [name, setName] = useState("");
     const [url, setUrl] = useState("");
     const [color, setColor] = useState<string | undefined>(undefined);
@@ -72,4 +72,4 @@ export default (p: P) => {
     );
 
     return <Confirm open={p.show} content={content} onCancel={onCancel} onConfirm={onConfirm} />;
-};
+}

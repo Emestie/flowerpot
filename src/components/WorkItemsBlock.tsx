@@ -1,24 +1,34 @@
 import React, { useEffect } from "react";
 import { Header, Label, Table, Icon } from "semantic-ui-react";
-import store from "../store-mbx";
 import Query, { IQuery } from "../helpers/Query";
-import { observer } from "mobx-react";
-import WorkItemRow from "./WorkItemRow";
+import { WorkItemRow } from "./WorkItemRow";
 import { IWorkItem } from "../helpers/WorkItem";
 import Platform from "../helpers/Platform";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
-import useQueryLoader from "../hooks/useQueryLoader";
+import { useQueryLoader } from "../hooks/useQueryLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { getWorkItemsForQuerySelector } from "../redux/selectors/dataSelectors";
+import { appSelector } from "../redux/selectors/appSelectors";
+import { appSet } from "../redux/actions/appActions";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
 
 interface IProps {
     query: IQuery;
     filter: string;
 }
 
-export default observer((props: IProps) => {
+export function WorkItemsBlock(props: IProps) {
     const isLoading = useQueryLoader(props.query);
-    const allItems = store.getWorkItemsForQuery(props.query);
+    const allItems = useSelector(getWorkItemsForQuerySelector(props.query));
+    const { loadingInProgressList } = useSelector(appSelector);
+    const settings = useSelector(settingsSelector);
+
+    const dispatch = useDispatch();
+
     const filterValue = props.filter && props.filter.trim() ? props.filter.trim().toLowerCase() : "";
+
     const filteredItems = () => {
         if (!filterValue) {
             allItems.forEach((x) => {
@@ -65,6 +75,7 @@ export default observer((props: IProps) => {
         });
         return filtered;
     };
+
     const workItems = filteredItems();
 
     const isPermawatch = props.query.queryId === "___permawatch";
@@ -77,13 +88,14 @@ export default observer((props: IProps) => {
         .filter((wi) => wi.promptness === 2 && wi.importance !== 3).length;
 
     useEffect(() => {
-        let newProgressList = store.copy(store.loadingInProgressList);
+        let newProgressList = [...loadingInProgressList];
         if (isLoading) {
             newProgressList.push(props.query.queryId);
         } else {
             newProgressList = newProgressList.filter((x) => x !== props.query.queryId);
         }
-        store.loadingInProgressList = newProgressList;
+
+        dispatch(appSet({ loadingInProgressList: newProgressList }));
     }, [isLoading]);
 
     const onCollapseClick = () => {
@@ -96,13 +108,11 @@ export default observer((props: IProps) => {
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
-        Platform.current.openUrl(
-            store.settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query"
-        );
+        Platform.current.openUrl(settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
     };
 
     const getSortPattern = () => {
-        switch (store.settings.sortPattern) {
+        switch (settings.sortPattern) {
             case "assignedto":
                 return sortPatternAssignedTo;
             case "id":
@@ -119,7 +129,7 @@ export default observer((props: IProps) => {
         if (a._list === "pinned" && b._list !== "pinned") return -1;
         else if (a._list !== "pinned" && b._list === "pinned") return 1;
 
-        if (store.settings.mineOnTop) {
+        if (settings.mineOnTop) {
             if (a._isMine && !b._isMine) return -1;
             else if (!a._isMine && b._isMine) return 1;
         }
@@ -158,15 +168,17 @@ export default observer((props: IProps) => {
     };
 
     const dropAllWiChanges = () => {
-        workItems.forEach((wi) => {
-            store.setWIHasChanges(wi, false);
-        });
+        dispatch(dataChangesCollectionClear());
+        // workItems.forEach((wi) => {
+        //     dispatch(dataChangesCollectionItemSet(wi, false))
+        // });
     };
 
     const updateWorkItems = (wi: IWorkItem) => {
         let newList = workItems.filter((w) => w.id !== wi.id);
         newList.push(wi);
-        store.setWorkItemsForQuery(props.query, newList);
+        //store.setWorkItemsForQuery(props.query, newList);
+        dispatch(dataWorkItemsForQuerySet(props.query, newList));
     };
 
     const query = props.query;
@@ -236,4 +248,4 @@ export default observer((props: IProps) => {
             )}
         </>
     );
-});
+}

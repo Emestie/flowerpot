@@ -1,68 +1,61 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TLists } from "../helpers/Settings";
 import { Input, Button, Label, Icon, Form } from "semantic-ui-react";
 import { s } from "../values/Strings";
-import store from "../store-mbx";
 import Lists from "../helpers/Lists";
-import { observer } from "mobx-react";
+import { useSelector } from "react-redux";
+import { getListsSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 
-interface IProps {
+interface P {
     listName: TLists;
 }
-interface IState {
-    inputVal: string;
-    collection: string;
-    collections: any[];
-}
 
-@observer
-export default class ListBlock extends React.Component<IProps, IState> {
-    state: IState = {
-        inputVal: "",
-        collection: "",
-        collections: [],
-    };
+export function ListBlock(p: P) {
+    const [inputVal, setInputVal] = useState("");
+    const [collection, setCollection] = useState("");
+    const [collections, setCollections] = useState<any[]>([]);
 
-    componentDidMount() {
-        const collections = store.settings.queries
+    const settings = useSelector(settingsSelector);
+    const list = useSelector(getListsSelector(p.listName));
+
+    useEffect(() => {
+        const collections = settings.queries
             .map((x) => x.collectionName)
             .filter((i, v, a) => a.indexOf(i) === v)
             .map((x, i) => ({ key: i, text: x, value: x }));
-        this.setState({ collections: collections, collection: collections[0] ? collections[0].value : "" });
-    }
 
-    get list() {
-        return store.getList(this.props.listName);
-    }
+        setCollections(collections);
+        setCollection(collections[0] ? collections[0].value : "");
+    }, []);
 
-    get inputError() {
-        if (this.props.listName === "permawatch") {
+    const inputError = (() => {
+        if (p.listName === "permawatch") {
             return (
-                (!+this.state.inputVal && this.state.inputVal !== "") ||
-                Lists.isIn(this.props.listName, this.state.collection, +this.state.inputVal.trim()) ||
-                this.state.inputVal.indexOf(".") !== -1 ||
-                (this.state.inputVal !== "" && +this.state.inputVal < 1) ||
-                this.state.inputVal.length > 7
+                (!+inputVal && inputVal !== "") ||
+                Lists.isIn(p.listName, collection, +inputVal.trim()) ||
+                inputVal.indexOf(".") !== -1 ||
+                (inputVal !== "" && +inputVal < 1) ||
+                inputVal.length > 7
             );
         } else return undefined;
-    }
+    })();
 
-    get blockButton() {
-        if (this.props.listName === "permawatch") {
+    const blockButton = (() => {
+        if (p.listName === "permawatch") {
             return (
-                !+this.state.inputVal ||
-                Lists.isIn(this.props.listName, this.state.collection, +this.state.inputVal.trim()) ||
-                this.state.inputVal.indexOf(".") !== -1 ||
-                (this.state.inputVal !== "" && +this.state.inputVal < 1) ||
-                this.state.inputVal.length > 7
+                !+inputVal ||
+                Lists.isIn(p.listName, collection, +inputVal.trim()) ||
+                inputVal.indexOf(".") !== -1 ||
+                (inputVal !== "" && +inputVal < 1) ||
+                inputVal.length > 7
             );
-        } else if (this.props.listName === "keywords") {
-            return this.state.inputVal.trim() === "" || Lists.isIn(this.props.listName, "", 0, 0, this.state.inputVal.trim());
+        } else if (p.listName === "keywords") {
+            return inputVal.trim() === "" || Lists.isIn(p.listName, "", 0, 0, inputVal.trim());
         } else return undefined;
-    }
+    })();
 
-    get color() {
-        switch (this.props.listName) {
+    const color = (() => {
+        switch (p.listName) {
             case "deferred":
                 return "grey";
             case "permawatch":
@@ -78,97 +71,95 @@ export default class ListBlock extends React.Component<IProps, IState> {
             default:
                 return undefined;
         }
-    }
+    })();
 
-    onAdd = () => {
-        if (this.props.listName === "permawatch") {
-            Lists.push(this.props.listName, this.state.collection, +this.state.inputVal);
-        } else if (this.props.listName === "keywords") {
-            Lists.pushStrings(this.props.listName, this.state.inputVal);
+    const onAdd = () => {
+        if (p.listName === "permawatch") {
+            Lists.push(p.listName, collection, +inputVal);
+        } else if (p.listName === "keywords") {
+            Lists.pushStrings(p.listName, inputVal);
         }
-        this.setState({ inputVal: "" });
+        setInputVal("");
     };
 
-    onItemDelete = (id: number, collection: string) => {
-        Lists.deleteFromList(this.props.listName, id, collection);
+    const onItemDelete = (id: number, collection: string) => {
+        Lists.deleteFromList(p.listName, id, collection);
     };
 
-    onClear = () => {
-        Lists.clearList(this.props.listName);
+    const onClear = () => {
+        Lists.clearList(p.listName);
     };
 
-    render() {
-        let items = this.list.map((l) => (
-            <span key={l.id} style={{ marginBottom: 3, marginRight: 3, display: "inline-block" }}>
-                <Label color={this.color}>
-                    {!!l.collection && <Label.Detail>{l.collection + "/"}</Label.Detail>}
-                    {this.props.listName === "keywords" ? l.word : l.id}
-                    {this.props.listName === "hidden" && (
-                        <>
-                            {" "}
-                            <Icon name="redo" />
-                            {l.rev}
-                        </>
-                    )}
-                    <Icon name="delete" onClick={() => this.onItemDelete(l.id, l.collection || "")} />
-                </Label>
-            </span>
-        ));
-
-        return (
-            <div>
-                <br></br>
-                {this.props.listName === "permawatch" ? (
-                    <Form>
-                        <Form.Group inline>
-                            <Form.Select
-                                label=""
-                                options={this.state.collections}
-                                value={this.state.collection}
-                                onChange={(e, { value }) => {
-                                    this.setState({ collection: value as string });
-                                }}
-                            />
-                            <Form.Input
-                                size="small"
-                                placeholder="ID"
-                                value={this.state.inputVal}
-                                onChange={(e) => this.setState({ inputVal: e.target.value })}
-                                error={this.inputError}
-                                maxLength="7"
-                            />{" "}
-                            <Form.Button size="small" onClick={this.onAdd} disabled={this.blockButton}>
-                                {s("add")}
-                            </Form.Button>
-                        </Form.Group>
-                    </Form>
-                ) : this.props.listName === "keywords" ? (
+    let items = list.map((l) => (
+        <span key={l.id} style={{ marginBottom: 3, marginRight: 3, display: "inline-block" }}>
+            <Label color={color}>
+                {!!l.collection && <Label.Detail>{l.collection + "/"}</Label.Detail>}
+                {p.listName === "keywords" ? l.word : l.id}
+                {p.listName === "hidden" && (
                     <>
-                        <Input
-                            size="small"
-                            placeholder={s("keyword")}
-                            value={this.state.inputVal}
-                            onChange={(e) => this.setState({ inputVal: e.target.value })}
-                            error={this.inputError}
-                        />{" "}
-                        <Button size="small" onClick={this.onAdd} disabled={this.blockButton}>
-                            {s("add")}
-                        </Button>
+                        {" "}
+                        <Icon name="redo" />
+                        {l.rev}
                     </>
-                ) : (
-                    <span>
-                        <i>{s("addItemsInListNotice")}</i>
-                    </span>
                 )}
-                <br />
-                <br />
-                {!!items.length && (
-                    <Button size="mini" onClick={this.onClear}>
-                        {s("listsClearAll")}
+                <Icon name="delete" onClick={() => onItemDelete(l.id, l.collection || "")} />
+            </Label>
+        </span>
+    ));
+
+    return (
+        <div>
+            <br></br>
+            {p.listName === "permawatch" ? (
+                <Form>
+                    <Form.Group inline>
+                        <Form.Select
+                            label=""
+                            options={collections}
+                            value={collection}
+                            onChange={(e, { value }) => {
+                                setCollection(value as string);
+                            }}
+                        />
+                        <Form.Input
+                            size="small"
+                            placeholder="ID"
+                            value={inputVal}
+                            onChange={(e) => setInputVal(e.target.value)}
+                            error={inputError}
+                            maxLength="7"
+                        />{" "}
+                        <Form.Button size="small" onClick={onAdd} disabled={blockButton}>
+                            {s("add")}
+                        </Form.Button>
+                    </Form.Group>
+                </Form>
+            ) : p.listName === "keywords" ? (
+                <>
+                    <Input
+                        size="small"
+                        placeholder={s("keyword")}
+                        value={inputVal}
+                        onChange={(e) => setInputVal(e.target.value)}
+                        error={inputError}
+                    />{" "}
+                    <Button size="small" onClick={onAdd} disabled={blockButton}>
+                        {s("add")}
                     </Button>
-                )}
-                {items}
-            </div>
-        );
-    }
+                </>
+            ) : (
+                <span>
+                    <i>{s("addItemsInListNotice")}</i>
+                </span>
+            )}
+            <br />
+            <br />
+            {!!items.length && (
+                <Button size="mini" onClick={onClear}>
+                    {s("listsClearAll")}
+                </Button>
+            )}
+            {items}
+        </div>
+    );
 }

@@ -1,5 +1,5 @@
 import { Eve } from "../../helpers/Festival";
-import { IAction, Reducers, TDialog, TLocale, TUpdateStatus, TView } from "../types";
+import { IAction, Reducers, TLocale, TUpdateStatus, TView } from "../types";
 import { updateState } from "./_common";
 
 export interface IAppState {

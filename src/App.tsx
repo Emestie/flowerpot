@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Settings from "./helpers/Settings";
 import Migration from "./helpers/Migration";
-import SettingsView from "./views/SettingsView";
+import { SettingsView } from "./views/SettingsView";
 import { CredentialsView } from "./views/CredentialsView";
 import { SelectQueriesView } from "./views/SelectQueriesView";
 import { ErrorView } from "./views/ErrorView";
@@ -13,7 +13,7 @@ import Version from "./helpers/Version";
 import { ListsView } from "./views/ListsView";
 import { RefreshHelperView } from "./views/RefreshHelperView";
 import Festival from "./helpers/Festival";
-import DialogsContainer from "./views/containers/DialogsContainer";
+import { DialogsContainer } from "./views/containers/DialogsContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { appShowWhatsNewSet, appViewSet } from "./redux/actions/appActions";
 import { settingsSelector } from "./redux/selectors/settingsSelectors";

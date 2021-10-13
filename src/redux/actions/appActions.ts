@@ -1,11 +1,15 @@
 import { Eve } from "../../helpers/Festival";
 import { Actions } from "../actions-enum";
 import { store } from "../store";
-import { IAction, TDialog, TLocale, TUpdateStatus, TView } from "../types";
+import { IAction, TDialog, TUpdateStatus, TView } from "../types";
 import { createAction } from "./_common";
 
 export function appViewSet(view: TView): IAction {
     return createAction(Actions.AppViewSet, { view });
+}
+
+export function appErrorSet(message: string): IAction {
+    return createAction(Actions.AppErrorSet, { view: "error", errorMessage: message });
 }
 
 export function appShowWhatsNewSet(showWhatsNew: boolean): IAction {
@@ -13,8 +17,8 @@ export function appShowWhatsNewSet(showWhatsNew: boolean): IAction {
 }
 
 //locale, autostart
-export function appSettingsSet(settings: any): IAction {
-    return createAction(Actions.AppSettingsSet, { ...settings });
+export function appSet(fields: any): IAction {
+    return createAction(Actions.AppSettingsSet, { ...fields });
 }
 
 export function appCurrentFestivalSet(currentFestival: Eve): IAction {
