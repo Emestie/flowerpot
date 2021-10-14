@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "semantic-ui-css/semantic.min.css";
-import "./style.scss";
-import "./style-dark-override.scss";
-import { App } from "./App";
-import { UnauthorizedAccess } from "./UnauthorizedAccess";
+import "./style/style.scss";
+import "./style/style-dark-override.scss";
+import { App } from "./components/App";
+import { UnauthorizedAccess } from "./components/UnauthorizedAccess";
 import Platform, { PlatformType } from "./helpers/Platform";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";

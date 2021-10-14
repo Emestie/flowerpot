@@ -26,6 +26,7 @@ export function DialogsContainer() {
             return;
         }
 
+        //TODO: fix qa
         Platform.current.openUrl(settings.tfsPath + collection + "/QA/_workitems?_a=edit&id=" + id);
         dispatch(appDialogSet("openById", false));
     };

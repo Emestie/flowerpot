@@ -170,11 +170,9 @@ export function SettingsView() {
         <div className="Page">
             <ViewHeading>
                 <LocalVersionBanner />
-                <span style={{ marginRight: 10 }}>
-                    <Button icon onClick={toggleTheme}>
-                        {settings.darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
-                    </Button>
-                </span>
+                <Button icon onClick={toggleTheme}>
+                    {settings.darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
+                </Button>
                 <Button positive onClick={onSave}>
                     {s("settingsBackButton")}
                 </Button>
