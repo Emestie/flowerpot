@@ -1,10 +1,12 @@
-import store from "../store";
 import { Ntlm } from "../lib/ntlm";
 import Query, { IQuery, ITeam, IResponseQuery, IResponseQueryWI } from "./Query";
 import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
 import Differences from "./Differences";
 import { s } from "../values/Strings";
 import Lists from "./Lists";
+import { store } from "../redux/store";
+import { appErrorSet } from "../redux/actions/appActions";
+import { getListsSelector } from "../redux/selectors/settingsSelectors";
 
 export default class Loaders {
     private static auth: boolean = false;
@@ -32,7 +34,9 @@ export default class Loaders {
                 let teams = r.projects as ITeam[];
                 //for each of project we need to load favs
                 for (let x in teams) {
-                    let res = (await this.syncRequest(collections[c] + "/" + teams[x].guid + "/_apis/wit/queries?$depth=2&api-version=5.1")) as any;
+                    let res = (await this.syncRequest(
+                        collections[c] + "/" + teams[x].guid + "/_apis/wit/queries?$depth=2&api-version=5.1"
+                    )) as any;
                     res = res.value || [];
                     const children = res.flatMap((rf: any) => rf.children || []);
                     const all = [...res, ...children].filter((f) => !f.isPublic && !f.isFolder);
@@ -44,7 +48,7 @@ export default class Loaders {
                 }
             }
         } catch (ex: any) {
-            store.showErrorPage(ex);
+            store.dispatch(appErrorSet(ex));
         }
         return queries;
     }
@@ -78,7 +82,8 @@ export default class Loaders {
                     }
                 }
             } else {
-                preparedWIs = store.getList("permawatch").map((x) => ({ id: x.id, url: "", collection: x.collection }));
+                const permawatchList = getListsSelector('permawatch')(store.getState());
+                preparedWIs = permawatchList.map((x) => ({ id: x.id, url: "", collection: x.collection }));
             }
 
             let qwi = preparedWIs;
@@ -98,13 +103,13 @@ export default class Loaders {
                 Lists.deleteFromList("hidden", wi.id, qwi[x].collection || "");
 
                 if (!query.collectionName) query.collectionName = qwi[x].collection || "";
-                
+
                 wis.push(WorkItem.buildFromResponse(wi, query));
             }
 
             Differences.put(query, wis);
         } catch (ex: any) {
-            store.showErrorPage(ex);
+            store.dispatch(appErrorSet(ex));
         }
 
         return wis;
@@ -122,7 +127,7 @@ export default class Loaders {
 
     public static async checkTfsPath() {
         try {
-            let res = await fetch(store.settings.tfsPath);
+            let res = await fetch(store.getState().settings.tfsPath);
             if (res.status !== 401 && res.status !== 200) return false;
             else return true;
         } catch (ex: any) {
@@ -132,9 +137,10 @@ export default class Loaders {
 
     private static async asyncRequest(subpath: string, forceAuth?: boolean) {
         return new Promise(async (resolve, reject) => {
-            let [domain, user] = store.settings.tfsUser.split("\\");
-            Ntlm.setCredentials(domain, user, store.settings.tfsPwd);
-            var url = store.settings.tfsPath + subpath;
+            const settings = store.getState().settings;
+            let [domain, user] = settings.tfsUser.split("\\");
+            Ntlm.setCredentials(domain, user, settings.tfsPwd);
+            var url = settings.tfsPath + subpath;
 
             try {
                 if (!this.auth || forceAuth) {
@@ -187,10 +193,11 @@ export default class Loaders {
 
     private static syncRequest(subpath: string, forceAuth?: boolean) {
         return new Promise((resolve, reject) => {
-            let [domain, user] = store.settings.tfsUser.split("\\");
-            Ntlm.setCredentials(domain, user, store.settings.tfsPwd);
+            const settings = store.getState().settings;
+            let [domain, user] = settings.tfsUser.split("\\");
+            Ntlm.setCredentials(domain, user, settings.tfsPwd);
 
-            var url = store.settings.tfsPath + subpath;
+            var url = settings.tfsPath + subpath;
 
             try {
                 if (!this.auth || forceAuth) {

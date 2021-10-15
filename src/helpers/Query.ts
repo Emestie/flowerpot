@@ -1,8 +1,10 @@
-import store from "../store";
 import { IWorkItem } from "./WorkItem";
 import Platform from "./Platform";
 import Loaders from "./Loaders";
 import { s } from "../values/Strings";
+import { store } from "../redux/store";
+import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
+import { settingsUpdate } from "../redux/actions/settingsActions";
 
 type TBoolProps = "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon" | "empty";
 
@@ -73,16 +75,16 @@ export default class Query {
     }
 
     public static add(query: IQuery) {
-        let allQueries = store.getQueries(true);
-        let allOrders = allQueries.map((q) => q.order);
-        let maxOrder = allOrders.length ? Math.max(...allOrders) : 0;
+        const allQueries = getQueriesSelector(true)(store.getState());
+        const allOrders = allQueries.map((q) => q.order);
+        const maxOrder = allOrders.length ? Math.max(...allOrders) : 0;
         query.order = maxOrder + 1;
         allQueries.push(query);
         this.updateAllInStore(allQueries);
     }
 
     public static delete(query: IQuery) {
-        let allQueries = store.getQueries(true).filter((q) => q.queryId !== query.queryId);
+        let allQueries = getQueriesSelector(true)(store.getState()).filter((q) => q.queryId !== query.queryId);
         this.updateAllInStore(allQueries);
     }
 
@@ -96,7 +98,7 @@ export default class Query {
     }
 
     public static move(query: IQuery, direction: "up" | "dn") {
-        let allQueries = store.getQueries(true);
+        let allQueries = getQueriesSelector(true)(store.getState());
 
         let index = this.findIndex(query);
         let indexToSwapWith = direction === "up" ? index - 1 : index + 1;
@@ -109,20 +111,19 @@ export default class Query {
     }
 
     private static findIndex(query: IQuery) {
-        let exactQueryIndex = store.getQueries(true).findIndex((q) => q.queryId === query.queryId);
+        let exactQueryIndex = getQueriesSelector(true)(store.getState()).findIndex((q) => q.queryId === query.queryId);
         return exactQueryIndex;
     }
 
     private static updateSingleInStore(query: IQuery) {
-        let allQueries = store.getQueries(true);
+        let allQueries = getQueriesSelector(true)(store.getState());
         let index = this.findIndex(query);
         allQueries[index] = query;
         this.updateAllInStore(allQueries);
     }
 
     private static updateAllInStore(queries: IQuery[]) {
-        store.settings.queries = store.copy(queries);
-        store.updateSettings();
+        store.dispatch(settingsUpdate({ queries }));
     }
 
     public static getWIStorage() {
@@ -140,10 +141,11 @@ export default class Query {
 
     public static calculateIconLevel(query: IQuery, workItems: IWorkItem[]) {
         let wiStorage = this.getWIStorage();
+        const state = store.getState();
 
-        wiStorage[query.queryId] = store.copy(workItems);
+        wiStorage[query.queryId] = [...workItems];
 
-        let queries = store.getQueries().filter((q) => !q.ignoreIcon);
+        let queries = getQueriesSelector()(state).filter((q) => !q.ignoreIcon);
         let queriesIds = queries.map((q) => q.queryId);
 
         let allWIs: IWorkItem[] = [];
@@ -156,14 +158,14 @@ export default class Query {
 
         let hasChanges = false;
         for (let x in allWIs) {
-            let wiChanges = store.getWIHasChanges(allWIs[x]);
+            let wiChanges = !!state.data.changesCollection[allWIs[x].id];
             if (wiChanges) {
                 hasChanges = true;
                 break;
             }
         }
 
-        if (store.settings.iconChangesOnMyWorkItemsOnly) {
+        if (state.settings.iconChangesOnMyWorkItemsOnly) {
             allWIs = allWIs.filter((wi) => wi._isMine);
         }
 

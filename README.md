@@ -1,6 +1,6 @@
 ## What is Flowerpot
 
-Flowerpot is an electron app that working in background and tracking your TFS queries. Once an item was added or changed you will receive a desktop notification.
+Flowerpot is an electron app that working in background and tracking your TFS/Azure queries. Once an item was added or changed you will receive a desktop notification.
 
 ## Downloads
 

@@ -1,7 +1,8 @@
 import preval from "preval.macro";
+import { settingsUpdate } from "../redux/actions/settingsActions";
+import { store } from "../redux/store";
 import Platform from "./Platform";
 import Telemetry from "./Telemetry";
-import store from "../store";
 
 export default class Version {
     public static get long() {
@@ -17,17 +18,21 @@ export default class Version {
     }
 
     public static isChangedLong() {
-        return store.settings.lastTimeVersionLong !== Version.long;
+        const { lastTimeVersionLong } = store.getState().settings;
+        return lastTimeVersionLong !== Version.long;
     }
 
     public static isChangedShort() {
-        return store.settings.lastTimeVersion !== Version.short;
+        const { lastTimeVersion } = store.getState().settings;
+        return lastTimeVersion !== Version.short;
     }
 
     public static storeInSettings() {
-        store.settings.lastTimeVersion = Version.short;
-        store.settings.lastTimeVersionLong = Version.long;
-        store.updateSettings();
+        const lastTimeVersion = Version.short;
+        const lastTimeVersionLong = Version.long;
+
+        store.dispatch(settingsUpdate({ lastTimeVersion, lastTimeVersionLong }));
+
         Telemetry.versionUsageInfo();
     }
 }

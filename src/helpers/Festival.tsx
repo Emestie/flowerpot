@@ -1,22 +1,23 @@
 import React from "react";
-import store from "../store";
 import { IWorkItem } from "./WorkItem";
-import { Icon, Image, Label } from "semantic-ui-react";
+import { Image, Label } from "semantic-ui-react";
 import { s } from "../values/Strings";
+import { store } from "../redux/store";
+import { appCurrentFestivalSet } from "../redux/actions/appActions";
 
-const christmasTree = require("../assets/christmas-tree.svg") as string;
-const feb23 = require("../assets/feb23.svg") as string;
-const mar8 = require("../assets/mar8.svg") as string;
-const coronavirus = require("../assets/coronavirus.svg") as string;
-const longLiveBelarus = require("../assets/wrw-128.png") as string;
-const sep3 = require("../assets/sept3.svg") as string;
-const sep14 = require("../assets/mug.svg") as string;
-const haloween = require("../assets/halloween-bats.svg") as string;
-const tenYearsAnniversaryA = require("../assets/10years-a.svg") as string;
+const christmasTree = require("../assets/christmas-tree.svg").default as string;
+const feb23 = require("../assets/feb23.svg").default as string;
+const mar8 = require("../assets/mar8.svg").default as string;
+//const coronavirus = require("../assets/coronavirus.svg").default as string;
+//const longLiveBelarus = require("../assets/wrw-128.png").default as string;
+const sep3 = require("../assets/sept3.svg").default as string;
+const sep14 = require("../assets/mug.svg").default as string;
+const haloween = require("../assets/halloween-bats.svg").default as string;
+const tenYearsAnniversaryA = require("../assets/10years-a.svg").default as string;
 
-const flower1 = require("../assets/flower1.svg") as string;
-const flower2 = require("../assets/flower2.svg") as string;
-const flower3 = require("../assets/flower3.svg") as string;
+const flower1 = require("../assets/flower1.svg").default as string;
+const flower2 = require("../assets/flower2.svg").default as string;
+const flower3 = require("../assets/flower3.svg").default as string;
 
 export enum Eve {
     _none,
@@ -94,12 +95,14 @@ export default class Festival {
         };
 
         const currentFestival = findFestival();
-        
-        store.currentFestival = currentFestival;
+
+        //store.currentFestival = currentFestival;
+        store.dispatch(appCurrentFestivalSet(currentFestival));
     }
 
     private static isEveNow(eve: Eve) {
-        return store.currentFestival === eve;
+        const { currentFestival } = store.getState().app;
+        return currentFestival === eve;
         // const [day, month, year] = this.getHumanDate();
 
         // switch (eve) {
@@ -125,7 +128,8 @@ export default class Festival {
     public static getFestivalHeaderIcon(): any {
         //please return [] as default case
 
-        const currentFestival = store.currentFestival;
+        // const currentFestival = store.currentFestival;
+        const { currentFestival } = store.getState().app;
 
         switch (currentFestival) {
             case Eve.NewYear:
@@ -192,7 +196,8 @@ export default class Festival {
         const name = mode === 1 ? item.createdBy : item.assignedTo;
         const nameFull = mode === 1 ? item.createdByFull : item.assignedToFull;
         const nameImg = mode === 1 ? item.createdByImg : item.assignedToImg; // + "?salt=" + this.getSaltValue();
-        const showAvatars = store.settings.showAvatars;
+        const { showAvatars } = store.getState().settings;
+        //const showAvatars = store.settings.showAvatars;
 
         let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
         if (festivalNameBanner) return festivalNameBanner;

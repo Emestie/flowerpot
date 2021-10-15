@@ -1,16 +1,22 @@
 import React from "react";
-import store from "../../store";
 import { Message, Button } from "semantic-ui-react";
 import { s } from "../../values/Strings";
 import Platform from "../../helpers/Platform";
-import { observer } from "mobx-react-lite";
 import Version from "../../helpers/Version";
+import { useDispatch, useSelector } from "react-redux";
+import { appSelector } from "../../redux/selectors/appSelectors";
+import { appSet } from "../../redux/actions/appActions";
+import { settingsUpdate } from "../../redux/actions/settingsActions";
 
-export default observer(() => {
-    if (!store.showWhatsNew) return null;
+export function WhatsNewBanner() {
+    const { showWhatsNew } = useSelector(appSelector);
+    const dispatch = useDispatch();
+
+    if (!showWhatsNew) return null;
 
     const hideMessage = () => {
-        store.showWhatsNew = false;
+        const showWhatsNew = false;
+        dispatch(appSet({ showWhatsNew }));
     };
 
     const showNotes = () => {
@@ -20,8 +26,8 @@ export default observer(() => {
 
     const neverShowNotesAgain = () => {
         hideMessage();
-        store.settings.showWhatsNewOnUpdate = false;
-        store.updateSettings();
+        const showWhatsNewOnUpdate = false;
+        dispatch(settingsUpdate({ showWhatsNewOnUpdate }));
     };
 
     return (
@@ -40,4 +46,4 @@ export default observer(() => {
             </span>
         </Message>
     );
-});
+}

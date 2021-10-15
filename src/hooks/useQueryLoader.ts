@@ -1,51 +1,42 @@
 import { useEffect, useState } from "react";
-import store from "../store";
 import Platform from "../helpers/Platform";
 import WorkItem from "../helpers/WorkItem";
 import Loaders from "../helpers/Loaders";
 import Query, { IQuery } from "../helpers/Query";
-import { reaction } from "mobx";
+import { useFishWIs } from "../conf";
+import { useDispatch, useSelector } from "react-redux";
+import { dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
+import { Timers } from "../helpers/Timers";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
-export default function useQueryLoader(query: IQuery) {
+export function useQueryLoader(query: IQuery) {
     const [isLoading, setIsLoading] = useState(true);
-
-    // const onRoutinesRestart = reaction(
-    //     () => store._routinesRestart,
-    //     () => routineStart()
-    // );
-    // const onPermawatchUpdate = reaction(
-    //     () => store._permawatchUpdate,
-    //     () => {
-    //         if (query.queryId === "___permawatch") loadWorkItemsForThisQuery();
-    //     }
-    // );
+    const dispatch = useDispatch();
+    const { refreshRate } = useSelector(settingsSelector);
 
     useEffect(() => {
         routineStart();
         return () => {
-            store.clearInterval(query);
+            Timers.delete(query.queryId);
         };
     }, []);
 
     const routineStart = async () => {
         setIsLoading(true);
 
-        if (store.useFishWIs === 1 && Platform.current.isDev()) {
+        if (useFishWIs === 1 && Platform.current.isDev()) {
             setIsLoading(false);
-            store.setWorkItemsForQuery(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)]);
+            dispatch(dataWorkItemsForQuerySet(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)]));
             return;
         }
 
-        store.clearInterval(query);
+        Timers.delete(query.queryId);
 
         await loadWorkItemsForThisQuery();
-        store.setInterval(
-            query,
-            setInterval(() => {
-                setIsLoading(true);
-                loadWorkItemsForThisQuery();
-            }, store.settings.refreshRate * 1000)
-        );
+        Timers.create(query.queryId, 1000 * refreshRate, () => {
+            setIsLoading(true);
+            loadWorkItemsForThisQuery();
+        });
     };
 
     const loadWorkItemsForThisQuery = async () => {
@@ -55,7 +46,7 @@ export default function useQueryLoader(query: IQuery) {
         //set query emptiness to sort them
         Query.toggleBoolean(query, "empty", !wis.length);
 
-        store.setWorkItemsForQuery(query, wis);
+        dispatch(dataWorkItemsForQuerySet(query, wis));
         setIsLoading(false);
     };
 

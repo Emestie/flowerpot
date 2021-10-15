@@ -1,16 +1,19 @@
 import React from "react";
-import { Button, Checkbox, Icon, Label, Radio, Table } from "semantic-ui-react";
-import store from "../store";
-import { observer } from "mobx-react";
+import { Button, Icon, Table } from "semantic-ui-react";
 import { s } from "../values/Strings";
 import Links from "../helpers/Links";
 import ColorPicker from "./ColorPicker";
+import { useDispatch, useSelector } from "react-redux";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { appDialogSet } from "../redux/actions/appActions";
 
-export default observer(() => {
-    const links = store.settings.links.sort((a, b) => (a.order || 0) - (b.order || 0));
+export function LinksSettingsTable() {
+    const dispatch = useDispatch();
+    const settings = useSelector(settingsSelector);
+    const links = settings.links.sort((a, b) => (a.order || 0) - (b.order || 0));
 
     const addLink = () => {
-        store.dialogs.addLink = true;
+        dispatch(appDialogSet("addLink", true));
     };
 
     const rows = links.map((link, v, a) => (
@@ -85,4 +88,4 @@ export default observer(() => {
             </Table.Footer>
         </Table>
     );
-});
+}

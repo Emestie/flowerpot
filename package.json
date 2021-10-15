@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
-    "version": "0.2.21",
-    "description": "TFS Query watch tool",
+    "version": "0.3.0",
+    "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
         "url": "https://github.com/Emestie"
@@ -26,7 +26,7 @@
         "@trodi/electron-splashscreen": "^0.3.4",
         "cyrillic-to-translit-js": "^3.1.0",
         "electron-is-dev": "^1.2.0",
-        "electron-updater": "^4.3.4"
+        "electron-updater": "^4.3.9"
     },
     "devDependencies": {
         "@types/jest": "*",
@@ -34,17 +34,20 @@
         "@types/preval.macro": "^3.0.0",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
+        "@types/redux-logger": "^3.0.9",
         "electron": "^9.4.0",
         "electron-builder": "^22.11.7",
         "foreman": "^3.0.1",
-        "mobx": "^5.15.6",
-        "mobx-react": "^6.2.5",
         "node-sass": "^4.14.1",
         "preval.macro": "^3.0.0",
         "react": "^17.0.2",
         "react-contextmenu": "^2.14.0",
         "react-dom": "^17.0.2",
+        "react-redux": "^7.2.5",
         "react-scripts": "^4.0.0",
+        "redux": "^4.1.1",
+        "redux-logger": "^3.0.6",
+        "redux-thunk": "^2.3.0",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^0.88.2",
         "typescript": "^4.4.3"

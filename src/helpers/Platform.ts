@@ -1,3 +1,4 @@
+import { TLocale } from "../redux/types";
 import ElectronPlatform from "./platforms/Electron";
 import WebPlatform from "./platforms/Web";
 
@@ -11,8 +12,8 @@ export interface IPlatformExtension {
     getStoreProp: (prop: string) => any;
     setStoreProp: (prop: string, value: any) => void;
     copyString: (s: string) => void;
-    changeLocale: () => void;
-    toggleAutostart: () => void;
+    changeLocale: (locale: TLocale) => void;
+    toggleAutostart: (autostart: boolean) => void;
     updateTrayIcon: (level: number, hasChanges?: boolean) => void;
     updateTrayIconDot: (hasChanges: boolean) => void;
     openUrl: (url: string) => void;

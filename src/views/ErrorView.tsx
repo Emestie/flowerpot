@@ -1,65 +1,66 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Container, Message } from "semantic-ui-react";
-import store from "../store";
 import { s } from "../values/Strings";
-import { observer } from "mobx-react";
-import ViewHeading from "../components/heading/ViewHeading";
+import { ViewHeading } from "../components/heading/ViewHeading";
+import { useDispatch, useSelector } from "react-redux";
+import { appSelector } from "../redux/selectors/appSelectors";
+import { appViewSet } from "../redux/actions/appActions";
+import { Timers } from "../helpers/Timers";
 
-interface IProps {}
-interface IState {}
+export function ErrorView() {
+    const { errorMessage } = useSelector(appSelector);
+    const dispatch = useDispatch();
 
-@observer
-export default class ErrorView extends React.Component<IProps, IState> {
-    componentDidMount() {
-        this.routineStart();
-    }
+    useEffect(() => {
+        routineStart();
+    }, []);
 
-    routineStart = () => {
-        if (store.errorInterval) {
-            clearInterval(store.errorInterval);
-            store.errorInterval = undefined;
-        }
-
-        store.errorInterval = setInterval(() => {
-            this.onRefreshClick();
-        }, 60000);
+    const routineStart = () => {
+        Timers.delete("error-interval");
+        Timers.create("error-interval", 60000, () => {
+            onRefreshClick();
+        });
     };
 
-    onSettingsClick = () => {
-        store.switchView("credentials");
+    const routineStop = () => {
+        Timers.delete("error-interval");
     };
 
-    onRefreshClick = () => {
-        store.switchView("main");
+    const onSettingsClick = () => {
+        routineStop();
+        dispatch(appViewSet("credentials"));
     };
 
-    render() {
-        return (
-            <div className="Page">
-                <ViewHeading />
-                <Container fluid>
-                    <Message negative>
-                        <Message.Header>{s("errorMsg")}</Message.Header>
-                        <p>{store.errorMessage}</p>
-                    </Message>
-                    <div style={{ textAlign: "center" }}>
-                        <div>
-                            {s("errorDesc1")}{" "}
-                            <Button size="tiny" compact primary onClick={this.onRefreshClick}>
-                                {s("refresh")}
-                            </Button>{" "}
-                            {s("errorDesc2")}
-                        </div>
-                        <div>
-                            {s("errorDesc3")}{" "}
-                            <Button size="tiny" compact onClick={this.onSettingsClick}>
-                                {s("tfsSettings")}
-                            </Button>{" "}
-                            {s("errorDesc4")}
-                        </div>
+    const onRefreshClick = () => {
+        routineStop();
+        dispatch(appViewSet("main"));
+    };
+
+    return (
+        <div className="Page">
+            <ViewHeading />
+            <Container fluid>
+                <Message negative>
+                    <Message.Header>{s("errorMsg")}</Message.Header>
+                    <p>{errorMessage}</p>
+                </Message>
+                <div style={{ textAlign: "center" }}>
+                    <div>
+                        {s("errorDesc1")}{" "}
+                        <Button size="tiny" compact primary onClick={onRefreshClick}>
+                            {s("refresh")}
+                        </Button>{" "}
+                        {s("errorDesc2")}
                     </div>
-                </Container>
-            </div>
-        );
-    }
+                    <div>
+                        {s("errorDesc3")}{" "}
+                        <Button size="tiny" compact onClick={onSettingsClick}>
+                            {s("tfsSettings")}
+                        </Button>{" "}
+                        {s("errorDesc4")}
+                    </div>
+                </div>
+            </Container>
+        </div>
+    );
 }

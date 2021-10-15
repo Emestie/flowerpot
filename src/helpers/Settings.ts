@@ -1,13 +1,15 @@
-import store from "../store";
 import { IQuery } from "./Query";
 import Platform from "./Platform";
 import { ILinkItem } from "./Links";
+import { store } from "../redux/store";
+import { settingsSet } from "../redux/actions/settingsActions";
+import { appSet } from "../redux/actions/appActions";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned";
 
-interface IListItem {
+export interface IListItem {
     id: number;
     rev: number;
     word?: string;
@@ -51,21 +53,24 @@ export interface ISettings {
 
 export default class Settings {
     public static read() {
-        let settings = Platform.current.getStoreProp("flowerpot");
+        const settings = Platform.current.getStoreProp("flowerpot");
         if (settings) {
             try {
-                let parsedSettings = JSON.parse(settings);
-                store.setSettings(parsedSettings);
+                const parsedSettings = JSON.parse(settings);
+                //store.setSettings(parsedSettings);
+                store.dispatch(settingsSet(parsedSettings));
             } catch (e: any) {}
         }
 
-        store.autostart = Platform.current.getStoreProp("autostart");
-        store.locale = Platform.current.getStoreProp("locale");
+        const autostart = Platform.current.getStoreProp("autostart");
+        const locale = Platform.current.getStoreProp("locale");
+
+        store.dispatch(appSet({ autostart, locale }));
     }
 
-    public static save() {
+    public static save(settings: ISettings) {
         try {
-            let settingsToStore = JSON.stringify(store.settings);
+            const settingsToStore = JSON.stringify(settings);
             Platform.current.setStoreProp("flowerpot", settingsToStore);
         } catch (e: any) {}
     }

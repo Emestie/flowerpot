@@ -1,5 +1,6 @@
-import store from "../../store";
-import Platform, { INotificationData, PlatformType } from "../Platform";
+import { store } from "../../redux/store";
+import { TLocale } from "../../redux/types";
+import Platform, { INotificationData } from "../Platform";
 
 export default class CommonPlatform {
     public getStoreProp(prop: string) {
@@ -17,12 +18,14 @@ export default class CommonPlatform {
         if ((window as any).electronClipboard) (window as any).electronClipboard.writeText(s);
     }
 
-    public changeLocale() {
-        Platform.current.setStoreProp("locale", store.locale);
+    public changeLocale(locale: TLocale) {
+        //const { locale } = store.getState().app;
+        Platform.current.setStoreProp("locale", locale);
     }
 
-    public toggleAutostart() {
-        Platform.current.setStoreProp("autostart", store.autostart);
+    public toggleAutostart(autostart: boolean) {
+        //const { autostart } = store.getState().app;
+        Platform.current.setStoreProp("autostart", autostart);
         Platform.current.sendIpcRenderer("toggle-autostart");
     }
 

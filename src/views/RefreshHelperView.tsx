@@ -1,16 +1,13 @@
-import React from "react";
-import store from "../store";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { appViewSet } from "../redux/actions/appActions";
 
-interface IProps {}
-interface IState {}
+export function RefreshHelperView() {
+    const dispatch = useDispatch();
 
-export default class RefreshHelperView extends React.Component<IProps, IState> {
+    useEffect(() => {
+        dispatch(appViewSet("main"));
+    }, []);
 
-    componentDidMount() {
-        store.switchView('main');
-    }
-
-    render() {
-        return <div></div>;
-    }
+    return <div></div>;
 }

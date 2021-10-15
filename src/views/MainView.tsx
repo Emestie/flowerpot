@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { Container, Message, Button, Icon, Form } from "semantic-ui-react";
-import store from "../store";
-import WorkItemsBlock from "../components/WorkItemsBlock";
-import WhatsNewBanner from "../components/banners/WhatsNewBanner";
-import { observer } from "mobx-react";
+import { WorkItemsBlock } from "../components/WorkItemsBlock";
+import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
 import Platform from "../helpers/Platform";
 import { IQuery } from "../helpers/Query";
 import { s } from "../values/Strings";
-import LocalVersionBanner from "../components/LocalVersionBanner";
-import ViewHeading from "../components/heading/ViewHeading";
-import ActionBannersContainer from "./containers/ActionBannersContainer";
-import QuickLinksContainer from "./containers/QuickLinksContainer";
+import { LocalVersionBanner } from "../components/LocalVersionBanner";
+import { ViewHeading } from "../components/heading/ViewHeading";
+import { ActionBannersContainer } from "./containers/ActionBannersContainer";
+import { QuickLinksContainer } from "./containers/QuickLinksContainer";
+import { useDispatch, useSelector } from "react-redux";
+import { appDialogSet, appViewSet } from "../redux/actions/appActions";
+import { appSelector } from "../redux/selectors/appSelectors";
+import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
+import { dataChangesCollectionClear } from "../redux/actions/dataActions";
+import { dataSelector } from "../redux/selectors/dataSelectors";
+import Differences from "../helpers/Differences";
 
 export const queriesSorting = (a: IQuery, b: IQuery) => {
     if (a.empty === b.empty) return 0;
@@ -18,30 +23,38 @@ export const queriesSorting = (a: IQuery, b: IQuery) => {
     else return 1;
 };
 
-export default observer(() => {
+export function MainView() {
+    const dispatch = useDispatch();
+    const { loadingInProgressList, updateStatus } = useSelector(appSelector);
+    const settings = useSelector(settingsSelector);
+    const { changesCollection } = useSelector(dataSelector);
+    const storedQueries = useSelector(getQueriesSelector());
+
     const [quickSearchVal, setQuickSearchVal] = useState("");
 
-    const isRefreshAvailable = !!store.getQueries().length && !store.loadingInProgressList.length;
+    const isRefreshAvailable = !!storedQueries.length && !loadingInProgressList.length;
 
     const onRefresh = () => {
-        store.switchView("refreshhelper");
+        dispatch(appViewSet("refreshhelper"));
     };
 
     const onSettings = () => {
-        store.switchView("settings");
+        dispatch(appViewSet("settings"));
     };
 
     const onOpenById = () => {
-        store.dialogs.openById = true;
+        dispatch(appDialogSet("openById", true));
     };
 
     const updateApp = () => Platform.current.updateApp();
 
     const markAllAsRead = () => {
-        store.clearAllChanges();
+        dispatch(dataChangesCollectionClear());
     };
 
-    const queries = store.getQueries().sort(queriesSorting);
+    const queries = storedQueries.sort(queriesSorting);
+
+    const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
     const queriesElems = queries.length ? (
         queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} filter={quickSearchVal} />)
@@ -56,14 +69,14 @@ export default observer(() => {
         Platform.current.updateTrayIcon(4);
     }
 
-    const qlEnabled = store.settings.showQuickLinks;
+    const qlEnabled = settings.showQuickLinks;
 
     return (
         <div className="Page" style={{ paddingTop: qlEnabled ? 85 : undefined }}>
             <ViewHeading>
                 <div>
                     <LocalVersionBanner />
-                    {store.updateStatus === "ready" && (
+                    {updateStatus === "ready" && (
                         <Button icon positive onClick={updateApp} title={s("updateArrived")}>
                             <Icon name="refresh" />
                         </Button>
@@ -80,7 +93,7 @@ export default observer(() => {
                         />
                     </div>
                     <Button onClick={onOpenById}>{s("openById")}</Button>
-                    {!!store.settings.showUnreads && store.isChangesCollectionHasItems() && (
+                    {!!settings.showUnreads && isChangesCollectionHasItems && (
                         <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
                             <Icon name="check circle outline" />
                         </Button>
@@ -101,4 +114,4 @@ export default observer(() => {
             </Container>
         </div>
     );
-});
+}

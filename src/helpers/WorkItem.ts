@@ -1,7 +1,7 @@
-import store from "../store";
 import Lists from "./Lists";
 import { TLists } from "./Settings";
 import { IQuery } from "./Query";
+import { store } from "../redux/store";
 
 export interface IWorkItem {
     id: number;
@@ -119,7 +119,7 @@ export default class WorkItem {
         let isMine =
             this.parseNameField(resp.fields["System.AssignedTo"] || "")
                 .toLowerCase()
-                .indexOf(store.settings.tfsUser.toLowerCase()) !== -1;
+                .indexOf(store.getState().settings.tfsUser.toLowerCase()) !== -1;
         let item: IWorkItem = {
             id: resp.id,
             rev: resp.rev,
