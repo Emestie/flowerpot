@@ -27,7 +27,7 @@ export function DebugView() {
 
     const setChanges = () => {
         let wi = WorkItem.fish(settings.queries[0]);
-        wi.id = 108920;
+        wi.id = 1578;
         dispatch(dataChangesCollectionItemSet(wi, true));
     };
 
@@ -43,6 +43,13 @@ export function DebugView() {
                     Electron
                 </Header>
                 <Button onClick={() => Platform.current.toggleConsole()}>console</Button>
+                <Button
+                    onClick={() => {
+                        window.location.href = "http://localhost:5000";
+                    }}
+                >
+                    go to localhost:5000
+                </Button>
                 <Header as="h3" dividing>
                     Views
                 </Header>

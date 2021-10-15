@@ -59,7 +59,7 @@ export function SelectQueriesView() {
         const all = availableQueries;
         const index = all.findIndex((q) => q.queryId === query.queryId);
         all[index].checked = !all[index].checked;
-        setAvailableQueries(all);
+        setAvailableQueries([...all]);
     };
 
     const queryList = isLoading ? (

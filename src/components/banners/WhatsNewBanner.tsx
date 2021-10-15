@@ -6,6 +6,7 @@ import Version from "../../helpers/Version";
 import { useDispatch, useSelector } from "react-redux";
 import { appSelector } from "../../redux/selectors/appSelectors";
 import { appSet } from "../../redux/actions/appActions";
+import { settingsUpdate } from "../../redux/actions/settingsActions";
 
 export function WhatsNewBanner() {
     const { showWhatsNew } = useSelector(appSelector);
@@ -26,7 +27,7 @@ export function WhatsNewBanner() {
     const neverShowNotesAgain = () => {
         hideMessage();
         const showWhatsNewOnUpdate = false;
-        dispatch(appSet({ showWhatsNewOnUpdate }));
+        dispatch(settingsUpdate({ showWhatsNewOnUpdate }));
     };
 
     return (

@@ -118,4 +118,8 @@ export default class Differences {
         }
         Platform.current.showNativeNotif({ title: title, body: text });
     }
+
+    public static isChangesCollectionHasChanges(changesCollection: any) {
+        return !!Object.values(changesCollection || {}).filter((x) => !!x).length;
+    }
 }

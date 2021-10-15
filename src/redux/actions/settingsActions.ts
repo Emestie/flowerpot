@@ -8,7 +8,7 @@ export function settingsSet(settings: ISettings) {
     return createAction(Actions.SettingsSet, settings);
 }
 
-export function settingsUpdate(settings: any) {
+export function settingsUpdate(settings: Partial<ISettings>) {
     return createAction(Actions.SettingsUpdate, settings);
 }
 

@@ -15,6 +15,7 @@ import { appSelector } from "../redux/selectors/appSelectors";
 import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { dataChangesCollectionClear } from "../redux/actions/dataActions";
 import { dataSelector } from "../redux/selectors/dataSelectors";
+import Differences from "../helpers/Differences";
 
 export const queriesSorting = (a: IQuery, b: IQuery) => {
     if (a.empty === b.empty) return 0;
@@ -53,7 +54,7 @@ export function MainView() {
 
     const queries = storedQueries.sort(queriesSorting);
 
-    const isChangesCollectionHasItems = !!Object.keys(changesCollection).length;
+    const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
     const queriesElems = queries.length ? (
         queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} filter={quickSearchVal} />)

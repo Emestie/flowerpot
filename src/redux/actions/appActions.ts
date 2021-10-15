@@ -1,5 +1,6 @@
 import { Eve } from "../../helpers/Festival";
 import { Actions } from "../actions-enum";
+import { IAppState } from "../reducers/appReducer";
 import { store } from "../store";
 import { IAction, TDialog, TUpdateStatus, TView } from "../types";
 import { createAction } from "./_common";
@@ -17,7 +18,7 @@ export function appShowWhatsNewSet(showWhatsNew: boolean): IAction {
 }
 
 //locale, autostart
-export function appSet(fields: any): IAction {
+export function appSet(fields: Partial<IAppState>): IAction {
     return createAction(Actions.AppSettingsSet, { ...fields });
 }
 

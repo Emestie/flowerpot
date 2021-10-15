@@ -10,14 +10,14 @@ export default class Lists {
         //remove from other lists if item in them
         const deferred = this.deleteFromList("deferred", id, collection, true);
         const permawatch = this.deleteFromList("permawatch", id, collection, true);
-        const favourites = this.deleteFromList("favorites", id, collection, true);
+        const favorites = this.deleteFromList("favorites", id, collection, true);
         const hidden = this.deleteFromList("hidden", id, collection, true);
         const pinned = this.deleteFromList("pinned", id, collection, true);
 
         const list = this.deleteFromList(listName, id, collection, true);
         list.push({ id: id, collection: collection, rev: rev });
 
-        const lists = { deferred, permawatch, favourites, hidden, pinned, [listName]: list };
+        const lists = { deferred, permawatch, favorites, hidden, pinned, [listName]: list } as any;
         store.dispatch(settingsUpdate({ lists }));
     }
 
@@ -29,7 +29,6 @@ export default class Lists {
         store.dispatch(settingsListUpdate(listName, list));
     }
 
-    //TODO: review stopUpdate
     public static deleteFromList(listName: TLists, id: number, collection: string, stopUpdate?: boolean) {
         let l = getListsSelector(listName)(store.getState()); // store.getList(list);
 

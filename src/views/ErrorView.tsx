@@ -5,9 +5,7 @@ import { ViewHeading } from "../components/heading/ViewHeading";
 import { useDispatch, useSelector } from "react-redux";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { appViewSet } from "../redux/actions/appActions";
-
-//TODO: было в сторе
-let errorInterval: any = undefined;
+import { Timers } from "../helpers/Timers";
 
 export function ErrorView() {
     const { errorMessage } = useSelector(appSelector);
@@ -18,21 +16,23 @@ export function ErrorView() {
     }, []);
 
     const routineStart = () => {
-        if (errorInterval) {
-            clearInterval(errorInterval);
-            errorInterval = undefined;
-        }
-
-        errorInterval = setInterval(() => {
+        Timers.delete("error-interval");
+        Timers.create("error-interval", 60000, () => {
             onRefreshClick();
-        }, 60000);
+        });
+    };
+
+    const routineStop = () => {
+        Timers.delete("error-interval");
     };
 
     const onSettingsClick = () => {
+        routineStop();
         dispatch(appViewSet("credentials"));
     };
 
     const onRefreshClick = () => {
+        routineStop();
         dispatch(appViewSet("main"));
     };
 

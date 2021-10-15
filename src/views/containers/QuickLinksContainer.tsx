@@ -27,12 +27,12 @@ export function QuickLinksContainer() {
     ));
 
     if (!items.length) {
-        items.push(<span style={{ color: "gray", fontSize: 10, fontStyle: "italic" }}>{s("noLinks")}</span>);
+        items.push(<span key="nolinkskey" style={{ color: "gray", fontSize: 10, fontStyle: "italic" }}>{s("noLinks")}</span>);
     }
 
     if (links.length < 5) {
         items.push(
-            <Label key={"addlinkkey"} onClick={addNew} size="mini">
+            <Label key="addlinkkey" onClick={addNew} size="mini">
                 +
             </Label>
         );

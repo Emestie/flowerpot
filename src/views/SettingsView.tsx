@@ -70,15 +70,17 @@ export function SettingsView() {
     const onLocaleSelect = (val: TLocale) => {
         const locale_ = val;
         dispatch(appSet({ locale: locale_ }));
+        Platform.current.changeLocale(locale_);
     };
 
     const toggleAutostart = () => {
         const autostart_ = !autostart;
         dispatch(appSet({ autostart: autostart_ }));
+        Platform.current.toggleAutostart(autostart_);
     };
 
     const toggleIconColor = () => {
-        const iconChangesOnMyWorkItemsOnly = settings.iconChangesOnMyWorkItemsOnly;
+        const iconChangesOnMyWorkItemsOnly = !settings.iconChangesOnMyWorkItemsOnly;
         dispatch(settingsUpdate({ iconChangesOnMyWorkItemsOnly }));
     };
 
