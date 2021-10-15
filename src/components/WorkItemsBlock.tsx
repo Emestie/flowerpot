@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Header, Label, Table, Icon } from "semantic-ui-react";
 import Query, { IQuery } from "../helpers/Query";
 import { WorkItemRow } from "./WorkItemRow";
-import { IWorkItem } from "../helpers/WorkItem";
+import WorkItem, { IWorkItem } from "../helpers/WorkItem";
 import Platform from "../helpers/Platform";
 import { s } from "../values/Strings";
 import Lists from "../helpers/Lists";
@@ -79,13 +79,13 @@ export function WorkItemsBlock(props: IProps) {
     const workItems = filteredItems();
 
     const isPermawatch = props.query.queryId === "___permawatch";
-    const totalItems = workItems.filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)).length;
-    const redItems = workItems
+    const totalItemsCount = workItems.filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)).length;
+    const redItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
-        .filter((wi) => wi.promptness === 1 || wi.rank === 1).length;
-    const orangeItems = workItems
+        .filter((wi) => WorkItem.isRed(wi)).length;
+    const orangeItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
-        .filter((wi) => wi.promptness === 2 && wi.importance !== 3).length;
+        .filter((wi) => WorkItem.isOrange(wi)).length;
 
     useEffect(() => {
         let newProgressList = [...loadingInProgressList];
@@ -214,22 +214,22 @@ export function WorkItemsBlock(props: IProps) {
                     </small>
                 </span>
                 <span className="WICounts">
-                    {!!redItems && (
+                    {!!redItemsCount && (
                         <Label size="mini" circular color="red">
-                            {redItems}
+                            {redItemsCount}
                         </Label>
                     )}
-                    {!!orangeItems && (
+                    {!!orangeItemsCount && (
                         <Label size="mini" circular color="orange">
-                            {orangeItems}
+                            {orangeItemsCount}
                         </Label>
                     )}
-                    {!!totalItems && (
+                    {!!totalItemsCount && (
                         <Label size="mini" circular>
-                            {totalItems}
+                            {totalItemsCount}
                         </Label>
                     )}
-                    {!totalItems && !isLoading && (
+                    {!totalItemsCount && !isLoading && (
                         <Label size="small" circular color="green">
                             ✔
                         </Label>

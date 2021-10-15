@@ -25,8 +25,8 @@ export function WorkItemRow(props: IProps) {
     const settings = useSelector(settingsSelector);
     const { changesCollection } = useSelector(dataSelector);
 
-    const isRed = props.item.promptness === 1 || props.item.rank === 1;
-    const isOrange = props.item.type !== "Task" && props.item.promptness === 2 && props.item.importance !== 3;
+    const isRed = WorkItem.isRed(props.item);
+    const isOrange = WorkItem.isOrange(props.item);
 
     const importanceEl = (() => {
         if (!props.item.importance) return undefined;

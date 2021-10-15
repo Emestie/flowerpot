@@ -262,4 +262,12 @@ export default class WorkItem {
     public static getTextName(fullName: string) {
         return fullName.split(" <")[0];
     }
+
+    public static isOrange(wi: IWorkItem) {
+        return wi.type !== "Task" && wi.promptness === 2 && wi.importance !== 3;
+    }
+
+    public static isRed(wi: IWorkItem) {
+        return wi.promptness === 1 || wi.rank === 1;
+    }
 }

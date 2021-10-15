@@ -1,4 +1,4 @@
-import { IWorkItem } from "./WorkItem";
+import WorkItem, { IWorkItem } from "./WorkItem";
 import Platform from "./Platform";
 import Loaders from "./Loaders";
 import { s } from "../values/Strings";
@@ -172,8 +172,8 @@ export default class Query {
         let level = allWIs.length ? 3 : 4;
 
         allWIs.forEach((wi) => {
-            if (wi.promptness && wi.promptness < level) level = wi.promptness;
-            if (wi.rank === 1) level = wi.rank;
+            if (WorkItem.isRed(wi)) level = 1;
+            if (WorkItem.isOrange(wi) && level !== 1) level = 2;
         });
 
         Platform.current.updateTrayIcon(level, hasChanges);
