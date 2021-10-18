@@ -206,6 +206,8 @@ const ru: ILocalizedStrings = {
     cbQuickLinksLabel: "Показывать быстрые ссылки на главной странице",
 
     enterID: "Введите ID рабочего элемента, который нужно открыть",
+
+    apploading: "Приложение загружается...",
 };
 
 export default ru;

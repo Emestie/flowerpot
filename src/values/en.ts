@@ -204,6 +204,8 @@ const en: ILocalizedStrings = {
     cbQuickLinksLabel: "Show Quick Links on Main page",
 
     enterID: "Enter ID of Work Item to open",
+
+    apploading: "App is loading...",
 };
 
 export default en;
