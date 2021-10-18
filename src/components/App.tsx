@@ -20,6 +20,7 @@ import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { dataChangesCollectionSet } from "../redux/actions/dataActions";
 import { TView } from "../redux/types";
 import { appSelector } from "../redux/selectors/appSelectors";
+import { store } from "../redux/store";
 
 export function App() {
     const dispatch = useDispatch();
@@ -35,16 +36,18 @@ export function App() {
 
         Platform.current.checkForUpdates(true);
 
-        if (Platform.current.isDev()) {
-            dispatch(appViewSet("debug"));
-            //dispatch(appViewSet("main"));
-        } else {
-            if (settings.credentialsChecked) dispatch(appViewSet("main"));
-            else dispatch(appViewSet("credentials"));
-        }
+        setTimeout(() => {
+            if (Platform.current.isDev()) {
+                dispatch(appViewSet("debug"));
+                //dispatch(appViewSet("main"));
+            } else {
+                if (store.getState().settings.credentialsChecked) dispatch(appViewSet("main"));
+                else dispatch(appViewSet("credentials"));
+            }
 
-        setWIChangesCollection();
-        afterUpdateHandler();
+            setWIChangesCollection();
+            afterUpdateHandler();
+        }, 500);
     }, []);
 
     const setWIChangesCollection = () => {
