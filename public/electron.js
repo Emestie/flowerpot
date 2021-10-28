@@ -227,7 +227,7 @@ function buildTrayIcon() {
 
 function buildIconPath(level, hasChanges) {
     if (hasChanges) level = level + "d";
-    return __dirname + "/../_icons/flower" + level + ".ico";
+    return __dirname + "/../_icons/flower" + level + ".png";
 }
 
 function buildIconDotPath(level, hasChanges) {
