@@ -21,6 +21,7 @@ import { dataChangesCollectionSet } from "../redux/actions/dataActions";
 import { TView } from "../redux/types";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { store } from "../redux/store";
+import { Timers } from "../helpers/Timers";
 
 export function App() {
     const dispatch = useDispatch();
@@ -32,7 +33,9 @@ export function App() {
 
         Settings.read();
         Migration.perform();
-        Festival.findOut();
+        Timers.create("festival-icons", 60000 * 60 * 3, () => {
+            Festival.findOut();
+        });
 
         Platform.current.checkForUpdates(true);
 
@@ -41,7 +44,8 @@ export function App() {
                 dispatch(appViewSet("debug"));
                 //dispatch(appViewSet("main"));
             } else {
-                if (store.getState().settings.credentialsChecked) dispatch(appViewSet("main"));
+                if (store.getState().settings.credentialsChecked)
+                    dispatch(appViewSet("main"));
                 else dispatch(appViewSet("credentials"));
             }
 
@@ -58,8 +62,13 @@ export function App() {
     };
 
     function afterUpdateHandler() {
-        if (!Platform.current.isDev() && !Platform.current.isLocal() && Version.isChangedLong()) {
-            if (settings.showWhatsNewOnUpdate && Version.isChangedShort()) dispatch(appShowWhatsNewSet(true));
+        if (
+            !Platform.current.isDev() &&
+            !Platform.current.isLocal() &&
+            Version.isChangedLong()
+        ) {
+            if (settings.showWhatsNewOnUpdate && Version.isChangedShort())
+                dispatch(appShowWhatsNewSet(true));
             Version.storeInSettings();
         }
     }
