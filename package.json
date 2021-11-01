@@ -56,7 +56,7 @@
         "dev": "nf start",
         "start": "react-scripts start",
         "electron": "electron .",
-        "build-react": "react-scripts build && DEL /S /Q .\\build\\*.map && copy .\\build\\index.html .\\build\\firebase-entry-point.html",
+        "build-react": "react-scripts build && node ./node-scripts/post-react-build.js",
         "build-electron": "npm run build-react && electron-builder -w --publish never",
         "deploy-react": "npm run build-react && firebase deploy",
         "deploy-electron": "npm run build-react && electron-builder -w --publish always"
