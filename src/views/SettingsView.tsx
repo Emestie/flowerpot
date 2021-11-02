@@ -133,7 +133,12 @@ export function SettingsView() {
     };
 
     if (Platform.current.isDev()) {
-        if (refreshRates.length !== 5) refreshRates.push({ key: Math.random(), text: s("refreshdebug"), value: 10 });
+        if (refreshRates.length !== 5)
+            refreshRates.push({
+                key: Math.random(),
+                text: s("refreshdebug"),
+                value: 10,
+            });
     }
 
     let updateLabel = undefined;
@@ -203,7 +208,11 @@ export function SettingsView() {
                     {s("quickLinksSettingsHeader")}
                 </Header>
                 <LinksSettingsTable />
-                <Form.Checkbox label={s("cbQuickLinksLabel")} checked={settings.showQuickLinks} onChange={toggleQuickLinks} />
+                <Form.Checkbox
+                    label={s("cbQuickLinksLabel")}
+                    checked={settings.showQuickLinks}
+                    onChange={toggleQuickLinks}
+                />
                 <br />
                 <Header as="h3" dividing>
                     {s("settingsWIHeader")}
@@ -229,7 +238,11 @@ export function SettingsView() {
                     onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
                 />
                 <br />
-                <Form.Checkbox label={s("cbIconLabel")} checked={settings.iconChangesOnMyWorkItemsOnly} onChange={toggleIconColor} />
+                <Form.Checkbox
+                    label={s("cbIconLabel")}
+                    checked={settings.iconChangesOnMyWorkItemsOnly}
+                    onChange={toggleIconColor}
+                />
                 <br />
                 <Form.Checkbox label={s("mineOnTop")} checked={settings.mineOnTop} onChange={toggleMineOnTop} />
                 <br />
@@ -247,27 +260,23 @@ export function SettingsView() {
                     onChange={(e, { value }) => onLocaleSelect(value as TLocale)}
                 />
                 <br />
-                <Form.Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
-                <br />
+                {Platform.os === "win32" && (
+                    <>
+                        <Form.Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
+                        <br />
+                    </>
+                )}
                 <Form.Checkbox label={s("cbTelemetry")} checked={settings.allowTelemetry} onChange={toggleTelemetry} />
                 <br />
-                <Form.Checkbox label={s("cbWhatsNew")} checked={settings.showWhatsNewOnUpdate} onChange={toggleWhatsNewOnUpdate} />
+                <Form.Checkbox
+                    label={s("cbWhatsNew")}
+                    checked={settings.showWhatsNewOnUpdate}
+                    onChange={toggleWhatsNewOnUpdate}
+                />
                 <br />
                 <Header as="h3" dividing>
-                    {s("settingsCreditsHeader")}
+                    {s("settingsActionsHeader")}
                 </Header>
-                <Label as="a" image onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}>
-                    <img src={avatar} alt="" />
-                    <Icon name="github" />
-                    Emestie/flowerpot
-                </Label>
-                <Label>
-                    {s("versionWord")}
-                    <Label.Detail>{Version.long}</Label.Detail>
-                </Label>
-                <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/changelog")}>
-                    {s("releaseNotes")}
-                </Label>
                 <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/bot")}>
                     {s("flowerbot")}
                 </Label>
@@ -280,18 +289,25 @@ export function SettingsView() {
                 >
                     {s("feedbackSettingsButton")}
                 </Label>
+                <br />
+                <Header as="h3" dividing>
+                    {s("settingsCreditsHeader")}
+                </Header>
+                <Label as="a" image onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}>
+                    <img src={avatar} alt="" />
+                    <Icon name="github" />
+                    Emestie/flowerpot
+                </Label>
+                <Label>
+                    {s("versionWord")}
+                    <Label.Detail>{Version.long} / {Platform.os}</Label.Detail>
+                </Label>
+                <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/changelog")}>
+                    {s("releaseNotes")}
+                </Label>
                 {updateLabel}
                 <br />
                 <br />
-                {/* {s("contributors")}
-                    <Label size="tiny" as="a" onClick={() => Platform.current.openUrl("https://github.com/Stassras")}>
-                        <Icon name="github" />
-                        Stassras
-                    </Label>
-                    <Label size="tiny" as="a" onClick={() => Platform.current.openUrl("https://github.com/selikhovamary")}>
-                        <Icon name="github" />
-                        selikhovamary
-                    </Label> */}
             </Container>
         </div>
     );

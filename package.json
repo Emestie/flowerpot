@@ -1,6 +1,6 @@
 {
     "name": "flowerpot",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
@@ -11,12 +11,17 @@
     "build": {
         "productName": "Flowerpot",
         "appId": "mst.flowerpot",
+        "copyright": "Copyright © 2019 ${author}",
         "files": [
             "_icons/**/*",
             "build/**/*"
         ],
         "win": {
             "icon": "build/favicon.ico"
+        },
+        "mac": {
+            "icon": "build/macicon.icns",
+            "category": "public.app-category.utilities"
         },
         "publish": {
             "provider": "github"
@@ -57,9 +62,9 @@
         "start": "react-scripts start",
         "electron": "electron .",
         "build-react": "react-scripts build && node ./node-scripts/post-react-build.js",
-        "build-electron": "npm run build-react && electron-builder -w --publish never",
+        "build-electron": "npm run build-react && electron-builder -mw --publish never",
         "deploy-react": "npm run build-react && firebase deploy",
-        "deploy-electron": "npm run build-react && electron-builder -w --publish always"
+        "deploy-electron": "npm run build-react && electron-builder -mw --publish always"
     },
     "eslintConfig": {
         "extends": "react-app"

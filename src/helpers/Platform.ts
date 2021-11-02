@@ -33,6 +33,8 @@ export enum PlatformType {
     Web,
 }
 
+export type TOS = "win32" | "darwin";
+
 export default class Platform {
     private static _current: IPlatformExtension;
     private static _type: PlatformType;
@@ -46,6 +48,10 @@ export default class Platform {
             }
         }
         return this._type;
+    }
+
+    public static get os() {
+        return (window as any).platformName;
     }
 
     private static resolve() {

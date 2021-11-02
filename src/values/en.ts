@@ -112,9 +112,11 @@ const en: ILocalizedStrings = {
     pinned: "Pinned",
     deferredDescription: "IDs of Work Items you will see at the bottom of query results.",
     deferred: "Deferred",
-    hiddenDescription: "IDs of Work Items that will be hidden from result list until something will be changed in them.",
+    hiddenDescription:
+        "IDs of Work Items that will be hidden from result list until something will be changed in them.",
     hidden: "Hidden",
-    permawatchDescription: "IDs of Work Items that will be placed in separated query and stay there until manual remove.",
+    permawatchDescription:
+        "IDs of Work Items that will be placed in separated query and stay there until manual remove.",
     permawatch: "Permawatch",
     keywords: "Keywords",
     keywordsDescription: "Work Items that contain keywords will be selected with blue.",
@@ -142,7 +144,8 @@ const en: ILocalizedStrings = {
     releaseNotes: "Release notes",
 
     localCaption: "Local version",
-    localWarning: "App loaded with local scripts. The reason might be in the internet outage. Not all features available.",
+    localWarning:
+        "App loaded with local scripts. The reason might be in the internet outage. Not all features available.",
 
     justUpdatedMessage1: "Flowerpot has been updated to version ",
     justUpdatedMessage2: "Release notes",
@@ -186,7 +189,7 @@ const en: ILocalizedStrings = {
 
     TenYearsAnny: "10 years of MR",
 
-    feedbackAlert: "Flowerpot нужны ваши идеи и пожелания!",
+    feedbackAlert: "Flowerpot needs your feedback!",
     feedbackAlertButton: "Предложить идею",
     feedbackSettingsButton: "Feedback & Ideas",
     feedbackWindowCaption: "Enter your idea, feedback or bug report and press OK",
@@ -206,6 +209,10 @@ const en: ILocalizedStrings = {
     enterID: "Enter ID of Work Item to open",
 
     apploading: "App is loading...",
+
+    settingsActionsHeader: "Actions",
+
+    hideBanner: "Hide",
 };
 
 export default en;

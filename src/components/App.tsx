@@ -51,7 +51,7 @@ export function App() {
 
             setWIChangesCollection();
             afterUpdateHandler();
-        }, 500);
+        }, 250);
     }, []);
 
     const setWIChangesCollection = () => {

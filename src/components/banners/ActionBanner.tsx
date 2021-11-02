@@ -4,6 +4,7 @@ import { Message } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { s } from "../../values/Strings";
 
 export interface IActionBannerProps {
     id: number;
@@ -42,12 +43,19 @@ export function ActionBanner(p: IActionBannerProps) {
     return (
         <Message {...types}>
             {p.img && (
-                <img alt="" style={{ position: "absolute", top: 8, left: 8, height: 32, width: 32, borderRadius: "50%" }} src={p.img}></img>
+                <img
+                    alt=""
+                    style={{ position: "absolute", top: 8, left: 8, height: 32, width: 32, borderRadius: "50%" }}
+                    src={p.img}
+                ></img>
             )}
             <span style={{ marginLeft: p.img ? 32 : 5 }}>
                 {p.text}
                 <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={doActionAndHideBanner}>
                     {p.actionText}
+                </span>
+                <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={hideMessage}>
+                    {s("hideBanner")}
                 </span>
             </span>
         </Message>

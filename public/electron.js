@@ -17,35 +17,40 @@ let tray;
 
 app.requestSingleInstanceLock();
 
+//fs.writeFileSync('/Users/mst/Desktop/log.txt', `platform=${process.platform}, 1`); //logs
+
 function createWindow() {
     let { width, height } = store.get("windowDim");
     let { x, y } = store.get("windowPos");
     let currentLevel = 4;
 
-    if (process.platform === "win32") {
-        app.setAppUserModelId("mst.flowerpot");
-    }
+    //if (process.platform === "win32") {
+    app.setAppUserModelId("mst.flowerpot");
+    //}
 
     registerAutostart();
 
     const windowOptions = {
         title: "Flowerpot",
-        icon: buildIconPath(4),
+        icon: process.platform === "darwin" ? undefined : buildIconPath(4),
         width: width,
         height: height,
         minWidth: 900,
         minHeight: 700,
         x: x,
         y: y,
-        webPreferences: { webSecurity: false, preload: __dirname + "/electron/preload.js" }
+        webPreferences: {
+            webSecurity: false,
+            preload: __dirname + "/electron/preload.js",
+        },
     };
     const splashCfg = {
         windowOpts: windowOptions,
         templateUrl: `${__dirname}/splash-screen/splash-screen.html`,
         splashScreenOpts: {
             width: 260,
-            height: 100
-        }
+            height: 100,
+        },
     };
 
     wnd = Splashscreen.initSplashScreen(splashCfg);
@@ -121,7 +126,7 @@ function createWindow() {
         store.set("windowPos", { x, y });
     });
 
-    wnd.on("close", event => {
+    wnd.on("close", (event) => {
         if (app.quitting) {
             wnd = null;
         } else {
@@ -145,6 +150,10 @@ app.on("activate", () => {
     if (wnd === null) {
         createWindow();
     }
+
+    if (process.platform === "darwin" && wnd) {
+        wnd.show();
+    }
 });
 
 app.on("second-instance", (event, argv, cwd) => {
@@ -164,7 +173,7 @@ autoUpdater.on("update-not-available", () => {
     wnd.webContents.send("update_not_available");
 });
 
-autoUpdater.on("download-progress", data => {
+autoUpdater.on("download-progress", (data) => {
     wnd.webContents.send("download_progress", data);
 });
 
@@ -188,9 +197,11 @@ function iconUpdateTask(level, hasChanges) {
         let ni = nativeImage.createFromPath(pathToIcon);
         tray.setImage(ni);
 
-        let nidot = nativeImage.createFromPath(pathToDotIcon);
-        if (level !== 4) wnd.setOverlayIcon(nidot, "dot");
-        else wnd.setOverlayIcon(null, "no-dot");
+        if (process.platform === "win32") {
+            let nidot = nativeImage.createFromPath(pathToDotIcon);
+            if (level !== 4) wnd.setOverlayIcon(nidot, "dot");
+            else wnd.setOverlayIcon(null, "no-dot");
+        }
     } catch (ex) {}
 }
 
@@ -200,13 +211,15 @@ function buildTrayIcon() {
         locale = "en";
     }
 
-    tray = new Tray(buildIconPath(4, false));
+    const iconPath = buildIconPath(4, false);
+
+    tray = new Tray(iconPath);
     const contextMenu = Menu.buildFromTemplate([
         {
             label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
                 wnd.show();
-            }
+            },
         },
         {
             label: locale === "ru" ? "Выход" : "Quit",
@@ -214,8 +227,8 @@ function buildTrayIcon() {
                 wnd.close();
                 wnd = null;
                 app.quit();
-            }
-        }
+            },
+        },
     ]);
     tray.setToolTip("Flowerpot");
     tray.setContextMenu(contextMenu);
@@ -225,20 +238,24 @@ function buildTrayIcon() {
     });
 }
 
+function getIconExt() {
+    return process.platform === "darwin" ? "-16.png" : ".png";
+}
+
 function buildIconPath(level, hasChanges) {
     if (hasChanges) level = level + "d";
-    return __dirname + "/../_icons/flower" + level + ".png";
+    return path.join(__dirname, "/../_icons/flower" + level + getIconExt());
 }
 
 function buildIconDotPath(level, hasChanges) {
-    return __dirname + "/../_icons/dots/dot" + level + ".png";
+    return path.join(__dirname, "/../_icons/dots/dot" + level + ".png");
 }
 
 function registerAutostart() {
-    if (!isDev) {
+    if (!isDev && process.platform === "win32") {
         app.setLoginItemSettings({
             openAtLogin: store.get("autostart"),
-            path: app.getPath("exe")
+            path: app.getPath("exe"),
         });
     }
 }
@@ -250,7 +267,8 @@ function getStartingUrl() {
 
     //adding salt to url to avoid version caching. looking for another way too
     const salt = Math.floor(Math.random() * 100000);
-    const startUrl = process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=" + salt;
+    const startUrl =
+        process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=" + salt;
     return startUrl;
 }
 
@@ -258,7 +276,7 @@ function loadLocalVersion() {
     const loadUrl = url.format({
         pathname: path.join(__dirname, "/../build/index.html"),
         protocol: "file:",
-        slashes: true
+        slashes: true,
     });
     wnd.loadURL(loadUrl);
 }

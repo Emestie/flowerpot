@@ -1,4 +1,3 @@
-import { store } from "../../redux/store";
 import { TLocale } from "../../redux/types";
 import Platform, { INotificationData } from "../Platform";
 
@@ -15,7 +14,8 @@ export default class CommonPlatform {
     }
 
     public copyString(s: string) {
-        if ((window as any).electronClipboard) (window as any).electronClipboard.writeText(s);
+        if ((window as any).electronClipboard)
+            (window as any).electronClipboard.writeText(s);
     }
 
     public changeLocale(locale: TLocale) {
@@ -31,7 +31,10 @@ export default class CommonPlatform {
 
     public updateTrayIcon(level: number, hasChanges?: boolean) {
         if (!level || !+level || level > 4 || level < 1) level = 4;
-        Platform.current.sendIpcRenderer("update-icon", { level: level, hasChanges: !!hasChanges });
+        Platform.current.sendIpcRenderer("update-icon", {
+            level: level,
+            hasChanges: !!hasChanges,
+        });
     }
 
     public updateTrayIconDot(hasChanges: boolean) {
@@ -45,7 +48,8 @@ export default class CommonPlatform {
     }
 
     public toggleConsole() {
-        if ((window as any).electronRemote) (window as any).electronRemote.getCurrentWindow().toggleDevTools();
+        if ((window as any).electronRemote)
+            (window as any).electronRemote.getCurrentWindow().toggleDevTools();
     }
 
     public getIpcRenderer() {

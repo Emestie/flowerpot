@@ -11,11 +11,13 @@ export default class Telemetry {
         if (!allowTelemetry && !ignoreTelemetryDisability) return;
 
         try {
-            const ver = Version.long;
             const name = tfsUser;
             if (!name) return;
+            const ver = Version.long;
+            const platform = Platform.type;
+            const os = Platform.os;
 
-            const encodedString = btoa(JSON.stringify({ reason, name, ver, extraInfo }));
+            const encodedString = btoa(JSON.stringify({ reason, name, ver, platform, os, extraInfo }));
 
             await fetch("https://mysweetbot-php.herokuapp.com/flowerpot-usage.php?data=" + encodedString);
         } catch (e: any) {}
@@ -25,9 +27,8 @@ export default class Telemetry {
         const { locale } = store.getState().app;
         const { darkTheme } = store.getState().settings;
         const theme = darkTheme ? "dark" : "light";
-        const platform = Platform.type;
 
-        this.basicMessage("Version installed", `platform=${platform}, theme=${theme}, locale=${locale}`);
+        this.basicMessage("Version installed", `theme=${theme}, locale=${locale}`);
     }
 
     public static accountVerificationSucceed() {
@@ -36,6 +37,6 @@ export default class Telemetry {
 
     public static sendFeedback(text: string) {
         const transliterated = cyrillicToTranslit.transform(text);
-        this.basicMessage("Feedback", transliterated, true);
+        this.basicMessage("Feedback", "TRNSL:" + transliterated, true);
     }
 }
