@@ -132,6 +132,13 @@ export function SettingsView() {
         dispatch(appViewSet("lists"));
     };
 
+    const getPlatformIcon = () => {
+        const os = Platform.os;
+        if (os === "win32") return <Icon name="windows" />;
+        if (os === "darwin") return <Icon name="apple" />;
+        return os;
+    };
+
     if (Platform.current.isDev()) {
         if (refreshRates.length !== 5)
             refreshRates.push({
@@ -300,7 +307,9 @@ export function SettingsView() {
                 </Label>
                 <Label>
                     {s("versionWord")}
-                    <Label.Detail>{Version.long} / {Platform.os}</Label.Detail>
+                    <Label.Detail>
+                        {getPlatformIcon()} {Version.long}
+                    </Label.Detail>
                 </Label>
                 <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/changelog")}>
                     {s("releaseNotes")}
