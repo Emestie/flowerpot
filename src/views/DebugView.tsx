@@ -45,10 +45,10 @@ export function DebugView() {
                 <Button onClick={() => Platform.current.toggleConsole()}>console</Button>
                 <Button
                     onClick={() => {
-                        window.location.href = "http://localhost:5000";
+                        window.location.href = "http://localhost:5009";
                     }}
                 >
-                    go to localhost:5000
+                    go to localhost:5009
                 </Button>
                 <Header as="h3" dividing>
                     Views
