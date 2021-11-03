@@ -210,7 +210,7 @@ const ru: ILocalizedStrings = {
 
     enterID: "Введите ID рабочего элемента, который нужно открыть",
 
-    apploading: "Приложение загружается...",
+    apploading: "Загрузка приложения и данных с сервера...",
 
     settingsActionsHeader: "Действия",
     hideBanner: "Скрыть",

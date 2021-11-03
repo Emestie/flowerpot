@@ -208,7 +208,7 @@ const en: ILocalizedStrings = {
 
     enterID: "Enter ID of Work Item to open",
 
-    apploading: "App is loading...",
+    apploading: "App and data is loading...",
 
     settingsActionsHeader: "Actions",
 
