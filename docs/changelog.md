@@ -2,6 +2,9 @@
 
 _changelog is not available in English for now_
 
+## next-client
+- исправлено качество иконки в уведомлениях на macOS
+
 ## 0.3.1
 
 - реализована версия для macOS

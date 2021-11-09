@@ -88,7 +88,7 @@ function createWindow() {
     });
 
     ipcMain.on("show-notification", (e, data) => {
-        data.icon = buildIconPath(currentLevel);
+        data.icon = buildIconPath(currentLevel, false, true);
         let notif = new Notification(data);
         notif.on("click", () => {
             wnd.show();
@@ -238,13 +238,13 @@ function buildTrayIcon() {
     });
 }
 
-function getIconExt() {
-    return process.platform === "darwin" ? "-16.png" : ".png";
+function getIconExt(hiRez) {
+    return process.platform === "darwin" && !hiRez ? "-16.png" : ".png";
 }
 
-function buildIconPath(level, hasChanges) {
+function buildIconPath(level, hasChanges, hiRez) {
     if (hasChanges) level = level + "d";
-    return path.join(__dirname, "/../_icons/flower" + level + getIconExt());
+    return path.join(__dirname, "/../_icons/flower" + level + getIconExt(hiRez));
 }
 
 function buildIconDotPath(level, hasChanges) {
