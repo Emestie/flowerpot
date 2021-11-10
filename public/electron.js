@@ -6,9 +6,11 @@ const path = require("path");
 const url = require("url");
 const nativeImage = require("electron").nativeImage;
 
+const userDataPath = app.getPath("userData");
+
 const Store = require("./electron/store");
 const storeDefaults = require("./electron/store-defaults");
-const store = new Store(storeDefaults);
+const store = new Store(storeDefaults, userDataPath);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,16 +19,16 @@ let tray;
 
 app.requestSingleInstanceLock();
 
-//fs.writeFileSync('/Users/mst/Desktop/log.txt', `platform=${process.platform}, 1`); //logs
+ipcMain.handle("user-data-path", () => userDataPath);
+ipcMain.handle("read-settings-prop", (_, prop) => store.get(prop));
+ipcMain.handle("read-is-dev", (_) => isDev);
 
 function createWindow() {
     let { width, height } = store.get("windowDim");
     let { x, y } = store.get("windowPos");
     let currentLevel = 4;
 
-    //if (process.platform === "win32") {
     app.setAppUserModelId("mst.flowerpot");
-    //}
 
     registerAutostart();
 
@@ -108,9 +110,11 @@ function createWindow() {
         store.set(data.prop, data.value);
     });
 
-    wnd.webContents.on("did-fail-load", () => {
-        loadLocalVersion();
-    });
+    ipcMain.on('toggle-dev-tools', (_) => wnd.toggleDevTools());
+
+    // wnd.webContents.on("did-fail-load", () => {
+    //     loadLocalVersion();
+    // });
 
     wnd.on("show", () => {
         iconUpdateTask(currentLevel, false);
@@ -266,9 +270,17 @@ function getStartingUrl() {
     //If internet is down - use local version with flag to not rewrite saved telemetry version (see event)
 
     //adding salt to url to avoid version caching. looking for another way too
-    const salt = Math.floor(Math.random() * 100000);
+    // const salt = Math.floor(Math.random() * 100000);
+    // const startUrl =
+    //     process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=" + salt;
+
     const startUrl =
-        process.env.ELECTRON_START_URL || "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=" + salt;
+        process.env.ELECTRON_START_URL ||
+        url.format({
+            pathname: path.join(__dirname, "/../build/index.html"),
+            protocol: "file:",
+            slashes: true,
+        });
     return startUrl;
 }
 
