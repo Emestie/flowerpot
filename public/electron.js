@@ -244,7 +244,7 @@ function getIconExt(hiRez) {
 
 function buildIconPath(level, hasChanges, hiRez) {
     if (hasChanges) level = level + "d";
-    return path.join(__dirname, "/../_icons/flower" + level + getIconExt(hiRez));
+    return path.join(__dirname, "/../_icons/png/flower" + level + getIconExt(hiRez));
 }
 
 function buildIconDotPath(level, hasChanges) {
