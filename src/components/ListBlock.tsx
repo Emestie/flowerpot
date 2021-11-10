@@ -26,7 +26,7 @@ export function ListBlock(p: P) {
 
         setCollections(collections);
         setCollection(collections[0] ? collections[0].value : "");
-    }, []);
+    }, [settings.queries]);
 
     const inputError = (() => {
         if (p.listName === "permawatch") {

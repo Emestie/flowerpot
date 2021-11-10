@@ -52,8 +52,8 @@ export interface ISettings {
 }
 
 export default class Settings {
-    public static read() {
-        const settings = Platform.current.getStoreProp("flowerpot");
+    public static async read() {
+        const settings = await Platform.current.getStoreProp("flowerpot");
         if (settings) {
             try {
                 const parsedSettings = JSON.parse(settings);
@@ -62,8 +62,8 @@ export default class Settings {
             } catch (e: any) {}
         }
 
-        const autostart = Platform.current.getStoreProp("autostart");
-        const locale = Platform.current.getStoreProp("locale");
+        const autostart = await Platform.current.getStoreProp("autostart");
+        const locale = await Platform.current.getStoreProp("locale");
 
         store.dispatch(appSet({ autostart, locale }));
     }

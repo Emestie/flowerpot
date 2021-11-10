@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Button, Container, Message } from "semantic-ui-react";
 import { s } from "../values/Strings";
 import { ViewHeading } from "../components/heading/ViewHeading";
@@ -11,30 +11,30 @@ export function ErrorView() {
     const { errorMessage } = useSelector(appSelector);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        routineStart();
+    const routineStop = useCallback(() => {
+        Timers.delete("error-interval");
     }, []);
 
-    const routineStart = () => {
+    const onRefreshClick = useCallback(() => {
+        routineStop();
+        dispatch(appViewSet("main"));
+    }, [dispatch, routineStop]);
+
+    const routineStart = useCallback(() => {
         Timers.delete("error-interval");
         Timers.create("error-interval", 60000, () => {
             onRefreshClick();
         });
-    };
-
-    const routineStop = () => {
-        Timers.delete("error-interval");
-    };
+    }, [onRefreshClick]);
 
     const onSettingsClick = () => {
         routineStop();
         dispatch(appViewSet("credentials"));
     };
 
-    const onRefreshClick = () => {
-        routineStop();
-        dispatch(appViewSet("main"));
-    };
+    useEffect(() => {
+        routineStart();
+    }, [routineStart]);
 
     return (
         <div className="Page">

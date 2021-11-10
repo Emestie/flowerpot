@@ -1,61 +1,129 @@
 import { appUpdateStatusSet } from "../../redux/actions/appActions";
 import { store } from "../../redux/store";
-import { IPlatformExtension } from "../Platform";
+import { TLocale } from "../../redux/types";
+import Platform, { INotificationData, IPlatformExtension } from "../Platform";
 import CommonPlatform from "./_Common";
 
+declare var eapi: IElectronApi;
+
+export { eapi };
+
+interface IElectronApi {
+    platformName: string;
+    isDev: boolean;
+    clipboard: any;
+    shell: any;
+    ipcInvoke: (channel: string, ...args: any[]) => Promise<any>;
+    ipcSend: (channel: string, data?: any) => void;
+    ipcOn: (channel: string, callback: () => void, removeOld?: boolean) => void;
+}
+
 export default class ElectronPlatform extends CommonPlatform implements IPlatformExtension {
-    public isLocal() {
-        return document.location.href.indexOf("build") !== -1;
+    public get os() {
+        return eapi.platformName;
     }
 
-    public getSettingsStorage() {
-        if ((window as any).electronStore) return (window as any).electronStore;
-        else return null;
+    public async getStoreProp(prop: string) {
+        const val = await eapi.ipcInvoke("read-settings-prop", prop);
+        return val;
+    }
+
+    public setStoreProp(prop: string, value: any) {
+        eapi.ipcSend("save-settings-prop", { prop, value });
+    }
+
+    public copyString(s: string) {
+        eapi.clipboard.writeText(s);
+    }
+
+    public changeLocale(locale: TLocale) {
+        Platform.current.setStoreProp("locale", locale);
+    }
+
+    public toggleAutostart(autostart: boolean) {
+        Platform.current.setStoreProp("autostart", autostart);
+        eapi.ipcSend("toggle-autostart");
+    }
+
+    public updateTrayIcon(level: number, hasChanges?: boolean) {
+        if (!level || !+level || level > 4 || level < 1) level = 4;
+        eapi.ipcSend("update-icon", {
+            level: level,
+            hasChanges: !!hasChanges,
+        });
+    }
+
+    public updateTrayIconDot(hasChanges: boolean) {
+        eapi.ipcSend("update-icon-dot-only", !!hasChanges);
+    }
+
+    public isDev() {
+        return eapi.isDev;
+    }
+
+    public toggleConsole() {
+        //if ((window as any).electronRemote) (window as any).electronRemote.getCurrentWindow().toggleDevTools();
+        eapi.ipcSend("toggle-dev-tools");
+    }
+
+    public updateApp() {
+        eapi.ipcSend("update-app");
+    }
+
+    public showNativeNotif(data: INotificationData) {
+        eapi.ipcSend("show-notification", data);
+    }
+
+    public reactIsReady() {
+        eapi.ipcSend("react-is-ready");
+    }
+
+    public isLocal() {
+        return false; //!web local temp
+        //return document.location.href.indexOf("build") !== -1;
     }
 
     public openUrl(url: string) {
-        if ((window as any).shell && (window as any).shell.openExternal) (window as any).shell.openExternal(url);
+        eapi.shell.openExternal(url);
     }
 
     public checkForUpdates(cyclic?: boolean) {
-        const { updateStatus, view } = store.getState().app;
+        //const { updateStatus, view } = store.getState().app;
 
         if (cyclic) {
             setInterval(() => {
                 this.checkForUpdates();
             }, 1000 * 60 * 60);
 
-            setInterval(() => {
-                if (updateStatus !== "ready" && updateStatus !== "downloading" && !this.isDev() && view === "main") {
-                    const href = "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=x" + Math.floor(Math.random() * 100000000);
-                    document.location.href = href;
-                }
-            }, 1000 * 60 * 61);
+            //!web update
+            // setInterval(() => {
+            //     if (updateStatus !== "ready" && updateStatus !== "downloading" && !this.isDev() && view === "main") {
+            //         const href =
+            //             "https://flowerpot-pwa.web.app/firebase-entry-point.html?salt=x" +
+            //             Math.floor(Math.random() * 100000000);
+            //         document.location.href = href;
+            //     }
+            // }, 1000 * 60 * 61);
         }
 
-        let ipcRenderer = this.getIpcRenderer();
-        if (ipcRenderer) {
-            ipcRenderer.on("checking_for_update", () => {
-                ipcRenderer.removeAllListeners("checking_for_update");
-                store.dispatch(appUpdateStatusSet("checking"));
-            });
-            ipcRenderer.on("update_not_available", () => {
-                ipcRenderer.removeAllListeners("update_not_available");
-                store.dispatch(appUpdateStatusSet("none"));
-            });
-            ipcRenderer.on("update_available", () => {
-                ipcRenderer.removeAllListeners("update_available");
-                store.dispatch(appUpdateStatusSet("downloading"));
-            });
-            ipcRenderer.on("update_downloaded", () => {
-                ipcRenderer.removeAllListeners("update_downloaded");
-                store.dispatch(appUpdateStatusSet("ready"));
-            });
-            ipcRenderer.on("update_error", () => {
-                ipcRenderer.removeAllListeners("update_error");
-                store.dispatch(appUpdateStatusSet("error"));
-            });
-            ipcRenderer.send("check-for-updates");
-        }
+        eapi.ipcSend("check-for-updates");
+    }
+
+    public initUpdateListeners() {
+        eapi.ipcOn("checking_for_update", () => {
+            store.dispatch(appUpdateStatusSet("checking"));
+        });
+        eapi.ipcOn("update_not_available", () => {
+            store.dispatch(appUpdateStatusSet("none"));
+        });
+        eapi.ipcOn("update_available", () => {
+            store.dispatch(appUpdateStatusSet("downloading"));
+        });
+        eapi.ipcOn("update_downloaded", () => {
+            store.dispatch(appUpdateStatusSet("ready"));
+        });
+        eapi.ipcOn("update_error", () => {
+            store.dispatch(appUpdateStatusSet("error"));
+        });
     }
 }

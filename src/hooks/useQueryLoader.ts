@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Platform from "../helpers/Platform";
 import WorkItem from "../helpers/WorkItem";
 import Loaders from "../helpers/Loaders";
@@ -14,19 +14,25 @@ export function useQueryLoader(query: IQuery) {
     const dispatch = useDispatch();
     const { refreshRate } = useSelector(settingsSelector);
 
-    useEffect(() => {
-        routineStart();
-        return () => {
-            Timers.delete(query.queryId);
-        };
-    }, []);
+    const loadWorkItemsForThisQuery = useCallback(async () => {
+        console.log("updating query", query.queryId);
+        let wis = await Loaders.loadQueryWorkItems(query);
+        Query.calculateIconLevel(query, wis);
+        //set query emptiness to sort them
+        Query.toggleBoolean(query, "empty", !wis.length);
 
-    const routineStart = async () => {
+        dispatch(dataWorkItemsForQuerySet(query, wis));
+        setIsLoading(false);
+    }, [dispatch, query]);
+
+    const routineStart = useCallback(async () => {
         setIsLoading(true);
 
         if (useFishWIs === 1 && Platform.current.isDev()) {
             setIsLoading(false);
-            dispatch(dataWorkItemsForQuerySet(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)]));
+            dispatch(
+                dataWorkItemsForQuerySet(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)])
+            );
             return;
         }
 
@@ -37,18 +43,14 @@ export function useQueryLoader(query: IQuery) {
             setIsLoading(true);
             loadWorkItemsForThisQuery();
         });
-    };
+    }, [dispatch, loadWorkItemsForThisQuery, refreshRate, query]);
 
-    const loadWorkItemsForThisQuery = async () => {
-        console.log("updating query", query.queryId);
-        let wis = await Loaders.loadQueryWorkItems(query);
-        Query.calculateIconLevel(query, wis);
-        //set query emptiness to sort them
-        Query.toggleBoolean(query, "empty", !wis.length);
-
-        dispatch(dataWorkItemsForQuerySet(query, wis));
-        setIsLoading(false);
-    };
+    useEffect(() => {
+        routineStart();
+        return () => {
+            Timers.delete(query.queryId);
+        };
+    }, [routineStart, query.queryId]);
 
     return isLoading;
 }

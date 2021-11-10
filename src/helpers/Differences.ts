@@ -15,9 +15,6 @@ interface IShownWI {
 export default class Differences {
     private static shownWI: IShownWI[] = [];
 
-    public static clearWiStorage() {
-        (window as any).wiStorage = undefined;
-    }
 
     public static put(query: IQuery, workItems: IWorkItem[]) {
         let wiStorage = Query.getWIStorage();

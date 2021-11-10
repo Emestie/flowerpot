@@ -31,9 +31,9 @@ export function DebugView() {
         dispatch(dataChangesCollectionItemSet(wi, true));
     };
 
-    const handleClick = (e: any, data: any) => {
-        console.log(data.foo);
-    };
+    // const handleClick = (e: any, data: any) => {
+    //     console.log(data.foo);
+    // };
 
     return (
         <div className="Page">

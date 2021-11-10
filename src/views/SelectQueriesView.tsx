@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Header, Container, Button, Label, Message, Icon, Checkbox } from "semantic-ui-react";
 import Query, { IQuery } from "../helpers/Query";
 import Loaders from "../helpers/Loaders";
@@ -18,24 +18,24 @@ export function SelectQueriesView() {
     const [isLoading, setIsLoading] = useState(true);
     const [availableQueries, setAvailableQueries] = useState<ISelectableQuery[]>([]);
 
-    useEffect(() => {
-        loadQueries();
-    }, []);
-
     const isAddAvailable = !!availableQueries.filter((q) => q.checked).length;
 
-    const loadQueries = () => {
+    const loadQueries = useCallback(() => {
         setTimeout(() => {
             Loaders.loadAvailableQueries().then((queries) => {
-                let currentQueriesIds = settings.queries.map((q) => q.queryId);
-                let queriesToSelect = queries.filter((q) => !currentQueriesIds.includes(q.queryId)) as ISelectableQuery[];
+                const currentQueriesIds = settings.queries.map((q) => q.queryId);
+                const queriesToSelect = queries.filter((q) => !currentQueriesIds.includes(q.queryId)) as ISelectableQuery[];
                 queriesToSelect.forEach((q) => (q.checked = false));
 
                 setAvailableQueries(queriesToSelect);
                 setIsLoading(false);
             });
         }, 50);
-    };
+    }, [settings.queries]);
+
+    useEffect(() => {
+        loadQueries();
+    }, [loadQueries]);
 
     const onAdd = () => {
         availableQueries.filter((q) => q.checked).forEach((q) => Query.add(q));

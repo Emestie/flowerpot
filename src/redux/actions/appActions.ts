@@ -37,7 +37,3 @@ export function appDialogSet(dialogKey: TDialog, value: boolean) {
 
     return createAction(Actions.AppDialogSet, { dialogs });
 }
-
-export function appLoadingInProgressListSet(list: string[]) {
-    return createAction(Actions.AppLoadingInProgressListSet, { loadingInProgressList: list });
-}

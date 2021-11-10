@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
 import { QueriesSettingsTable } from "../components/QueriesSettingsTable";
 import Platform from "../helpers/Platform";
@@ -43,7 +42,6 @@ const locales: DropdownItemProps[] = [
 
 export function SettingsView() {
     const dispatch = useDispatch();
-    const [updateInstallInProgress, setUpdateInstallInProgress] = useState(false);
 
     const { autostart, locale, updateStatus } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
@@ -124,7 +122,6 @@ export function SettingsView() {
     };
 
     const onUpdate = () => {
-        setUpdateInstallInProgress(true);
         Platform.current.updateApp();
     };
 
@@ -133,7 +130,7 @@ export function SettingsView() {
     };
 
     const getPlatformIcon = () => {
-        const os = Platform.os;
+        const os = Platform.current.os;
         if (os === "win32") return <Icon name="windows" />;
         if (os === "darwin") return <Icon name="apple" />;
         return os;
@@ -267,7 +264,7 @@ export function SettingsView() {
                     onChange={(e, { value }) => onLocaleSelect(value as TLocale)}
                 />
                 <br />
-                {Platform.os === "win32" && (
+                {Platform.current.os === "win32" && (
                     <>
                         <Form.Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
                         <br />

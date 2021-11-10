@@ -213,6 +213,8 @@ const en: ILocalizedStrings = {
     settingsActionsHeader: "Actions",
 
     hideBanner: "Hide",
+
+    installUpdate: "Install update",
 };
 
 export default en;

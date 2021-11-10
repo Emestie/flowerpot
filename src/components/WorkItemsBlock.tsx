@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { Header, Label, Table, Icon } from "semantic-ui-react";
 import Query, { IQuery } from "../helpers/Query";
 import { WorkItemRow } from "./WorkItemRow";
@@ -9,8 +8,6 @@ import Lists from "../helpers/Lists";
 import { useQueryLoader } from "../hooks/useQueryLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkItemsForQuerySelector } from "../redux/selectors/dataSelectors";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { appLoadingInProgressListSet } from "../redux/actions/appActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
 
@@ -22,7 +19,6 @@ interface IProps {
 export function WorkItemsBlock(props: IProps) {
     const isLoading = useQueryLoader(props.query);
     const allItems = useSelector(getWorkItemsForQuerySelector(props.query));
-    const { loadingInProgressList } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
 
     const dispatch = useDispatch();
@@ -79,24 +75,15 @@ export function WorkItemsBlock(props: IProps) {
     const workItems = filteredItems();
 
     const isPermawatch = props.query.queryId === "___permawatch";
-    const totalItemsCount = workItems.filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)).length;
+    const totalItemsCount = workItems.filter(
+        (wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)
+    ).length;
     const redItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => WorkItem.isRed(wi)).length;
     const orangeItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => WorkItem.isOrange(wi)).length;
-
-    useEffect(() => {
-        let newProgressList = [...loadingInProgressList];
-        if (isLoading) {
-            newProgressList.push(props.query.queryId);
-        } else {
-            newProgressList = newProgressList.filter((x) => x !== props.query.queryId);
-        }
-
-        dispatch(appLoadingInProgressListSet(newProgressList));
-    }, [isLoading]);
 
     const onCollapseClick = () => {
         Query.toggleBoolean(props.query, "collapsed");
@@ -108,7 +95,9 @@ export function WorkItemsBlock(props: IProps) {
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
-        Platform.current.openUrl(settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query");
+        Platform.current.openUrl(
+            settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query"
+        );
     };
 
     const getSortPattern = () => {
@@ -185,7 +174,15 @@ export function WorkItemsBlock(props: IProps) {
     const workItemsComponents = workItems
         .sort(getSortPattern())
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
-        .map((wi) => <WorkItemRow key={wi.id} query={props.query} item={wi} isPermawatch={isPermawatch} onUpdate={updateWorkItems} />);
+        .map((wi) => (
+            <WorkItemRow
+                key={wi.id}
+                query={props.query}
+                item={wi}
+                isPermawatch={isPermawatch}
+                onUpdate={updateWorkItems}
+            />
+        ));
 
     const iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 
@@ -197,7 +194,9 @@ export function WorkItemsBlock(props: IProps) {
                         <Icon name="circle notched" loading />
                     </span>
                 )}
-                {!isLoading && !!workItems.length && !isPermawatch && <span onClick={onCollapseClick}>{iconCollapse}</span>}
+                {!isLoading && !!workItems.length && !isPermawatch && (
+                    <span onClick={onCollapseClick}>{iconCollapse}</span>
+                )}
                 <span onClick={dropAllWiChanges}>
                     <span onClick={onCollapseClick}>
                         {isPermawatch && (

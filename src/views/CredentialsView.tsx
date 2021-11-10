@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Header, Container, Button, Form, Label, Message } from "semantic-ui-react";
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
@@ -39,79 +39,92 @@ export function CredentialsView() {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        validateTfsUser(settings.tfsUser, true);
-        validateTfsPath(settings.tfsPath, true);
-        validateTfsPwd(settings.tfsPwd, true);
-    }, []);
-
     const isBackUnavailable = pathInvalid || userInvalid || pwdInvalid || credentialsCheckStatus !== ECredState.OK;
 
     const checkInProgress = credentialsCheckStatus === ECredState.ValidatingInProgress;
 
-    const isCheckUnabailable = pathInvalid || userInvalid || pwdInvalid || checkInProgress || credentialsCheckStatus === ECredState.OK;
+    const isCheckUnabailable =
+        pathInvalid || userInvalid || pwdInvalid || checkInProgress || credentialsCheckStatus === ECredState.OK;
 
     const statusParams = statuses[credentialsCheckStatus];
 
-    const setCredentialsStatus = (status: number) => {
-        const credentialsChecked = status === ECredState.OK ? true : false;
-        setCredentialsCheckStatus(status);
-        dispatch(settingsUpdate({ credentialsChecked }));
-    };
+    const setCredentialsStatus = useCallback(
+        (status: number) => {
+            const credentialsChecked = status === ECredState.OK ? true : false;
+            setCredentialsCheckStatus(status);
 
-    const validateTfsPath = (val: string, ignoreStore?: boolean) => {
-        setCredentialsStatus(ECredState.NotValidated);
-        if (!ignoreStore) {
-            const tfsPath = val;
-            dispatch(settingsUpdate({ tfsPath }));
-        }
+            if (settings.credentialsChecked !== credentialsChecked) {
+                dispatch(settingsUpdate({ credentialsChecked }));
+            }
+        },
+        [dispatch, settings.credentialsChecked]
+    );
 
-        let invalid = false;
-        if (val[val.length - 1] !== "/") invalid = true;
-        if (val.indexOf("http") !== 0) invalid = true;
-        if (val.indexOf("://") === -1) invalid = true;
-        if (val.length < 11) invalid = true;
-        setPathInvalid(invalid);
-    };
+    const validateTfsPath = useCallback(
+        (val: string, ignoreStore?: boolean) => {
+            setCredentialsStatus(ECredState.NotValidated);
+            if (!ignoreStore) {
+                const tfsPath = val;
+                if (tfsPath !== settings.tfsPath) dispatch(settingsUpdate({ tfsPath }));
+            }
 
-    const validateTfsUser = (val: string, ignoreStore?: boolean) => {
-        setCredentialsStatus(ECredState.NotValidated);
-        if (!ignoreStore) {
-            const tfsUser = val;
-            dispatch(settingsUpdate({ tfsUser }));
-        }
+            let invalid = false;
+            if (val[val.length - 1] !== "/") invalid = true;
+            if (val.indexOf("http") !== 0) invalid = true;
+            if (val.indexOf("://") === -1) invalid = true;
+            if (val.length < 11) invalid = true;
+            setPathInvalid(invalid);
+        },
+        [dispatch, setCredentialsStatus, settings.tfsPath]
+    );
 
-        let invalid = false;
-        if (!val.length) invalid = true;
+    const validateTfsUser = useCallback(
+        (val: string, ignoreStore?: boolean) => {
+            setCredentialsStatus(ECredState.NotValidated);
+            if (!ignoreStore) {
+                const tfsUser = val;
+                if (settings.tfsUser !== tfsUser) dispatch(settingsUpdate({ tfsUser }));
+            }
 
-        if (val.indexOf("\\") < 1 || val.indexOf("\\") === val.length - 1 || val.indexOf("@") !== -1) invalid = true;
+            let invalid = false;
+            if (!val.length) invalid = true;
 
-        setUserInvalid(invalid);
-    };
+            if (val.indexOf("\\") < 1 || val.indexOf("\\") === val.length - 1 || val.indexOf("@") !== -1)
+                invalid = true;
 
-    const validateTfsPwd = (val: string, ignoreStore?: boolean) => {
-        setCredentialsStatus(ECredState.NotValidated);
-        if (!ignoreStore) {
-            const tfsPwd = val;
-            dispatch(settingsUpdate({ tfsPwd }));
-        }
+            setUserInvalid(invalid);
+        },
+        [dispatch, setCredentialsStatus, settings.tfsUser]
+    );
 
-        //if val has cyrillic characters show notif
-        var ascii = /^[ -~]+$/;
-        if (!ascii.test(val)) {
-            setPwdNotAscii(true);
-            setPwdInvalid(true);
-        } else {
-            setPwdNotAscii(false);
-            setPwdInvalid(false);
-        }
-    };
+    const validateTfsPwd = useCallback(
+        (val: string, ignoreStore?: boolean) => {
+            setCredentialsStatus(ECredState.NotValidated);
+            if (!ignoreStore) {
+                const tfsPwd = val;
+                if (settings.tfsPwd !== tfsPwd) dispatch(settingsUpdate({ tfsPwd }));
+            }
+
+            //if val has cyrillic characters show notif
+            var ascii = /^[ -~]+$/;
+            if (!ascii.test(val)) {
+                setPwdNotAscii(true);
+                setPwdInvalid(true);
+            } else {
+                setPwdNotAscii(false);
+                setPwdInvalid(false);
+            }
+        },
+        [dispatch, setCredentialsStatus, settings.tfsPwd]
+    );
+
+    useEffect(() => {
+        validateTfsUser(settings.tfsUser, true);
+        validateTfsPath(settings.tfsPath, true);
+        validateTfsPwd(settings.tfsPwd, true);
+    }, [settings.tfsPath, settings.tfsPwd, settings.tfsUser, validateTfsPath, validateTfsPwd, validateTfsUser]);
 
     const onSave = () => {
-        dispatch(appViewSet("settings"));
-    };
-
-    const onTest = () => {
         dispatch(appViewSet("settings"));
     };
 
@@ -201,7 +214,13 @@ export function CredentialsView() {
                 </Button>
                 {/* <Button onClick={onTest}>test</Button> */}
             </Container>
-            <input style={{ opacity: 0 }} ref={debugInputRef as any} type="text" value={debugInputValue} onChange={onDebugInputChange} />
+            <input
+                style={{ opacity: 0 }}
+                ref={debugInputRef as any}
+                type="text"
+                value={debugInputValue}
+                onChange={onDebugInputChange}
+            />
         </div>
     );
 }

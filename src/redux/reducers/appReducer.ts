@@ -7,7 +7,6 @@ export interface IAppState {
     errorMessage: string;
     updateStatus: TUpdateStatus;
     dialogs: { [key: string]: boolean };
-    loadingInProgressList: string[];
     isFestivalOn: boolean;
     currentFestival: Eve;
     festivalHeaderOffset: number;
@@ -21,7 +20,6 @@ const initialState: IAppState = {
     errorMessage: "",
     updateStatus: "none",
     dialogs: {},
-    loadingInProgressList: [],
     isFestivalOn: false,
     currentFestival: Eve._none,
     festivalHeaderOffset: 0,

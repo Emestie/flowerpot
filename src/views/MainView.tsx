@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Message, Button, Icon, Form } from "semantic-ui-react";
 import { WorkItemsBlock } from "../components/WorkItemsBlock";
 import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
@@ -25,14 +25,18 @@ export const queriesSorting = (a: IQuery, b: IQuery) => {
 
 export function MainView() {
     const dispatch = useDispatch();
-    const { loadingInProgressList, updateStatus } = useSelector(appSelector);
+    const { updateStatus } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
     const { changesCollection } = useSelector(dataSelector);
     const storedQueries = useSelector(getQueriesSelector());
 
     const [quickSearchVal, setQuickSearchVal] = useState("");
 
-    const isRefreshAvailable = !!storedQueries.length && !loadingInProgressList.length;
+    const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => setIsRefreshAvailable(true), 5000);
+    }, []);
 
     const onRefresh = () => {
         dispatch(appViewSet("refreshhelper"));
@@ -78,7 +82,7 @@ export function MainView() {
                     <LocalVersionBanner />
                     {updateStatus === "ready" && (
                         <Button icon positive onClick={updateApp} title={s("updateArrived")}>
-                            <Icon name="refresh" />
+                            {s("installUpdate")}
                         </Button>
                     )}
                     <div style={{ display: "inline-block", marginRight: 3.5 }}>

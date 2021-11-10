@@ -53,6 +53,20 @@ export interface IWIStorage {
     [queryId: string]: IWorkItem[] | undefined;
 }
 
+const permawatchQueryObject = {
+    collectionName: "",
+    collapsed: false,
+    enabled: true,
+    ignoreIcon: true,
+    ignoreNotif: false,
+    queryId: "___permawatch",
+    queryName: s("permawatch"),
+    order: 99999,
+    queryPath: "",
+    teamId: "___permawatch",
+    teamName: "",
+}
+
 export default class Query {
     //! after any operation update queries array in store
 
@@ -180,18 +194,6 @@ export default class Query {
     }
 
     public static getFakePermawatchQuery(): IQuery {
-        return {
-            collectionName: "",
-            collapsed: false,
-            enabled: true,
-            ignoreIcon: true,
-            ignoreNotif: false,
-            queryId: "___permawatch",
-            queryName: s("permawatch"),
-            order: 99999,
-            queryPath: "",
-            teamId: "___permawatch",
-            teamName: "",
-        };
+        return permawatchQueryObject;
     }
 }

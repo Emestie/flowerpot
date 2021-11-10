@@ -7,7 +7,7 @@ export function RefreshHelperView() {
 
     useEffect(() => {
         dispatch(appViewSet("main"));
-    }, []);
+    }, [dispatch]);
 
     return <div></div>;
 }

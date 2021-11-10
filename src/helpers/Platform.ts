@@ -1,6 +1,5 @@
 import { TLocale } from "../redux/types";
 import ElectronPlatform from "./platforms/Electron";
-import WebPlatform from "./platforms/Web";
 
 export interface INotificationData {
     title: string;
@@ -9,7 +8,7 @@ export interface INotificationData {
 
 export interface IPlatformExtension {
     isLocal: () => boolean;
-    getStoreProp: (prop: string) => any;
+    getStoreProp: (prop: string) => Promise<any>;
     setStoreProp: (prop: string, value: any) => void;
     copyString: (s: string) => void;
     changeLocale: (locale: TLocale) => void;
@@ -19,13 +18,12 @@ export interface IPlatformExtension {
     openUrl: (url: string) => void;
     isDev: () => boolean;
     toggleConsole: () => void;
-    getIpcRenderer: () => any;
-    sendIpcRenderer: (channel: string, data?: any) => void;
     updateApp: () => void;
     showNativeNotif: (data: INotificationData) => void;
     checkForUpdates: (cyclic?: boolean) => void;
     reactIsReady: () => void;
-    getSettingsStorage: () => any;
+    get os(): string;
+    initUpdateListeners: () => void;
 }
 
 export enum PlatformType {
@@ -41,7 +39,7 @@ export default class Platform {
 
     public static get type() {
         if (!this._type) {
-            if ((window as any).ipcRenderer) {
+            if ((window as any).eapi) {
                 this._type = PlatformType.Electron;
             } else {
                 this._type = PlatformType.Web;
@@ -50,19 +48,15 @@ export default class Platform {
         return this._type;
     }
 
-    public static get os() {
-        return (window as any).platformName;
-    }
-
     private static resolve() {
         const type = this.type;
         switch (type) {
             case PlatformType.Electron:
                 this._current = new ElectronPlatform();
                 break;
-            case PlatformType.Web:
-                this._current = new WebPlatform();
-                break;
+            // case PlatformType.Web:
+            //     this._current = new WebPlatform();
+            //     break;
             default:
                 throw new Error("Unknown Platform.current.");
         }

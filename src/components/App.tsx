@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Settings from "../helpers/Settings";
 import Migration from "../helpers/Migration";
 import { SettingsView } from "../views/SettingsView";
@@ -28,50 +28,53 @@ export function App() {
     const { view } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
 
-    useEffect(() => {
-        Platform.current.reactIsReady();
-
-        Settings.read();
-        Migration.perform();
-        Timers.create("festival-icons", 60000 * 60 * 3, () => {
-            Festival.findOut();
-        });
-
-        Platform.current.checkForUpdates(true);
-
-        setTimeout(() => {
-            if (Platform.current.isDev()) {
-                dispatch(appViewSet("debug"));
-                //dispatch(appViewSet("main"));
-            } else {
-                if (store.getState().settings.credentialsChecked)
-                    dispatch(appViewSet("main"));
-                else dispatch(appViewSet("credentials"));
-            }
-
-            setWIChangesCollection();
-            afterUpdateHandler();
-        }, 250);
-    }, []);
-
-    const setWIChangesCollection = () => {
+    const setWIChangesCollection = useCallback(() => {
         const ls = localStorage.getItem("WIChangesCollection");
         if (!ls) return;
 
         dispatch(dataChangesCollectionSet(JSON.parse(ls)));
-    };
+    }, [dispatch]);
 
-    function afterUpdateHandler() {
+    const afterUpdateHandler = useCallback(() => {
         if (
             !Platform.current.isDev() &&
             !Platform.current.isLocal() &&
             Version.isChangedLong()
         ) {
-            if (settings.showWhatsNewOnUpdate && Version.isChangedShort())
-                dispatch(appShowWhatsNewSet(true));
+            if (settings.showWhatsNewOnUpdate && Version.isChangedShort()) dispatch(appShowWhatsNewSet(true));
             Version.storeInSettings();
         }
-    }
+        // eslint-disable-next-line
+    }, [dispatch]);
+
+    useEffect(() => {
+        (async function () {
+            Platform.current.initUpdateListeners();
+            Platform.current.reactIsReady();
+
+            await Settings.read();
+            Migration.perform();
+            Timers.create("festival-icons", 60000 * 60 * 3, () => {
+                Festival.findOut();
+            });
+
+            Platform.current.checkForUpdates(true);
+
+            setTimeout(() => {
+                if (Platform.current.isDev()) {
+                    dispatch(appViewSet("debug"));
+                    //dispatch(appViewSet("main"));
+                } else {
+                    if (store.getState().settings.credentialsChecked) dispatch(appViewSet("main"));
+                    else dispatch(appViewSet("credentials"));
+                }
+
+                setWIChangesCollection();
+                afterUpdateHandler();
+            }, 250);
+        })();
+        // eslint-disable-next-line
+    }, []);
 
     function getScene(view: TView) {
         switch (view) {

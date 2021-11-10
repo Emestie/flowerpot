@@ -86,10 +86,6 @@ export function WorkItemRow(props: IProps) {
         );
     })();
 
-    const titleEl = (() => {
-        return <span title={props.item.titleFull}>{props.item.title}</span>;
-    })();
-
     const typeEl = (() => {
         switch (props.item.type) {
             case "Bug":

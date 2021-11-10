@@ -15,7 +15,7 @@ export default class Telemetry {
             if (!name) return;
             const ver = Version.long;
             const platform = Platform.type;
-            const os = Platform.os;
+            const os = Platform.current.os;
 
             const encodedString = btoa(JSON.stringify({ reason, name, ver, platform, os, extraInfo }));
 

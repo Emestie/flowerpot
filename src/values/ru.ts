@@ -214,6 +214,8 @@ const ru: ILocalizedStrings = {
 
     settingsActionsHeader: "Действия",
     hideBanner: "Скрыть",
+
+    installUpdate: "Установить обновление",
 };
 
 export default ru;

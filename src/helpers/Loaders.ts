@@ -90,7 +90,7 @@ export default class Loaders {
 
             for (let x in qwi) {
                 let wi = (await this.asyncRequest(
-                    (qwi[x].collection || query.collectionName) + "/" + "_apis/wit/workItems/" + qwi[x].id
+                    (qwi[x].collection || query.collectionName) + "/_apis/wit/workItems/" + qwi[x].id
                 )) as IResponseWorkItem;
                 if (!wi.id) {
                     Lists.deleteFromList("permawatch", qwi[x].id, qwi[x].collection || "");

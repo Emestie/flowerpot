@@ -14,7 +14,7 @@ export default React.memo(() => {
             const festivalHeaderOffset = headerOffset ? +headerOffset : 40;
             dispatch(appSet({ isFestivalOn, festivalHeaderOffset }));
         }
-    }, [src, headerOffset]);
+    }, [src, headerOffset, dispatch]);
 
     if (!src) return null;
 
