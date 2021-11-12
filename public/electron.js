@@ -23,6 +23,15 @@ ipcMain.handle("user-data-path", () => userDataPath);
 ipcMain.handle("read-settings-prop", (_, prop) => store.get(prop));
 ipcMain.handle("read-is-dev", (_) => isDev);
 
+const showNotification = (level, data) => {
+    data.icon = buildIconPath(level, false, true);
+    const notif = new Notification(data);
+    notif.on("click", () => {
+        wnd.show();
+    });
+    notif.show();
+};
+
 function createWindow() {
     let { width, height } = store.get("windowDim");
     let { x, y } = store.get("windowPos");
@@ -87,15 +96,24 @@ function createWindow() {
 
     ipcMain.on("update-app", () => {
         autoUpdater.quitAndInstall();
+        //setImmediate(() => {
+            // app.removeAllListeners("window-all-closed");
+
+            // const browserWindows = BrowserWindow.getAllWindows();
+            // browserWindows.forEach((browserWindow) => {
+            //     browserWindow.removeAllListeners("close");
+            // });
+
+            // if (wnd !== null) {
+            //     wnd.close();
+            // }
+
+            // autoUpdater.quitAndInstall();
+        //});
     });
 
     ipcMain.on("show-notification", (e, data) => {
-        data.icon = buildIconPath(currentLevel, false, true);
-        let notif = new Notification(data);
-        notif.on("click", () => {
-            wnd.show();
-        });
-        notif.show();
+        showNotification(currentLevel, data);
     });
 
     ipcMain.on("toggle-autostart", () => {
@@ -110,7 +128,7 @@ function createWindow() {
         store.set(data.prop, data.value);
     });
 
-    ipcMain.on('toggle-dev-tools', (_) => wnd.toggleDevTools());
+    ipcMain.on("toggle-dev-tools", (_) => wnd.toggleDevTools());
 
     // wnd.webContents.on("did-fail-load", () => {
     //     loadLocalVersion();
@@ -187,6 +205,16 @@ autoUpdater.on("update-available", () => {
 
 autoUpdater.on("update-downloaded", () => {
     wnd.webContents.send("update_downloaded");
+
+    const en = { title: "Update Arrived!", body: "Flowerpot is ready to install an update" };
+    const ru = { title: "Доступно обновление!", body: "Flowerpot готов обновиться" };
+
+    const locale = store.get("locale");
+    if (locale === "auto") {
+        locale = "en";
+    }
+
+    showNotification(4, locale === ru ? ru : en);
 });
 
 autoUpdater.on("error", () => {
