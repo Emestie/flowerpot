@@ -216,6 +216,8 @@ const ru: ILocalizedStrings = {
     hideBanner: "Скрыть",
 
     installUpdate: "Установить обновление",
+
+    wiStatus: "Статус: ",
 };
 
 export default ru;

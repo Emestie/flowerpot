@@ -77,7 +77,10 @@ export function WorkItemRow(props: IProps) {
 
     const freshnessEl = (() => {
         return (
-            <span title={s("timeSinceCreated") + ` (${new Date(props.item.createdDate).toLocaleString()})`} style={{ marginLeft: 4 }}>
+            <span
+                title={s("timeSinceCreated") + ` (${new Date(props.item.createdDate).toLocaleString()})`}
+                style={{ marginLeft: 4 }}
+            >
                 <span>
                     <Icon name="leaf" />
                 </span>
@@ -170,6 +173,32 @@ export function WorkItemRow(props: IProps) {
             );
 
         return undefined;
+    };
+
+    const getStatusIcon = (state: string) => {
+        if (!state) return null;
+
+        switch (state) {
+            case "Active":
+            case "Активный":
+                return <Icon name="angle double right" />; // code
+            case "К реализации":
+                return <Icon name="hand point right outline" />;
+            case "В обсуждении":
+                return <Icon name="comments outline" />;
+            case "Closed":
+            case "Закрыт":
+            case "Закрыто":
+                return <Icon name="window close outline" />;
+            case "Resolved":
+            case "Реализовано":
+                return <Icon name="check square outline" />;
+            case "New":
+            case "Новый":
+                return <Icon name="genderless" />;
+            default:
+                return <>{state}</>;
+        }
     };
 
     const item = props.item;
@@ -296,15 +325,21 @@ export function WorkItemRow(props: IProps) {
                     )}
                 </ContextMenuTrigger>
             </Table.Cell>
-            {props.isPermawatch && (
-                <Table.Cell collapsing>
-                    <ContextMenuTrigger id={uid + ""}>{item.state}</ContextMenuTrigger>
-                </Table.Cell>
-            )}
-            <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.assignedToFull))}>
+            <Table.Cell collapsing>
+                <ContextMenuTrigger id={uid + ""}>
+                    <span title={s("wiStatus") + item.state}>{getStatusIcon(item.state)}</span>
+                </ContextMenuTrigger>
+            </Table.Cell>
+            <Table.Cell
+                collapsing
+                onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.assignedToFull))}
+            >
                 <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 0)}</ContextMenuTrigger>
             </Table.Cell>
-            <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.createdByFull))}>
+            <Table.Cell
+                collapsing
+                onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.createdByFull))}
+            >
                 <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 1)}</ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>

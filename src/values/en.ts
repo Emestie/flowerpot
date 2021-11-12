@@ -215,6 +215,8 @@ const en: ILocalizedStrings = {
     hideBanner: "Hide",
 
     installUpdate: "Install update",
+
+    wiStatus: "Status: ",
 };
 
 export default en;
