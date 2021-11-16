@@ -16,8 +16,9 @@ export default class Telemetry {
             const ver = Version.long;
             const platform = Platform.type;
             const os = Platform.current.os;
-
-            const encodedString = btoa(JSON.stringify({ reason, name, ver, platform, os, extraInfo }));
+            const iid = await Platform.current.getStoreProp("installationID");
+            
+            const encodedString = btoa(JSON.stringify({ reason, name, ver, platform, os, iid, extraInfo }));
 
             await fetch("https://mysweetbot-php.herokuapp.com/flowerpot-usage.php?data=" + encodedString);
         } catch (e: any) {}

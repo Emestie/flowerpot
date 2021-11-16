@@ -6,6 +6,17 @@ class Store {
         this.path = path.join(userDataPath, opts.configName + ".json");
         this.defaults = opts.defaults;
         this.data = parseDataFile(this.path, opts.defaults);
+
+        if (!this.data.installationID) {
+            let iid = "";
+
+            for (let i = 0; i < 6; i++) {
+                if (i < 3) iid += String.fromCharCode(Math.random() * 26 + 65);
+                else iid += String.fromCharCode(Math.random() * 10 + 48);
+            }
+
+            this.set("installationID", iid);
+        }
     }
 
     get(key) {
