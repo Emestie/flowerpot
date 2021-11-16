@@ -35,7 +35,6 @@ body,
     width: calc(100% - 10px);
     background-color: white;
     z-index: 10;
-    height: 60px;
 }
 
 .WorkItemLink {
@@ -198,11 +197,8 @@ img.av-class {
 }
 
 .ql-container {
-    position: fixed;
-    top: 50px;
-    left: 0;
-    width: 100%;
-    padding-right: 28px;
+    margin-top: 5px;
+    padding-right: 3px;
 
     .label {
         padding: 2px 4px;

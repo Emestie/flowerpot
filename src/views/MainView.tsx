@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Container, Message, Button, Icon, Form } from "semantic-ui-react";
 import { WorkItemsBlock } from "../components/WorkItemsBlock";
 import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
@@ -75,9 +75,16 @@ export function MainView() {
 
     const qlEnabled = settings.showQuickLinks;
 
+    const [headHeight, setHeadHeight] = useState(0);
+
+    useLayoutEffect(() => {
+        const vh = document.getElementById("ViewHeading");
+        setHeadHeight((vh?.clientHeight || 0) + 5);
+    }, [settings.links.length]);
+
     return (
-        <div className="Page" style={{ paddingTop: qlEnabled ? 85 : undefined }}>
-            <ViewHeading>
+        <div className="Page" style={{ paddingTop: headHeight }}>
+            <ViewHeading underCaption={qlEnabled && <QuickLinksContainer />}>
                 <div>
                     <LocalVersionBanner />
                     {updateStatus === "ready" && (
@@ -109,7 +116,6 @@ export function MainView() {
                         <Icon name="setting" />
                     </Button>
                 </div>
-                {qlEnabled && <QuickLinksContainer />}
             </ViewHeading>
             <Container fluid>
                 <WhatsNewBanner />

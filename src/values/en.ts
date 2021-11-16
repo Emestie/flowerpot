@@ -217,6 +217,7 @@ const en: ILocalizedStrings = {
     installUpdate: "Install update",
 
     wiStatus: "Status: ",
+    linksLimitReached: "You have reached maximum amount of Quick Links",
 };
 
 export default en;

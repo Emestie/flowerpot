@@ -218,6 +218,7 @@ const ru: ILocalizedStrings = {
     installUpdate: "Установить обновление",
 
     wiStatus: "Статус: ",
+    linksLimitReached: "Вы достигли максимального количества быстрых ссылок",
 };
 
 export default ru;

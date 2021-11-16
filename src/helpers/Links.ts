@@ -8,6 +8,8 @@ export interface ILinkItem {
     order?: number;
 }
 
+export const LINKS_COUNT_LIMIT = 20;
+
 export default class Links {
     public static add(link: ILinkItem) {
         const allLinks = store.getState().settings.links || [];

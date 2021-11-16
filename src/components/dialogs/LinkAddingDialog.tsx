@@ -50,7 +50,7 @@ export function LinkAddingDialog(p: P) {
                         onChange={(e) => {
                             setName(e.target.value);
                         }}
-                        maxLength="15"
+                        maxLength="50"
                         className="af-input"
                         label={s("linkDialogNameLabel")}
                     />
