@@ -281,9 +281,9 @@ export function SettingsView() {
                 <Header as="h3" dividing>
                     {s("settingsActionsHeader")}
                 </Header>
-                <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/bot")}>
+                {/* <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/bot")}>
                     {s("flowerbot")}
-                </Label>
+                </Label> */}
                 <Label
                     as="a"
                     color="yellow"
