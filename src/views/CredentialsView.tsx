@@ -122,7 +122,8 @@ export function CredentialsView() {
         validateTfsUser(settings.tfsUser, true);
         validateTfsPath(settings.tfsPath, true);
         validateTfsPwd(settings.tfsPwd, true);
-    }, [settings.tfsPath, settings.tfsPwd, settings.tfsUser, validateTfsPath, validateTfsPwd, validateTfsUser]);
+        //eslint-disable-next-line
+    }, [settings.tfsPath, settings.tfsPwd, settings.tfsUser]);
 
     const onSave = () => {
         dispatch(appViewSet("settings"));
