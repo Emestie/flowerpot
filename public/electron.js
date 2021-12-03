@@ -97,18 +97,18 @@ function createWindow() {
     ipcMain.on("update-app", () => {
         autoUpdater.quitAndInstall();
         //setImmediate(() => {
-            // app.removeAllListeners("window-all-closed");
+        // app.removeAllListeners("window-all-closed");
 
-            // const browserWindows = BrowserWindow.getAllWindows();
-            // browserWindows.forEach((browserWindow) => {
-            //     browserWindow.removeAllListeners("close");
-            // });
+        // const browserWindows = BrowserWindow.getAllWindows();
+        // browserWindows.forEach((browserWindow) => {
+        //     browserWindow.removeAllListeners("close");
+        // });
 
-            // if (wnd !== null) {
-            //     wnd.close();
-            // }
+        // if (wnd !== null) {
+        //     wnd.close();
+        // }
 
-            // autoUpdater.quitAndInstall();
+        // autoUpdater.quitAndInstall();
         //});
     });
 
@@ -276,10 +276,15 @@ function getIconExt(hiRez) {
 
 function buildIconPath(level, hasChanges, hiRez) {
     if (hasChanges) level = level + "d";
+
+    if (process.platform === "win32") {
+        return path.join(__dirname, "/../_icons/ico/flower" + level + ".ico");
+    }
+
     return path.join(__dirname, "/../_icons/png/flower" + level + getIconExt(hiRez));
 }
 
-function buildIconDotPath(level, hasChanges) {
+function buildIconDotPath(level, _) {
     return path.join(__dirname, "/../_icons/dots/dot" + level + ".png");
 }
 
