@@ -36,11 +36,7 @@ export function App() {
     }, [dispatch]);
 
     const afterUpdateHandler = useCallback(() => {
-        if (
-            !Platform.current.isDev() &&
-            !Platform.current.isLocal() &&
-            Version.isChangedLong()
-        ) {
+        if (!Platform.current.isDev() && !Platform.current.isLocal() && Version.isChangedLong()) {
             if (settings.showWhatsNewOnUpdate && Version.isChangedShort()) dispatch(appShowWhatsNewSet(true));
             Version.storeInSettings();
         }
@@ -54,9 +50,14 @@ export function App() {
 
             await Settings.read();
             Migration.perform();
-            Timers.create("festival-icons", 60000 * 60 * 3, () => {
-                Festival.findOut();
-            });
+            Timers.create(
+                "festival-icons",
+                60000 * 60 * 3,
+                () => {
+                    Festival.findOut();
+                },
+                true
+            );
 
             Platform.current.checkForUpdates(true);
 

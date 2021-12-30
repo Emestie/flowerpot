@@ -170,7 +170,10 @@ export default class Festival {
     }
 
     public static getFestivalNameBanner(name: string, nameFull: string, mode: number) {
-        if (this.isEveNow(Eve.Mar8) && (name.includes("Меницкая") || name.includes("Якубовская") || name.includes("Селихова"))) {
+        if (
+            this.isEveNow(Eve.Mar8) &&
+            (name.includes("Меницкая") || name.includes("Якубовская") || name.includes("Селихова"))
+        ) {
             let src = name.includes("Меницкая") ? flower1 : name.includes("Якубовская") ? flower3 : flower2;
 
             let addition = <img style={{ width: 26, height: 26, marginRight: 5 }} src={src} alt="" />;
