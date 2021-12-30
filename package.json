@@ -1,6 +1,6 @@
 {
     "name": "flowerpot",
-    "version": "0.3.5",
+    "version": "0.3.6",
     "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
@@ -11,24 +11,27 @@
     },
     "license": "MIT",
     "homepage": ".",
-    "main": "public/electron.js",
+    "main": "electron/main.js",
     "build": {
         "productName": "Flowerpot",
         "appId": "mst.flowerpot",
         "copyright": "Copyright © 2019 ${author}",
         "files": [
-            "_icons/**/*",
+            "electron/**/*",
             "build/**/*"
         ],
         "win": {
-            "icon": "build/favicon.ico"
+            "icon": "electron/icons/ico/flower4.ico"
         },
         "mac": {
-            "icon": "build/macicon.icns",
+            "icon": "electron/icons/macicon.icns",
             "category": "public.app-category.utilities"
         },
         "publish": {
             "provider": "github"
+        },
+        "extraMetadata": {
+            "main": "electron/main.js"
         }
     },
     "extendInfo": {

@@ -8,8 +8,8 @@ const nativeImage = require("electron").nativeImage;
 
 const userDataPath = app.getPath("userData");
 
-const Store = require("./electron/store");
-const storeDefaults = require("./electron/store-defaults");
+const Store = require("./store");
+const storeDefaults = require("./store-defaults");
 const store = new Store(storeDefaults, userDataPath);
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -52,7 +52,7 @@ function createWindow() {
         y: y,
         webPreferences: {
             webSecurity: false,
-            preload: __dirname + "/electron/preload.js",
+            preload: __dirname + "/preload.js",
         },
     };
     const splashCfg = {
@@ -209,7 +209,7 @@ autoUpdater.on("update-downloaded", () => {
     const en = { title: "Update Arrived!", body: "Flowerpot is ready to install an update" };
     const ru = { title: "Доступно обновление!", body: "Flowerpot готов обновиться" };
 
-    const locale = store.get("locale");
+    let locale = store.get("locale");
     if (locale === "auto") {
         locale = "en";
     }
@@ -278,14 +278,14 @@ function buildIconPath(level, hasChanges, hiRez) {
     if (hasChanges) level = level + "d";
 
     if (process.platform === "win32") {
-        return path.join(__dirname, "/../_icons/ico/flower" + level + ".ico");
+        return path.join(__dirname, "/icons/ico/flower" + level + ".ico");
     }
 
-    return path.join(__dirname, "/../_icons/png/flower" + level + getIconExt(hiRez));
+    return path.join(__dirname, "/icons/png/flower" + level + getIconExt(hiRez));
 }
 
 function buildIconDotPath(level, _) {
-    return path.join(__dirname, "/../_icons/dots/dot" + level + ".png");
+    return path.join(__dirname, "/icons/dots/dot" + level + ".png");
 }
 
 function registerAutostart() {
