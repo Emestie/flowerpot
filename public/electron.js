@@ -81,7 +81,7 @@ function createWindow() {
     });
 
     ipcMain.on("update-icon", (e, { level, hasChanges }) => {
-        if (!tray || !level || !+level || level < 0 || level > 4) return;
+        if (!tray || level < 0 || level > 4) return;
         currentLevel = level;
         iconUpdateTask(level, hasChanges);
     });

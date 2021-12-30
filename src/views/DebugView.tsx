@@ -63,6 +63,7 @@ export function DebugView() {
                 <Header as="h3" dividing>
                     Icon levels
                 </Header>
+                <Button onClick={() => changeIconLevel(0)}>0</Button>
                 <Button onClick={() => changeIconLevel(1)}>1</Button>
                 <Button onClick={() => changeIconLevel(2)}>2</Button>
                 <Button onClick={() => changeIconLevel(3)}>3</Button>

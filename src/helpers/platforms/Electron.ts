@@ -46,7 +46,7 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
     }
 
     public updateTrayIcon(level: number, hasChanges?: boolean) {
-        if (!level || !+level || level > 4 || level < 1) level = 4;
+        if (!level || !+level || level > 4 || level < 1) level = 0;
         eapi.ipcSend("update-icon", {
             level: level,
             hasChanges: !!hasChanges,

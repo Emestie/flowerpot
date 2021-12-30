@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { appViewSet } from "../redux/actions/appActions";
 import { Timers } from "../helpers/Timers";
+import Platform from "../helpers/Platform";
 
 export function ErrorView() {
     const { errorMessage } = useSelector(appSelector);
@@ -34,6 +35,7 @@ export function ErrorView() {
 
     useEffect(() => {
         routineStart();
+        Platform.current.updateTrayIcon(0, false);
     }, [routineStart]);
 
     return (
