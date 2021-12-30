@@ -35,7 +35,7 @@ const showNotification = (level, data) => {
 function createWindow() {
     let { width, height } = store.get("windowDim");
     let { x, y } = store.get("windowPos");
-    let currentLevel = 4;
+    let currentLevel = 0;
 
     app.setAppUserModelId("mst.flowerpot");
 
@@ -81,7 +81,7 @@ function createWindow() {
     });
 
     ipcMain.on("update-icon", (e, { level, hasChanges }) => {
-        if (!tray || !level || !+level || level < 1 || level > 4) return;
+        if (!tray || !level || !+level || level < 0 || level > 4) return;
         currentLevel = level;
         iconUpdateTask(level, hasChanges);
     });
@@ -243,7 +243,7 @@ function buildTrayIcon() {
         locale = "en";
     }
 
-    const iconPath = buildIconPath(4, false);
+    const iconPath = buildIconPath(0, false);
 
     tray = new Tray(iconPath);
     const contextMenu = Menu.buildFromTemplate([
