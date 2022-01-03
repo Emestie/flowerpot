@@ -1,5 +1,6 @@
 import { TLocale } from "../redux/types";
 import ElectronPlatform from "./platforms/Electron";
+//import WebPlatform from "./platforms/Web";
 
 export interface INotificationData {
     title: string;
