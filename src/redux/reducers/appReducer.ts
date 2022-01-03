@@ -2,9 +2,9 @@ import { Eve } from "../../helpers/Festival";
 import { IAction, Reducers, TLocale, TUpdateStatus, TView } from "../types";
 import { updateState } from "./_common";
 
-export interface IAppState {
+export interface IAppState<IVP = Record<string, any>> {
     view: TView;
-    errorMessage: string;
+    viewParams: IVP;
     updateStatus: TUpdateStatus;
     dialogs: { [key: string]: boolean };
     isFestivalOn: boolean;
@@ -17,7 +17,7 @@ export interface IAppState {
 
 const initialState: IAppState = {
     view: "loading",
-    errorMessage: "",
+    viewParams: {},
     updateStatus: "none",
     dialogs: {},
     isFestivalOn: false,

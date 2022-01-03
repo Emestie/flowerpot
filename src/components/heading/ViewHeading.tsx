@@ -9,6 +9,7 @@ import FestivalBanner from "./FestivalBanner";
 interface P {
     children?: React.ReactNode;
     underCaption?: React.ReactNode;
+    viewCaption?: string;
 }
 
 const getHeaderTextByViewName = (viewName: TView) => {
@@ -27,6 +28,8 @@ const getHeaderTextByViewName = (viewName: TView) => {
             return s("selQHeader");
         case "settings":
             return s("settingsHeader");
+        case "info":
+            return s("infoHeader");
         default:
             return viewName + "ViewHeader";
     }
@@ -35,10 +38,12 @@ const getHeaderTextByViewName = (viewName: TView) => {
 export function ViewHeading(p: P) {
     const { view, festivalHeaderOffset, isFestivalOn } = useSelector(appSelector);
 
+    const viewCaption = p.viewCaption || getHeaderTextByViewName(view);
+
     return (
-        <div className="TopBar" id="ViewHeading" >
+        <div className="TopBar" id="ViewHeading">
             <Header as="h1" style={{ marginLeft: isFestivalOn ? festivalHeaderOffset : 0, marginBottom: 0 }}>
-                {getHeaderTextByViewName(view)}
+                {viewCaption}
             </Header>
             <div className="RightTopCorner">{p.children}</div>
             <div>{p.underCaption}</div>

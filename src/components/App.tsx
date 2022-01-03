@@ -22,6 +22,7 @@ import { TView } from "../redux/types";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { store } from "../redux/store";
 import { Timers } from "../helpers/Timers";
+import { InfoView } from "../views/InfoView";
 
 export function App() {
     const dispatch = useDispatch();
@@ -95,6 +96,8 @@ export function App() {
                 return <ListsView />;
             case "refreshhelper":
                 return <RefreshHelperView />;
+            case "info":
+                return <InfoView />;
             case "debug":
                 return <DebugView />;
             default:

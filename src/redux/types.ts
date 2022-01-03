@@ -3,7 +3,17 @@ export interface IAction<T = any> {
     payload?: T;
 }
 
-export type TView = "loading" | "error" | "main" | "settings" | "credentials" | "selectqueries" | "debug" | "lists" | "refreshhelper";
+export type TView =
+    | "loading"
+    | "error"
+    | "main"
+    | "settings"
+    | "credentials"
+    | "selectqueries"
+    | "debug"
+    | "lists"
+    | "refreshhelper"
+    | "info";
 
 export type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "error";
 

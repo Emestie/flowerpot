@@ -218,6 +218,9 @@ const en: ILocalizedStrings = {
 
     wiStatus: "Status: ",
     linksLimitReached: "You have reached maximum amount of Quick Links",
+
+    infoHeader: "Information",
+    fetchingInfoPageContent: "Fetching info page content...",
 };
 
 export default en;

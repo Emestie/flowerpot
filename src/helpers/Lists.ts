@@ -32,9 +32,9 @@ export default class Lists {
     public static deleteFromList(listName: TLists, id: number, collection: string, stopUpdate?: boolean) {
         let l = getListsSelector(listName)(store.getState()); // store.getList(list);
 
-        if (!l.some((x) => x.id === id && x.collection === collection)) return l;
+        if (!l.some((x) => x.id === id && (x.collection || "") === collection)) return l;
 
-        l = l.filter((x) => `${x.collection}-${x.id}` !== `${collection}-${id}`);
+        l = l.filter((x) => `${x.collection || ""}-${x.id}` !== `${collection}-${id}`);
         if (!stopUpdate) {
             store.dispatch(settingsListUpdate(listName, l));
         }
@@ -42,14 +42,14 @@ export default class Lists {
     }
 
     public static clearList(listName: TLists) {
-        console.log("==CLEAR LIST");
         store.dispatch(settingsListUpdate(listName, []));
     }
 
     public static isIn(listName: TLists, collection: string, id: number, rev?: number, word?: string) {
         return !!getListsSelector(listName)(store.getState()).find((x) => {
             if (listName === "keywords" && x.word && word) return x.word.toLowerCase() === word.toLowerCase();
-            else return (collection ? x.collection === collection : true) && x.id === id && (rev ? x.rev === rev : true);
+            else
+                return (collection ? x.collection === collection : true) && x.id === id && (rev ? x.rev === rev : true);
         });
     }
 

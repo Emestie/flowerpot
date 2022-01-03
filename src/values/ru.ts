@@ -219,6 +219,9 @@ const ru: ILocalizedStrings = {
 
     wiStatus: "Статус: ",
     linksLimitReached: "Вы достигли максимального количества быстрых ссылок",
+
+    infoHeader: "Информация",
+    fetchingInfoPageContent: "Загрузка содержимого информационной страницы...",
 };
 
 export default ru;

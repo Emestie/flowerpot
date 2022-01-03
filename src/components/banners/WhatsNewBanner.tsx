@@ -1,11 +1,10 @@
 import React from "react";
 import { Message, Button } from "semantic-ui-react";
 import { s } from "../../values/Strings";
-import Platform from "../../helpers/Platform";
 import Version from "../../helpers/Version";
 import { useDispatch, useSelector } from "react-redux";
 import { appSelector } from "../../redux/selectors/appSelectors";
-import { appSet } from "../../redux/actions/appActions";
+import { appSet, appViewSet } from "../../redux/actions/appActions";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 
 export function WhatsNewBanner() {
@@ -20,7 +19,7 @@ export function WhatsNewBanner() {
     };
 
     const showNotes = () => {
-        Platform.current.openUrl("https://emestie.github.io/flowerpot/changelog");
+        dispatch(appViewSet("info", { viewCaption: s("releaseNotes"), contentFileName: "changelog.md" }));
         hideMessage();
     };
 

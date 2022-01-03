@@ -5,12 +5,12 @@ import { store } from "../store";
 import { IAction, TDialog, TUpdateStatus, TView } from "../types";
 import { createAction } from "./_common";
 
-export function appViewSet(view: TView): IAction {
-    return createAction(Actions.AppViewSet, { view });
+export function appViewSet(view: TView, viewParams: Record<string, any> = {}): IAction {
+    return createAction(Actions.AppViewSet, { view, viewParams });
 }
 
 export function appErrorSet(message: string): IAction {
-    return createAction(Actions.AppErrorSet, { view: "error", errorMessage: message });
+    return createAction(Actions.AppErrorSet, { view: "error", viewParams: { errorMessage: message } });
 }
 
 export function appShowWhatsNewSet(showWhatsNew: boolean): IAction {

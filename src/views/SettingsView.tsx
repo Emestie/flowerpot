@@ -129,6 +129,10 @@ export function SettingsView() {
         dispatch(appViewSet("lists"));
     };
 
+    const showChangelog = () => {
+        dispatch(appViewSet("info", { viewCaption: s("releaseNotes"), contentFileName: "changelog.md" }));
+    };
+
     const getPlatformIcon = () => {
         const os = Platform.current.os;
         if (os === "win32") return <Icon name="windows" />;
@@ -308,7 +312,7 @@ export function SettingsView() {
                         {getPlatformIcon()} {Version.long}
                     </Label.Detail>
                 </Label>
-                <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/changelog")}>
+                <Label as="a" onClick={showChangelog}>
                     {s("releaseNotes")}
                 </Label>
                 {updateLabel}

@@ -7,10 +7,17 @@ import { appSelector } from "../redux/selectors/appSelectors";
 import { appViewSet } from "../redux/actions/appActions";
 import { Timers } from "../helpers/Timers";
 import Platform from "../helpers/Platform";
+import { IAppState } from "../redux/reducers/appReducer";
+
+export interface IErrorViewParams extends Record<string, any> {
+    errorMessage: string;
+}
 
 export function ErrorView() {
-    const { errorMessage } = useSelector(appSelector);
+    const { viewParams } = useSelector(appSelector) as IAppState<IErrorViewParams>;
     const dispatch = useDispatch();
+
+    const errorMessage = viewParams.errorMessage;
 
     const routineStop = useCallback(() => {
         Timers.delete("error-interval");

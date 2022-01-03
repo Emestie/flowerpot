@@ -102,7 +102,12 @@ export function ListBlock(p: P) {
                         {l.rev}
                     </>
                 )}
-                <Icon name="delete" onClick={() => onItemDelete(l.id, l.collection || "")} />
+                <Icon
+                    name="delete"
+                    onClick={() => {
+                        onItemDelete(l.id, l.collection || "");
+                    }}
+                />
             </Label>
         </span>
     ));
