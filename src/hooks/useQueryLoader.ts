@@ -52,5 +52,5 @@ export function useQueryLoader(query: IQuery) {
         };
     }, [routineStart, query.queryId]);
 
-    return isLoading;
+    return { isLoading, routineStart };
 }

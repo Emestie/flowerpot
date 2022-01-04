@@ -17,7 +17,7 @@ interface IProps {
 }
 
 export function WorkItemsBlock(props: IProps) {
-    const isLoading = useQueryLoader(props.query);
+    const { isLoading, routineStart } = useQueryLoader(props.query);
     const allItems = useSelector(getWorkItemsForQuerySelector(props.query));
     const settings = useSelector(settingsSelector);
 
@@ -170,6 +170,10 @@ export function WorkItemsBlock(props: IProps) {
         dispatch(dataWorkItemsForQuerySet(props.query, newList));
     };
 
+    const refreshBlock = () => {
+        routineStart();
+    };
+
     const query = props.query;
     const workItemsComponents = workItems
         .sort(getSortPattern())
@@ -237,6 +241,11 @@ export function WorkItemsBlock(props: IProps) {
                 {!!query.queryPath && (
                     <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
                         <Icon size="small" name="external share" />
+                    </span>
+                )}
+                {!isLoading && (
+                    <span title={s("refresh")} className="externalLink" onClick={refreshBlock}>
+                        <Icon size="small" name="refresh" />
                     </span>
                 )}
             </Header>
