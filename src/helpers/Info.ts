@@ -19,7 +19,7 @@ export class Info {
     };
 
     private static getFetchUrl(pageName: string) {
-        return "/info-pages/" + pageName;
+        return "./info-pages/" + pageName;
     }
 
     private static async fetchPage(pageName: string) {
