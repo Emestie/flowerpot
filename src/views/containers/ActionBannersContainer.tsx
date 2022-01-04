@@ -1,12 +1,9 @@
 import React from "react";
 import { ActionBanner } from "../../components/banners/ActionBanner";
 import { IActionBannerProps } from "../../components/banners/ActionBanner";
-import { appDialogSet } from "../../redux/actions/appActions";
-import { store } from "../../redux/store";
-import { s } from "../../values/Strings";
 
 //const flowerbotImg = require("../../assets/flowerbot-av-48.png").default as string;
-const idea = require("../../assets/idea.png").default;
+// const idea = require("../../assets/idea.png").default;
 
 const actionBannersList: IActionBannerProps[] = [
     // {
@@ -17,16 +14,16 @@ const actionBannersList: IActionBannerProps[] = [
     //     img: flowerbotImg,
     //     type: "positive",
     // },
-    {
-        id: 4,
-        text: s("feedbackAlert"),
-        actionText: s("feedbackAlertButton"),
-        action: () => {
-            store.dispatch(appDialogSet("feedback", true));
-        },
-        img: idea,
-        type: "warning",
-    },
+    // {
+    //     id: 4,
+    //     text: s("feedbackAlert"),
+    //     actionText: s("feedbackAlertButton"),
+    //     action: () => {
+    //         store.dispatch(appDialogSet("feedback", true));
+    //     },
+    //     img: idea,
+    //     type: "warning",
+    // },
 ];
 
 //! LAST USED INDEX: 4
