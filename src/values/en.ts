@@ -221,6 +221,9 @@ const en: ILocalizedStrings = {
 
     infoHeader: "Information",
     fetchingInfoPageContent: "Fetching info page content...",
+
+    rocketBanner1: "Say hello to Rocket - a new Solution Launcher tool!",
+    rocketBanner2: "Try out Rocket",
 };
 
 export default en;

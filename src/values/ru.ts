@@ -222,6 +222,9 @@ const ru: ILocalizedStrings = {
 
     infoHeader: "Информация",
     fetchingInfoPageContent: "Загрузка содержимого информационной страницы...",
+
+    rocketBanner1: "Встречайте Rocket - инструмент для запуска проектов и автоматизации!",
+    rocketBanner2: "Попробовать Rocket",
 };
 
 export default ru;

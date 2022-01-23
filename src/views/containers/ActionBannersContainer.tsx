@@ -1,9 +1,11 @@
 import React from "react";
 import { ActionBanner } from "../../components/banners/ActionBanner";
 import { IActionBannerProps } from "../../components/banners/ActionBanner";
+import { s } from "../../values/Strings";
 
 //const flowerbotImg = require("../../assets/flowerbot-av-48.png").default as string;
 // const idea = require("../../assets/idea.png").default;
+const rocketAv48 = require("../../assets/rocket-av-48.png").default as string;
 
 const actionBannersList: IActionBannerProps[] = [
     // {
@@ -24,9 +26,17 @@ const actionBannersList: IActionBannerProps[] = [
     //     img: idea,
     //     type: "warning",
     // },
+    {
+        id: 5,
+        text: s("rocketBanner1"),
+        actionText: s("rocketBanner2"),
+        openUrl: "https://emestie.github.io/rocket",
+        img: rocketAv48,
+        type: "positive",
+    },
 ];
 
-//! LAST USED INDEX: 4
+//! LAST USED INDEX: 5
 
 export function ActionBannersContainer() {
     const banners = actionBannersList.map((x) => <ActionBanner key={x.id} {...x} />);
