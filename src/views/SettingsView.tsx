@@ -285,9 +285,6 @@ export function SettingsView() {
                 <Header as="h3" dividing>
                     {s("settingsActionsHeader")}
                 </Header>
-                {/* <Label as="a" onClick={() => Platform.current.openUrl("https://emestie.github.io/flowerpot/bot")}>
-                    {s("flowerbot")}
-                </Label> */}
                 <Label
                     as="a"
                     color="yellow"
@@ -296,6 +293,13 @@ export function SettingsView() {
                     }}
                 >
                     {s("feedbackSettingsButton")}
+                </Label>
+                <Label
+                    as="a"
+                    color="purple"
+                    onClick={() => Platform.current.openUrl("https://emestie.github.io/rocket")}
+                >
+                    {s("rocketBanner2")}
                 </Label>
                 <br />
                 <Header as="h3" dividing>
