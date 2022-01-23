@@ -1,7 +1,9 @@
 _Release notes are not available in English for now_
 
 ## 0.3.7
-- баннер и кнопка Rocket
+
+-   возраст багов старше 60 дней теперь отображаются в месяцах (сокращение mo)
+-   баннер и кнопка Rocket
 
 ## 0.3.6
 

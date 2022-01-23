@@ -95,14 +95,21 @@ export default class WorkItem {
                 "EOS.QA.Tester": "Громова Юлия Николаевна <EOSSOFT\\Cherry>",
                 "System.Description":
                     '<p>В настройках пользователя на вкладке поручения высьавлен параметр Добавить в ЖПД автора</p>\n<p><img src="http://tfs:8080/tfs/DefaultCollection/WorkItemTracking/v1.0/AttachFileHandler.ashx?FileNameGUID=4eba9229-fbf8-4f4a-b3c4-b77d4274799b&amp;FileName=tmp3EBA.png" width=450><br></p>\n<p>Открыла РК. Ввела поручение (резолюцию или проект резолюции). Направила на исполнение. Взяла его же на редактирование. Добавила второй пункт. При сохранении ошибка:</p>\n<p><img src="http://tfs:8080/tfs/DefaultCollection/WorkItemTracking/v1.0/AttachFileHandler.ashx?FileNameGUID=bab51bca-51ce-4cb3-b2bf-03cb39ec578f&amp;FileName=tmpABEF.png" width=737><br></p>',
-                "System.History": "The Fixed shelve In field was updated as part of associating work items with the build.",
+                "System.History":
+                    "The Fixed shelve In field was updated as part of associating work items with the build.",
                 "System.Tags": "",
             },
             _links: {
                 self: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715" },
-                workItemUpdates: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715/updates" },
-                workItemRevisions: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715/revisions" },
-                workItemHistory: { href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715/history" },
+                workItemUpdates: {
+                    href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715/updates",
+                },
+                workItemRevisions: {
+                    href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715/revisions",
+                },
+                workItemHistory: {
+                    href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/_apis/wit/workItems/107715/history",
+                },
                 html: { href: "http://tfs:8080/tfs/web/wi.aspx?pcguid=4e3f53b6-9166-4ec9-bf6f-47ed01daa449&id=107715" },
                 workItemType: {
                     href: "http://tfs.eos.loc:8080/tfs/DefaultCollection/dc1312ac-8ecb-48dd-9bdb-25c2d15e2375/_apis/wit/workItemTypes/Bug",
@@ -137,10 +144,16 @@ export default class WorkItem {
             titleFull: resp.fields["System.Title"] || "",
             iterationPath: resp.fields["System.IterationPath"] || "",
             areaPath: resp.fields["System.AreaPath"] || "",
-            promptness: this.extractLevel(resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]),
-            promptnessText: resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"] || "",
-            importance: this.extractLevel(resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"]),
-            importanceText: resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"] || "",
+            promptness: this.extractLevel(
+                resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]
+            ),
+            promptnessText:
+                resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"] || "",
+            importance: this.extractLevel(
+                resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"]
+            ),
+            importanceText:
+                resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"] || "",
             rank: this.rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]),
             weight: this.calcWeight(resp, isMine),
             state: resp.fields["System.State"] || "",
@@ -255,8 +268,10 @@ export default class WorkItem {
         let diff = now.getTime() - d.getTime();
 
         let _24h = 1000 * 60 * 60 * 24;
+        let _60d = 1000 * 60 * 60 * 24 * 60;
         if (diff < _24h) return Math.floor(diff / 1000 / 60 / 60) + "h";
-        else return Math.floor(diff / 1000 / 60 / 60 / 24) + "d";
+        else if (diff < _60d) return Math.floor(diff / 1000 / 60 / 60 / 24) + "d";
+        else return Math.floor(diff / 1000 / 60 / 60 / 24 / 30) + "mo";
     }
 
     public static getTextName(fullName: string) {
