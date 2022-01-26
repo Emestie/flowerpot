@@ -225,6 +225,11 @@ const ru: ILocalizedStrings = {
 
     rocketBanner1: "Встречайте Rocket - инструмент для запуска проектов и автоматизации!",
     rocketBanner2: "Попробовать Rocket",
+
+    ddTableScale: "Размер шрифта в таблице рабочих элементов: ",
+    tableSizeSmall: "Мелкий",
+    tableSizeMedium: "Средний",
+    tableSizeLarge: "Крупный",
 };
 
 export default ru;

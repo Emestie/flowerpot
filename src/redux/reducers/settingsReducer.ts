@@ -2,6 +2,12 @@ import Settings, { ISettings } from "../../helpers/Settings";
 import { IAction, Reducers } from "../types";
 import { updateState } from "./_common";
 
+export enum TableScale {
+    Small = 0,
+    Medium = 1,
+    Large = 2,
+}
+
 export interface ISettingsState extends ISettings {}
 
 const initialState: ISettingsState = {
@@ -12,6 +18,7 @@ const initialState: ISettingsState = {
     refreshRate: 180,
     sortPattern: "default",
     notificationsMode: "all",
+    tableScale: TableScale.Small,
     iconChangesOnMyWorkItemsOnly: false,
     mineOnTop: true,
     queries: [],

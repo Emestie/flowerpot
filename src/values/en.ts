@@ -224,6 +224,11 @@ const en: ILocalizedStrings = {
 
     rocketBanner1: "Say hello to Rocket - a new Solution Launcher tool!",
     rocketBanner2: "Try Rocket",
+
+    ddTableScale: "Work Items table font size: ",
+    tableSizeSmall: "Small",
+    tableSizeMedium: "Medium",
+    tableSizeLarge: "Large",
 };
 
 export default en;

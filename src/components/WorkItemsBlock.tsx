@@ -190,6 +190,10 @@ export function WorkItemsBlock(props: IProps) {
 
     const iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 
+    const getTableSize = () => {
+        return settings.tableScale === 1 ? undefined : settings.tableScale === 2 ? "large" : "small";
+    };
+
     return (
         <>
             <Header as="h3" dividing>
@@ -250,7 +254,7 @@ export function WorkItemsBlock(props: IProps) {
                 )}
             </Header>
             {!!workItems.length && !query.collapsed && (
-                <Table compact size="small">
+                <Table compact size={getTableSize()}>
                     <tbody>{workItemsComponents}</tbody>
                 </Table>
             )}

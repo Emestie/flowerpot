@@ -4,6 +4,7 @@ import { ILinkItem } from "./Links";
 import { store } from "../redux/store";
 import { settingsSet } from "../redux/actions/settingsActions";
 import { appSet } from "../redux/actions/appActions";
+import { TableScale } from "../redux/reducers/settingsReducer";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -30,6 +31,7 @@ export interface ISettings {
     credentialsChecked: boolean;
     refreshRate: number;
     sortPattern: TSortPattern;
+    tableScale: TableScale;
     notificationsMode: TNotificationsMode;
     iconChangesOnMyWorkItemsOnly: boolean;
     mineOnTop: boolean;

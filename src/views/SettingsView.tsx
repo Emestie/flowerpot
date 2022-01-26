@@ -13,6 +13,7 @@ import { settingsUpdate } from "../redux/actions/settingsActions";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { TLocale } from "../redux/types";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { TableScale } from "../redux/reducers/settingsReducer";
 
 const avatar = require("../assets/ti.jpg").default as string;
 
@@ -38,6 +39,12 @@ const notificationsModes: DropdownItemProps[] = [
 const locales: DropdownItemProps[] = [
     { key: 2, text: s("localeEn"), value: "en" },
     { key: 3, text: s("localeRu"), value: "ru" },
+];
+
+const tableScales: DropdownItemProps[] = [
+    { key: 0, text: s("tableSizeSmall"), value: 0 },
+    { key: 1, text: s("tableSizeMedium"), value: 1 },
+    { key: 2, text: s("tableSizeLarge"), value: 2 },
 ];
 
 export function SettingsView() {
@@ -69,6 +76,11 @@ export function SettingsView() {
         const locale_ = val;
         dispatch(appSet({ locale: locale_ }));
         Platform.current.changeLocale(locale_);
+    };
+
+    const onTableScaleSelect = (val: TableScale) => {
+        const tableScale = val;
+        dispatch(settingsUpdate({ tableScale }));
     };
 
     const toggleAutostart = () => {
@@ -257,6 +269,13 @@ export function SettingsView() {
                 <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
                 <br />
                 <Form.Checkbox label={s("showAvatars")} checked={settings.showAvatars} onChange={toggleShowAvatars} />
+                <br />
+                <Form.Select
+                    label={s("ddTableScale")}
+                    options={tableScales}
+                    value={settings.tableScale}
+                    onChange={(e, { value }) => onTableScaleSelect(value as TableScale)}
+                />
                 <br />
                 <Header as="h3" dividing>
                     {s("settingsOthersHeader")}
