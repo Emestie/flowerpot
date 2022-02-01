@@ -74,7 +74,7 @@ export default class Festival {
             if ((month === 1 && day <= 8) || (month === 12 && day >= 20)) {
                 return Eve.NewYear;
             }
-            if ((month === 2 && day >= 21) || (month === 2 && day <= 23)) {
+            if (month === 2 && day >= 21 && day <= 23) {
                 return Eve.Feb23;
             }
             if (month === 3 && day <= 8 && day >= 4) {
@@ -135,7 +135,7 @@ export default class Festival {
             case Eve.NewYear:
                 return [christmasTree, 12, 14, 32, 32];
             case Eve.Feb23:
-                return [feb23];
+                return [feb23, 17, 16, 36, 36];
             case Eve.Mar8:
                 return [mar8, 12, 14, 32, 32];
             case Eve.Sept3:
