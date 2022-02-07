@@ -230,6 +230,8 @@ const ru: ILocalizedStrings = {
     tableSizeSmall: "Мелкий",
     tableSizeMedium: "Средний",
     tableSizeLarge: "Крупный",
+
+    newItem: "Новый или обновленный рабочий элемент",
 };
 
 export default ru;

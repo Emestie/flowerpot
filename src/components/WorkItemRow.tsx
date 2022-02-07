@@ -256,12 +256,13 @@ export function WorkItemRow(props: IProps) {
         <Table.Row warning={isOrange} negative={isRed} onClick={dropChanges} className={getClass()}>
             <Table.Cell
                 collapsing
-                className={hasChanges ? "workItemHasCanges" : getClass()}
+                className={"cellRelative " + getClass()}
                 onDoubleClick={() => {
                     Platform.current.copyString(item.id.toString());
                 }}
             >
                 <ContextMenuTrigger id={uid + ""}>
+                    {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
                     <span title={item.type}>
                         {typeEl} {yellowMarkedVal("id")}
                     </span>

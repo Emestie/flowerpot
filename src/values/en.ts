@@ -229,6 +229,8 @@ const en: ILocalizedStrings = {
     tableSizeSmall: "Small",
     tableSizeMedium: "Medium",
     tableSizeLarge: "Large",
+
+    newItem: "New or updated Work Item",
 };
 
 export default en;
