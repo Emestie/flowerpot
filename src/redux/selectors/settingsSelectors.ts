@@ -18,6 +18,15 @@ export function getQueriesSelector(all?: boolean) {
     };
 }
 
+export function getProjectsSelector(all?: boolean) {
+    return (store: IStore) => {
+        const projects = store.settings.projects;
+        if (all) return projects;
+
+        return projects.filter((p) => p.enabled);
+    };
+}
+
 export function getListsSelector(listName: TLists) {
     return (store: IStore) => {
         const lists = store.settings.lists;

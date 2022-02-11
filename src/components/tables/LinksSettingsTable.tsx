@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Icon, Table } from "semantic-ui-react";
-import { s } from "../values/Strings";
-import Links, { LINKS_COUNT_LIMIT } from "../helpers/Links";
-import ColorPicker from "./ColorPicker";
+import { s } from "../../values/Strings";
+import Links, { LINKS_COUNT_LIMIT } from "../../helpers/Links";
+import ColorPicker from "../ColorPicker";
 import { useDispatch, useSelector } from "react-redux";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { appDialogSet } from "../redux/actions/appActions";
+import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { appDialogSet } from "../../redux/actions/appActions";
 
 export function LinksSettingsTable() {
     const dispatch = useDispatch();

@@ -5,6 +5,7 @@ import { store } from "../redux/store";
 import { settingsSet } from "../redux/actions/settingsActions";
 import { appSet } from "../redux/actions/appActions";
 import { TableScale } from "../redux/reducers/settingsReducer";
+import { IProject } from "./Project";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -35,6 +36,7 @@ export interface ISettings {
     notificationsMode: TNotificationsMode;
     iconChangesOnMyWorkItemsOnly: boolean;
     mineOnTop: boolean;
+    projects: IProject[];
     queries: IQuery[];
     lists: {
         [K in TLists]: IListItem[];

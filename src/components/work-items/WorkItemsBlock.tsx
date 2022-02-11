@@ -1,15 +1,15 @@
+import { useSelector, useDispatch } from "react-redux";
 import { Header, Label, Table, Icon } from "semantic-ui-react";
-import Query, { IQuery } from "../helpers/Query";
+import Lists from "../../helpers/Lists";
+import Platform from "../../helpers/Platform";
+import Query, { IQuery } from "../../helpers/Query";
+import WorkItem, { IWorkItem } from "../../helpers/WorkItem";
+import { useQueryLoader } from "../../hooks/useQueryLoader";
+import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
+import { getWorkItemsForQuerySelector } from "../../redux/selectors/dataSelectors";
+import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { s } from "../../values/Strings";
 import { WorkItemRow } from "./WorkItemRow";
-import WorkItem, { IWorkItem } from "../helpers/WorkItem";
-import Platform from "../helpers/Platform";
-import { s } from "../values/Strings";
-import Lists from "../helpers/Lists";
-import { useQueryLoader } from "../hooks/useQueryLoader";
-import { useDispatch, useSelector } from "react-redux";
-import { getWorkItemsForQuerySelector } from "../redux/selectors/dataSelectors";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
 
 interface IProps {
     query: IQuery;

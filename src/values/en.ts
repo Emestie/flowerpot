@@ -231,6 +231,14 @@ const en: ILocalizedStrings = {
     tableSizeLarge: "Large",
 
     newItem: "New or updated Work Item",
+
+    selpAvailableHeader: "Available projects",
+    noProjectsAvailable: "No projects available",
+    selPHeader: "Select Projects",
+
+    addProject: "Add project",
+    projectName: "Project name",
+    projectsTableSettingsHeader: "Pull Requests watch Projects",
 };
 
 export default en;

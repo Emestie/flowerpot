@@ -23,6 +23,7 @@ import { appSelector } from "../redux/selectors/appSelectors";
 import { store } from "../redux/store";
 import { Timers } from "../helpers/Timers";
 import { InfoView } from "../views/InfoView";
+import { SelectProjectsView } from "../views/SelectProjectsView";
 
 export function App() {
     const dispatch = useDispatch();
@@ -92,6 +93,8 @@ export function App() {
                 return <CredentialsView />;
             case "selectqueries":
                 return <SelectQueriesView />;
+            case "selectprojects":
+                return <SelectProjectsView />;
             case "lists":
                 return <ListsView />;
             case "refreshhelper":

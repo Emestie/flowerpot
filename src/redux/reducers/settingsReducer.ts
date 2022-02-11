@@ -21,6 +21,7 @@ const initialState: ISettingsState = {
     tableScale: TableScale.Small,
     iconChangesOnMyWorkItemsOnly: false,
     mineOnTop: true,
+    projects: [],
     queries: [],
     lists: {
         permawatch: [],

@@ -1,12 +1,12 @@
 import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
-import { QueriesSettingsTable } from "../components/QueriesSettingsTable";
+import { QueriesSettingsTable } from "../components/tables/QueriesSettingsTable";
 import Platform from "../helpers/Platform";
 import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
 import { s } from "../values/Strings";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import Version from "../helpers/Version";
 import { ViewHeading } from "../components/heading/ViewHeading";
-import { LinksSettingsTable } from "../components/LinksSettingsTable";
+import { LinksSettingsTable } from "../components/tables/LinksSettingsTable";
 import { appDialogSet, appSet, appViewSet } from "../redux/actions/appActions";
 import { useDispatch, useSelector } from "react-redux";
 import { settingsUpdate } from "../redux/actions/settingsActions";
@@ -14,6 +14,7 @@ import { appSelector } from "../redux/selectors/appSelectors";
 import { TLocale } from "../redux/types";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { TableScale } from "../redux/reducers/settingsReducer";
+import { ProjectsSettingsTable } from "../components/tables/ProjectsSettingsTable";
 
 const avatar = require("../assets/ti.jpg").default as string;
 
@@ -223,7 +224,10 @@ export function SettingsView() {
                 <Button icon labelPosition="left" onClick={openListsView}>
                     <Icon name="tasks" /> {s("manageLists")}
                 </Button>
-                <br />
+                <Header as="h3" dividing>
+                    {s("projectsTableSettingsHeader")}
+                </Header>
+                <ProjectsSettingsTable />
                 <Header as="h3" dividing>
                     {s("quickLinksSettingsHeader")}
                 </Header>
@@ -233,7 +237,6 @@ export function SettingsView() {
                     checked={settings.showQuickLinks}
                     onChange={toggleQuickLinks}
                 />
-                <br />
                 <Header as="h3" dividing>
                     {s("settingsWIHeader")}
                 </Header>

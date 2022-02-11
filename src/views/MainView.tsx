@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Container, Message, Button, Icon, Form } from "semantic-ui-react";
-import { WorkItemsBlock } from "../components/WorkItemsBlock";
+import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
 import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
 import Platform from "../helpers/Platform";
 import { IQuery } from "../helpers/Query";

@@ -10,6 +10,7 @@ export type TView =
     | "settings"
     | "credentials"
     | "selectqueries"
+    | "selectprojects"
     | "debug"
     | "lists"
     | "refreshhelper"

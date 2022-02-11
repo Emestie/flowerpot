@@ -232,6 +232,14 @@ const ru: ILocalizedStrings = {
     tableSizeLarge: "Крупный",
 
     newItem: "Новый или обновленный рабочий элемент",
+
+    selpAvailableHeader: "Доступные проекты",
+    noProjectsAvailable: "Нет доступных проектов",
+    selPHeader: "Выбор проектов",
+
+    addProject: "Добавить проект",
+    projectName: "Проект",
+    projectsTableSettingsHeader: "Проекты для отслеживания запросов на вытягивание",
 };
 
 export default ru;

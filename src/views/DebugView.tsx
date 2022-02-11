@@ -59,6 +59,7 @@ export function DebugView() {
                 <Button onClick={() => dispatch(appViewSet("settings"))}>settings</Button>
                 <Button onClick={() => dispatch(appViewSet("credentials"))}>credentials</Button>
                 <Button onClick={() => dispatch(appViewSet("selectqueries"))}>selectqueries</Button>
+                <Button onClick={() => dispatch(appViewSet("selectprojects"))}>selectprojects</Button>
                 <Button onClick={() => dispatch(appViewSet("lists"))}>lists</Button>
                 <Button onClick={() => dispatch(appViewSet("info", { contentFileName: "test1.md" }))}>info</Button>
                 <Button

@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
-import Query from "../helpers/Query";
-import { appViewSet } from "../redux/actions/appActions";
-import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
-import { s } from "../values/Strings";
+import Query from "../../helpers/Query";
+import { appViewSet } from "../../redux/actions/appActions";
+import { getQueriesSelector } from "../../redux/selectors/settingsSelectors";
+import { s } from "../../values/Strings";
 
 export function QueriesSettingsTable() {
     const dispatch = useDispatch();

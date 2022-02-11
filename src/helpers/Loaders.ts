@@ -7,24 +7,35 @@ import Lists from "./Lists";
 import { store } from "../redux/store";
 import { appErrorSet } from "../redux/actions/appActions";
 import { getListsSelector } from "../redux/selectors/settingsSelectors";
+import { IProject } from "./Project";
 
 export default class Loaders {
     private static auth: boolean = false;
     public static outage: boolean = false;
 
-    public static async loadCollections() {
+    public static async loadCollectionsAndProjects() {
         const cols = (await this.asyncRequest(
             "_api/_common/GetJumpList?showTeamsOnly=false&__v=5&navigationContextPackage={}&showStoppedCollections=false"
         )) as any;
 
-        const names = (cols.__wrappedArray || []).map((x: any) => x.name);
-        return names;
+        const collections = (cols.__wrappedArray || []).map((x: any) => x.name);
+
+        const projects: IProject[] = (cols.__wrappedArray || []).flatMap((col: any) =>
+            col.projects.map((prj: any) => ({
+                name: prj.name,
+                path: prj.path,
+                collectionName: prj.collectionName,
+                enabled: true,
+            }))
+        );
+
+        return { collections, projects } as { collections: string[]; projects: IProject[] };
     }
 
     public static async loadAvailableQueries() {
-        let queries: IQuery[] = [];
+        const queries: IQuery[] = [];
         try {
-            const collections = await this.loadCollections();
+            const { collections } = await this.loadCollectionsAndProjects();
 
             for (let c in collections) {
                 let r = (await this.syncRequest(collections[c] + "/_api/_wit/teamProjects?__v=5")) as any;
@@ -82,7 +93,7 @@ export default class Loaders {
                     }
                 }
             } else {
-                const permawatchList = getListsSelector('permawatch')(store.getState());
+                const permawatchList = getListsSelector("permawatch")(store.getState());
                 preparedWIs = permawatchList.map((x) => ({ id: x.id, url: "", collection: x.collection }));
             }
 
@@ -118,7 +129,7 @@ export default class Loaders {
     public static async checkCredentials() {
         try {
             //await this.asyncRequest("_api/_wit/teamProjects?__v=5", true);
-            await this.loadCollections();
+            await this.loadCollectionsAndProjects();
             return true;
         } catch (ex: any) {
             return false;
