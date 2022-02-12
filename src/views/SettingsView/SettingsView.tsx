@@ -1,20 +1,20 @@
 import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
-import { QueriesSettingsTable } from "../components/tables/QueriesSettingsTable";
-import Platform from "../helpers/Platform";
-import { TSortPattern, TNotificationsMode } from "../helpers/Settings";
-import { s } from "../values/Strings";
-import { LocalVersionBanner } from "../components/LocalVersionBanner";
-import Version from "../helpers/Version";
-import { ViewHeading } from "../components/heading/ViewHeading";
-import { LinksSettingsTable } from "../components/tables/LinksSettingsTable";
-import { appDialogSet, appSet, appViewSet } from "../redux/actions/appActions";
+import { QueriesSettingsTable } from "../../components/tables/QueriesSettingsTable";
+import Platform from "../../helpers/Platform";
+import { TSortPattern, TNotificationsMode } from "../../helpers/Settings";
+import { s } from "../../values/Strings";
+import { LocalVersionBanner } from "../../components/LocalVersionBanner";
+import Version from "../../helpers/Version";
+import { ViewHeading } from "../../components/heading/ViewHeading";
+import { LinksSettingsTable } from "../../components/tables/LinksSettingsTable";
+import { appDialogSet, appSet, appViewSet } from "../../redux/actions/appActions";
 import { useDispatch, useSelector } from "react-redux";
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { TLocale } from "../redux/types";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { TableScale } from "../redux/reducers/settingsReducer";
-import { ProjectsSettingsTable } from "../components/tables/ProjectsSettingsTable";
+import { settingsUpdate } from "../../redux/actions/settingsActions";
+import { appSelector } from "../../redux/selectors/appSelectors";
+import { TLocale } from "../../redux/types";
+import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { TableScale } from "../../redux/reducers/settingsReducer";
+import { ProjectsSettingsTable } from "../../components/tables/ProjectsSettingsTable";
 
 const avatar = require("../assets/ti.jpg").default as string;
 

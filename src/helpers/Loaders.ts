@@ -9,6 +9,8 @@ import { appErrorSet } from "../redux/actions/appActions";
 import { getListsSelector } from "../redux/selectors/settingsSelectors";
 import { IProject } from "./Project";
 
+const queryLoadingCounts: Record<string, number> = {};
+
 export default class Loaders {
     private static auth: boolean = false;
     public static outage: boolean = false;
@@ -100,6 +102,14 @@ export default class Loaders {
             let qwi = preparedWIs;
 
             for (let x in qwi) {
+                //check if WI is in hidden list. If yes, stop loading 4 of 5 times
+                if (
+                    Lists.isIn("hidden", qwi[x].collection || query.collectionName, qwi[x].id) &&
+                    this.isNeedToStopLoadHiddens(query.queryId)
+                ) {
+                    continue;
+                }
+
                 let wi = (await this.asyncRequest(
                     (qwi[x].collection || query.collectionName) + "/_apis/wit/workItems/" + qwi[x].id
                 )) as IResponseWorkItem;
@@ -119,6 +129,8 @@ export default class Loaders {
             }
 
             Differences.put(query, wis);
+
+            this.incrementQueryLoadingCounter(query.queryId);
         } catch (ex: any) {
             store.dispatch(appErrorSet(ex));
         }
@@ -239,5 +251,14 @@ export default class Loaders {
                 }
             }
         });
+    }
+
+    private static isNeedToStopLoadHiddens(queryId: string) {
+        return (queryLoadingCounts[queryId] || 0) % 5 !== 0;
+    }
+
+    private static incrementQueryLoadingCounter(queryId: string) {
+        if (!queryLoadingCounts[queryId]) queryLoadingCounts[queryId] = 0;
+        queryLoadingCounts[queryId] += 1;
     }
 }

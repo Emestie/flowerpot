@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import Settings from "../helpers/Settings";
 import Migration from "../helpers/Migration";
-import { SettingsView } from "../views/SettingsView";
+import { SettingsView } from "../views/SettingsView/SettingsView";
 import { CredentialsView } from "../views/CredentialsView";
 import { SelectQueriesView } from "../views/SelectQueriesView";
 import { ErrorView } from "../views/ErrorView";
