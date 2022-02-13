@@ -2,6 +2,15 @@ import { Eve } from "../../helpers/Festival";
 import { IAction, Reducers, TLocale, TUpdateStatus, TView } from "../types";
 import { updateState } from "./_common";
 
+export enum Sections {
+    Account,
+    Queries,
+    WorkItems,
+    Projects,
+    QuickLinks,
+    Credits,
+}
+
 export interface IAppState<IVP = Record<string, any>> {
     view: TView;
     viewParams: IVP;
@@ -13,6 +22,7 @@ export interface IAppState<IVP = Record<string, any>> {
     showWhatsNew: boolean;
     autostart: boolean;
     locale: TLocale;
+    settingsSection: Sections;
 }
 
 const initialState: IAppState = {
@@ -26,6 +36,7 @@ const initialState: IAppState = {
     showWhatsNew: false,
     autostart: true,
     locale: "en",
+    settingsSection: Sections.Queries,
 };
 
 export function appReducer(state = initialState, action: IAction) {

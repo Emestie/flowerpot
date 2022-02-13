@@ -1,198 +1,92 @@
-import { Header, Container, Button, Form, DropdownItemProps, Label, Icon } from "semantic-ui-react";
-import { QueriesSettingsTable } from "../../components/tables/QueriesSettingsTable";
-import Platform from "../../helpers/Platform";
-import { TSortPattern, TNotificationsMode } from "../../helpers/Settings";
+import { Container, Button, Icon, Sidebar, Menu } from "semantic-ui-react";
 import { s } from "../../values/Strings";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
-import Version from "../../helpers/Version";
 import { ViewHeading } from "../../components/heading/ViewHeading";
-import { LinksSettingsTable } from "../../components/tables/LinksSettingsTable";
-import { appDialogSet, appSet, appViewSet } from "../../redux/actions/appActions";
+import { appSettingsSectionSet, appViewSet } from "../../redux/actions/appActions";
 import { useDispatch, useSelector } from "react-redux";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
-import { appSelector } from "../../redux/selectors/appSelectors";
-import { TLocale } from "../../redux/types";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
-import { TableScale } from "../../redux/reducers/settingsReducer";
-import { ProjectsSettingsTable } from "../../components/tables/ProjectsSettingsTable";
+import { AccountSection } from "./sections/AccountSection";
+import { CreditsSection } from "./sections/CreditsSection";
+import { ProjectsSection } from "./sections/ProjectsSection";
+import { QueriesSection } from "./sections/QueriesSection";
+import { QuickLinksSections } from "./sections/QuickLinksSections";
+import { WorkItemsSection } from "./sections/WorkItemsSection";
+import { appSelector } from "../../redux/selectors/appSelectors";
+import { Sections } from "../../redux/reducers/appReducer";
 
-const avatar = require("../assets/ti.jpg").default as string;
-
-const refreshRates: DropdownItemProps[] = [
-    { key: 1, text: s("refresh1m"), value: 60 },
-    { key: 2, text: s("refresh3m"), value: 180 },
-    { key: 3, text: s("refresh5m"), value: 300 },
-    { key: 4, text: s("refresh10m"), value: 600 },
+const sectionsList = [
+    {
+        id: Sections.Account,
+        captionKey: "sectionAccount",
+    },
+    {
+        id: Sections.Queries,
+        captionKey: "sectionQueries",
+    },
+    {
+        id: Sections.WorkItems,
+        captionKey: "sectionWI",
+    },
+    {
+        id: Sections.Projects,
+        captionKey: "sectionProjects",
+    },
+    {
+        id: Sections.QuickLinks,
+        captionKey: "sectionQL",
+    },
+    {
+        id: Sections.Credits,
+        captionKey: "sectionCredits",
+    },
 ];
 
-const sortPatterns: DropdownItemProps[] = [
-    { key: 1, text: s("sortPatternWeight"), value: "default" },
-    { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
-    { key: 3, text: s("sortPatternId"), value: "id" },
-];
-
-const notificationsModes: DropdownItemProps[] = [
-    { key: 1, text: s("notifModeAll"), value: "all" },
-    { key: 2, text: s("notifModeMine"), value: "mine" },
-    { key: 3, text: s("notifModeNone"), value: "none" },
-];
-
-const locales: DropdownItemProps[] = [
-    { key: 2, text: s("localeEn"), value: "en" },
-    { key: 3, text: s("localeRu"), value: "ru" },
-];
-
-const tableScales: DropdownItemProps[] = [
-    { key: 0, text: s("tableSizeSmall"), value: 0 },
-    { key: 1, text: s("tableSizeMedium"), value: 1 },
-    { key: 2, text: s("tableSizeLarge"), value: 2 },
-];
+const getSectionComponent = (sectionId: Sections) => {
+    switch (sectionId) {
+        case Sections.Account:
+            return <AccountSection />;
+        case Sections.Credits:
+            return <CreditsSection />;
+        case Sections.WorkItems:
+            return <WorkItemsSection />;
+        case Sections.Projects:
+            return <ProjectsSection />;
+        case Sections.Queries:
+            return <QueriesSection />;
+        case Sections.QuickLinks:
+            return <QuickLinksSections />;
+        default:
+            return <></>;
+    }
+};
 
 export function SettingsView() {
     const dispatch = useDispatch();
 
-    const { autostart, locale, updateStatus } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
-
-    const openCreds = () => {
-        dispatch(appViewSet("credentials"));
-    };
-
-    const onRateSelect = (val: number) => {
-        const refreshRate = val;
-        dispatch(settingsUpdate({ refreshRate }));
-    };
-
-    const onSortSelect = (val: TSortPattern) => {
-        const sortPattern = val;
-        dispatch(settingsUpdate({ sortPattern }));
-    };
-
-    const onNotifModeSelect = (val: TNotificationsMode) => {
-        const notificationsMode = val;
-        dispatch(settingsUpdate({ notificationsMode }));
-    };
-
-    const onLocaleSelect = (val: TLocale) => {
-        const locale_ = val;
-        dispatch(appSet({ locale: locale_ }));
-        Platform.current.changeLocale(locale_);
-    };
-
-    const onTableScaleSelect = (val: TableScale) => {
-        const tableScale = val;
-        dispatch(settingsUpdate({ tableScale }));
-    };
-
-    const toggleAutostart = () => {
-        const autostart_ = !autostart;
-        dispatch(appSet({ autostart: autostart_ }));
-        Platform.current.toggleAutostart(autostart_);
-    };
-
-    const toggleIconColor = () => {
-        const iconChangesOnMyWorkItemsOnly = !settings.iconChangesOnMyWorkItemsOnly;
-        dispatch(settingsUpdate({ iconChangesOnMyWorkItemsOnly }));
-    };
-
-    const toggleMineOnTop = () => {
-        const mineOnTop = !settings.mineOnTop;
-        dispatch(settingsUpdate({ mineOnTop }));
-    };
+    const { settingsSection } = useSelector(appSelector);
 
     const toggleTheme = () => {
         const darkTheme = !settings.darkTheme;
         dispatch(settingsUpdate({ darkTheme }));
     };
 
-    const toggleTelemetry = () => {
-        const allowTelemetry = !settings.allowTelemetry;
-        dispatch(settingsUpdate({ allowTelemetry }));
-    };
-
-    const toggleWhatsNewOnUpdate = () => {
-        const showWhatsNewOnUpdate = !settings.showWhatsNewOnUpdate;
-        dispatch(settingsUpdate({ showWhatsNewOnUpdate }));
-    };
-
-    const toggleShowUnreads = () => {
-        const showUnreads = !settings.showUnreads;
-        dispatch(settingsUpdate({ showUnreads }));
-    };
-
-    const toggleShowAvatars = () => {
-        const showAvatars = !settings.showAvatars;
-        dispatch(settingsUpdate({ showAvatars }));
-    };
-
-    const toggleQuickLinks = () => {
-        const showQuickLinks = !settings.showQuickLinks;
-        dispatch(settingsUpdate({ showQuickLinks }));
-    };
-
     const onSave = () => {
         dispatch(appViewSet("main"));
     };
 
-    const onUpdate = () => {
-        Platform.current.updateApp();
-    };
+    const sectionsMenuItems = sectionsList.map((section) => (
+        <Menu.Item
+            as="a"
+            active={section.id === settingsSection}
+            onClick={() => dispatch(appSettingsSectionSet(section.id))}
+        >
+            {s(section.captionKey)}
+        </Menu.Item>
+    ));
 
-    const openListsView = () => {
-        dispatch(appViewSet("lists"));
-    };
-
-    const showChangelog = () => {
-        dispatch(appViewSet("info", { viewCaption: s("releaseNotes"), contentFileName: "changelog.md" }));
-    };
-
-    const getPlatformIcon = () => {
-        const os = Platform.current.os;
-        if (os === "win32") return <Icon name="windows" />;
-        if (os === "darwin") return <Icon name="apple" />;
-        return os;
-    };
-
-    if (Platform.current.isDev()) {
-        if (refreshRates.length !== 5)
-            refreshRates.push({
-                key: Math.random(),
-                text: s("refreshdebug"),
-                value: 10,
-            });
-    }
-
-    let updateLabel = undefined;
-
-    switch (updateStatus) {
-        case "checking":
-            updateLabel = <Label>{s("updateStateChecking")}</Label>;
-            break;
-        case "downloading":
-            updateLabel = <Label color="teal">{s("updateStateDownloading")}</Label>;
-            break;
-        case "ready":
-            //TODO: button here and updateInstallInProgress
-            updateLabel = (
-                <Label as="a" color="green" onClick={() => onUpdate()}>
-                    {s("updateStateReady")}
-                </Label>
-            );
-            break;
-        case "error":
-            updateLabel = (
-                <Label as="a" color="red" onClick={() => Platform.current.checkForUpdates()}>
-                    {s("updateStateError")}
-                </Label>
-            );
-            break;
-        default:
-            updateLabel = (
-                <Label as="a" onClick={() => Platform.current.checkForUpdates()}>
-                    {s("updateStateNone")}
-                </Label>
-            );
-    }
+    const sectionComponent = getSectionComponent(settingsSection);
 
     return (
         <div className="Page">
@@ -205,145 +99,12 @@ export function SettingsView() {
                     {s("settingsBackButton")}
                 </Button>
             </ViewHeading>
+            <Sidebar as={Menu} inverted={settings.darkTheme} vertical visible width="thin">
+                <div style={{ height: 62 }}></div>
+                {sectionsMenuItems}
+            </Sidebar>
             <Container fluid>
-                <Header as="h3" dividing>
-                    {s("accountSettingsHeader")}
-                </Header>
-                <Button icon labelPosition="left" onClick={openCreds}>
-                    <Icon name="plug" />
-                    {s("editTfsSettingsBtn")}
-                </Button>
-                <br />
-                <Header as="h3" dividing>
-                    {s("settingsQueriesHeader")}
-                </Header>
-                <QueriesSettingsTable />
-                <Header as="h3" dividing>
-                    {s("customListsSettingsHeader")}
-                </Header>
-                <Button icon labelPosition="left" onClick={openListsView}>
-                    <Icon name="tasks" /> {s("manageLists")}
-                </Button>
-                <Header as="h3" dividing>
-                    {s("projectsTableSettingsHeader")}
-                </Header>
-                <ProjectsSettingsTable />
-                <Header as="h3" dividing>
-                    {s("quickLinksSettingsHeader")}
-                </Header>
-                <LinksSettingsTable />
-                <Form.Checkbox
-                    label={s("cbQuickLinksLabel")}
-                    checked={settings.showQuickLinks}
-                    onChange={toggleQuickLinks}
-                />
-                <Header as="h3" dividing>
-                    {s("settingsWIHeader")}
-                </Header>
-                <Form.Select
-                    label={s("ddRefreshLabel")}
-                    options={refreshRates}
-                    value={settings.refreshRate}
-                    onChange={(e, { value }) => onRateSelect(value as number)}
-                />
-                <br />
-                <Form.Select
-                    label={s("sortPattern")}
-                    options={sortPatterns}
-                    value={settings.sortPattern}
-                    onChange={(e, { value }) => onSortSelect(value as TSortPattern)}
-                />
-                <br />
-                <Form.Select
-                    label={s("ddShowNotifLabel")}
-                    options={notificationsModes}
-                    value={settings.notificationsMode}
-                    onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
-                />
-                <br />
-                <Form.Checkbox
-                    label={s("cbIconLabel")}
-                    checked={settings.iconChangesOnMyWorkItemsOnly}
-                    onChange={toggleIconColor}
-                />
-                <br />
-                <Form.Checkbox label={s("mineOnTop")} checked={settings.mineOnTop} onChange={toggleMineOnTop} />
-                <br />
-                <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
-                <br />
-                <Form.Checkbox label={s("showAvatars")} checked={settings.showAvatars} onChange={toggleShowAvatars} />
-                <br />
-                <Form.Select
-                    label={s("ddTableScale")}
-                    options={tableScales}
-                    value={settings.tableScale}
-                    onChange={(e, { value }) => onTableScaleSelect(value as TableScale)}
-                />
-                <br />
-                <Header as="h3" dividing>
-                    {s("settingsOthersHeader")}
-                </Header>
-                <Form.Select
-                    label={s("ddLocalesLabel")}
-                    options={locales}
-                    value={locale}
-                    onChange={(e, { value }) => onLocaleSelect(value as TLocale)}
-                />
-                <br />
-                {Platform.current.os === "win32" && (
-                    <>
-                        <Form.Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
-                        <br />
-                    </>
-                )}
-                <Form.Checkbox label={s("cbTelemetry")} checked={settings.allowTelemetry} onChange={toggleTelemetry} />
-                <br />
-                <Form.Checkbox
-                    label={s("cbWhatsNew")}
-                    checked={settings.showWhatsNewOnUpdate}
-                    onChange={toggleWhatsNewOnUpdate}
-                />
-                <br />
-                <Header as="h3" dividing>
-                    {s("settingsActionsHeader")}
-                </Header>
-                <Label
-                    as="a"
-                    color="yellow"
-                    onClick={() => {
-                        dispatch(appDialogSet("feedback", true));
-                    }}
-                >
-                    {s("feedbackSettingsButton")}
-                </Label>
-                <Label
-                    as="a"
-                    color="purple"
-                    onClick={() => Platform.current.openUrl("https://emestie.github.io/rocket")}
-                >
-                    {s("rocketBanner2")}
-                </Label>
-                <br />
-                <Header as="h3" dividing>
-                    {s("settingsCreditsHeader")}
-                </Header>
-                <Label as="a" image onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}>
-                    <img src={avatar} alt="" />
-                    <Icon name="github" />
-                    Emestie/flowerpot
-                </Label>
-                <Label>
-                    {s("versionWord")}
-                    <Label.Detail>
-                        {getPlatformIcon()} {Version.long}
-                    </Label.Detail>
-                </Label>
-                <Label as="a" onClick={showChangelog}>
-                    {s("releaseNotes")}
-                </Label>
-                {updateLabel}
-                <br />
-                <br />
+                <div style={{ paddingLeft: 150 }}>{sectionComponent}</div>
             </Container>
         </div>
     );

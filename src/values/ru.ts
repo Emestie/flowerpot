@@ -240,6 +240,13 @@ const ru: ILocalizedStrings = {
     addProject: "Добавить проект",
     projectName: "Проект",
     projectsTableSettingsHeader: "Проекты для отслеживания запросов на вытягивание",
+
+    sectionAccount: "Учетная запись",
+    sectionQueries: "Запросы и списки",
+    sectionWI: "Рабочие элементы",
+    sectionProjects: "Проекты и запросы на вытягивание",
+    sectionQL: "Быстрые ссылки",
+    sectionCredits: "Другие настройки",
 };
 
 export default ru;

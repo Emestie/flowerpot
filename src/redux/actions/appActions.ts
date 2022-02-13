@@ -1,6 +1,6 @@
 import { Eve } from "../../helpers/Festival";
 import { Actions } from "../actions-enum";
-import { IAppState } from "../reducers/appReducer";
+import { IAppState, Sections } from "../reducers/appReducer";
 import { store } from "../store";
 import { IAction, TDialog, TUpdateStatus, TView } from "../types";
 import { createAction } from "./_common";
@@ -36,4 +36,8 @@ export function appDialogSet(dialogKey: TDialog, value: boolean) {
     dialogs[dialogKey] = value;
 
     return createAction(Actions.AppDialogSet, { dialogs });
+}
+
+export function appSettingsSectionSet(sectionId: Sections): IAction {
+    return createAction(Actions.AppSettingsSectionSet, { settingsSection: sectionId });
 }

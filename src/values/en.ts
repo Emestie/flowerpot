@@ -239,6 +239,13 @@ const en: ILocalizedStrings = {
     addProject: "Add project",
     projectName: "Project name",
     projectsTableSettingsHeader: "Pull Requests watch Projects",
+
+    sectionAccount: "Account and Credentials",
+    sectionQueries: "Queries and Lists",
+    sectionWI: "Work Items",
+    sectionProjects: "Projects and Pull Requests",
+    sectionQL: "Quick Links",
+    sectionCredits: "Other settings",
 };
 
 export default en;
