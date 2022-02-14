@@ -246,7 +246,9 @@ const ru: ILocalizedStrings = {
     sectionWI: "Рабочие элементы",
     sectionProjects: "Проекты и запросы на вытягивание",
     sectionQL: "Быстрые ссылки",
-    sectionCredits: "Другие настройки",
+    sectionCredits: "Прочие настройки",
+
+    pullRequestsBlockCaption: "Запросы на вытягивание",
 };
 
 export default ru;

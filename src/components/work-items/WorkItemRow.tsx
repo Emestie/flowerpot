@@ -335,13 +335,17 @@ export function WorkItemRow(props: IProps) {
                 collapsing
                 onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.assignedToFull))}
             >
-                <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 0)}</ContextMenuTrigger>
+                <ContextMenuTrigger id={uid + ""}>
+                    {Festival.getSpecialNameEffect(item.assignedTo, item.assignedToFull, item.assignedToImg)}
+                </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell
                 collapsing
                 onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.createdByFull))}
             >
-                <ContextMenuTrigger id={uid + ""}>{Festival.getSpecialNameEffect(item, 1)}</ContextMenuTrigger>
+                <ContextMenuTrigger id={uid + ""}>
+                    {Festival.getSpecialNameEffect(item.createdBy, item.createdByFull, item.createdByImg)}
+                </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
                 <ContextMenuTrigger id={uid + ""}>

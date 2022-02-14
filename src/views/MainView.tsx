@@ -16,6 +16,7 @@ import { getQueriesSelector, settingsSelector } from "../redux/selectors/setting
 import { dataChangesCollectionClear } from "../redux/actions/dataActions";
 import { dataSelector } from "../redux/selectors/dataSelectors";
 import Differences from "../helpers/Differences";
+import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock";
 
 export const queriesSorting = (a: IQuery, b: IQuery) => {
     if (a.empty === b.empty) return 0;
@@ -60,7 +61,7 @@ export function MainView() {
 
     const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
-    const queriesElems = queries.length ? (
+    const queriesBlocks = queries.length ? (
         queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} filter={quickSearchVal} />)
     ) : (
         <Message info>
@@ -120,7 +121,8 @@ export function MainView() {
             <Container fluid>
                 <WhatsNewBanner />
                 <ActionBannersContainer />
-                {queriesElems}
+                <PullRequestsBlock />
+                {queriesBlocks}
             </Container>
         </div>
     );

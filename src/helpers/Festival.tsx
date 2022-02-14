@@ -169,7 +169,7 @@ export default class Festival {
         //[icon, top, left, w, h, offset];
     }
 
-    public static getFestivalNameBanner(name: string, nameFull: string, mode: number) {
+    public static getFestivalNameBanner(name: string, nameFull: string) {
         if (
             this.isEveNow(Eve.Mar8) &&
             (name.includes("Меницкая") || name.includes("Якубовская") || name.includes("Селихова"))
@@ -195,27 +195,33 @@ export default class Festival {
         return Math.floor(Math.random() * 10000).toString();
     }
 
-    public static getSpecialNameEffect(item: IWorkItem, mode: number) {
-        const name = mode === 1 ? item.createdBy : item.assignedTo;
-        const nameFull = mode === 1 ? item.createdByFull : item.assignedToFull;
-        const nameImg = mode === 1 ? item.createdByImg : item.assignedToImg; // + "?salt=" + this.getSaltValue();
+    public static getSpecialNameEffect(
+        displayName: string,
+        nameFullWithUID: string,
+        avatar: string,
+        workItem?: IWorkItem
+    ) {
+        //const name = mode === 1 ? item.createdBy : item.assignedTo;
+        //const nameFull = mode === 1 ? item.createdByFull : item.assignedToFull;
+        //const nameImg = mode === 1 ? item.createdByImg : item.assignedToImg; // + "?salt=" + this.getSaltValue();
         const { showAvatars } = store.getState().settings;
         //const showAvatars = store.settings.showAvatars;
 
-        let festivalNameBanner = Festival.getFestivalNameBanner(name, nameFull, mode);
+        let festivalNameBanner = Festival.getFestivalNameBanner(displayName, nameFullWithUID);
         if (festivalNameBanner) return festivalNameBanner;
 
         let addition = <></>;
 
         this.nameIconsDictionary.forEach((nameIconRule) => {
-            if (nameIconRule.rule(name, item)) addition = <span style={{ marginLeft: 3 }}> {nameIconRule.icon}</span>;
+            if (workItem && nameIconRule.rule(displayName, workItem))
+                addition = <span style={{ marginLeft: 3 }}> {nameIconRule.icon}</span>;
         });
 
         return (
-            <span title={nameFull}>
+            <span title={nameFullWithUID}>
                 <Label basic image className="user-label">
-                    {showAvatars && nameImg && <Image className="av-class" avatar spaced="right" src={nameImg} />}
-                    {name}
+                    {showAvatars && avatar && <Image className="av-class" avatar spaced="right" src={avatar} />}
+                    {displayName}
                     {addition}
                 </Label>
             </span>

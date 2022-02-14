@@ -8,6 +8,7 @@ import { store } from "../redux/store";
 import { appErrorSet } from "../redux/actions/appActions";
 import { getListsSelector } from "../redux/selectors/settingsSelectors";
 import { IProject } from "./Project";
+import { IResponsePullRequest, PullRequest } from "./PullRequest";
 
 const queryLoadingCounts: Record<string, number> = {};
 
@@ -32,6 +33,30 @@ export default class Loaders {
         );
 
         return { collections, projects } as { collections: string[]; projects: IProject[] };
+    }
+
+    public static async loadPullRequests(projects: IProject[]) {
+        if (!projects.length) return [];
+
+        const promises = projects.map((p) =>
+            this.asyncRequest(`${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`)
+        );
+
+        const result = await Promise.all(promises);
+
+        const allPRs: IResponsePullRequest[] = result.reduce<IResponsePullRequest[]>(
+            (prev: any, curr: any, index: number) => [
+                ...prev,
+                ...curr.value.map((x: any) => ({ ...x, _collection: projects[index].collectionName })),
+            ],
+            []
+        );
+
+        const finalPRs = allPRs.map(PullRequest.buildFromResponse);
+
+        finalPRs.sort((a, b) => b.id - a.id);
+
+        return finalPRs;
     }
 
     public static async loadAvailableQueries() {

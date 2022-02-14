@@ -2,6 +2,7 @@ import Lists from "./Lists";
 import { TLists } from "./Settings";
 import { IQuery } from "./Query";
 import { store } from "../redux/store";
+import { ItemsCommon } from "./ItemsCommon";
 
 export interface IWorkItem {
     id: number;
@@ -124,7 +125,7 @@ export default class WorkItem {
 
     public static buildFromResponse(resp: IResponseWorkItem, query: IQuery) {
         let isMine =
-            this.parseNameField(resp.fields["System.AssignedTo"] || "")
+            ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "")
                 .toLowerCase()
                 .indexOf(store.getState().settings.tfsUser.toLowerCase()) !== -1;
         let item: IWorkItem = {
@@ -132,15 +133,15 @@ export default class WorkItem {
             rev: resp.rev,
             url: resp._links.html.href,
             type: resp.fields["System.WorkItemType"] || "",
-            assignedTo: this.shortName(this.parseNameField(resp.fields["System.AssignedTo"]) || ""),
-            assignedToFull: this.parseNameField(resp.fields["System.AssignedTo"] || ""),
+            assignedTo: ItemsCommon.shortName(ItemsCommon.parseNameField(resp.fields["System.AssignedTo"]) || ""),
+            assignedToFull: ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || ""),
             assignedToImg: resp.fields["System.AssignedTo"]?.imageUrl || "",
             createdDate: resp.fields["System.CreatedDate"],
-            freshness: this.getTerm(resp.fields["System.CreatedDate"]),
-            createdBy: this.shortName(this.parseNameField(resp.fields["System.CreatedBy"] || "")) || "",
-            createdByFull: this.parseNameField(resp.fields["System.CreatedBy"] || ""),
+            freshness: ItemsCommon.getTerm(resp.fields["System.CreatedDate"]),
+            createdBy: ItemsCommon.shortName(ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "")) || "",
+            createdByFull: ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || ""),
             createdByImg: resp.fields["System.CreatedBy"]?.imageUrl || "",
-            title: this.shortTitle(resp.fields["System.Title"]) || "",
+            title: ItemsCommon.shortTitle(resp.fields["System.Title"]) || "",
             titleFull: resp.fields["System.Title"] || "",
             iterationPath: resp.fields["System.IterationPath"] || "",
             areaPath: resp.fields["System.AreaPath"] || "",
@@ -167,13 +168,6 @@ export default class WorkItem {
             _filteredBy: {},
         };
         return item;
-    }
-
-    private static parseNameField(nameField: any) {
-        if (!nameField) return "";
-        if (typeof nameField === "string") return nameField;
-
-        return `${nameField.displayName} <${nameField.uniqueName}>`;
     }
 
     private static isHasShelve(text: string) {
@@ -244,34 +238,6 @@ export default class WorkItem {
         if (!level) return undefined;
         if (+level) return +level;
         return +level[0];
-    }
-
-    private static shortName(fullName: string): string {
-        if (!fullName) return "";
-        if (fullName.indexOf("TFSBuildAgent") !== -1) return "TFSBuildAgent";
-        let [lname, fname, mname] = fullName.split(" ");
-        let result = lname;
-        if (fname) result += " " + fname[0] + ".";
-        if (mname) result += " " + mname[0] + ".";
-        return result;
-    }
-
-    private static shortTitle(title: string) {
-        return title.substr(0, 70) + (title.length > 70 ? "..." : "");
-    }
-
-    private static getTerm(date: string) {
-        if (!date) return "";
-        let d = new Date(date);
-        let now = new Date();
-
-        let diff = now.getTime() - d.getTime();
-
-        let _24h = 1000 * 60 * 60 * 24;
-        let _60d = 1000 * 60 * 60 * 24 * 60;
-        if (diff < _24h) return Math.floor(diff / 1000 / 60 / 60) + "h";
-        else if (diff < _60d) return Math.floor(diff / 1000 / 60 / 60 / 24) + "d";
-        else return Math.floor(diff / 1000 / 60 / 60 / 24 / 30) + "mo";
     }
 
     public static getTextName(fullName: string) {

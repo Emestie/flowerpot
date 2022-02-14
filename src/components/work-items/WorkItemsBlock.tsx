@@ -237,7 +237,7 @@ export function WorkItemsBlock(props: IProps) {
                         </Label>
                     )}
                     {!totalItemsCount && !isLoading && (
-                        <Label size="small" circular color="green">
+                        <Label size="mini" circular color="green">
                             ✔
                         </Label>
                     )}
