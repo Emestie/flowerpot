@@ -249,6 +249,9 @@ const ru: ILocalizedStrings = {
     sectionCredits: "Прочие настройки",
 
     pullRequestsBlockCaption: "Запросы на вытягивание",
+
+    settingsAccountChecked: "Проверен",
+    settingsAccountNotChecked: "Не проверен",
 };
 
 export default ru;

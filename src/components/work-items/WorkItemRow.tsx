@@ -203,7 +203,7 @@ export function WorkItemRow(props: IProps) {
 
     const item = props.item;
     const hasChanges = settings.showUnreads ? !!changesCollection[item.id] : false;
-    const uid = props.item.id + Math.random();
+    const uid = props.item.id + Math.random() + "";
 
     const [isDone, doneByUser] = [false, "user"];
 
@@ -261,7 +261,7 @@ export function WorkItemRow(props: IProps) {
                     Platform.current.copyString(item.id.toString());
                 }}
             >
-                <ContextMenuTrigger id={uid + ""}>
+                <ContextMenuTrigger id={uid}>
                     {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
                     <span title={item.type}>
                         {typeEl} {yellowMarkedVal("id")}
@@ -276,7 +276,7 @@ export function WorkItemRow(props: IProps) {
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell>
-                <ContextMenuTrigger id={uid + ""}>
+                <ContextMenuTrigger id={uid}>
                     {isDone && (
                         <span className="hasShelve" title={s("itemIsDone") + doneByUser}>
                             <Label color="blue" size="mini" style={{ padding: "3px 4px", marginRight: 5 }}>
@@ -327,7 +327,7 @@ export function WorkItemRow(props: IProps) {
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid + ""}>
+                <ContextMenuTrigger id={uid}>
                     <span title={s("wiStatus") + item.state}>{getStatusIcon(item.state)}</span>
                 </ContextMenuTrigger>
             </Table.Cell>
@@ -335,7 +335,7 @@ export function WorkItemRow(props: IProps) {
                 collapsing
                 onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.assignedToFull))}
             >
-                <ContextMenuTrigger id={uid + ""}>
+                <ContextMenuTrigger id={uid}>
                     {Festival.getSpecialNameEffect(item.assignedTo, item.assignedToFull, item.assignedToImg)}
                 </ContextMenuTrigger>
             </Table.Cell>
@@ -343,12 +343,12 @@ export function WorkItemRow(props: IProps) {
                 collapsing
                 onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.createdByFull))}
             >
-                <ContextMenuTrigger id={uid + ""}>
+                <ContextMenuTrigger id={uid}>
                     {Festival.getSpecialNameEffect(item.createdBy, item.createdByFull, item.createdByImg)}
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid + ""}>
+                <ContextMenuTrigger id={uid}>
                     {revEl} {freshnessEl}
                 </ContextMenuTrigger>
             </Table.Cell>

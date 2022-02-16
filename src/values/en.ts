@@ -248,6 +248,9 @@ const en: ILocalizedStrings = {
     sectionCredits: "Other settings",
 
     pullRequestsBlockCaption: "Pull Requests",
+
+    settingsAccountChecked: "Validated",
+    settingsAccountNotChecked: "Not validated",
 };
 
 export default en;

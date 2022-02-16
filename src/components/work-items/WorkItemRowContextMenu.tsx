@@ -12,13 +12,15 @@ import { s } from "../../values/Strings";
 import { SingleInputColorDialog } from "../dialogs/SingleInputColorDialog";
 
 interface IProps {
-    uid: number;
+    uid: string;
     workItem: IWorkItem;
     query: IQuery;
     onUpdate: (wi: IWorkItem) => void;
 }
 
 export function WorkItemRowContextMenu(props: IProps) {
+    const { workItem, uid, onUpdate } = props;
+
     const [showNoteDialog, setShowNoteDialog] = useState(false);
     const [noteInitialText, setNoteInitialText] = useState<string | undefined>(undefined);
     const [noteInitialColor, setNoteInitialColor] = useState<string | undefined>(undefined);
@@ -26,8 +28,8 @@ export function WorkItemRowContextMenu(props: IProps) {
     const dispatch = useDispatch();
 
     const onListChange = (e: any, data: any) => {
-        let list = data.list as TLists | undefined;
-        let wi = props.workItem;
+        const list = data.list as TLists | undefined;
+        const wi = workItem;
 
         if (list) {
             Lists.push(list, wi._collectionName, wi.id, wi.rev);
@@ -39,21 +41,18 @@ export function WorkItemRowContextMenu(props: IProps) {
 
         wi._list = list;
 
-        props.onUpdate(wi);
+        onUpdate(wi);
     };
 
-    const onCopy = (e: any) => {
-        let wi = props.workItem;
-        let s = `${wi.type} ${wi.id} - ${wi.iterationPath}: ${wi.title} (${wi.url})`;
+    const onCopy = (_: any) => {
+        const wi = workItem;
+        const s = `${wi.type} ${wi.id} - ${wi.iterationPath}: ${wi.title} (${wi.url})`;
 
         Platform.current.copyString(s);
     };
 
-    const onCopyId = (e: any) => {
-        let wi = props.workItem;
-        let s = `${wi.id}`;
-
-        Platform.current.copyString(s);
+    const onCopyId = (_: any) => {
+        Platform.current.copyString(workItem.id.toString());
     };
 
     const onEditNote = (text: string, color?: string) => {
@@ -61,9 +60,8 @@ export function WorkItemRowContextMenu(props: IProps) {
         setShowNoteDialog(false);
     };
 
-    let wi = props.workItem;
     return (
-        <ContextMenu id={props.uid + ""}>
+        <ContextMenu id={uid}>
             <Menu vertical>
                 <MenuItem data={{ action: "copy" }} onClick={onCopy}>
                     <Menu.Item>
@@ -81,17 +79,17 @@ export function WorkItemRowContextMenu(props: IProps) {
                         {s("copyId")}
                     </Menu.Item>
                 </MenuItem>
-                {wi._list && (
+                {workItem._list && (
                     <MenuItem data={{ list: undefined }} onClick={onListChange}>
                         <Menu.Item>
                             <span>
                                 <Icon name="delete" />
                             </span>
-                            {s("removeFromList")}"{s(wi._list)}"
+                            {s("removeFromList")}"{s(workItem._list)}"
                         </Menu.Item>
                     </MenuItem>
                 )}
-                {wi._list !== "permawatch" && (
+                {workItem._list !== "permawatch" && (
                     <MenuItem data={{ list: "permawatch" }} onClick={onListChange}>
                         <Menu.Item>
                             <span>
@@ -101,7 +99,7 @@ export function WorkItemRowContextMenu(props: IProps) {
                         </Menu.Item>
                     </MenuItem>
                 )}
-                {wi._list !== "pinned" && (
+                {workItem._list !== "pinned" && (
                     <MenuItem data={{ list: "pinned" }} onClick={onListChange}>
                         <Menu.Item>
                             <span>
@@ -111,7 +109,7 @@ export function WorkItemRowContextMenu(props: IProps) {
                         </Menu.Item>
                     </MenuItem>
                 )}
-                {wi._list !== "favorites" && (
+                {workItem._list !== "favorites" && (
                     <MenuItem data={{ list: "favorites" }} onClick={onListChange}>
                         <Menu.Item>
                             <span>
@@ -121,7 +119,7 @@ export function WorkItemRowContextMenu(props: IProps) {
                         </Menu.Item>
                     </MenuItem>
                 )}
-                {wi._list !== "deferred" && (
+                {workItem._list !== "deferred" && (
                     <MenuItem data={{ list: "deferred" }} onClick={onListChange}>
                         <Menu.Item>
                             <span>
