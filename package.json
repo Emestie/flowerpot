@@ -43,18 +43,18 @@
         "@trodi/electron-splashscreen": "^0.3.4",
         "cyrillic-to-translit-js": "^3.1.0",
         "electron-is-dev": "^1.2.0",
-        "electron-updater": "^4.3.9",
-        "markdown-to-jsx": "^7.1.5"
+        "electron-updater": "^4.6.5",
+        "markdown-to-jsx": "^7.1.6"
     },
     "devDependencies": {
-        "@types/jest": "*",
-        "@types/node": "^16.11.7",
+        "@types/jest": "^27.4.0",
+        "@types/node": "^16.11.25",
         "@types/preval.macro": "^3.0.0",
-        "@types/react": "^17.0.35",
+        "@types/react": "^17.0.39",
         "@types/react-dom": "^17.0.11",
         "@types/redux-logger": "^3.0.9",
-        "electron": "^15.3.2",
-        "electron-builder": "^22.11.7",
+        "electron": "^15.3.7",
+        "electron-builder": "^22.14.13",
         "foreman": "^3.0.1",
         "node-sass": "^6.0.1",
         "preval.macro": "^3.0.0",
@@ -65,10 +65,10 @@
         "react-scripts": "^4.0.0",
         "redux": "^4.1.2",
         "redux-logger": "^3.0.6",
-        "redux-thunk": "^2.4.0",
+        "redux-thunk": "^2.4.1",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^0.88.2",
-        "typescript": "^4.4.4"
+        "typescript": "^4.5.5"
     },
     "scripts": {
         "dev": "nf start",

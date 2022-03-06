@@ -15,7 +15,7 @@ class Store {
                 else iid += String.fromCharCode(Math.random() * 10 + 48);
             }
 
-            this.set("installationID", iid);
+            this.set("installationID", "FLW-" + iid);
         }
     }
 
