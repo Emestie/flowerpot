@@ -245,7 +245,14 @@ export default class WorkItem {
     }
 
     public static isOrange(wi: IWorkItem) {
-        return wi.type !== "Task" && wi.promptness === 2 && wi.importance !== 3;
+        return (
+            wi.type !== "Task" &&
+            wi.type !== "Epic" &&
+            wi.type !== "User Story" &&
+            wi.type !== "Feature" &&
+            wi.promptness === 2 &&
+            wi.importance !== 3
+        );
     }
 
     public static isRed(wi: IWorkItem) {
