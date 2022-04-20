@@ -196,6 +196,8 @@ export function WorkItemRow(props: IProps) {
             case "New":
             case "Новый":
                 return <Icon name="genderless" />;
+            case "Ready for Review":
+                return <Icon name="hand paper" />;
             default:
                 return <>{state}</>;
         }
