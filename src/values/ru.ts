@@ -252,6 +252,8 @@ const ru: ILocalizedStrings = {
 
     settingsAccountChecked: "Проверен",
     settingsAccountNotChecked: "Не проверен",
+
+    showMineOnly: "Показывать только мои Рабочие Элементы",
 };
 
 export default ru;

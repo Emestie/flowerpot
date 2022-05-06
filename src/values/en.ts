@@ -251,6 +251,8 @@ const en: ILocalizedStrings = {
 
     settingsAccountChecked: "Validated",
     settingsAccountNotChecked: "Not validated",
+
+    showMineOnly: "Show mine Work Items only",
 };
 
 export default en;

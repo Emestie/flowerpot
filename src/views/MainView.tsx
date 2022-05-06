@@ -10,7 +10,7 @@ import { ViewHeading } from "../components/heading/ViewHeading";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { appDialogSet, appViewSet } from "../redux/actions/appActions";
+import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { dataChangesCollectionClear } from "../redux/actions/dataActions";
@@ -26,7 +26,7 @@ export const queriesSorting = (a: IQuery, b: IQuery) => {
 
 export function MainView() {
     const dispatch = useDispatch();
-    const { updateStatus } = useSelector(appSelector);
+    const { updateStatus, showMineOnly } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
     const { changesCollection } = useSelector(dataSelector);
     const storedQueries = useSelector(getQueriesSelector());
@@ -38,6 +38,10 @@ export function MainView() {
     useEffect(() => {
         setTimeout(() => setIsRefreshAvailable(true), 5000);
     }, []);
+
+    const onShowMineOnly = () => {
+        dispatch(appShowMineOnlySet(!showMineOnly));
+    };
 
     const onRefresh = () => {
         dispatch(appViewSet("refreshhelper"));
@@ -93,6 +97,9 @@ export function MainView() {
                             {s("installUpdate")}
                         </Button>
                     )}
+                    <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
+                        <Icon name="user outline" />
+                    </Button>
                     <div style={{ display: "inline-block", marginRight: 3.5 }}>
                         <Form.Input
                             size="small"

@@ -23,6 +23,7 @@ export interface IAppState<IVP = Record<string, any>> {
     autostart: boolean;
     locale: TLocale;
     settingsSection: Sections;
+    showMineOnly: boolean;
 }
 
 const initialState: IAppState = {
@@ -37,6 +38,7 @@ const initialState: IAppState = {
     autostart: true,
     locale: "en",
     settingsSection: Sections.Queries,
+    showMineOnly: false,
 };
 
 export function appReducer(state = initialState, action: IAction) {

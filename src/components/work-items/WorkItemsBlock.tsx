@@ -6,6 +6,7 @@ import Query, { IQuery } from "../../helpers/Query";
 import WorkItem, { IWorkItem } from "../../helpers/WorkItem";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
+import { appSelector } from "../../redux/selectors/appSelectors";
 import { getWorkItemsForQuerySelector } from "../../redux/selectors/dataSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
@@ -20,6 +21,7 @@ export function WorkItemsBlock(props: IProps) {
     const { isLoading, routineStart } = useQueryLoader(props.query);
     const allItems = useSelector(getWorkItemsForQuerySelector(props.query));
     const settings = useSelector(settingsSelector);
+    const { showMineOnly } = useSelector(appSelector);
 
     const dispatch = useDispatch();
 
@@ -177,6 +179,7 @@ export function WorkItemsBlock(props: IProps) {
     const query = props.query;
     const workItemsComponents = workItems
         .sort(getSortPattern())
+        .filter((wi) => (showMineOnly ? wi._isMine : true))
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
         .map((wi) => (
             <WorkItemRow

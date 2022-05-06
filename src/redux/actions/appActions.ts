@@ -41,3 +41,7 @@ export function appDialogSet(dialogKey: TDialog, value: boolean) {
 export function appSettingsSectionSet(sectionId: Sections): IAction {
     return createAction(Actions.AppSettingsSectionSet, { settingsSection: sectionId });
 }
+
+export function appShowMineOnlySet(showMineOnly: boolean): IAction {
+    return createAction(Actions.AppShowMineOnlySet, { showMineOnly });
+}
