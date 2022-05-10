@@ -69,9 +69,9 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
     public updateApp() {
         eapi.ipcSend("update-app");
 
-        if (Platform.current.os === "darwin") {
-            this.openUrl("https://github.com/Emestie/flowerpot/releases/latest");
-        }
+        // if (Platform.current.os === "darwin") {
+        //     this.openUrl("https://github.com/Emestie/flowerpot/releases/latest");
+        // }
     }
 
     public showNativeNotif(data: INotificationData) {

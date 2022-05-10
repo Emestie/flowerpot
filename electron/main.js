@@ -95,6 +95,8 @@ function createWindow() {
     });
 
     ipcMain.on("update-app", () => {
+        if (process.platform === "darwin" && wnd !== null) wnd.close();
+
         autoUpdater.quitAndInstall();
         //setImmediate(() => {
         // app.removeAllListeners("window-all-closed");
@@ -160,7 +162,9 @@ function createWindow() {
 
 app.on("ready", createWindow);
 
-app.on("window-all-closed", () => {});
+app.on("window-all-closed", () => {
+    if (process.platform === "darwin") app.quit();
+});
 
 app.on("before-quit", () => (app.quitting = true));
 
