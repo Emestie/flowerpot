@@ -35,7 +35,7 @@ export interface IWorkItem {
     _moveToProdMessage: string | null;
     _queryId: string;
     _collectionName: string;
-    _filteredBy: any;
+    _filteredBy: Record<string, string | undefined>;
 }
 
 export interface IResponseWorkItem {
