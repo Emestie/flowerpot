@@ -209,14 +209,14 @@ export function WorkItemRow(props: IProps) {
 
     const [isDone, doneByUser] = [false, "user"];
 
-    const yellowMarkedVal = (field: string) => {
+    const yellowMarkedVal = (field: keyof IWorkItem) => {
         if (item._filteredBy[field] === undefined) return (item as any)[field];
 
         const val = (item as any)[field] + "" || "";
         const splittee = item._filteredBy[field];
-        const pieces = val.toLocaleLowerCase().split(splittee);
+        const pieces = val.toLocaleLowerCase().split(splittee || "");
 
-        const splitteeLength = splittee.length;
+        const splitteeLength = (splittee || "").length;
 
         const trueValPieces: any[] = [];
 
@@ -295,7 +295,7 @@ export function WorkItemRow(props: IProps) {
                     )}
                     {getListIndicator()}
                     <span className="IterationInTitle" title={item.areaPath}>
-                        {item.iterationPath}
+                        {yellowMarkedVal("iterationPath")}
                     </span>
                     <span>
                         {!!item._moveToProdMessage && (

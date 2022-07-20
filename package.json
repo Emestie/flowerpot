@@ -1,6 +1,6 @@
 {
     "name": "flowerpot",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
@@ -71,7 +71,7 @@
         "typescript": "^4.5.5"
     },
     "scripts": {
-        "dev": "nf start",
+        "dev": "echo \"Don't forget to use Node 14.x!\" && nf start",
         "start": "react-scripts start",
         "electron": "electron .",
         "build-react": "react-scripts build && node ./node-scripts/post-react-build.js",

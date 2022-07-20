@@ -40,6 +40,7 @@ export function WorkItemsBlock(props: IProps) {
             const iid = (i.id || "").toString().indexOf(filterValue);
             const iatf = (i.assignedToFull || "").toLowerCase().indexOf(filterValue);
             const icbf = (i.createdByFull || "").toLowerCase().indexOf(filterValue);
+            const iitp = (i.iterationPath || "").toLowerCase().indexOf(filterValue);
 
             if (itf !== -1) {
                 flag = true;
@@ -67,6 +68,13 @@ export function WorkItemsBlock(props: IProps) {
                 i._filteredBy["createdByFull"] = filterValue;
             } else {
                 i._filteredBy["createdByFull"] = undefined;
+            }
+
+            if (iitp !== -1) {
+                flag = true;
+                i._filteredBy["iterationPath"] = filterValue;
+            } else {
+                i._filteredBy["iterationPath"] = undefined;
             }
 
             return flag;
