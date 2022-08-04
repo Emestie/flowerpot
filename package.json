@@ -1,6 +1,7 @@
 {
     "name": "flowerpot",
-    "version": "0.4.3",
+    "displayName": "Flowerpot",
+    "version": "0.4.4",
     "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
@@ -41,34 +42,34 @@
     },
     "dependencies": {
         "@trodi/electron-splashscreen": "^0.3.4",
-        "cyrillic-to-translit-js": "^3.1.0",
+        "cyrillic-to-translit-js": "3.1.0",
         "electron-is-dev": "^1.2.0",
         "electron-updater": "^4.6.5",
-        "markdown-to-jsx": "^7.1.6"
+        "markdown-to-jsx": "^7.1.7"
     },
     "devDependencies": {
-        "@types/jest": "^27.4.0",
-        "@types/node": "^16.11.25",
+        "@types/jest": "^27.5.2",
+        "@types/node": "^16.11.47",
         "@types/preval.macro": "^3.0.0",
-        "@types/react": "^17.0.39",
-        "@types/react-dom": "^17.0.11",
+        "@types/react": "^17.0.48",
+        "@types/react-dom": "^17.0.17",
         "@types/redux-logger": "^3.0.9",
-        "electron": "^15.3.7",
-        "electron-builder": "^23.0.2",
+        "electron": "^15.5.7",
+        "electron-builder": "^23.3.3",
         "foreman": "^3.0.1",
         "node-sass": "^6.0.1",
         "preval.macro": "^3.0.0",
         "react": "^17.0.2",
         "react-contextmenu": "^2.14.0",
         "react-dom": "^17.0.2",
-        "react-redux": "^7.2.6",
+        "react-redux": "^7.2.8",
         "react-scripts": "^4.0.0",
-        "redux": "^4.1.2",
+        "redux": "^4.2.0",
         "redux-logger": "^3.0.6",
         "redux-thunk": "^2.4.1",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^0.88.2",
-        "typescript": "^4.5.5"
+        "typescript": "^4.7.4"
     },
     "scripts": {
         "dev": "echo \"Don't forget to use Node 14.x!\" && nf start",

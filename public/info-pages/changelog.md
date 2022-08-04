@@ -1,5 +1,9 @@
 _Release notes are not available in English for now_
 
+## 0.4.4
+
+-   обновление пакетов и библиотек, закрытие уязвимостей
+
 ## 0.4.3
 
 -   поля Team Project и Iteration Path теперь участвуют в быстром поиске
