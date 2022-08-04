@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { appViewSet } from "../redux/actions/appActions";
+import { Stats, UsageStat } from "../helpers/Stats";
 
 enum ECredState {
     NotValidated = 0,
@@ -142,6 +143,7 @@ export function CredentialsView() {
         if (!result) {
             setCredentialsStatus(ECredState.WrongCredentials);
         } else {
+            Stats.increment(UsageStat.AccountVerifications);
             Telemetry.accountVerificationSucceed();
             setCredentialsStatus(ECredState.OK);
             onSave();

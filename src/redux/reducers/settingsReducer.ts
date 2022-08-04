@@ -1,4 +1,5 @@
 import Settings, { ISettings } from "../../helpers/Settings";
+import { UsageStat } from "../../helpers/Stats";
 import { IAction, Reducers } from "../types";
 import { updateState } from "./_common";
 
@@ -43,6 +44,7 @@ const initialState: ISettingsState = {
     lastTimeVersionLong: "",
     migrationsDone: [],
     bannersShown: [],
+    stats: {} as Record<UsageStat, number>,
 };
 
 export function settingsReducer(state = initialState, action: IAction) {

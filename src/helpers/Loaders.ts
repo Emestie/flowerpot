@@ -9,6 +9,7 @@ import { appErrorSet } from "../redux/actions/appActions";
 import { getListsSelector } from "../redux/selectors/settingsSelectors";
 import { IProject } from "./Project";
 import { IResponsePullRequest, PullRequest } from "./PullRequest";
+import { Stats, UsageStat } from "./Stats";
 
 const queryLoadingCounts: Record<string, number> = {};
 
@@ -86,6 +87,7 @@ export default class Loaders {
                 }
             }
         } catch (ex: any) {
+            Stats.increment(UsageStat.NetworkFailures);
             store.dispatch(appErrorSet(ex));
         }
         return queries;
@@ -157,6 +159,7 @@ export default class Loaders {
 
             this.incrementQueryLoadingCounter(query.queryId);
         } catch (ex: any) {
+            Stats.increment(UsageStat.NetworkFailures);
             store.dispatch(appErrorSet(ex));
         }
 

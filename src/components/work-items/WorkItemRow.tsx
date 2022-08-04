@@ -6,6 +6,7 @@ import Festival from "../../helpers/Festival";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { IQuery } from "../../helpers/Query";
+import { Stats, UsageStat } from "../../helpers/Stats";
 import WorkItem, { IWorkItem } from "../../helpers/WorkItem";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { dataSelector } from "../../redux/selectors/dataSelectors";
@@ -260,6 +261,7 @@ export function WorkItemRow(props: IProps) {
                 collapsing
                 className={"cellRelative " + getClass()}
                 onDoubleClick={() => {
+                    Stats.increment(UsageStat.WorkItemsInfoCopied);
                     Platform.current.copyString(item.id.toString());
                 }}
             >
@@ -315,7 +317,10 @@ export function WorkItemRow(props: IProps) {
                     </span>
                     <span
                         className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}
-                        onClick={() => Platform.current.openUrl(item.url)}
+                        onClick={() => {
+                            Stats.increment(UsageStat.WorkItemsOpened);
+                            Platform.current.openUrl(item.url);
+                        }}
                     >
                         {yellowMarkedVal("titleFull")}
                     </span>
@@ -335,7 +340,10 @@ export function WorkItemRow(props: IProps) {
             </Table.Cell>
             <Table.Cell
                 collapsing
-                onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.assignedToFull))}
+                onDoubleClick={() => {
+                    Stats.increment(UsageStat.UsersNamesCopied);
+                    Platform.current.copyString(WorkItem.getTextName(item.assignedToFull));
+                }}
             >
                 <ContextMenuTrigger id={uid}>
                     {Festival.getSpecialNameEffect(item.assignedTo, item.assignedToFull, item.assignedToImg)}
@@ -343,7 +351,10 @@ export function WorkItemRow(props: IProps) {
             </Table.Cell>
             <Table.Cell
                 collapsing
-                onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(item.createdByFull))}
+                onDoubleClick={() => {
+                    Stats.increment(UsageStat.UsersNamesCopied);
+                    Platform.current.copyString(WorkItem.getTextName(item.createdByFull));
+                }}
             >
                 <ContextMenuTrigger id={uid}>
                     {Festival.getSpecialNameEffect(item.createdBy, item.createdByFull, item.createdByImg)}

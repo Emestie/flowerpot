@@ -6,6 +6,7 @@ import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { IQuery } from "../../helpers/Query";
 import { TLists } from "../../helpers/Settings";
+import { Stats, UsageStat } from "../../helpers/Stats";
 import { IWorkItem } from "../../helpers/WorkItem";
 import { appViewSet } from "../../redux/actions/appActions";
 import { s } from "../../values/Strings";
@@ -48,10 +49,12 @@ export function WorkItemRowContextMenu(props: IProps) {
         const wi = workItem;
         const s = `${wi.type} ${wi.id} - ${wi.iterationPath}: ${wi.title} (${wi.url})`;
 
+        Stats.increment(UsageStat.WorkItemsInfoCopied);
         Platform.current.copyString(s);
     };
 
     const onCopyId = (_: any) => {
+        Stats.increment(UsageStat.WorkItemsInfoCopied);
         Platform.current.copyString(workItem.id.toString());
     };
 

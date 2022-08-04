@@ -24,6 +24,7 @@ import { store } from "../redux/store";
 import { Timers } from "../helpers/Timers";
 import { InfoView } from "../views/InfoView";
 import { SelectProjectsView } from "../views/SelectProjectsView";
+import { Stats, UsageStat } from "../helpers/Stats";
 
 export function App() {
     const dispatch = useDispatch();
@@ -60,6 +61,17 @@ export function App() {
                 },
                 true
             );
+
+            Timers.create(
+                "time-spent-stat",
+                60000,
+                () => {
+                    Stats.increment(UsageStat.MinutesSpentInApp);
+                },
+                false
+            );
+
+            Stats.increment(UsageStat.AppStarts);
 
             Platform.current.checkForUpdates(true);
 
