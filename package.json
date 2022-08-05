@@ -54,10 +54,12 @@
         "@types/react": "^17.0.48",
         "@types/react-dom": "^17.0.17",
         "@types/redux-logger": "^3.0.9",
+
         "electron": "^15.5.7",
         "electron-builder": "^23.3.3",
+
         "foreman": "^3.0.1",
-        "node-sass": "^6.0.1",
+        "node-sass": "^7.0.0",
         "preval.macro": "^3.0.0",
         "react": "^17.0.2",
         "react-contextmenu": "^2.14.0",
