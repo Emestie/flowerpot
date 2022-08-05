@@ -254,6 +254,20 @@ const ru: ILocalizedStrings = {
     settingsAccountNotChecked: "Не проверен",
 
     showMineOnly: "Показывать только мои Рабочие Элементы",
+
+    statsSettingsHeader: "Статистика использования",
+    sectionStats: "Статистика",
+    statDisplayName_appStarts: "Запусков приложения",
+    statDisplayName_workItemsArrived: "Рабочих элементов прилетело",
+    statDisplayName_notificationsSent: "Отправлено уведомлений",
+    statDisplayName_networkFailures: "Ошибок сети",
+    statDisplayName_minutesSpentInApp: "Минут, проведенных в приложении",
+    statDisplayName_appVersionUpdated: "Обновлений приложения",
+    statDisplayName_workItemsOpened: "Открыто рабочих элементов",
+    statDisplayName_workItemsInfoCopied: "Скопировано информаций",
+    statDisplayName_usersNamesCopied: "Скопировано имен",
+    statDisplayName_workItemsAddedToLists: "Добавлено рабочих элементов в списки",
+    statDisplayName_accountVerifications: "Проверок учетной записи",
 };
 
 export default ru;

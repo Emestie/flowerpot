@@ -4,8 +4,7 @@ import { store } from "../redux/store";
 export enum UsageStat {
     Test = "test",
     AppStarts = "appStarts", //done
-    WorkItemsShown = "workItemsShown",
-    WorkItemsReturned = "workItemsReturned",
+    WorkItemsArrived = "workItemsArrived", //done
     NotificationsSent = "notificationsSent", //done
     NetworkFailures = "networkFailures", //done
     MinutesSpentInApp = "minutesSpentInApp", //done
