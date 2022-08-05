@@ -6,6 +6,7 @@ import { s } from "../values/Strings";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
 import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
+import { Stats, UsageStat } from "./Stats";
 
 interface IShownWI {
     id: number;
@@ -14,7 +15,6 @@ interface IShownWI {
 
 export default class Differences {
     private static shownWI: IShownWI[] = [];
-
 
     public static put(query: IQuery, workItems: IWorkItem[]) {
         let wiStorage = Query.getWIStorage();
@@ -65,10 +65,15 @@ export default class Differences {
         //dont show same notifs twice
         news = news.filter((wi) => !this.shownWI.find((x) => x.id === wi.id && x.rev === wi.rev));
         changed = changed.filter((wi) => !this.shownWI.find((x) => x.id === wi.id && x.rev === wi.rev));
-        this.shownWI.push(...news.map((wi) => ({ id: wi.id, rev: wi.rev })), ...changed.map((wi) => ({ id: wi.id, rev: wi.rev })));
+        this.shownWI.push(
+            ...news.map((wi) => ({ id: wi.id, rev: wi.rev })),
+            ...changed.map((wi) => ({ id: wi.id, rev: wi.rev }))
+        );
 
         this.operateNotifsToShow(news, "new");
         this.operateNotifsToShow(changed, "change");
+
+        if (news.length) Stats.incrementBy(UsageStat.WorkItemsArrived, news.length);
 
         wiStorage[query.queryId] = [...workItems];
         Query.saveWIStorage(wiStorage);
@@ -81,7 +86,8 @@ export default class Differences {
         wis.forEach((n) => {
             if (
                 settings.notificationsMode === "all" ||
-                (settings.notificationsMode === "mine" && n.assignedToFull.toLowerCase().indexOf(settings.tfsUser.toLowerCase()) !== -1)
+                (settings.notificationsMode === "mine" &&
+                    n.assignedToFull.toLowerCase().indexOf(settings.tfsUser.toLowerCase()) !== -1)
             ) {
                 wisToShow.push(n);
             }

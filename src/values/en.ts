@@ -253,6 +253,20 @@ const en: ILocalizedStrings = {
     settingsAccountNotChecked: "Not validated",
 
     showMineOnly: "Show mine Work Items only",
+
+    statsSettingsHeader: "App Usage Stats",
+    sectionStats: "Stats",
+    statDisplayName_appStarts: "App starts",
+    statDisplayName_workItemsArrived: "Work Items arrived",
+    statDisplayName_notificationsSent: "Notifications sent",
+    statDisplayName_networkFailures: "Network failures",
+    statDisplayName_minutesSpentInApp: "Minutes spent",
+    statDisplayName_appVersionUpdated: "App updates",
+    statDisplayName_workItemsOpened: "Work Items opened",
+    statDisplayName_workItemsInfoCopied: "Infoes copied",
+    statDisplayName_usersNamesCopied: "Names copied",
+    statDisplayName_workItemsAddedToLists: "Work Items added to lists",
+    statDisplayName_accountVerifications: "Account verifications",
 };
 
 export default en;

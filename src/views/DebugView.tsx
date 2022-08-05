@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { appViewSet } from "../redux/actions/appActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
+import { Stats, UsageStat } from "../helpers/Stats";
 
 export function DebugView() {
     const dispatch = useDispatch();
@@ -85,6 +86,7 @@ export function DebugView() {
                     More
                 </Header>
                 <Button onClick={() => setChanges()}>Set changes to WI</Button>
+                <Button onClick={() => Stats.increment(UsageStat.Test)}>Test stat: {settings.stats.test || 0}</Button>
                 <div>
                     {Version.long} / {Version.short}
                 </div>

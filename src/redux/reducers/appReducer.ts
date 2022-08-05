@@ -8,6 +8,7 @@ export enum Sections {
     WorkItems,
     Projects,
     QuickLinks,
+    Stats,
     Credits,
 }
 

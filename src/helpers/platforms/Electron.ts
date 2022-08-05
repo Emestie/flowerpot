@@ -2,6 +2,7 @@ import { appUpdateStatusSet } from "../../redux/actions/appActions";
 import { store } from "../../redux/store";
 import { TLocale } from "../../redux/types";
 import Platform, { INotificationData, IPlatformExtension } from "../Platform";
+import { Stats, UsageStat } from "../Stats";
 import CommonPlatform from "./_Common";
 
 declare var eapi: IElectronApi;
@@ -67,6 +68,8 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
     }
 
     public updateApp() {
+        Stats.increment(UsageStat.AppVersionsUpdated);
+
         eapi.ipcSend("update-app");
 
         // if (Platform.current.os === "darwin") {
@@ -75,6 +78,7 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
     }
 
     public showNativeNotif(data: INotificationData) {
+        Stats.increment(UsageStat.NotificationsSent);
         eapi.ipcSend("show-notification", data);
     }
 

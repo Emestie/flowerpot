@@ -6,6 +6,7 @@ import { settingsSet } from "../redux/actions/settingsActions";
 import { appSet } from "../redux/actions/appActions";
 import { TableScale } from "../redux/reducers/settingsReducer";
 import { IProject } from "./Project";
+import { UsageStat } from "./Stats";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -53,6 +54,7 @@ export interface ISettings {
     lastTimeVersionLong: string;
     migrationsDone: string[];
     bannersShown: number[];
+    stats: Record<UsageStat, number>;
 }
 
 export default class Settings {

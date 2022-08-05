@@ -74,9 +74,9 @@ export default class Festival {
             if ((month === 1 && day <= 8) || (month === 12 && day >= 20)) {
                 return Eve.NewYear;
             }
-            if (month === 2 && day >= 21 && day <= 23) {
-                return Eve.Feb23;
-            }
+            // if (month === 2 && day >= 21 && day <= 23) {
+            //     return Eve.Feb23;
+            // }
             if (month === 3 && day <= 8 && day >= 4) {
                 return Eve.Mar8;
             }

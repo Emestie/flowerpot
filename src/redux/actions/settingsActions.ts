@@ -3,7 +3,6 @@ import { Actions } from "../actions-enum";
 import { store } from "../store";
 import { createAction } from "./_common";
 
-//TODO: ISettings keys
 export function settingsSet(settings: ISettings) {
     return createAction(Actions.SettingsSet, settings);
 }

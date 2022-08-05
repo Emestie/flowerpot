@@ -14,6 +14,7 @@ import { QuickLinksSections } from "./sections/QuickLinksSections";
 import { WorkItemsSection } from "./sections/WorkItemsSection";
 import { appSelector } from "../../redux/selectors/appSelectors";
 import { Sections } from "../../redux/reducers/appReducer";
+import { StatsSection } from "./sections/StatsSection";
 
 const sectionsList = [
     {
@@ -37,6 +38,10 @@ const sectionsList = [
         captionKey: "sectionQL",
     },
     {
+        id: Sections.Stats,
+        captionKey: "sectionStats",
+    },
+    {
         id: Sections.Credits,
         captionKey: "sectionCredits",
     },
@@ -56,6 +61,8 @@ const getSectionComponent = (sectionId: Sections) => {
             return <QueriesSection />;
         case Sections.QuickLinks:
             return <QuickLinksSections />;
+        case Sections.Stats:
+            return <StatsSection />;
         default:
             return <></>;
     }
