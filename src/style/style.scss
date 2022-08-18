@@ -3,6 +3,7 @@ $hasNoChangesColor: transparent;
 $mineColor: skyblue;
 $deferredColor: rgb(173, 173, 173);
 $favoritesColor: rgb(161, 99, 202);
+$forwardedColor: #21ba45;// rgb(72, 176, 124);
 $permawatchColor: #e696ae;
 $keywordColor: #4287f5;
 $pinnedColor: #eca06e;
@@ -84,6 +85,10 @@ body,
     border-left: 4px solid $favoritesColor;
 }
 
+.workItemForwarded {
+    border-left: 4px solid $forwardedColor;
+}
+
 .workItemPinned {
     border-left: 4px solid $pinnedColor;
 }
@@ -109,6 +114,10 @@ td.workItemKeyword {
 
 .wiIndicatorFavorite {
     color: $favoritesColor;
+}
+
+.wiIndicatorForwarded {
+    color: $forwardedColor;
 }
 
 .wiIndicatorPinned {

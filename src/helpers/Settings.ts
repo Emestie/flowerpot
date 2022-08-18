@@ -10,7 +10,7 @@ import { UsageStat } from "./Stats";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
-export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned";
+export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned" | "forwarded";
 
 export interface IListItem {
     id: number;

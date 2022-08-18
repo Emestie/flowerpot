@@ -14,11 +14,12 @@ export default class Lists {
         const favorites = this.deleteFromList("favorites", id, collection, true);
         const hidden = this.deleteFromList("hidden", id, collection, true);
         const pinned = this.deleteFromList("pinned", id, collection, true);
+        const forwarded = this.deleteFromList("forwarded", id, collection, true);
 
         const list = this.deleteFromList(listName, id, collection, true);
         list.push({ id: id, collection: collection, rev: rev });
 
-        const lists = { deferred, permawatch, favorites, hidden, pinned, [listName]: list } as any;
+        const lists = { deferred, permawatch, favorites, hidden, pinned, forwarded, [listName]: list } as any;
 
         Stats.increment(UsageStat.WorkItemsAddedToLists);
         store.dispatch(settingsUpdate({ lists }));

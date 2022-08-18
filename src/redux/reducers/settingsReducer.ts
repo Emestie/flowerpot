@@ -31,6 +31,7 @@ const initialState: ISettingsState = {
         hidden: [],
         keywords: [],
         pinned: [],
+        forwarded: [],
     },
     notes: [],
     links: [],
