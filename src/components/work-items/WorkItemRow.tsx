@@ -116,6 +116,7 @@ export function WorkItemRow(props: IProps) {
     const getClass = () => {
         const item = props.item;
         if (Lists.isIn("favorites", props.query.collectionName, item.id)) return "workItemFavorite";
+        if (Lists.isIn("forwarded", props.query.collectionName, item.id)) return "workItemForwarded";
         if (Lists.isIn("pinned", props.query.collectionName, item.id)) return "workItemPinned";
         if (Lists.isIn("deferred", props.query.collectionName, item.id)) return "workItemDeferred";
         if (Lists.isIn("permawatch", props.query.collectionName, item.id)) return "workItemPermawatch";
@@ -170,6 +171,13 @@ export function WorkItemRow(props: IProps) {
             return (
                 <span className="wiIndicatorPinned">
                     <Icon name="pin" />
+                </span>
+            );
+
+        if (Lists.isIn("forwarded", props.query.collectionName, item.id))
+            return (
+                <span className="wiIndicatorForwarded">
+                    <Icon name="arrow right" />
                 </span>
             );
 

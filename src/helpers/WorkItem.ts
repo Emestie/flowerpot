@@ -193,6 +193,7 @@ export default class WorkItem {
         if (Lists.isIn("pinned", collectionName, id)) return "pinned";
         if (Lists.isIn("hidden", collectionName, id)) return "hidden";
         if (Lists.isIn("permawatch", collectionName, id)) return "permawatch";
+        if (Lists.isIn("forwarded", collectionName, id)) return "forwarded";
 
         return undefined;
     }

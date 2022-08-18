@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
@@ -54,10 +54,8 @@
         "@types/react": "^17.0.48",
         "@types/react-dom": "^17.0.17",
         "@types/redux-logger": "^3.0.9",
-
         "electron": "^15.5.7",
         "electron-builder": "^23.3.3",
-
         "foreman": "^3.0.1",
         "node-sass": "^7.0.0",
         "preval.macro": "^3.0.0",

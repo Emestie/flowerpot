@@ -122,6 +122,16 @@ export function WorkItemRowContextMenu(props: IProps) {
                         </Menu.Item>
                     </MenuItem>
                 )}
+                {workItem._list !== "forwarded" && (
+                    <MenuItem data={{ list: "forwarded" }} onClick={onListChange}>
+                        <Menu.Item>
+                            <span>
+                                <Icon name="arrow right" />
+                            </span>
+                            {s("addToForwarded")}
+                        </Menu.Item>
+                    </MenuItem>
+                )}
                 {workItem._list !== "deferred" && (
                     <MenuItem data={{ list: "deferred" }} onClick={onListChange}>
                         <Menu.Item>

@@ -67,6 +67,14 @@ export function ListsView() {
                 <ListBlock listName="favorites" />
                 <Header as="h3" dividing>
                     <span>
+                        <Icon name="arrow right" />
+                    </span>
+                    {s("forwarded")}
+                </Header>
+                {s("forwardedDescription")}
+                <ListBlock listName="forwarded" />
+                <Header as="h3" dividing>
+                    <span>
                         <Icon name="clock outline" />
                     </span>
                     {s("deferred")}

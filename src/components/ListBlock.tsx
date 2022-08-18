@@ -68,6 +68,8 @@ export function ListBlock(p: P) {
                 return "orange";
             case "keywords":
                 return "blue";
+            case "forwarded":
+                return "green";
             default:
                 return undefined;
         }
