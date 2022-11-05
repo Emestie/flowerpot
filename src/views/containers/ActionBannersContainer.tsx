@@ -5,7 +5,7 @@ import { s } from "../../values/Strings";
 
 //const flowerbotImg = require("../../assets/flowerbot-av-48.png").default as string;
 // const idea = require("../../assets/idea.png").default;
-const rocketAv48 = require("../../assets/rocket-av-48.png").default as string;
+import rocketAv48 from "../../assets/rocket-av-48.png";
 
 const actionBannersList: IActionBannerProps[] = [
     // {

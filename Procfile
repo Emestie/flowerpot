@@ -1,2 +1,2 @@
-react: npm start
-electron: node ./node-scripts/electron-wait-react.js
+react: npm run start-vite
+electron: node ./scripts/electron-wait-react.cjs

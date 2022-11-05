@@ -54,10 +54,11 @@
         "@types/react": "^17.0.48",
         "@types/react-dom": "^17.0.17",
         "@types/redux-logger": "^3.0.9",
+        "@vitejs/plugin-react": "^2.2.0",
         "electron": "^15.5.7",
         "electron-builder": "^23.3.3",
         "foreman": "^3.0.1",
-        "node-sass": "^7.0.0",
+        "node-sass": "^6.0.1",
         "preval.macro": "^3.0.0",
         "react": "^17.0.2",
         "react-contextmenu": "^2.14.0",
@@ -67,15 +68,19 @@
         "redux": "^4.2.0",
         "redux-logger": "^3.0.6",
         "redux-thunk": "^2.4.1",
+        "sass": "^1.56.0",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^0.88.2",
-        "typescript": "^4.7.4"
+        "typescript": "^4.7.4",
+        "vite": "^3.2.2"
     },
     "scripts": {
         "dev": "echo \"Don't forget to use Node 14.x!\" && nf start",
         "start": "react-scripts start",
+        "start-vite": "vite",
         "electron": "electron .",
         "build-react": "react-scripts build && node ./node-scripts/post-react-build.js",
+        "build-vite": "tsc && vite build",
         "build-electron": "npm run build-react && electron-builder -mw --publish never",
         "deploy-react": "npm run build-react && firebase deploy",
         "deploy-electron": "npm run build-react && electron-builder -mw --publish always"

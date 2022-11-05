@@ -8,8 +8,7 @@ import { appSelector } from "../../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { TLocale } from "../../../redux/types";
 import { s } from "../../../values/Strings";
-
-const avatar = require("../../../assets/ti.jpg").default as string;
+import avatar from "../../../assets/ti.jpg";
 
 const locales: DropdownItemProps[] = [
     { key: 2, text: s("localeEn"), value: "en" },

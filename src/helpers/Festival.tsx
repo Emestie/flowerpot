@@ -5,19 +5,19 @@ import { s } from "../values/Strings";
 import { store } from "../redux/store";
 import { appCurrentFestivalSet } from "../redux/actions/appActions";
 
-const christmasTree = require("../assets/christmas-tree.svg").default as string;
-const feb23 = require("../assets/feb23.svg").default as string;
-const mar8 = require("../assets/mar8.svg").default as string;
+import christmasTree from "../assets/christmas-tree.svg";
+import feb23 from "../assets/feb23.svg";
+import mar8 from "../assets/mar8.svg";
 //const coronavirus = require("../assets/coronavirus.svg").default as string;
 //const longLiveBelarus = require("../assets/wrw-128.png").default as string;
-const sep3 = require("../assets/sept3.svg").default as string;
-const sep14 = require("../assets/mug.svg").default as string;
-const haloween = require("../assets/halloween-bats.svg").default as string;
-const tenYearsAnniversaryA = require("../assets/10years-a.svg").default as string;
+import sep3 from "../assets/sept3.svg";
+import sep14 from "../assets/mug.svg";
+import haloween from "../assets/halloween-bats.svg";
+import tenYearsAnniversaryA from "../assets/10years-a.svg";
 
-const flower1 = require("../assets/flower1.svg").default as string;
-const flower2 = require("../assets/flower2.svg").default as string;
-const flower3 = require("../assets/flower3.svg").default as string;
+import flower1 from "../assets/flower1.svg";
+import flower2 from "../assets/flower2.svg";
+import flower3 from "../assets/flower3.svg";
 
 export enum Eve {
     _none,

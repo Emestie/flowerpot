@@ -1,4 +1,3 @@
-import preval from "preval.macro";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { store } from "../redux/store";
 import Platform from "./Platform";
@@ -6,15 +5,15 @@ import Telemetry from "./Telemetry";
 
 export default class Version {
     public static get long() {
-        const appVer = process.env.REACT_APP_VERSION;
-        const dateTimeStamp = preval`module.exports = new Date().toISOString().substr(0, 16);`;
+        const appVer = import.meta.env.VITE_APP_VERSION;
+        const dateTimeStamp = import.meta.env.VITE_APP_BUILD_TIME;
         const verType =
             document.location.href.indexOf("localhost") !== -1 ? " Dev" : Platform.current.isLocal() ? " Local" : "";
         return `${appVer}${verType} (${dateTimeStamp})`;
     }
 
     public static get short() {
-        const appVer = process.env.REACT_APP_VERSION || "";
+        const appVer = import.meta.env.VITE_APP_VERSION || "";
         return appVer.split("+")[0];
     }
 
