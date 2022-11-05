@@ -9,6 +9,7 @@ import { appViewSet } from "../redux/actions/appActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
 import { Stats, UsageStat } from "../helpers/Stats";
+import Telemetry from "../helpers/Telemetry";
 
 export function DebugView() {
     const dispatch = useDispatch();
@@ -30,6 +31,14 @@ export function DebugView() {
         let wi = WorkItem.fish(settings.queries[0]);
         wi.id = 1578;
         dispatch(dataChangesCollectionItemSet(wi, true));
+    };
+
+    const sendAppUsage = () => {
+        Telemetry.versionUsageInfo();
+    };
+
+    const sendFeedback = () => {
+        Telemetry.sendFeedback("лалала фидбек");
     };
 
     // const handleClick = (e: any, data: any) => {
@@ -82,6 +91,8 @@ export function DebugView() {
                 </Header>
                 <Button onClick={() => showNotif()}>Show html5</Button>
                 <Button onClick={() => showNotifNative()}>Show native electron</Button>
+                <Button onClick={() => sendAppUsage()}>Send app usage</Button>
+                <Button onClick={() => sendFeedback()}>Send feedback</Button>
                 <Header as="h3" dividing>
                     More
                 </Header>

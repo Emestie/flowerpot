@@ -21,7 +21,9 @@ export default class Telemetry {
 
             const encodedString = btoa(JSON.stringify({ app, reason, name, ver, platform, os, iid, extraInfo }));
 
-            await fetch("https://mysweetbot-php.herokuapp.com/flowerpot-usage.php?data=" + encodedString);
+            //https://mysweetbot-php.herokuapp.com/flowerpot-usage.php?data=
+            //http://localhost:8888/.netlify/functions/handle-app-usage?data=
+            await fetch("https://mysweetbot.netlify.app/.netlify/functions/handle-app-usage?data=" + encodedString);
         } catch (e: any) {}
     }
 
