@@ -15,7 +15,12 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "paths": {
+            "#preload": ["./host/preload/src/index"],
+            "/@/*": ["./src/*"]
+        }
     },
-    "include": ["vite.config.ts", "src"]
+    "include": ["src/**/*.ts", "src/**/*.tsx", "types/**/*.d.ts"],
+    "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
 }

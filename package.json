@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.4.6",
+    "version": "0.4.6+vite",
     "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
@@ -11,8 +11,11 @@
         "url": "https://github.com/Emestie/flowerpot/"
     },
     "license": "MIT",
-    "homepage": ".",
-    "main": "electron/main.js",
+    "engines": {
+        "node": ">=v16.13",
+        "npm": ">=8.1"
+    },
+    "main": "host/main/dist/index.cjs",
     "build": {
         "productName": "Flowerpot",
         "appId": "mst.flowerpot",
@@ -55,8 +58,10 @@
         "@types/react-dom": "^17.0.17",
         "@types/redux-logger": "^3.0.9",
         "@vitejs/plugin-react": "^2.2.0",
+        "cross-env": "^7.0.3",
         "electron": "^15.5.7",
         "electron-builder": "^23.3.3",
+        "electron-devtools-installer": "^3.2.0",
         "foreman": "^3.0.1",
         "node-sass": "^6.0.1",
         "preval.macro": "^3.0.0",
@@ -72,32 +77,29 @@
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^0.88.2",
         "typescript": "^4.7.4",
+        "unplugin-auto-expose": "0.0.2",
         "vite": "^3.2.2"
     },
     "scripts": {
-        "dev": "echo \"Don't forget to use Node 14.x!\" && nf start",
+        "dev_": "echo \"Don't forget to use Node 14.x!\" && nf start",
+        "dev": "node scripts/watch.js",
         "start": "react-scripts start",
         "start-vite": "vite",
         "electron": "electron .",
         "build-react": "react-scripts build && node ./node-scripts/post-react-build.js",
         "build-vite": "tsc && vite build",
         "build-electron": "npm run build-react && electron-builder -mw --publish never",
+        "build": "npm run build:main && npm run build:preload && npm run build:renderer",
+        "build:main": "cd ./host/main && vite build",
+        "build:preload": "cd ./host/preload && vite build",
+        "build:renderer": "vite build",
+        "compile": "cross-env MODE=production npm run build && electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
         "deploy-react": "npm run build-react && firebase deploy",
-        "deploy-electron": "npm run build-react && electron-builder -mw --publish always"
+        "deploy-electron": "npm run build-react && electron-builder -mw --publish always",
+        "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 npx --no-install electron ./scripts/update-electron-vendors.js ",
+        "prettify": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\""
     },
     "eslintConfig": {
         "extends": "react-app"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
     }
 }
