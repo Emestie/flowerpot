@@ -2,4 +2,4 @@
  * @module preload
  */
 
-export { testFn } from "./test-fn";
+export { eapi } from "./eapi";

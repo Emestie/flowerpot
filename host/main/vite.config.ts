@@ -3,6 +3,8 @@ import { join } from "path";
 
 const PACKAGE_ROOT = __dirname;
 
+console.log("Main is on.");
+
 /**
  * @type {import('vite').UserConfig}
  * @see https://vitejs.dev/config/

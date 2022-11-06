@@ -10,6 +10,8 @@ const PACKAGE_ROOT = __dirname;
 process.env.VITE_APP_VERSION = packagejson.version;
 process.env.VITE_APP_BUILD_TIME = new Date().toISOString().substring(0, 16);
 
+console.log("Renderer is on.");
+
 // https://vitejs.dev/config/
 export default defineConfig({
     mode: process.env.MODE,

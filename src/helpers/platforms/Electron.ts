@@ -4,20 +4,7 @@ import { TLocale } from "../../redux/types";
 import Platform, { INotificationData, IPlatformExtension } from "../Platform";
 import { Stats, UsageStat } from "../Stats";
 import CommonPlatform from "./_Common";
-
-declare var eapi: IElectronApi;
-
-export { eapi };
-
-interface IElectronApi {
-    platformName: string;
-    isDev: boolean;
-    clipboard: any;
-    shell: any;
-    ipcInvoke: (channel: string, ...args: any[]) => Promise<any>;
-    ipcSend: (channel: string, data?: any) => void;
-    ipcOn: (channel: string, callback: () => void, removeOld?: boolean) => void;
-}
+import { eapi } from "#preload";
 
 export default class ElectronPlatform extends CommonPlatform implements IPlatformExtension {
     public get os() {

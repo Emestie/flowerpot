@@ -16,28 +16,6 @@
         "npm": ">=8.1"
     },
     "main": "host/main/dist/index.cjs",
-    "build": {
-        "productName": "Flowerpot",
-        "appId": "mst.flowerpot",
-        "copyright": "Copyright © 2019 ${author}",
-        "files": [
-            "electron/**/*",
-            "build/**/*"
-        ],
-        "win": {
-            "icon": "electron/icons/ico/flower4.ico"
-        },
-        "mac": {
-            "icon": "electron/icons/macicon.icns",
-            "category": "public.app-category.utilities"
-        },
-        "publish": {
-            "provider": "github"
-        },
-        "extraMetadata": {
-            "main": "electron/main.js"
-        }
-    },
     "extendInfo": {
         "NSAppTransportSecurity": {
             "NSAllowsArbitraryLoads": true
@@ -81,21 +59,21 @@
         "vite": "^3.2.2"
     },
     "scripts": {
-        "dev_": "echo \"Don't forget to use Node 14.x!\" && nf start",
+        "__dev_": "echo \"Don't forget to use Node 14.x!\" && nf start",
         "dev": "node scripts/watch.js",
-        "start": "react-scripts start",
-        "start-vite": "vite",
-        "electron": "electron .",
-        "build-react": "react-scripts build && node ./node-scripts/post-react-build.js",
-        "build-vite": "tsc && vite build",
-        "build-electron": "npm run build-react && electron-builder -mw --publish never",
+        "__start": "react-scripts start",
+        "__start-vite": "vite",
+        "__electron": "electron .",
+        "__build-react": "react-scripts build && node ./node-scripts/post-react-build.js",
+        "__build-vite": "tsc && vite build",
+        "__build-electron": "npm run build-react && electron-builder -mw --publish never",
         "build": "npm run build:main && npm run build:preload && npm run build:renderer",
         "build:main": "cd ./host/main && vite build",
         "build:preload": "cd ./host/preload && vite build",
         "build:renderer": "vite build",
-        "compile": "cross-env MODE=production npm run build && electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
-        "deploy-react": "npm run build-react && firebase deploy",
-        "deploy-electron": "npm run build-react && electron-builder -mw --publish always",
+        "compile": "cross-env MODE=production npm run build && electron-builder build -mw --publish never --config .electron-builder.config.js --dir --config.asar=false",
+        "__deploy-react": "npm run build-react && firebase deploy",
+        "__deploy-electron": "npm run build-react && electron-builder -mw --publish always",
         "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 npx --no-install electron ./scripts/update-electron-vendors.js ",
         "prettify": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\""
     },

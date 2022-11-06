@@ -5,6 +5,9 @@ import { store } from "../store";
 import { IAction, TDialog, TUpdateStatus, TView } from "../types";
 import { createAction } from "./_common";
 
+//TODO: debug purposes. Move somewhere
+(window as any)._setView = (view: TView) => store.dispatch(appViewSet(view));
+
 export function appViewSet(view: TView, viewParams: Record<string, any> = {}): IAction {
     return createAction(Actions.AppViewSet, { view, viewParams });
 }

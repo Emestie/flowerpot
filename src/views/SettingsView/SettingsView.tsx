@@ -83,8 +83,9 @@ export function SettingsView() {
         dispatch(appViewSet("main"));
     };
 
-    const sectionsMenuItems = sectionsList.map((section) => (
+    const sectionsMenuItems = sectionsList.map((section, i) => (
         <Menu.Item
+            key={i}
             as="a"
             active={section.id === settingsSection}
             onClick={() => dispatch(appSettingsSectionSet(section.id))}

@@ -1,6 +1,6 @@
 import { TLocale } from "../redux/types";
 import ElectronPlatform from "./platforms/Electron";
-//import WebPlatform from "./platforms/Web";
+import { eapi } from "#preload";
 
 export interface INotificationData {
     title: string;
@@ -40,7 +40,7 @@ export default class Platform {
 
     public static get type() {
         if (!this._type) {
-            if ((window as any).eapi) {
+            if (eapi) {
                 this._type = PlatformType.Electron;
             } else {
                 this._type = PlatformType.Web;

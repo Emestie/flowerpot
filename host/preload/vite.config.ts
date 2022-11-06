@@ -3,6 +3,8 @@ import { preload } from "unplugin-auto-expose";
 
 const PACKAGE_ROOT = __dirname;
 
+console.log("Preload is on.");
+
 /**
  * @type {import('vite').UserConfig}
  * @see https://vitejs.dev/config/
