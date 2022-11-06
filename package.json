@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.4.6+vite",
+    "version": "0.5.0",
     "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
@@ -71,7 +71,8 @@
         "build:main": "cd ./host/main && vite build",
         "build:preload": "cd ./host/preload && vite build",
         "build:renderer": "vite build",
-        "compile": "cross-env MODE=production npm run build && electron-builder build -mw --publish never --config .electron-builder.config.js --dir --config.asar=false",
+        "compile": "cross-env MODE=production npm run build && electron-builder build -mw --x64 --publish never --config .electron-builder.config.js",
+        "deploy": "cross-env MODE=production npm run build && electron-builder -mw --x64 --publish always --config .electron-builder.config.js",
         "__deploy-react": "npm run build-react && firebase deploy",
         "__deploy-electron": "npm run build-react && electron-builder -mw --publish always",
         "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 npx --no-install electron ./scripts/update-electron-vendors.js ",

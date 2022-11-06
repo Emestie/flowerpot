@@ -16,7 +16,7 @@ const config = {
         output: "dist",
         buildResources: "build-resources",
     },
-    files: ["host/**/dist/**", "build/**"],
+    files: ["host/**/dist/**", "build/**", "build-resources/**"],
     extraMetadata: {
         version: packagejson.version,
         main: "host/main/dist/index.cjs",
@@ -33,6 +33,8 @@ const config = {
     },
     publish: {
         provider: "github",
+        owner: "Emestie",
+        repo: "flowerpot",
     },
 };
 
