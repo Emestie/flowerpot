@@ -5,7 +5,11 @@ import { ISettingsState, settingsReducer } from "./reducers/settingsReducer";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 
-const combinedReducers = combineReducers<IStore, any>({ app: appReducer, data: dataReducer, settings: settingsReducer });
+const combinedReducers = combineReducers<IStore, any>({
+    app: appReducer,
+    data: dataReducer,
+    settings: settingsReducer,
+});
 
 const composeEnhancers =
     typeof window === "object" && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

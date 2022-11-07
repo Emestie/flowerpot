@@ -19,32 +19,32 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var Msg = function(data) {
+var Msg = function (data) {
     this.data = [];
     if (!data) return;
     if (data.indexOf("NTLM ") == 0) data = data.substr(5);
     atob(data)
         .split("")
-        .map(function(c) {
+        .map(function (c) {
             this.push(c.charCodeAt(0));
         }, this.data);
 };
 
-Msg.prototype.addByte = function(b) {
+Msg.prototype.addByte = function (b) {
     this.data.push(b);
 };
 
-Msg.prototype.addShort = function(s) {
+Msg.prototype.addShort = function (s) {
     this.data.push(s & 0xff);
     this.data.push((s >> 8) & 0xff);
 };
 
-Msg.prototype.addString = function(str, utf16) {
+Msg.prototype.addString = function (str, utf16) {
     if (utf16)
         // Fake UTF16 by padding each character in string.
         str = str
             .split("")
-            .map(function(c) {
+            .map(function (c) {
                 return c + "\0";
             })
             .join("");
@@ -52,7 +52,7 @@ Msg.prototype.addString = function(str, utf16) {
     for (var i = 0; i < str.length; i++) this.data.push(str.charCodeAt(i));
 };
 
-Msg.prototype.getString = function(offset, length) {
+Msg.prototype.getString = function (offset, length) {
     var result = "";
     for (var i = 0; i < length; i++) {
         if (offset + i >= this.data.length) return "";
@@ -61,11 +61,11 @@ Msg.prototype.getString = function(offset, length) {
     return result;
 };
 
-Msg.prototype.getByte = function(offset) {
+Msg.prototype.getByte = function (offset) {
     return this.data[offset];
 };
 
-Msg.prototype.toBase64 = function() {
+Msg.prototype.toBase64 = function () {
     var str = String.fromCharCode.apply(null, this.data);
     return btoa(str).replace(/.{76}(?=.)/g, "$&");
 };
@@ -76,15 +76,15 @@ Ntlm.username = null;
 Ntlm.lmHashedPassword = null;
 Ntlm.ntHashedPassword = null;
 
-Ntlm.error = function(msg) {
+Ntlm.error = function (msg) {
     console.error(msg);
 };
 
-Ntlm.message = function(msg) {
+Ntlm.message = function (msg) {
     console.log(msg);
 };
 
-Ntlm.createMessage1 = function(hostname) {
+Ntlm.createMessage1 = function (hostname) {
     var msg1 = new Msg();
     msg1.addString("NTLMSSP\0");
     msg1.addByte(1);
@@ -104,7 +104,7 @@ Ntlm.createMessage1 = function(hostname) {
     return msg1;
 };
 
-Ntlm.getChallenge = function(data) {
+Ntlm.getChallenge = function (data) {
     var msg2 = new Msg(data);
     if (msg2.getString(0, 8) != "NTLMSSP\0") {
         Ntlm.error("Invalid NTLM response header.");
@@ -118,7 +118,7 @@ Ntlm.getChallenge = function(data) {
     return challenge;
 };
 
-Ntlm.createMessage3 = function(challenge, hostname) {
+Ntlm.createMessage3 = function (challenge, hostname) {
     var lmResponse = Ntlm.buildResponse(Ntlm.lmHashedPassword, challenge);
     var ntResponse = Ntlm.buildResponse(Ntlm.ntHashedPassword, challenge);
     var username = Ntlm.username;
@@ -169,11 +169,11 @@ Ntlm.createMessage3 = function(challenge, hostname) {
     return msg3;
 };
 
-Ntlm.createKey = function(str) {
+Ntlm.createKey = function (str) {
     var key56 = [];
     while (str.length < 7) str += "\0";
     str = str.substr(0, 7);
-    str.split("").map(function(c) {
+    str.split("").map(function (c) {
         this.push(c.charCodeAt(0));
     }, key56);
     var key = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -196,13 +196,13 @@ Ntlm.createKey = function(str) {
     }
 
     var result = "";
-    key.map(function(i) {
+    key.map(function (i) {
         result += String.fromCharCode(i);
     });
     return result;
 };
 
-Ntlm.buildResponse = function(key, text) {
+Ntlm.buildResponse = function (key, text) {
     while (key.length < 21) key += "\0";
     var key1 = Ntlm.createKey(key.substr(0, 7));
     var key2 = Ntlm.createKey(key.substr(7, 7));
@@ -210,13 +210,13 @@ Ntlm.buildResponse = function(key, text) {
     return des(key1, text, 1, 0) + des(key2, text, 1, 0) + des(key3, text, 1, 0);
 };
 
-Ntlm.getLocation = function(url) {
+Ntlm.getLocation = function (url) {
     var l = document.createElement("a");
     l.href = url;
     return l;
 };
 
-Ntlm.setCredentials = function(domain, username, password) {
+Ntlm.setCredentials = function (domain, username, password) {
     var magic = "KGS!@#$%"; // Create LM password hash.
     var lmPassword = password.toUpperCase().substr(0, 14);
     while (lmPassword.length < 14) lmPassword += "\0";
@@ -234,14 +234,14 @@ Ntlm.setCredentials = function(domain, username, password) {
     Ntlm.ntHashedPassword = ntHashedPassword;
 };
 
-Ntlm.isChallenge = function(xhr) {
+Ntlm.isChallenge = function (xhr) {
     if (!xhr) return false;
     if (xhr.status != 401) return false;
     var header = xhr.getResponseHeader("WWW-Authenticate");
     return header && header.indexOf("NTLM") != -1;
 };
 
-Ntlm.authenticate = function(url) {
+Ntlm.authenticate = function (url) {
     if (!Ntlm.domain || !Ntlm.username || !Ntlm.lmHashedPassword || !Ntlm.ntHashedPassword) {
         Ntlm.error("No NTLM credentials specified. Use Ntlm.setCredentials(...) before making calls.");
         return false;
@@ -979,15 +979,25 @@ function des(key, message, encrypt, mode, iv, padding) {
 
     if (mode == 1) {
         //CBC mode
-        cbcleft = (iv.charCodeAt(m++) << 24) | (iv.charCodeAt(m++) << 16) | (iv.charCodeAt(m++) << 8) | iv.charCodeAt(m++);
-        cbcright = (iv.charCodeAt(m++) << 24) | (iv.charCodeAt(m++) << 16) | (iv.charCodeAt(m++) << 8) | iv.charCodeAt(m++);
+        cbcleft =
+            (iv.charCodeAt(m++) << 24) | (iv.charCodeAt(m++) << 16) | (iv.charCodeAt(m++) << 8) | iv.charCodeAt(m++);
+        cbcright =
+            (iv.charCodeAt(m++) << 24) | (iv.charCodeAt(m++) << 16) | (iv.charCodeAt(m++) << 8) | iv.charCodeAt(m++);
         m = 0;
     }
 
     //loop through each 64 bit chunk of the message
     while (m < len) {
-        left = (message.charCodeAt(m++) << 24) | (message.charCodeAt(m++) << 16) | (message.charCodeAt(m++) << 8) | message.charCodeAt(m++);
-        right = (message.charCodeAt(m++) << 24) | (message.charCodeAt(m++) << 16) | (message.charCodeAt(m++) << 8) | message.charCodeAt(m++);
+        left =
+            (message.charCodeAt(m++) << 24) |
+            (message.charCodeAt(m++) << 16) |
+            (message.charCodeAt(m++) << 8) |
+            message.charCodeAt(m++);
+        right =
+            (message.charCodeAt(m++) << 24) |
+            (message.charCodeAt(m++) << 16) |
+            (message.charCodeAt(m++) << 8) |
+            message.charCodeAt(m++);
 
         //for Cipher Block Chaining mode, xor the message with the previous result
         if (mode == 1) {
@@ -1343,7 +1353,24 @@ function des_createKeys(key) {
         0x8080010,
         0x8081010
     );
-    var pc2bytes13 = new Array(0, 0x4, 0x100, 0x104, 0, 0x4, 0x100, 0x104, 0x1, 0x5, 0x101, 0x105, 0x1, 0x5, 0x101, 0x105);
+    var pc2bytes13 = new Array(
+        0,
+        0x4,
+        0x100,
+        0x104,
+        0,
+        0x4,
+        0x100,
+        0x104,
+        0x1,
+        0x5,
+        0x101,
+        0x105,
+        0x1,
+        0x5,
+        0x101,
+        0x105
+    );
 
     //how many iterations (1 for des, 3 for triple des)
     var iterations = key.length > 8 ? 3 : 1; //changed by Paul 16/6/2007 to use Triple DES for 9+ byte keys
@@ -1360,8 +1387,16 @@ function des_createKeys(key) {
 
     for (var j = 0; j < iterations; j++) {
         //either 1 or 3 iterations
-        var left = (key.charCodeAt(m++) << 24) | (key.charCodeAt(m++) << 16) | (key.charCodeAt(m++) << 8) | key.charCodeAt(m++);
-        var right = (key.charCodeAt(m++) << 24) | (key.charCodeAt(m++) << 16) | (key.charCodeAt(m++) << 8) | key.charCodeAt(m++);
+        var left =
+            (key.charCodeAt(m++) << 24) |
+            (key.charCodeAt(m++) << 16) |
+            (key.charCodeAt(m++) << 8) |
+            key.charCodeAt(m++);
+        var right =
+            (key.charCodeAt(m++) << 24) |
+            (key.charCodeAt(m++) << 16) |
+            (key.charCodeAt(m++) << 8) |
+            key.charCodeAt(m++);
 
         temp = ((left >>> 4) ^ right) & 0x0f0f0f0f;
         right ^= temp;

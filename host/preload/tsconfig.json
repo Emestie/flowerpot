@@ -9,7 +9,7 @@
         "isolatedModules": true,
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
-
+        "noEmit": true,
         "types": ["node"],
 
         "baseUrl": "."

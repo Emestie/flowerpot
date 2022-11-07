@@ -24,7 +24,9 @@ export function SelectQueriesView() {
         setTimeout(() => {
             Loaders.loadAvailableQueries().then((queries) => {
                 const currentQueriesIds = settings.queries.map((q) => q.queryId);
-                const queriesToSelect = queries.filter((q) => !currentQueriesIds.includes(q.queryId)) as ISelectableQuery[];
+                const queriesToSelect = queries.filter(
+                    (q) => !currentQueriesIds.includes(q.queryId)
+                ) as ISelectableQuery[];
                 queriesToSelect.forEach((q) => (q.checked = false));
 
                 setAvailableQueries(queriesToSelect);
