@@ -4,7 +4,7 @@ import { ILinkItem } from "./Links";
 import { store } from "../redux/store";
 import { settingsSet } from "../redux/actions/settingsActions";
 import { appSet } from "../redux/actions/appActions";
-import { TableScale } from "../redux/reducers/settingsReducer";
+import { Sections, TableScale } from "../redux/reducers/settingsReducer";
 import { IProject } from "./Project";
 import { UsageStat } from "./Stats";
 
@@ -46,7 +46,6 @@ export interface ISettings {
     links: ILinkItem[];
     darkTheme: boolean;
     allowTelemetry: boolean;
-    showWhatsNewOnUpdate: boolean;
     showUnreads: boolean;
     showAvatars: boolean;
     showQuickLinks: boolean;
@@ -55,6 +54,7 @@ export interface ISettings {
     migrationsDone: string[];
     bannersShown: number[];
     stats: Record<UsageStat, number>;
+    settingsSection: Sections;
 }
 
 export default class Settings {

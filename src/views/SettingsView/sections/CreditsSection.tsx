@@ -36,11 +36,6 @@ export function CreditsSection() {
         dispatch(settingsUpdate({ allowTelemetry }));
     };
 
-    const toggleWhatsNewOnUpdate = () => {
-        const showWhatsNewOnUpdate = !settings.showWhatsNewOnUpdate;
-        dispatch(settingsUpdate({ showWhatsNewOnUpdate }));
-    };
-
     const onLocaleSelect = (val: TLocale) => {
         const locale_ = val;
         dispatch(appSet({ locale: locale_ }));
@@ -108,12 +103,6 @@ export function CreditsSection() {
                 </>
             )}
             <Form.Checkbox label={s("cbTelemetry")} checked={settings.allowTelemetry} onChange={toggleTelemetry} />
-            <br />
-            <Form.Checkbox
-                label={s("cbWhatsNew")}
-                checked={settings.showWhatsNewOnUpdate}
-                onChange={toggleWhatsNewOnUpdate}
-            />
             <br />
             <Header as="h3" dividing>
                 {s("settingsActionsHeader")}

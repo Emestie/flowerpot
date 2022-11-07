@@ -9,7 +9,7 @@ export interface INotificationData {
 
 export interface IPlatformExtension {
     isLocal: () => boolean;
-    getStoreProp: (prop: string) => Promise<any>;
+    getStoreProp: <T = unknown>(prop: string) => Promise<T>;
     setStoreProp: (prop: string, value: any) => void;
     copyString: (s: string) => void;
     changeLocale: (locale: TLocale) => void;

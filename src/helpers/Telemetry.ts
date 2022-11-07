@@ -2,6 +2,7 @@ import Platform from "./Platform";
 import Version from "./Version";
 import CyrillicToTranslit from "cyrillic-to-translit-js";
 import { store } from "../redux/store";
+import { UsageStat } from "./Stats";
 
 const cyrillicToTranslit = new CyrillicToTranslit();
 
@@ -28,11 +29,13 @@ export default class Telemetry {
     }
 
     public static versionUsageInfo() {
-        const { locale } = store.getState().app;
-        const { darkTheme } = store.getState().settings;
-        const theme = darkTheme ? "dark" : "light";
+        const { stats } = store.getState().settings;
 
-        this.basicMessage("Version installed", `theme=${theme}, locale=${locale}`);
+        const statString = Object.keys(stats)
+            .map((key) => `${key}=${stats[key as UsageStat]}`)
+            .join(", ");
+
+        this.basicMessage("Version installed", `stats: ${statString}`);
     }
 
     public static accountVerificationSucceed() {

@@ -2,7 +2,7 @@ import { Container, Button, Icon, Sidebar, Menu } from "semantic-ui-react";
 import { s } from "../../values/Strings";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
-import { appSettingsSectionSet, appViewSet } from "../../redux/actions/appActions";
+import { appViewSet } from "../../redux/actions/appActions";
 import { useDispatch, useSelector } from "react-redux";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
@@ -12,9 +12,8 @@ import { ProjectsSection } from "./sections/ProjectsSection";
 import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
 import { WorkItemsSection } from "./sections/WorkItemsSection";
-import { appSelector } from "../../redux/selectors/appSelectors";
-import { Sections } from "../../redux/reducers/appReducer";
 import { StatsSection } from "./sections/StatsSection";
+import { Sections } from "/@/redux/reducers/settingsReducer";
 
 const sectionsList = [
     {
@@ -71,12 +70,11 @@ const getSectionComponent = (sectionId: Sections) => {
 export function SettingsView() {
     const dispatch = useDispatch();
 
-    const settings = useSelector(settingsSelector);
-    const { settingsSection } = useSelector(appSelector);
+    const { settingsSection, darkTheme } = useSelector(settingsSelector);
 
     const toggleTheme = () => {
-        const darkTheme = !settings.darkTheme;
-        dispatch(settingsUpdate({ darkTheme }));
+        const darkTheme_ = !darkTheme;
+        dispatch(settingsUpdate({ darkTheme: darkTheme_ }));
     };
 
     const onSave = () => {
@@ -88,7 +86,7 @@ export function SettingsView() {
             key={i}
             as="a"
             active={section.id === settingsSection}
-            onClick={() => dispatch(appSettingsSectionSet(section.id))}
+            onClick={() => dispatch(settingsUpdate({ settingsSection: section.id }))}
         >
             {s(section.captionKey)}
         </Menu.Item>
@@ -101,13 +99,13 @@ export function SettingsView() {
             <ViewHeading>
                 <LocalVersionBanner />
                 <Button icon onClick={toggleTheme}>
-                    {settings.darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
+                    {darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
                 </Button>
                 <Button positive onClick={onSave}>
                     {s("settingsBackButton")}
                 </Button>
             </ViewHeading>
-            <Sidebar as={Menu} inverted={settings.darkTheme} vertical visible width="thin">
+            <Sidebar as={Menu} inverted={darkTheme} vertical visible width="thin">
                 <div style={{ height: 62 }}></div>
                 {sectionsMenuItems}
             </Sidebar>

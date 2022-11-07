@@ -153,9 +153,6 @@ const en: ILocalizedStrings = {
     justUpdatedMessage1: "Flowerpot has been updated to version ",
     justUpdatedMessage2: "Release notes",
     justUpdatedHide: "Hide",
-    justUpdatedNeverShow: "Never show this again",
-
-    cbWhatsNew: "Show release notes after app update",
 
     listsClearAll: "Clear all",
 

@@ -11,9 +11,9 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
         return eapi.platformName;
     }
 
-    public async getStoreProp(prop: string) {
+    public async getStoreProp<T = unknown>(prop: string) {
         const val = await eapi.ipcInvoke("read-settings-prop", prop);
-        return val;
+        return val as T;
     }
 
     public setStoreProp(prop: string, value: any) {

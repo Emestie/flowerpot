@@ -9,11 +9,11 @@ export function StatsSection() {
 
     const statItems = Object.values(UsageStat)
         .filter((statName) => statName !== UsageStat.Test)
-        .map((statName) => {
+        .map((statName, i) => {
             return {
                 statDisplayName: s(`statDisplayName_${statName}`),
                 jsx: (
-                    <List.Item>
+                    <List.Item key={i}>
                         <List.Content>
                             {s(`statDisplayName_${statName}`)}: <b>{stats[statName as UsageStat] || 0}</b>
                         </List.Content>

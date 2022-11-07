@@ -1,11 +1,9 @@
-import React from "react";
 import { Message, Button } from "semantic-ui-react";
 import { s } from "../../values/Strings";
 import Version from "../../helpers/Version";
 import { useDispatch, useSelector } from "react-redux";
 import { appSelector } from "../../redux/selectors/appSelectors";
 import { appSet, appViewSet } from "../../redux/actions/appActions";
-import { settingsUpdate } from "../../redux/actions/settingsActions";
 
 export function WhatsNewBanner() {
     const { showWhatsNew } = useSelector(appSelector);
@@ -23,12 +21,6 @@ export function WhatsNewBanner() {
         hideMessage();
     };
 
-    const neverShowNotesAgain = () => {
-        hideMessage();
-        const showWhatsNewOnUpdate = false;
-        dispatch(settingsUpdate({ showWhatsNewOnUpdate }));
-    };
-
     return (
         <Message info size="mini">
             {s("justUpdatedMessage1")} <i>{Version.long}</i>.
@@ -39,9 +31,6 @@ export function WhatsNewBanner() {
                 <Button compact size="mini" onClick={hideMessage}>
                     {s("justUpdatedHide")}
                 </Button>
-                <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={neverShowNotesAgain}>
-                    {s("justUpdatedNeverShow")}
-                </span>
             </span>
         </Message>
     );

@@ -6,7 +6,7 @@ export enum UsageStat {
     AppStarts = "appStarts", //done
     WorkItemsArrived = "workItemsArrived", //done
     NotificationsSent = "notificationsSent", //done
-    NetworkFailures = "networkFailures", //done
+    //NetworkFailures = "networkFailures", //done
     MinutesSpentInApp = "minutesSpentInApp", //done
     AppVersionsUpdated = "appVersionUpdated", //done
     WorkItemsOpened = "workItemsOpened", //done

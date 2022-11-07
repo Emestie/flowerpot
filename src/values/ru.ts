@@ -155,9 +155,6 @@ const ru: ILocalizedStrings = {
     justUpdatedMessage1: "Flowerpot обновлен до версии ",
     justUpdatedMessage2: "Посмотреть изменения",
     justUpdatedHide: "ОК",
-    justUpdatedNeverShow: "Больше не показывать такие сообщения",
-
-    cbWhatsNew: "Показывать патчноуты после обновлений",
 
     listsClearAll: "Очистить все",
 
