@@ -7,6 +7,7 @@ import { appSet } from "../redux/actions/appActions";
 import { Sections, TableScale } from "../redux/reducers/settingsReducer";
 import { IProject } from "./Project";
 import { UsageStat } from "./Stats";
+import { TLocale } from "../redux/types";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -59,7 +60,7 @@ export interface ISettings {
 
 export default class Settings {
     public static async read() {
-        const settings = await Platform.current.getStoreProp("flowerpot");
+        const settings = await Platform.current.getStoreProp<string>("flowerpot");
         if (settings) {
             try {
                 const parsedSettings = JSON.parse(settings);
@@ -68,8 +69,8 @@ export default class Settings {
             } catch (e: any) {}
         }
 
-        const autostart = await Platform.current.getStoreProp("autostart");
-        const locale = await Platform.current.getStoreProp("locale");
+        const autostart = await Platform.current.getStoreProp<boolean>("autostart");
+        const locale = await Platform.current.getStoreProp<TLocale>("locale");
 
         store.dispatch(appSet({ autostart, locale }));
     }

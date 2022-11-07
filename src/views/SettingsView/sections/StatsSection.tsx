@@ -8,7 +8,7 @@ export function StatsSection() {
     const { stats } = useSelector(settingsSelector);
 
     const statItems = Object.values(UsageStat)
-        .filter((statName) => statName !== UsageStat.Test)
+        .filter((statName) => statName !== UsageStat.Test && statName !== UsageStat.NetworkFailures)
         .map((statName, i) => {
             return {
                 statDisplayName: s(`statDisplayName_${statName}`),

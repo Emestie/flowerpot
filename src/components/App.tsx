@@ -40,7 +40,7 @@ export function App() {
 
     const afterUpdateHandler = useCallback(() => {
         if (!Platform.current.isDev() && !Platform.current.isLocal() && Version.isChangedLong()) {
-            if (settings.showWhatsNewOnUpdate && Version.isChangedShort()) dispatch(appShowWhatsNewSet(true));
+            if (Version.isChangedShort()) dispatch(appShowWhatsNewSet(true));
             Version.storeInSettings();
         }
         // eslint-disable-next-line
