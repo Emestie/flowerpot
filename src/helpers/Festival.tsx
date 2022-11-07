@@ -31,6 +31,24 @@ export enum Eve {
     TenYearsAnniversary,
 }
 
+export interface IFestivalDescriptor {
+    headerIcons: {
+        iconPath: string;
+        dateFrom: string;
+        dateTo: string;
+        description?: {
+            en: string;
+            ru: string;
+        };
+        top?: number;
+        left?: number;
+        width?: number;
+        height?: number;
+        offset?: number;
+    }[];
+}
+//[icon, top, left, w, h, offset]
+
 interface IIconRule {
     rule: (name: string, item: IWorkItem) => boolean;
     icon: JSX.Element;

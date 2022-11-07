@@ -16,7 +16,7 @@ const config = {
         output: "dist",
         buildResources: "build-resources",
     },
-    files: ["host/**/dist/**", "build/**", "build-resources/**"],
+    files: ["host/**/dist/**", "build/**", "build-resources/**", "dynamic-content/**"],
     extraMetadata: {
         version: packagejson.version,
         main: "host/main/dist/index.cjs",

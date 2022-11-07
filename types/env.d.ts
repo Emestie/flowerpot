@@ -15,7 +15,8 @@ interface ImportMetaEnv {
      * This variable is initialized in scripts/watch.ts
      */
     readonly VITE_DEV_SERVER_URL: undefined | string;
-    readonly VITE_USE_FISH: number;
+    readonly VITE_USE_FISH: "1" | undefined;
+    readonly VITE_LOCAL_DYNAMIC_CONTENT: "1" | undefined;
 }
 
 interface ImportMeta {
