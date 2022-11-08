@@ -28,7 +28,11 @@ export function QuickLinksContainer() {
     ));
 
     if (!items.length) {
-        items.push(<span key="nolinkskey" style={{ color: "gray", fontSize: 10, fontStyle: "italic" }}>{s("noLinks")}</span>);
+        items.push(
+            <span key="nolinkskey" style={{ color: "gray", fontSize: 10, fontStyle: "italic" }}>
+                {s("noLinks")}
+            </span>
+        );
     }
 
     if (links.length < LINKS_COUNT_LIMIT) {

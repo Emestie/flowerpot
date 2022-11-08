@@ -1,0 +1,80 @@
+[
+    {
+        "name": "christmas",
+        "dateFrom": "YEAR-12-20T00:00",
+        "dateTo": "YEAR-12-31T23:59",
+        "icon": {
+            "path": "festival-icons/santa-hat.svg",
+            "top": 7,
+            "left": 14,
+            "width": 26,
+            "height": 26,
+            "offset": 8
+        }
+    },
+    {
+        "name": "new-year",
+        "dateFrom": "YEAR-01-01T00:00",
+        "dateTo": "YEAR-01-10T23:59",
+        "icon": {
+            "path": "festival-icons/christmas-tree.svg",
+            "top": 12,
+            "left": 14,
+            "width": 32,
+            "height": 32,
+            "offset": 40
+        }
+    },
+    {
+        "name": "mar8",
+        "dateFrom": "YEAR-03-06T00:00",
+        "dateTo": "YEAR-03-09T23:59",
+        "icon": {
+            "path": "festival-icons/mar8.svg",
+            "top": 12,
+            "left": 14,
+            "width": 32,
+            "height": 32,
+            "offset": 40
+        }
+    },
+    {
+        "name": "sep3",
+        "dateFrom": "YEAR-09-03T00:00",
+        "dateTo": "YEAR-09-03T23:59",
+        "icon": {
+            "path": "festival-icons/sept3.svg",
+            "top": 12,
+            "left": 14,
+            "width": 32,
+            "height": 32,
+            "offset": 40
+        }
+    },
+    {
+        "name": "haloween",
+        "dateFrom": "YEAR-10-28T00:00",
+        "dateTo": "YEAR-11-02T23:59",
+        "icon": {
+            "path": "festival-icons/halloween-bats.svg",
+            "top": 8,
+            "left": 6,
+            "width": 40,
+            "height": 40,
+            "offset": 40
+        }
+    },
+    {
+        "name": "late-autumn",
+        "dateFrom": "YEAR-11-05T00:00",
+        "dateTo": "YEAR-11-20T23:59",
+        "icon": {
+            "path": "festival-icons/leaf-fall.png",
+            "top": 10,
+            "left": 10,
+            "width": 40,
+            "height": 40,
+            "offset": 40
+        }
+    }
+]

@@ -7,7 +7,6 @@ export enum Actions {
     AppUpdateStatusSet = "app/update-status-set",
     AppDialogSet = "app/dialog-set",
     AppLoadingInProgressListSet = "app/loading-in-progress-list-set",
-    AppSettingsSectionSet = "app/settings-section-set",
     AppShowMineOnlySet = "app/show-mine-only-set",
     DataChangesCollectionClear = "data/changes-collection-clear",
     DataChangesCollectionSet = "data/changes-collection-set",

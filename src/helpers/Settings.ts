@@ -4,9 +4,10 @@ import { ILinkItem } from "./Links";
 import { store } from "../redux/store";
 import { settingsSet } from "../redux/actions/settingsActions";
 import { appSet } from "../redux/actions/appActions";
-import { TableScale } from "../redux/reducers/settingsReducer";
+import { Sections, TableScale } from "../redux/reducers/settingsReducer";
 import { IProject } from "./Project";
 import { UsageStat } from "./Stats";
+import { TLocale } from "../redux/types";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -46,7 +47,6 @@ export interface ISettings {
     links: ILinkItem[];
     darkTheme: boolean;
     allowTelemetry: boolean;
-    showWhatsNewOnUpdate: boolean;
     showUnreads: boolean;
     showAvatars: boolean;
     showQuickLinks: boolean;
@@ -55,11 +55,12 @@ export interface ISettings {
     migrationsDone: string[];
     bannersShown: number[];
     stats: Record<UsageStat, number>;
+    settingsSection: Sections;
 }
 
 export default class Settings {
     public static async read() {
-        const settings = await Platform.current.getStoreProp("flowerpot");
+        const settings = await Platform.current.getStoreProp<string>("flowerpot");
         if (settings) {
             try {
                 const parsedSettings = JSON.parse(settings);
@@ -68,8 +69,8 @@ export default class Settings {
             } catch (e: any) {}
         }
 
-        const autostart = await Platform.current.getStoreProp("autostart");
-        const locale = await Platform.current.getStoreProp("locale");
+        const autostart = await Platform.current.getStoreProp<boolean>("autostart");
+        const locale = await Platform.current.getStoreProp<TLocale>("locale");
 
         store.dispatch(appSet({ autostart, locale }));
     }

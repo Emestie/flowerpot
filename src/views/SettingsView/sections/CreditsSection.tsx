@@ -8,8 +8,7 @@ import { appSelector } from "../../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { TLocale } from "../../../redux/types";
 import { s } from "../../../values/Strings";
-
-const avatar = require("../../../assets/ti.jpg").default as string;
+import avatar from "../../../assets/ti.jpg";
 
 const locales: DropdownItemProps[] = [
     { key: 2, text: s("localeEn"), value: "en" },
@@ -35,11 +34,6 @@ export function CreditsSection() {
     const toggleTelemetry = () => {
         const allowTelemetry = !settings.allowTelemetry;
         dispatch(settingsUpdate({ allowTelemetry }));
-    };
-
-    const toggleWhatsNewOnUpdate = () => {
-        const showWhatsNewOnUpdate = !settings.showWhatsNewOnUpdate;
-        dispatch(settingsUpdate({ showWhatsNewOnUpdate }));
     };
 
     const onLocaleSelect = (val: TLocale) => {
@@ -109,12 +103,6 @@ export function CreditsSection() {
                 </>
             )}
             <Form.Checkbox label={s("cbTelemetry")} checked={settings.allowTelemetry} onChange={toggleTelemetry} />
-            <br />
-            <Form.Checkbox
-                label={s("cbWhatsNew")}
-                checked={settings.showWhatsNewOnUpdate}
-                onChange={toggleWhatsNewOnUpdate}
-            />
             <br />
             <Header as="h3" dividing>
                 {s("settingsActionsHeader")}

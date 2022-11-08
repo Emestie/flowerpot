@@ -9,6 +9,16 @@ export enum TableScale {
     Large = 2,
 }
 
+export enum Sections {
+    Account,
+    Queries,
+    WorkItems,
+    Projects,
+    QuickLinks,
+    Stats,
+    Credits,
+}
+
 export interface ISettingsState extends ISettings {}
 
 const initialState: ISettingsState = {
@@ -37,7 +47,6 @@ const initialState: ISettingsState = {
     links: [],
     darkTheme: false,
     allowTelemetry: true,
-    showWhatsNewOnUpdate: true,
     showUnreads: true,
     showAvatars: true,
     showQuickLinks: true,
@@ -46,6 +55,7 @@ const initialState: ISettingsState = {
     migrationsDone: [],
     bannersShown: [],
     stats: {} as Record<UsageStat, number>,
+    settingsSection: Sections.Queries,
 };
 
 export function settingsReducer(state = initialState, action: IAction) {

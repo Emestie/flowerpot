@@ -2,11 +2,16 @@ $hasChangesColor: #3cb371;
 $hasNoChangesColor: transparent;
 $mineColor: skyblue;
 $deferredColor: rgb(173, 173, 173);
+$deferredColorOpaque: rgba(173, 173, 173, .1);
 $favoritesColor: rgb(161, 99, 202);
+$favoritesColorOpaque: rgb(161, 99, 202, .08);
 $forwardedColor: #21ba45;// rgb(72, 176, 124);
+$forwardedColorOpaque: #21ba4515;// rgb(72, 176, 124);
 $permawatchColor: #e696ae;
 $keywordColor: #4287f5;
+$keywordColorOpaque: #6280b17e;
 $pinnedColor: #eca06e;
+$pinnedColorOpaque: #eca06e15;
 $rowItemHover: darken(white, 5%);
 
 body,
@@ -81,16 +86,32 @@ body,
     border-left: 4px solid $deferredColor;
 }
 
+tr.workItemDeferred {
+    background-color: $deferredColorOpaque;
+}
+
 .workItemFavorite {
     border-left: 4px solid $favoritesColor;
+}
+
+tr.workItemFavorite {
+   background-color: $favoritesColorOpaque;
 }
 
 .workItemForwarded {
     border-left: 4px solid $forwardedColor;
 }
 
+tr.workItemForwarded {
+    background-color: $forwardedColorOpaque;
+}
+
 .workItemPinned {
     border-left: 4px solid $pinnedColor;
+}
+
+tr.workItemPinned {
+    background-color: $pinnedColorOpaque;
 }
 
 .workItemPermawatch {
@@ -98,7 +119,7 @@ body,
 }
 
 tr.workItemKeyword {
-    background-color: #6280b17e;
+    background-color: keywordColorOpaque;
 }
 td.workItemKeyword {
     border-left: 4px solid $keywordColor;

@@ -7,6 +7,7 @@ import { Timers } from "../helpers/Timers";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 const PR_TIMER_KEY = "pr-block-timer";
+const useFishWIs = !!import.meta.env.VITE_USE_FISH;
 
 export function usePullRequestsLoader(projects: IProject[]) {
     const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +17,7 @@ export function usePullRequestsLoader(projects: IProject[]) {
     const load = useCallback(async () => {
         console.log("updating PRs");
 
-        const prs = await Loaders.loadPullRequests(projects.filter((p) => p.enabled));
+        const prs = useFishWIs ? [] : await Loaders.loadPullRequests(projects.filter((p) => p.enabled));
 
         const filteredPRs = prs.filter((x) => {
             if (x.isDraft) return false;

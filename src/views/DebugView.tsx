@@ -10,6 +10,7 @@ import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
 import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
+import { DynamicContent } from "../helpers/DynamicContent";
 
 export function DebugView() {
     const dispatch = useDispatch();
@@ -39,6 +40,10 @@ export function DebugView() {
 
     const sendFeedback = () => {
         Telemetry.sendFeedback("лалала фидбек");
+    };
+
+    const loadDynamic = () => {
+        DynamicContent.loadFestivalJson();
     };
 
     // const handleClick = (e: any, data: any) => {
@@ -98,6 +103,7 @@ export function DebugView() {
                 </Header>
                 <Button onClick={() => setChanges()}>Set changes to WI</Button>
                 <Button onClick={() => Stats.increment(UsageStat.Test)}>Test stat: {settings.stats.test || 0}</Button>
+                <Button onClick={loadDynamic}>Load DC</Button>
                 <div>
                     {Version.long} / {Version.short}
                 </div>

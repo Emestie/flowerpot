@@ -1,6 +1,6 @@
 import { TLocale } from "../redux/types";
 import ElectronPlatform from "./platforms/Electron";
-//import WebPlatform from "./platforms/Web";
+import { eapi } from "#preload";
 
 export interface INotificationData {
     title: string;
@@ -9,7 +9,7 @@ export interface INotificationData {
 
 export interface IPlatformExtension {
     isLocal: () => boolean;
-    getStoreProp: (prop: string) => Promise<any>;
+    getStoreProp: <T = unknown>(prop: string) => Promise<T>;
     setStoreProp: (prop: string, value: any) => void;
     copyString: (s: string) => void;
     changeLocale: (locale: TLocale) => void;
@@ -40,7 +40,7 @@ export default class Platform {
 
     public static get type() {
         if (!this._type) {
-            if ((window as any).eapi) {
+            if (eapi) {
                 this._type = PlatformType.Electron;
             } else {
                 this._type = PlatformType.Web;

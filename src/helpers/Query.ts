@@ -65,7 +65,7 @@ const permawatchQueryObject = {
     queryPath: "",
     teamId: "___permawatch",
     teamName: "",
-}
+};
 
 export default class Query {
     //! after any operation update queries array in store

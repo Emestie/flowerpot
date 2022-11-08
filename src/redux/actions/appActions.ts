@@ -1,6 +1,6 @@
-import { Eve } from "../../helpers/Festival";
+import { IFestivalDescriptor } from "../../helpers/Festival";
 import { Actions } from "../actions-enum";
-import { IAppState, Sections } from "../reducers/appReducer";
+import { IAppState } from "../reducers/appReducer";
 import { store } from "../store";
 import { IAction, TDialog, TUpdateStatus, TView } from "../types";
 import { createAction } from "./_common";
@@ -22,7 +22,7 @@ export function appSet(fields: Partial<IAppState>): IAction {
     return createAction(Actions.AppSettingsSet, { ...fields });
 }
 
-export function appCurrentFestivalSet(currentFestival: Eve): IAction {
+export function appCurrentFestivalSet(currentFestival: IFestivalDescriptor | undefined): IAction {
     return createAction(Actions.AppCurrentFestivalSet, { currentFestival });
 }
 
@@ -36,10 +36,6 @@ export function appDialogSet(dialogKey: TDialog, value: boolean) {
     dialogs[dialogKey] = value;
 
     return createAction(Actions.AppDialogSet, { dialogs });
-}
-
-export function appSettingsSectionSet(sectionId: Sections): IAction {
-    return createAction(Actions.AppSettingsSectionSet, { settingsSection: sectionId });
 }
 
 export function appShowMineOnlySet(showMineOnly: boolean): IAction {

@@ -3,11 +3,12 @@ import Platform from "../helpers/Platform";
 import WorkItem from "../helpers/WorkItem";
 import Loaders from "../helpers/Loaders";
 import Query, { IQuery } from "../helpers/Query";
-import { useFishWIs } from "../conf";
 import { useDispatch, useSelector } from "react-redux";
 import { dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
 import { Timers } from "../helpers/Timers";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
+
+const useFishWIs = !!import.meta.env.VITE_USE_FISH;
 
 export function useQueryLoader(query: IQuery) {
     const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +29,7 @@ export function useQueryLoader(query: IQuery) {
     const routineStart = useCallback(async () => {
         setIsLoading(true);
 
-        if (useFishWIs === 1 && Platform.current.isDev()) {
+        if (useFishWIs && Platform.current.isDev()) {
             setIsLoading(false);
             dispatch(
                 dataWorkItemsForQuerySet(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)])

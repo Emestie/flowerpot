@@ -1,5 +1,6 @@
 import { settingsMigrationsDonePush, settingsUpdate } from "../redux/actions/settingsActions";
 import { store } from "../redux/store";
+import Platform from "./Platform";
 
 export default class Migration {
     private static setMigrationAsDone(name: string) {
@@ -11,6 +12,7 @@ export default class Migration {
 
         if (!migrations.includes("v0_2_12_to_v0_2_13")) this.v0_2_12_to_v0_2_13();
         if (!migrations.includes("v0_2_13_notes")) this.v0_2_13_notes();
+        if (!migrations.includes("v0_4_5_to_v0_5_0")) this.v0_4_5_to_v0_5_0();
     }
 
     private static v0_2_12_to_v0_2_13() {
@@ -71,5 +73,16 @@ export default class Migration {
         store.dispatch(settingsUpdate({ notes }));
 
         this.setMigrationAsDone("v0_2_13_notes");
+    }
+
+    private static async v0_4_5_to_v0_5_0() {
+        console.log("Migration v0_4_5_to_v0_5_0");
+
+        const iid = await Platform.current.getStoreProp<string>("installationID");
+        if (iid && !iid.startsWith("FLW-")) {
+            Platform.current.setStoreProp("installationID", "FLW-" + iid);
+        }
+
+        this.setMigrationAsDone("v0_4_5_to_v0_5_0");
     }
 }
