@@ -1,12 +1,9 @@
-import { Eve } from "../../helpers/Festival";
+import { IFestivalDescriptor } from "../../helpers/Festival";
 import { Actions } from "../actions-enum";
 import { IAppState } from "../reducers/appReducer";
 import { store } from "../store";
 import { IAction, TDialog, TUpdateStatus, TView } from "../types";
 import { createAction } from "./_common";
-
-//TODO: debug purposes. Move somewhere
-(window as any)._setView = (view: TView) => store.dispatch(appViewSet(view));
 
 export function appViewSet(view: TView, viewParams: Record<string, any> = {}): IAction {
     return createAction(Actions.AppViewSet, { view, viewParams });
@@ -25,7 +22,7 @@ export function appSet(fields: Partial<IAppState>): IAction {
     return createAction(Actions.AppSettingsSet, { ...fields });
 }
 
-export function appCurrentFestivalSet(currentFestival: Eve): IAction {
+export function appCurrentFestivalSet(currentFestival: IFestivalDescriptor | undefined): IAction {
     return createAction(Actions.AppCurrentFestivalSet, { currentFestival });
 }
 

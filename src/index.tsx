@@ -8,6 +8,7 @@ import { UnauthorizedAccess } from "./components/UnauthorizedAccess";
 import Platform, { PlatformType } from "./helpers/Platform";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import "./debug-fns";
 
 let appComponent = null;
 

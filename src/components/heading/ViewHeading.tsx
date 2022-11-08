@@ -38,13 +38,15 @@ const getHeaderTextByViewName = (viewName: TView) => {
 };
 
 export function ViewHeading(p: P) {
-    const { view, festivalHeaderOffset, isFestivalOn } = useSelector(appSelector);
+    const { view, currentFestival } = useSelector(appSelector);
 
     const viewCaption = p.viewCaption || getHeaderTextByViewName(view);
 
+    const leftMargin = currentFestival ? currentFestival.icon.offset : 0;
+
     return (
         <div className="TopBar" id="ViewHeading">
-            <Header as="h1" style={{ marginLeft: isFestivalOn ? festivalHeaderOffset : 0, marginBottom: 0 }}>
+            <Header as="h1" style={{ marginLeft: leftMargin, marginBottom: 0 }}>
                 {viewCaption}
             </Header>
             <div className="RightTopCorner">{p.children}</div>

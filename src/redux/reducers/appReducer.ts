@@ -1,4 +1,4 @@
-import { Eve } from "../../helpers/Festival";
+import { IFestivalDescriptor } from "../../helpers/Festival";
 import { IAction, Reducers, TLocale, TUpdateStatus, TView } from "../types";
 import { updateState } from "./_common";
 
@@ -7,9 +7,7 @@ export interface IAppState<IVP = Record<string, any>> {
     viewParams: IVP;
     updateStatus: TUpdateStatus;
     dialogs: { [key: string]: boolean };
-    isFestivalOn: boolean;
-    currentFestival: Eve;
-    festivalHeaderOffset: number;
+    currentFestival: IFestivalDescriptor | undefined;
     showWhatsNew: boolean;
     autostart: boolean;
     locale: TLocale;
@@ -21,9 +19,7 @@ const initialState: IAppState = {
     viewParams: {},
     updateStatus: "none",
     dialogs: {},
-    isFestivalOn: false,
-    currentFestival: Eve._none,
-    festivalHeaderOffset: 0,
+    currentFestival: undefined,
     showWhatsNew: false,
     autostart: true,
     locale: "en",

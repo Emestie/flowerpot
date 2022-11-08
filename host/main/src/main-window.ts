@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, globalShortcut } from "electron";
 import { join } from "path";
 import { URL } from "url";
 import { buildIconPath, buildTrayIcon, registerAutostart } from "./functions";
@@ -45,6 +45,10 @@ async function createWindow() {
     if (import.meta.env.PROD) browserWindow.setMenu(null);
 
     setWindowOnHandlers(browserWindow);
+
+    globalShortcut.register("CommandOrControl+Shift+8", () => {
+        browserWindow.webContents.openDevTools();
+    });
 
     /**
      * URL for main window.

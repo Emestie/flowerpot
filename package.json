@@ -25,7 +25,8 @@
         "@trodi/electron-splashscreen": "^0.3.4",
         "cyrillic-to-translit-js": "3.1.0",
         "electron-updater": "^4.6.5",
-        "markdown-to-jsx": "^7.1.7"
+        "markdown-to-jsx": "^7.1.7",
+        "moment": "^2.29.4"
     },
     "devDependencies": {
         "@babel/core": "^7.20.2",
