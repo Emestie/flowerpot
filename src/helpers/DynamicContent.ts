@@ -2,7 +2,7 @@ import { IFestivalDescriptor } from "./Festival";
 
 export namespace DynamicContent {
     const localUrl = "./dynamic-content/";
-    const webUrl = "https://raw.githubusercontent.com/Emestie/flowerpot/public/dynamic-content/";
+    const webUrl = "https://raw.githubusercontent.com/Emestie/flowerpot/master/public/dynamic-content/";
 
     export async function loadFestivalJson(forceLocal?: boolean): Promise<IFestivalDescriptor[]> {
         const isLocal = forceLocal || !!import.meta.env.VITE_LOCAL_DYNAMIC_CONTENT;
