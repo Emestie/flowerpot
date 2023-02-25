@@ -268,6 +268,9 @@ const ru: ILocalizedStrings = {
     statDisplayName_usersNamesCopied: "Скопировано имен",
     statDisplayName_workItemsAddedToLists: "Добавлено рабочих элементов в списки",
     statDisplayName_accountVerifications: "Проверок учетной записи",
+
+    mergeStatus: "Статус слияния",
+    requiredReviewer: "Обязательный",
 };
 
 export default ru;

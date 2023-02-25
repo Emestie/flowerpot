@@ -267,6 +267,9 @@ const en: ILocalizedStrings = {
     statDisplayName_usersNamesCopied: "Names copied",
     statDisplayName_workItemsAddedToLists: "Work Items added to lists",
     statDisplayName_accountVerifications: "Account verifications",
+
+    mergeStatus: "Merge status",
+    requiredReviewer: "Required",
 };
 
 export default en;
