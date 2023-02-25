@@ -1,6 +1,14 @@
 import { store } from "../redux/store";
 import { ItemsCommon } from "./ItemsCommon";
 
+export interface IPRReviewer {
+    name: string;
+    uid: string;
+    imageUrl: string;
+    isRequired: boolean;
+    vote: number;
+}
+
 export interface IPullRequest {
     id: number;
     isDraft: boolean;
@@ -14,8 +22,12 @@ export interface IPullRequest {
     title: string;
     url: string;
     status: string;
-    reviewers: { name: string; uid: string }[];
+    reviewers: IPRReviewer[];
     freshness: string;
+    sourceBranch: string;
+    targetBranch: string;
+    labels: { name: string }[];
+    mergeStatus: "conflicts" | "succeeded";
 }
 
 export interface IResponsePullRequest {
@@ -40,8 +52,14 @@ export interface IResponsePullRequest {
         displayName: string;
         imageUrl: string;
         uniqueName: string;
+        isRequired: boolean;
+        vote: number;
     }[];
+    targetRefName: string;
+    sourceRefName: string;
     _collection: string;
+    labels: { name: string }[];
+    mergeStatus: "conflicts" | "succeeded";
 }
 
 export class PullRequest {
@@ -56,13 +74,23 @@ export class PullRequest {
             isDraft: resp.isDraft,
             projectName: resp.repository.project.name,
             repoName: resp.repository.name,
-            reviewers: resp.reviewers.map((rev) => ({ name: rev.displayName, uid: rev.uniqueName })),
+            reviewers: resp.reviewers.map((rev) => ({
+                name: rev.displayName,
+                uid: rev.uniqueName,
+                imageUrl: rev.imageUrl,
+                isRequired: !!rev.isRequired,
+                vote: rev.vote,
+            })),
             status: resp.status,
             title: resp.title,
             url:
                 store.getState().settings.tfsPath +
                 `${resp._collection}/${resp.repository.project.name}/_git/${resp.repository.name}/pullrequest/${resp.pullRequestId}`,
             freshness: ItemsCommon.getTerm(resp.creationDate),
+            sourceBranch: resp.sourceRefName.replace("refs/heads/", ""),
+            targetBranch: resp.targetRefName.replace("refs/heads/", ""),
+            labels: resp.labels || [],
+            mergeStatus: resp.mergeStatus,
         };
     }
 }
