@@ -201,6 +201,8 @@ export function WorkItemRow(props: IProps) {
                 return <Icon name="window close outline" />;
             case "Resolved":
             case "Реализовано":
+            case "Решенный":
+            case "Решённый":
                 return <Icon name="check square outline" />;
             case "New":
             case "Новый":
