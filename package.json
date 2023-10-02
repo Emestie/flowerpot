@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "TFS/Azure work items watch tool",
     "author": {
         "name": "Valery Murashko",
