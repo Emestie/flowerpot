@@ -28,7 +28,7 @@ const config = {
         icon: "build-resources/icons/ico/flower4.ico",
     },
     mac: {
-        icon: "build-resources/icons/macicon.icns",
+        icon: "build-resources/icons/macicon2.icns",
         category: "public.app-category.utilities",
     },
     publish: {

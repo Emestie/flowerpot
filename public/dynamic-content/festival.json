@@ -65,9 +65,9 @@
         }
     },
     {
-        "name": "late-autumn",
-        "dateFrom": "YEAR-11-05T00:00",
-        "dateTo": "YEAR-11-20T23:59",
+        "name": "october-fall",
+        "dateFrom": "YEAR-10-05T00:00",
+        "dateTo": "YEAR-10-28T23:59",
         "icon": {
             "path": "festival-icons/leaf-fall.png",
             "top": 10,
