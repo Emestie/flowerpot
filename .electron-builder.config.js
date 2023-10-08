@@ -26,10 +26,18 @@ const config = {
     copyright: "Copyright © 2019 ${author}",
     win: {
         icon: "build-resources/icons/ico/flower4.ico",
+        target: {
+            target: 'default', 
+            arch: 'x64'
+        }
     },
     mac: {
         icon: "build-resources/icons/macicon2.icns",
         category: "public.app-category.utilities",
+        target: {
+            target: 'default',
+            arch: 'universal'
+        }
     },
     publish: {
         provider: "github",

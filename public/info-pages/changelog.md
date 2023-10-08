@@ -1,5 +1,9 @@
 _Release notes are not available in English for now_
 
+## 0.5.3
+-   обновлены пакеты и Electron
+-   добавлена нативная поддержка процессоров Apple Silicon
+
 ## 0.5.2
 
 -   для статуса рабочих элементов "Решенный" добавлен значок

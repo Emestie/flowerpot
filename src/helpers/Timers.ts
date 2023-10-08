@@ -1,5 +1,5 @@
 export class Timers {
-    private static storage: { [key: number | string]: NodeJS.Timer | undefined } = {};
+    private static storage: { [key: number | string]: NodeJS.Timeout | undefined } = {};
 
     public static create(
         id: number | string,
