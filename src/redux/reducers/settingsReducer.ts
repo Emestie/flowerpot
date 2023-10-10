@@ -25,6 +25,7 @@ const initialState: ISettingsState = {
     tfsPath: "http://tfs:8080/tfs/",
     tfsUser: "",
     tfsPwd: "",
+    tfsPat: "dwyo5hp5oee43kqcuzdnnwdlwqledcfkgw6bbhspfr2d7tffbaza",
     credentialsChecked: false,
     refreshRate: 180,
     sortPattern: "default",

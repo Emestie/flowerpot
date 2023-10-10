@@ -1,16 +1,16 @@
-import React from "react";
-import { Header, Button, Container } from "semantic-ui-react";
-import Platform from "../helpers/Platform";
-import WorkItem from "../helpers/WorkItem";
-import Version from "../helpers/Version";
-import { ViewHeading } from "../components/heading/ViewHeading";
 import { useDispatch, useSelector } from "react-redux";
-import { appViewSet } from "../redux/actions/appActions";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
+import { Button, Container, Header } from "semantic-ui-react";
+import { api } from "../api/client";
+import { ViewHeading } from "../components/heading/ViewHeading";
+import { DynamicContent } from "../helpers/DynamicContent";
+import Platform from "../helpers/Platform";
 import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
-import { DynamicContent } from "../helpers/DynamicContent";
+import Version from "../helpers/Version";
+import WorkItem from "../helpers/WorkItem";
+import { appViewSet } from "../redux/actions/appActions";
+import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 export function DebugView() {
     const dispatch = useDispatch();
@@ -98,6 +98,10 @@ export function DebugView() {
                 <Button onClick={() => showNotifNative()}>Show native electron</Button>
                 <Button onClick={() => sendAppUsage()}>Send app usage</Button>
                 <Button onClick={() => sendFeedback()}>Send feedback</Button>
+                <Header as="h3" dividing>
+                    New API
+                </Header>
+                <Button onClick={() => console.log(api.pullRequest.getByProjects(settings.projects))}>load PR</Button>
                 <Header as="h3" dividing>
                     More
                 </Header>
