@@ -12,6 +12,7 @@ import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { dataSelector } from "../../redux/selectors/dataSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 
 interface IProps {
@@ -247,7 +248,7 @@ export function WorkItemRow(props: IProps) {
                 returnee.push(
                     <span key={Math.random()} className="marked">
                         {x}
-                    </span>
+                    </span>,
                 );
         });
 
@@ -258,11 +259,7 @@ export function WorkItemRow(props: IProps) {
         ? item.tags
               .split(";")
               .map((x) => x.trim())
-              .map((x) => (
-                  <Label key={Math.random()} size="mini" basic style={{ padding: "3px 4px", marginRight: 2 }}>
-                      {x}
-                  </Label>
-              ))
+              .map((x) => <Tag text={x} />)
         : null;
 
     return (
