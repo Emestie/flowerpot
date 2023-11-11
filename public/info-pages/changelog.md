@@ -1,6 +1,8 @@
 _Release notes are not available in English for now_
 
 ## 0.5.3
+
+-   теперь теги окрашены в разные цвета, вычисляемые на основе текста
 -   обновлены пакеты и Electron
 -   добавлена нативная поддержка процессоров Apple Silicon
 

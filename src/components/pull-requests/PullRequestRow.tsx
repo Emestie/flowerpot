@@ -5,6 +5,7 @@ import Platform from "../../helpers/Platform";
 import { IPullRequest } from "../../helpers/PullRequest";
 import WorkItem from "../../helpers/WorkItem";
 import { s } from "../../values/Strings";
+import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
 
@@ -31,13 +32,7 @@ export function PullRequestRow(props: IProps) {
         );
     })();
 
-    const tags = pullRequest.labels
-        .map((x) => x.name)
-        .map((x) => (
-            <Label key={Math.random()} size="mini" basic style={{ padding: "3px 4px", marginRight: 2 }}>
-                {x}
-            </Label>
-        ));
+    const tags = pullRequest.labels.map((x) => x.name).map((x) => <Tag text={x} />);
 
     const reviewers = pullRequest.reviewers
         .sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1))
@@ -91,7 +86,7 @@ export function PullRequestRow(props: IProps) {
                     {Festival.getSpecialNameEffect(
                         pullRequest.authorName,
                         pullRequest.authorFullName,
-                        pullRequest.authorAvatar
+                        pullRequest.authorAvatar,
                     )}
                 </ContextMenuTrigger>
             </Table.Cell>
