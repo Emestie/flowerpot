@@ -31,7 +31,7 @@ export interface ISettings {
     tfsPath: string;
     tfsUser: string;
     tfsPwd: string;
-    tfsPat: string;
+    tfsToken: string;
     credentialsChecked: boolean;
     refreshRate: number;
     sortPattern: TSortPattern;

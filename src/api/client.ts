@@ -5,7 +5,10 @@ export const api = createApiClient({
     getTfsPath() {
         return store.getState().settings.tfsPath;
     },
+    getTfsUser() {
+        return store.getState().settings.tfsUser;
+    },
     getAccessToken() {
-        return store.getState().settings.tfsPat;
+        return store.getState().settings.tfsToken;
     },
 });

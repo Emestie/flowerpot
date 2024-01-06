@@ -1,8 +1,9 @@
 import { createLoader } from "./loader";
-import { createPullRequestLoaders } from "./pull-request";
+import { createCollectionLoaders, createProjectLoaders, createPullRequestLoaders, createQueryLoaders } from "./loaders";
 
 export interface IApiClientParams {
     getTfsPath: () => string;
+    getTfsUser: () => string;
     getAccessToken: () => string;
 }
 
@@ -11,5 +12,8 @@ export function createApiClient(params: IApiClientParams) {
 
     return {
         pullRequest: createPullRequestLoaders(params, loader),
+        collection: createCollectionLoaders(loader),
+        project: createProjectLoaders(loader),
+        query: createQueryLoaders(loader),
     };
 }

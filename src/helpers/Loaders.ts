@@ -1,15 +1,14 @@
+import { api } from "../api/client";
 import { Ntlm } from "../lib/ntlm";
-import Query, { IQuery, ITeam, IResponseQuery, IResponseQueryWI } from "./Query";
-import WorkItem, { IWorkItem, IResponseWorkItem } from "./WorkItem";
-import Differences from "./Differences";
-import { s } from "../values/Strings";
-import Lists from "./Lists";
-import { store } from "../redux/store";
 import { appErrorSet } from "../redux/actions/appActions";
 import { getListsSelector } from "../redux/selectors/settingsSelectors";
-import { IProject } from "./Project";
-import { IResponsePullRequest, PullRequest } from "./PullRequest";
+import { store } from "../redux/store";
+import { s } from "../values/Strings";
+import Differences from "./Differences";
+import Lists from "./Lists";
+import Query, { IQuery, IResponseQuery, IResponseQueryWI } from "./Query";
 import { Stats, UsageStat } from "./Stats";
+import WorkItem, { IResponseWorkItem, IWorkItem } from "./WorkItem";
 
 const queryLoadingCounts: Record<string, number> = {};
 
@@ -17,81 +16,87 @@ export default class Loaders {
     private static auth: boolean = false;
     public static outage: boolean = false;
 
-    public static async loadCollectionsAndProjects() {
-        const cols = (await this.asyncRequest(
-            "_api/_common/GetJumpList?showTeamsOnly=false&__v=5&navigationContextPackage={}&showStoppedCollections=false"
-        )) as any;
+    // public static async loadCollectionsAndProjects() {
+    //     // const cols = (await this.asyncRequest(
+    //     //     "_api/_common/GetJumpList?showTeamsOnly=false&__v=5&navigationContextPackage={}&showStoppedCollections=false",
+    //     // )) as any;
+    //     // console.log("🚀 ~ file: Loaders.ts:23 ~ Loaders ~ loadCollectionsAndProjects ~ cols:", cols);
 
-        const collections = (cols.__wrappedArray || []).map((x: any) => x.name);
+    //     // const collections = (cols.__wrappedArray || []).map((x: any) => x.name);
 
-        const projects: IProject[] = (cols.__wrappedArray || []).flatMap((col: any) =>
-            col.projects.map((prj: any) => ({
-                name: prj.name,
-                path: prj.path,
-                collectionName: prj.collectionName,
-                enabled: true,
-            }))
-        );
+    //     // const projects: IProject[] = (cols.__wrappedArray || []).flatMap((col: any) =>
+    //     //     col.projects.map((prj: any) => ({
+    //     //         name: prj.name,
+    //     //         path: prj.path,
+    //     //         collectionName: prj.collectionName,
+    //     //         enabled: true,
+    //     //     })),
+    //     // );
 
-        return { collections, projects } as { collections: string[]; projects: IProject[] };
-    }
+    //     const colls = await api.collection.getAll();
 
-    public static async loadPullRequests(projects: IProject[]) {
-        if (!projects.length) return [];
+    //     const collections = colls.map((col) => col.name);
+    //     const projects = colls.flatMap((x) => x.projects);
 
-        const promises = projects.map((p) =>
-            this.asyncRequest(`${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`)
-        );
+    //     return { collections, projects } as { collections: string[]; projects: IProject[] };
+    // }
 
-        const result = await Promise.all(promises);
+    // public static async loadPullRequests(projects: IProject[]) {
+    //     if (!projects.length) return [];
 
-        const allPRs: IResponsePullRequest[] = result.reduce<IResponsePullRequest[]>(
-            (prev: any, curr: any, index: number) => [
-                ...prev,
-                ...curr.value.map((x: any) => ({ ...x, _collection: projects[index].collectionName })),
-            ],
-            []
-        );
+    //     const promises = projects.map((p) =>
+    //         this.asyncRequest(`${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`),
+    //     );
 
-        const finalPRs = allPRs.map(PullRequest.buildFromResponse);
+    //     const result = await Promise.all(promises);
 
-        finalPRs.sort((a, b) => b.id - a.id);
+    //     const allPRs: IResponsePullRequest[] = result.reduce<IResponsePullRequest[]>(
+    //         (prev: any, curr: any, index: number) => [
+    //             ...prev,
+    //             ...curr.value.map((x: any) => ({ ...x, _collection: projects[index].collectionName })),
+    //         ],
+    //         [],
+    //     );
 
-        return finalPRs;
-    }
+    //     const finalPRs = allPRs.map(PullRequest.buildFromResponse);
 
-    public static async loadAvailableQueries() {
-        const queries: IQuery[] = [];
-        try {
-            const { collections } = await this.loadCollectionsAndProjects();
+    //     finalPRs.sort((a, b) => b.id - a.id);
 
-            for (let c in collections) {
-                let r = (await this.syncRequest(collections[c] + "/_api/_wit/teamProjects?__v=5")) as any;
-                // eslint-disable-next-line
-                if (!r.projects) throw s("throwNoTeams");
+    //     return finalPRs;
+    // }
 
-                let teams = r.projects as ITeam[];
-                //for each of project we need to load favs
-                for (let x in teams) {
-                    let res = (await this.syncRequest(
-                        collections[c] + "/" + teams[x].guid + "/_apis/wit/queries?$depth=2&api-version=5.1"
-                    )) as any;
-                    res = res.value || [];
-                    const children = res.flatMap((rf: any) => rf.children || []);
-                    const all = [...res, ...children].filter((f) => !f.isPublic && !f.isFolder);
+    // public static async loadAvailableQueries() {
+    //     const queries: IQuery[] = [];
+    //     try {
+    //         const collections = (await api.collection.getAll()).map((x) => x.name); // this.loadCollectionsAndProjects();
 
-                    const favs = all.map((a: any) => ({ queryItem: a }));
-                    favs.forEach((f) => {
-                        queries.push(Query.buildFromResponse(f, teams[x], collections[c]));
-                    });
-                }
-            }
-        } catch (ex: any) {
-            Stats.increment(UsageStat.NetworkFailures);
-            store.dispatch(appErrorSet(ex));
-        }
-        return queries;
-    }
+    //         for (let c in collections) {
+    //             let r = (await this.syncRequest(collections[c] + "/_api/_wit/teamProjects?__v=5")) as any;
+    //             // eslint-disable-next-line
+    //             if (!r.projects) throw s("throwNoTeams");
+
+    //             let teams = r.projects as ITeam[];
+    //             //for each of project we need to load favs
+    //             for (let x in teams) {
+    //                 let res = (await this.syncRequest(
+    //                     collections[c] + "/" + teams[x].guid + "/_apis/wit/queries?$depth=2&api-version=5.1",
+    //                 )) as any;
+    //                 res = res.value || [];
+    //                 const children = res.flatMap((rf: any) => rf.children || []);
+    //                 const all = [...res, ...children].filter((f) => !f.isPublic && !f.isFolder);
+
+    //                 const favs = all.map((a: any) => ({ queryItem: a }));
+    //                 favs.forEach((f) => {
+    //                     queries.push(Query.buildFromResponse(f, teams[x], collections[c]));
+    //                 });
+    //             }
+    //         }
+    //     } catch (ex: any) {
+    //         Stats.increment(UsageStat.NetworkFailures);
+    //         store.dispatch(appErrorSet(ex));
+    //     }
+    //     return queries;
+    // }
 
     public static async loadQueryWorkItems(query: IQuery) {
         let wis: IWorkItem[] = [];
@@ -100,7 +105,7 @@ export default class Loaders {
             let preparedWIs: IResponseQueryWI[] = [];
             if (query.queryId !== "___permawatch") {
                 let queryInfo = (await this.asyncRequest(
-                    query.collectionName + "/" + query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0"
+                    query.collectionName + "/" + query.teamId + "/_apis/wit/wiql/" + query.queryId + "?api-version=1.0",
                 )) as IResponseQuery;
 
                 // eslint-disable-next-line
@@ -138,7 +143,7 @@ export default class Loaders {
                 }
 
                 let wi = (await this.asyncRequest(
-                    (qwi[x].collection || query.collectionName) + "/_apis/wit/workItems/" + qwi[x].id
+                    (qwi[x].collection || query.collectionName) + "/_apis/wit/workItems/" + qwi[x].id,
                 )) as IResponseWorkItem;
                 if (!wi.id) {
                     Lists.deleteFromList("permawatch", qwi[x].id, qwi[x].collection || "");
@@ -169,7 +174,7 @@ export default class Loaders {
     public static async checkCredentials() {
         try {
             //await this.asyncRequest("_api/_wit/teamProjects?__v=5", true);
-            await this.loadCollectionsAndProjects();
+            await api.collection.getAll(); //this.loadCollectionsAndProjects();
             return true;
         } catch (ex: any) {
             return false;

@@ -6,9 +6,10 @@ export function createLoader(params: IApiClientParams) {
     return async function loader<T>(url: string): Promise<T> {
         const result = await fetch(params.getTfsPath() + url, {
             method: "GET",
-            headers: { Authorization: "Bearer " + params.getAccessToken() },
-            //TODO: this auth is not working
+            headers: { Authorization: "Basic " + btoa(":" + params.getAccessToken()) },
         });
+
+        //TODO: 401 and other errors must be processed here
 
         const data = await result.json();
 

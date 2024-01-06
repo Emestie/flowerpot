@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Loaders from "../helpers/Loaders";
+import { api } from "../api/client";
 import { IProject } from "../helpers/Project";
 import { IPullRequest } from "../helpers/PullRequest";
 import { Timers } from "../helpers/Timers";
@@ -17,20 +17,9 @@ export function usePullRequestsLoader(projects: IProject[]) {
     const load = useCallback(async () => {
         console.log("updating PRs");
 
-        const prs = useFishWIs ? [] : await Loaders.loadPullRequests(projects.filter((p) => p.enabled));
+        const prs = useFishWIs ? [] : await api.pullRequest.getByProjects(projects.filter((p) => p.enabled));
 
-        const filteredPRs = prs.filter((x) => {
-            if (x.isDraft) return false;
-
-            const lowerAuthor = x.authorUid.toLowerCase();
-            const lowerReviewers = x.reviewers.map((z) => z.uid.toLowerCase());
-
-            if ([lowerAuthor, ...lowerReviewers].includes(tfsUser.toLowerCase())) {
-                return true;
-            }
-
-            return false;
-        });
+        const filteredPRs = prs.filter((x) => !x.isDraft && x.isMine());
 
         setPullRequests(filteredPRs);
         setIsLoading(false);

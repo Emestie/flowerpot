@@ -102,6 +102,9 @@ export function DebugView() {
                     New API
                 </Header>
                 <Button onClick={() => console.log(api.pullRequest.getByProjects(settings.projects))}>load PR</Button>
+                <Button onClick={() => console.log(api.collection.getAll())}>load collections</Button>
+                <Button onClick={() => console.log(api.project.getAll())}>load projects</Button>
+                <Button onClick={() => console.log(api.query.getAvailable())}>load av queries</Button>
                 <Header as="h3" dividing>
                     More
                 </Header>

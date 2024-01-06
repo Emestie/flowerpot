@@ -1,36 +1,12 @@
-import { ItemsCommon } from "../helpers/ItemsCommon";
-import { IResponsePullRequest } from "../modules/api-client";
+import { IPullRequest, IResponsePullRequest } from "..";
+import { ItemsCommon } from "../../../helpers/ItemsCommon";
 
-export interface IPullRequestReviewer {
-    name: string;
-    uid: string;
-    imageUrl: string;
-    isRequired: boolean;
-    vote: number;
-}
-
-export interface IPullRequest {
-    id: number;
-    isDraft: boolean;
-    authorName: string;
-    authorFullName: string;
-    authorUid: string;
-    authorAvatar: string;
-    date: string;
-    projectName: string;
-    repoName: string;
-    title: string;
-    url: string;
-    status: string;
-    reviewers: IPullRequestReviewer[];
-    freshness: string;
-    sourceBranch: string;
-    targetBranch: string;
-    labels: { name: string }[];
-    mergeStatus: "conflicts" | "succeeded";
-}
-
-export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, collection: string): IPullRequest {
+export function buildPullRequest(
+    resp: IResponsePullRequest,
+    tfsPath: string,
+    tfsUser: string,
+    collection: string,
+): IPullRequest {
     return {
         id: resp.pullRequestId,
         authorFullName: ItemsCommon.parseNameField(resp.createdBy),
@@ -58,5 +34,15 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
         targetBranch: resp.targetRefName.replace("refs/heads/", ""),
         labels: resp.labels || [],
         mergeStatus: resp.mergeStatus,
+        isMine: function () {
+            const lowerAuthor = this.authorUid.toLowerCase();
+            const lowerReviewers = this.reviewers.map((reviewer) => reviewer.uid.toLowerCase());
+
+            if ([lowerAuthor, ...lowerReviewers].includes(tfsUser.toLowerCase())) {
+                return true;
+            }
+
+            return false;
+        },
     };
 }

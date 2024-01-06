@@ -1,12 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Header, Container, Button, Message, Icon, Checkbox } from "semantic-ui-react";
-import Loaders from "../helpers/Loaders";
-import { s } from "../values/Strings";
-import { ViewHeading } from "../components/heading/ViewHeading";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { Button, Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
+import { api } from "../api/client";
+import { ViewHeading } from "../components/heading/ViewHeading";
+import { Project } from "../helpers/Project";
+import { IProject } from "../modules/api-client";
 import { appViewSet } from "../redux/actions/appActions";
-import { IProject, Project } from "../helpers/Project";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { s } from "../values/Strings";
 
 interface ISelectableProject extends IProject {
     checked: boolean;
@@ -22,10 +23,10 @@ export function SelectProjectsView() {
 
     const loadProjects = useCallback(() => {
         setTimeout(() => {
-            Loaders.loadCollectionsAndProjects().then(({ projects }) => {
+            api.project.getAll().then((projects) => {
                 const currentProjectPaths = settings.projects.map((p) => p.path);
                 const projectsToSelect = projects.filter(
-                    (p) => !currentProjectPaths.includes(p.path)
+                    (p) => !currentProjectPaths.includes(p.path),
                 ) as ISelectableProject[];
                 projectsToSelect.forEach((p) => (p.checked = false));
 
@@ -40,7 +41,7 @@ export function SelectProjectsView() {
     }, [loadProjects]);
 
     const onAdd = () => {
-        availableProjects.filter((p) => p.checked).forEach((p) => Project.add(p));
+        availableProjects.filter((p) => p.checked).forEach((p) => Project.add(p as any)); //TODO: type
         setIsLoading(true);
         setAvailableProjects([]);
 

@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Header, Container, Button, Label, Message, Icon, Checkbox } from "semantic-ui-react";
-import Query, { IQuery } from "../helpers/Query";
-import Loaders from "../helpers/Loaders";
-import { s } from "../values/Strings";
-import { ViewHeading } from "../components/heading/ViewHeading";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { Button, Checkbox, Container, Header, Icon, Label, Message } from "semantic-ui-react";
+import { api } from "../api/client";
+import { ViewHeading } from "../components/heading/ViewHeading";
+import Query, { IQuery } from "../helpers/Query";
 import { appViewSet } from "../redux/actions/appActions";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { s } from "../values/Strings";
 
 interface ISelectableQuery extends IQuery {
     checked: boolean;
@@ -22,10 +22,10 @@ export function SelectQueriesView() {
 
     const loadQueries = useCallback(() => {
         setTimeout(() => {
-            Loaders.loadAvailableQueries().then((queries) => {
+            api.query.getAvailable().then((queries) => {
                 const currentQueriesIds = settings.queries.map((q) => q.queryId);
                 const queriesToSelect = queries.filter(
-                    (q) => !currentQueriesIds.includes(q.queryId)
+                    (q) => !currentQueriesIds.includes(q.queryId),
                 ) as ISelectableQuery[];
                 queriesToSelect.forEach((q) => (q.checked = false));
 

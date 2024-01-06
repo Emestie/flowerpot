@@ -1,8 +1,9 @@
+import { IProject as IProject_ } from "../modules/api-client";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { getProjectsSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
 
-export interface IProject {
+export interface IProject extends IProject_ {
     collectionName: string;
     name: string;
     path: string;

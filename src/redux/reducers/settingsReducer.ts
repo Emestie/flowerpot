@@ -25,7 +25,7 @@ const initialState: ISettingsState = {
     tfsPath: "http://tfs:8080/tfs/",
     tfsUser: "",
     tfsPwd: "",
-    tfsPat: "dwyo5hp5oee43kqcuzdnnwdlwqledcfkgw6bbhspfr2d7tffbaza",
+    tfsToken: import.meta.env.VITE_TFS_TOKEN || "",
     credentialsChecked: false,
     refreshRate: 180,
     sortPattern: "default",

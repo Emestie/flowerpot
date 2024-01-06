@@ -28,3 +28,33 @@ export interface IResponsePullRequest {
     labels: { name: string }[];
     mergeStatus: "conflicts" | "succeeded";
 }
+
+export interface IPullRequestReviewer {
+    name: string;
+    uid: string;
+    imageUrl: string;
+    isRequired: boolean;
+    vote: number;
+}
+
+export interface IPullRequest {
+    id: number;
+    isDraft: boolean;
+    authorName: string;
+    authorFullName: string;
+    authorUid: string;
+    authorAvatar: string;
+    date: string;
+    projectName: string;
+    repoName: string;
+    title: string;
+    url: string;
+    status: string;
+    reviewers: IPullRequestReviewer[];
+    freshness: string;
+    sourceBranch: string;
+    targetBranch: string;
+    labels: { name: string }[];
+    mergeStatus: "conflicts" | "succeeded";
+    isMine: () => boolean;
+}
