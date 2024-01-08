@@ -259,7 +259,7 @@ export function WorkItemRow(props: IProps) {
         ? item.tags
               .split(";")
               .map((x) => x.trim())
-              .map((x) => <Tag text={x} />)
+              .map((x, i) => <Tag key={i} text={x} />)
         : null;
 
     return (

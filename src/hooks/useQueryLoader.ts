@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import Platform from "../helpers/Platform";
-import WorkItem from "../helpers/WorkItem";
-import Loaders from "../helpers/Loaders";
-import Query, { IQuery } from "../helpers/Query";
 import { useDispatch, useSelector } from "react-redux";
-import { dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
+import { api } from "../api/client";
+import Platform from "../helpers/Platform";
+import Query, { IQuery } from "../helpers/Query";
 import { Timers } from "../helpers/Timers";
+import WorkItem from "../helpers/WorkItem";
+import { dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 const useFishWIs = !!import.meta.env.VITE_USE_FISH;
@@ -17,12 +17,12 @@ export function useQueryLoader(query: IQuery) {
 
     const loadWorkItemsForThisQuery = useCallback(async () => {
         console.log("updating query", query.queryId);
-        let wis = await Loaders.loadQueryWorkItems(query);
-        Query.calculateIconLevel(query, wis);
+        const workItems = await api.workItem.getByQuery(query);
+        Query.calculateIconLevel(query, workItems);
         //set query emptiness to sort them
-        Query.toggleBoolean(query, "empty", !wis.length);
+        Query.toggleBoolean(query, "empty", !workItems.length);
 
-        dispatch(dataWorkItemsForQuerySet(query, wis));
+        dispatch(dataWorkItemsForQuerySet(query, workItems));
         setIsLoading(false);
     }, [dispatch, query]);
 
@@ -32,7 +32,7 @@ export function useQueryLoader(query: IQuery) {
         if (useFishWIs && Platform.current.isDev()) {
             setIsLoading(false);
             dispatch(
-                dataWorkItemsForQuerySet(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)])
+                dataWorkItemsForQuerySet(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)]),
             );
             return;
         }

@@ -1,5 +1,11 @@
 import { createLoader } from "./loader";
-import { createCollectionLoaders, createProjectLoaders, createPullRequestLoaders, createQueryLoaders } from "./loaders";
+import {
+    createCollectionLoaders,
+    createProjectLoaders,
+    createPullRequestLoaders,
+    createQueryLoaders,
+    createWorkItemLoaders,
+} from "./loaders";
 
 export interface IApiClientParams {
     getTfsPath: () => string;
@@ -15,5 +21,6 @@ export function createApiClient(params: IApiClientParams) {
         collection: createCollectionLoaders(loader),
         project: createProjectLoaders(loader),
         query: createQueryLoaders(loader),
+        workItem: createWorkItemLoaders(loader),
     };
 }

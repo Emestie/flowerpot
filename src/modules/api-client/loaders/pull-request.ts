@@ -1,11 +1,11 @@
 import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { buildPullRequest } from "../models";
-import { IProject, IResponsePullRequest, IValue } from "../types";
+import { IProject, IPullRequest, IResponsePullRequest, IValue } from "../types";
 
 export function createPullRequestLoaders(params: IApiClientParams, loader: Loader) {
     return {
-        async getByProjects(projects: IProject[]) {
+        async getByProjects(projects: IProject[]): Promise<IPullRequest[]> {
             if (!projects.length) return [];
 
             const responsePullRequestCollections = await Promise.all(

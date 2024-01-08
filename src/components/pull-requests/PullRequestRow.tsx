@@ -32,7 +32,7 @@ export function PullRequestRow(props: IProps) {
         );
     })();
 
-    const tags = pullRequest.labels.map((x) => x.name).map((x) => <Tag text={x} />);
+    const tags = pullRequest.labels.map((x) => x.name).map((x, i) => <Tag key={i} text={x} />);
 
     const reviewers = pullRequest.reviewers
         .sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1))

@@ -21,3 +21,17 @@ export interface IQuery {
     ignoreNotif: boolean;
     empty?: boolean;
 }
+
+interface IQueryResultWorkItem {
+    id: number;
+    url: string;
+}
+
+export interface IQueryResult {
+    queryType: string;
+    queryResultType: string;
+    workItems: IQueryResultWorkItem[];
+    workItemRelations: {
+        target: IQueryResultWorkItem;
+    }[];
+}
