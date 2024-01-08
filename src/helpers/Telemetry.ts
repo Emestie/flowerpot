@@ -1,8 +1,7 @@
-import Platform from "./Platform";
-import Version from "./Version";
 import CyrillicToTranslit from "cyrillic-to-translit-js";
 import { store } from "../redux/store";
-import { UsageStat } from "./Stats";
+import Platform from "./Platform";
+import Version from "./Version";
 
 const cyrillicToTranslit = new CyrillicToTranslit();
 
@@ -22,20 +21,13 @@ export default class Telemetry {
 
             const encodedString = btoa(JSON.stringify({ app, reason, name, ver, platform, os, iid, extraInfo }));
 
-            //https://mysweetbot-php.herokuapp.com/flowerpot-usage.php?data=
             //http://localhost:8888/.netlify/functions/handle-app-usage?data=
             await fetch("https://mysweetbot.netlify.app/.netlify/functions/handle-app-usage?data=" + encodedString);
         } catch (e: any) {}
     }
 
     public static versionUsageInfo() {
-        const { stats } = store.getState().settings;
-
-        const statString = Object.keys(stats)
-            .map((key) => `${key}=${stats[key as UsageStat]}`)
-            .join(", ");
-
-        this.basicMessage("Version installed", `stats: ${statString}`);
+        this.basicMessage("Version installed");
     }
 
     public static accountVerificationSucceed() {
