@@ -2,7 +2,6 @@ import React from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
-import Festival from "../../helpers/Festival";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { IQuery } from "../../helpers/Query";
@@ -12,6 +11,7 @@ import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { dataSelector } from "../../redux/selectors/dataSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 
@@ -353,7 +353,11 @@ export function WorkItemRow(props: IProps) {
                 }}
             >
                 <ContextMenuTrigger id={uid}>
-                    {Festival.getSpecialNameEffect(item.assignedTo, item.assignedToFull, item.assignedToImg)}
+                    <ProfileWidget
+                        avatarUrl={item.assignedToImg}
+                        displayName={item.assignedTo}
+                        nameFull={item.assignedToFull}
+                    />
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell
@@ -364,7 +368,11 @@ export function WorkItemRow(props: IProps) {
                 }}
             >
                 <ContextMenuTrigger id={uid}>
-                    {Festival.getSpecialNameEffect(item.createdBy, item.createdByFull, item.createdByImg)}
+                    <ProfileWidget
+                        avatarUrl={item.createdByImg}
+                        displayName={item.createdBy}
+                        nameFull={item.createdByFull}
+                    />
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>

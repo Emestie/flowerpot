@@ -1,10 +1,10 @@
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
-import Festival from "../../helpers/Festival";
 import Platform from "../../helpers/Platform";
 import { IPullRequest } from "../../helpers/PullRequest";
 import WorkItem from "../../helpers/WorkItem";
 import { s } from "../../values/Strings";
+import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
@@ -83,11 +83,11 @@ export function PullRequestRow(props: IProps) {
                 onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(pullRequest.authorFullName))}
             >
                 <ContextMenuTrigger id={uid}>
-                    {Festival.getSpecialNameEffect(
-                        pullRequest.authorName,
-                        pullRequest.authorFullName,
-                        pullRequest.authorAvatar,
-                    )}
+                    <ProfileWidget
+                        avatarUrl={pullRequest.authorAvatar}
+                        displayName={pullRequest.authorName}
+                        nameFull={pullRequest.authorFullName}
+                    />
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
