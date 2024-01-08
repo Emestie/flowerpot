@@ -26,6 +26,19 @@
         }
     },
     {
+        "name": "winter",
+        "dateFrom": "YEAR-01-15T00:00",
+        "dateTo": "YEAR-02-15T00:00",
+        "icon": {
+            "path": "festival-icons/winter-tree.png",
+            "top": 6,
+            "left": 10,
+            "width": 40,
+            "height": 40,
+            "offset": 40
+        }
+    },
+    {
         "name": "mar8",
         "dateFrom": "YEAR-03-06T00:00",
         "dateTo": "YEAR-03-09T23:59",
@@ -35,6 +48,19 @@
             "left": 14,
             "width": 32,
             "height": 32,
+            "offset": 40
+        }
+    },
+    {
+        "name": "spring",
+        "dateFrom": "YEAR-04-15T00:00",
+        "dateTo": "YEAR-05-15T00:00",
+        "icon": {
+            "path": "festival-icons/flowers.png",
+            "top": 10,
+            "left": 10,
+            "width": 36,
+            "height": 36,
             "offset": 40
         }
     },
