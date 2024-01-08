@@ -1,6 +1,6 @@
 import { Loader } from "../loader";
 import { buildWorkItem } from "../models";
-import { IQuery, IQueryResult, IResponseWorkItem, IWorkItem, IWorkItemShort } from "../types";
+import { IQuery, IQueryResult, IResponseWorkItem, IValue, IWorkItem, IWorkItemShort } from "../types";
 import Differences from "/@/helpers/Differences";
 import Lists from "/@/helpers/Lists";
 import { getListsSelector } from "/@/redux/selectors/settingsSelectors";
@@ -21,9 +21,9 @@ export function createWorkItemLoaders(loader: Loader) {
                               "?api-version=5.1",
                       );
 
-            const workItemInfo = getWorkItemsByQueryType(queryResult, query);
+            const workItemsShort = getWorkItemsByQueryType(queryResult, query);
 
-            const workItemsAll = await Promise.all(workItemInfo.map((wii) => this.getOne(wii, query)));
+            const workItemsAll = await this.getList(workItemsShort, query);
 
             const workItemsFiltered = workItemsAll
                 .filter((x) => x !== null)
@@ -34,20 +34,33 @@ export function createWorkItemLoaders(loader: Loader) {
             return workItemsFiltered;
         },
         async getOne({ id, collection }: IWorkItemShort, query: IQuery): Promise<IWorkItem | null> {
-            const workItem = await loader<IResponseWorkItem>(
+            const workItemResponse = await loader<IResponseWorkItem>(
                 collection + "/_apis/wit/workItems/" + id + "?api-version=5.1",
             );
 
-            if (!workItem.id) {
+            if (!workItemResponse.id) {
                 Lists.deleteFromList("permawatch", id, collection);
                 return null;
             }
 
-            return buildWorkItem(workItem, query);
+            return buildWorkItem(workItemResponse, query);
         },
-        async getList(list: IWorkItemShort[]): Promise<IWorkItem[]> {
-            //TODO: move to this api
-            return [];
+        async getList(list: IWorkItemShort[], query: IQuery): Promise<IWorkItem[]> {
+            const collections = list.map((x) => x.collection).filter((i, v, a) => a.indexOf(i) === v);
+
+            const workItemResponses = await Promise.all(
+                collections.map((collection) =>
+                    loader<IValue<IResponseWorkItem[]>>(collection + "/_apis/wit/workitemsbatch?api-version=5.1", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            ids: list.filter((l) => l.collection === collection).map((l) => l.id),
+                            $expand: "links",
+                        }),
+                    }),
+                ),
+            );
+
+            return workItemResponses.flatMap((x) => x.value).map((wir) => buildWorkItem(wir, query));
         },
     };
 }
