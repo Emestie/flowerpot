@@ -1,5 +1,7 @@
 import { createApiClient } from "../modules/api-client";
+import { appViewSet } from "../redux/actions/appActions";
 import { store } from "../redux/store";
+import { s } from "../values/Strings";
 
 export const api = createApiClient({
     getTfsPath() {
@@ -10,5 +12,8 @@ export const api = createApiClient({
     },
     getAccessToken() {
         return store.getState().settings.tfsToken;
+    },
+    onError(message) {
+        store.dispatch(appViewSet("error", { errorMessage: s("apiClientFetchError") + message }));
     },
 });

@@ -11,6 +11,7 @@ export interface IApiClientParams {
     getTfsPath: () => string;
     getTfsUser: () => string;
     getAccessToken: () => string;
+    onError: (message: string) => void;
 }
 
 export function createApiClient(params: IApiClientParams) {

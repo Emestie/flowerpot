@@ -3,6 +3,7 @@ import { buildWorkItem } from "../models";
 import { IQuery, IQueryResult, IResponseWorkItem, IValue, IWorkItem, IWorkItemShort } from "../types";
 import Differences from "/@/helpers/Differences";
 import Lists from "/@/helpers/Lists";
+import Query from "/@/helpers/Query";
 import { getListsSelector } from "/@/redux/selectors/settingsSelectors";
 import { store } from "/@/redux/store";
 
@@ -20,6 +21,12 @@ export function createWorkItemLoaders(loader: Loader) {
                               query.queryId +
                               "?api-version=5.1",
                       );
+
+            //if query was deleted
+            if (queryResult?.errorCode === 600288) {
+                Query.delete(query);
+                return [];
+            }
 
             const workItemsShort = getWorkItemsByQueryType(queryResult, query);
 

@@ -272,6 +272,8 @@ const ru: ILocalizedStrings = {
 
     mergeStatus: "Статус слияния",
     requiredReviewer: "Обязательный",
+
+    apiClientFetchError: "Ошибка при загрузке: ",
 };
 
 export default ru;

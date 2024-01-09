@@ -272,6 +272,8 @@ const en: ILocalizedStrings = {
 
     mergeStatus: "Merge status",
     requiredReviewer: "Required",
+
+    apiClientFetchError: "Loading error: ",
 };
 
 export default en;

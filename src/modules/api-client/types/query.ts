@@ -34,4 +34,5 @@ export interface IQueryResult {
     workItemRelations: {
         target: IQueryResultWorkItem;
     }[];
+    errorCode?: number;
 }

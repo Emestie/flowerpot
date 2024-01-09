@@ -1,22 +1,22 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Container, Message, Button, Icon, Form } from "semantic-ui-react";
-import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Container, Form, Icon, Message } from "semantic-ui-react";
+import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
+import { ViewHeading } from "../components/heading/ViewHeading";
+import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock";
+import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
+import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
 import { IQuery } from "../helpers/Query";
+import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
+import { dataChangesCollectionClear } from "../redux/actions/dataActions";
+import { appSelector } from "../redux/selectors/appSelectors";
+import { dataSelector } from "../redux/selectors/dataSelectors";
+import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
-import { LocalVersionBanner } from "../components/LocalVersionBanner";
-import { ViewHeading } from "../components/heading/ViewHeading";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
-import { useDispatch, useSelector } from "react-redux";
-import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
-import { dataChangesCollectionClear } from "../redux/actions/dataActions";
-import { dataSelector } from "../redux/selectors/dataSelectors";
-import Differences from "../helpers/Differences";
-import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock";
 
 export const queriesSorting = (a: IQuery, b: IQuery) => {
     if (a.empty === b.empty) return 0;
@@ -111,7 +111,9 @@ export function MainView() {
                             }}
                         />
                     </div>
-                    <Button onClick={onOpenById}>{s("openById")}</Button>
+                    <Button icon onClick={onOpenById} hint={s("openById")}>
+                        <Icon name="external share" />
+                    </Button>
                     {!!settings.showUnreads && isChangesCollectionHasItems && (
                         <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
                             <Icon name="check circle outline" />
