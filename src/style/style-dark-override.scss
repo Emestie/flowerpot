@@ -191,4 +191,10 @@ $rowItemHover: lighten($bg, 10%);
     .mar8NameLabel {
         color: pink !important;
     }
+
+    .ql-container {
+        .label.quick-link-label {
+            background-color: #252526 !important;
+        }
+    }
 }
