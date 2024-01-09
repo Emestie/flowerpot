@@ -1,10 +1,9 @@
-import WorkItem, { IWorkItem } from "./WorkItem";
-import Platform from "./Platform";
-import Loaders from "./Loaders";
-import { s } from "../values/Strings";
-import { store } from "../redux/store";
-import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { settingsUpdate } from "../redux/actions/settingsActions";
+import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
+import { store } from "../redux/store";
+import { s } from "../values/Strings";
+import Platform from "./Platform";
+import WorkItem, { IWorkItem } from "./WorkItem";
 
 type TBoolProps = "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon" | "empty";
 
@@ -166,7 +165,7 @@ export default class Query {
         //clear incative queries in wi
 
         for (let x in wiStorage) {
-            if (!queriesIds.includes(x) || Loaders.outage) wiStorage[x] = undefined;
+            //TODO: if (!queriesIds.includes(x) || Loaders.outage) wiStorage[x] = undefined;
             if (wiStorage[x]) allWIs = [...allWIs, ...(wiStorage[x] as IWorkItem[])];
         }
 

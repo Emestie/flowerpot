@@ -1,12 +1,11 @@
-import Query, { IQuery } from "./Query";
-import { IWorkItem } from "./WorkItem";
-import Loaders from "./Loaders";
-import Platform from "./Platform";
-import { s } from "../values/Strings";
+import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
-import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
+import { s } from "../values/Strings";
+import Platform from "./Platform";
+import Query, { IQuery } from "./Query";
 import { Stats, UsageStat } from "./Stats";
+import { IWorkItem } from "./WorkItem";
 
 interface IShownWI {
     id: number;
@@ -28,11 +27,12 @@ export default class Differences {
             if (!allQueriesIds.includes(x)) wiStorage[x] = undefined;
         }
 
-        if (Loaders.outage) {
-            (wiStorage as any) = undefined;
-            Loaders.outage = false;
-            return;
-        }
+        // if (Loaders.outage) {
+        //     (wiStorage as any) = undefined;
+        //     Loaders.outage = false;
+        //     return;
+        // }
+        //TODO:
 
         if (!wiStorage[query.queryId]) {
             wiStorage[query.queryId] = [...workItems];
@@ -67,7 +67,7 @@ export default class Differences {
         changed = changed.filter((wi) => !this.shownWI.find((x) => x.id === wi.id && x.rev === wi.rev));
         this.shownWI.push(
             ...news.map((wi) => ({ id: wi.id, rev: wi.rev })),
-            ...changed.map((wi) => ({ id: wi.id, rev: wi.rev }))
+            ...changed.map((wi) => ({ id: wi.id, rev: wi.rev })),
         );
 
         this.operateNotifsToShow(news, "new");
