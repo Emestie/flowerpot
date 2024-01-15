@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Form, DropdownItemProps } from "semantic-ui-react";
+import { DropdownItemProps, Form, Header } from "semantic-ui-react";
 import Platform from "../../../helpers/Platform";
-import { TSortPattern, TNotificationsMode } from "../../../helpers/Settings";
+import { TNotificationsMode, TSortPattern } from "../../../helpers/Settings";
 import { settingsUpdate } from "../../../redux/actions/settingsActions";
 import { TableScale } from "../../../redux/reducers/settingsReducer";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
@@ -48,11 +48,6 @@ export function WorkItemsSection() {
     const toggleShowUnreads = () => {
         const showUnreads = !settings.showUnreads;
         dispatch(settingsUpdate({ showUnreads }));
-    };
-
-    const toggleShowAvatars = () => {
-        const showAvatars = !settings.showAvatars;
-        dispatch(settingsUpdate({ showAvatars }));
     };
 
     const toggleIconColor = () => {
@@ -120,8 +115,6 @@ export function WorkItemsSection() {
             <Form.Checkbox label={s("mineOnTop")} checked={settings.mineOnTop} onChange={toggleMineOnTop} />
             <br />
             <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
-            <br />
-            <Form.Checkbox label={s("showAvatars")} checked={settings.showAvatars} onChange={toggleShowAvatars} />
             <br />
             <Form.Select
                 label={s("ddTableScale")}

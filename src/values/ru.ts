@@ -181,8 +181,6 @@ const ru: LocalizedStrings = {
 
     collection: "Коллекция",
 
-    showAvatars: "Показывать аватары",
-
     flowerbot: "Настроить Flowerbot",
 
     flowerbotBanner1: "Встречайте Flowerbot - Telegram-бот для отслеживания ваших ошибок и задач.",

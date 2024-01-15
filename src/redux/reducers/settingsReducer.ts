@@ -49,7 +49,6 @@ const initialState: ISettingsState = {
     darkTheme: false,
     allowTelemetry: true,
     showUnreads: true,
-    showAvatars: true,
     showQuickLinks: true,
     lastTimeVersion: "",
     lastTimeVersionLong: "",

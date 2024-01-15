@@ -178,8 +178,6 @@ const en = {
 
     collection: "Collection",
 
-    showAvatars: "Show avatars",
-
     flowerbot: "Set up Flowerbot",
 
     flowerbotBanner1: "Meet Flowerbot - a Telegram bot to catch your bugs and tasks.",

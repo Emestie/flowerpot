@@ -49,7 +49,6 @@ export interface ISettings {
     darkTheme: boolean;
     allowTelemetry: boolean;
     showUnreads: boolean;
-    showAvatars: boolean;
     showQuickLinks: boolean;
     lastTimeVersion: string;
     lastTimeVersionLong: string;
