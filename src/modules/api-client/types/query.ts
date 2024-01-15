@@ -1,3 +1,5 @@
+import { Errorful } from "./common";
+
 export interface IResponseQuery {
     children?: IResponseQuery[];
     id: string;
@@ -27,12 +29,11 @@ interface IQueryResultWorkItem {
     url: string;
 }
 
-export interface IQueryResult {
+export interface IQueryResult extends Errorful {
     queryType: string;
     queryResultType: string;
     workItems: IQueryResultWorkItem[];
     workItemRelations: {
         target: IQueryResultWorkItem;
     }[];
-    errorCode?: number;
 }

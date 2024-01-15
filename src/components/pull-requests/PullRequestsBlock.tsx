@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Header, Icon, Label, Table } from "semantic-ui-react";
+import { Header, Icon, Label, Message, Table } from "semantic-ui-react";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
@@ -8,7 +8,7 @@ import { PullRequestRow } from "./PullRequestRow";
 export function PullRequestsBlock() {
     const { projects, tableScale } = useSelector(settingsSelector);
 
-    const { isLoading, pullRequests, routineStart } = usePullRequestsLoader(projects);
+    const { isLoading, pullRequests, routineStart, errorMessage } = usePullRequestsLoader(projects);
 
     if (!projects.filter((p) => p.enabled).length) return null;
 
@@ -44,11 +44,17 @@ export function PullRequestsBlock() {
                             {totalItemsCount}
                         </Label>
                     )}
-                    {!totalItemsCount && !isLoading && (
-                        <Label size="mini" circular color="green">
-                            ✔
-                        </Label>
-                    )}
+                    {!totalItemsCount &&
+                        !isLoading &&
+                        (!errorMessage ? (
+                            <Label size="mini" circular color="green">
+                                ✔
+                            </Label>
+                        ) : (
+                            <Label size="mini" circular color="red">
+                                &times;
+                            </Label>
+                        ))}
                 </span>
                 {!isLoading && (
                     <span title={s("refresh")} className="externalLink" onClick={refreshBlock}>
@@ -56,6 +62,11 @@ export function PullRequestsBlock() {
                     </span>
                 )}
             </Header>
+            {!!errorMessage && (
+                <Message size="tiny" error>
+                    {errorMessage}
+                </Message>
+            )}
             {!!pullRequestsComponents.length && (
                 <Table compact size={getTableSize()}>
                     <tbody>{pullRequestsComponents}</tbody>

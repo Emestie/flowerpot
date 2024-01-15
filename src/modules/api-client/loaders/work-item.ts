@@ -1,3 +1,4 @@
+import chunk from "lodash/chunk";
 import { Loader } from "../loader";
 import { buildWorkItem } from "../models";
 import { IQuery, IQueryResult, IResponseWorkItem, IValue, IWorkItem, IWorkItemShort } from "../types";
@@ -28,6 +29,10 @@ export function createWorkItemLoaders(loader: Loader) {
                 return [];
             }
 
+            if (queryResult?.message && queryResult.errorCode !== undefined) {
+                throw new Error(queryResult.message);
+            }
+
             const workItemsShort = getWorkItemsByQueryType(queryResult, query);
 
             const workItemsAll = await this.getList(workItemsShort, query);
@@ -56,15 +61,26 @@ export function createWorkItemLoaders(loader: Loader) {
             const collections = list.map((x) => x.collection).filter((i, v, a) => a.indexOf(i) === v);
 
             const workItemResponses = await Promise.all(
-                collections.map((collection) =>
-                    loader<IValue<IResponseWorkItem[]>>(collection + "/_apis/wit/workitemsbatch?api-version=5.1", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            ids: list.filter((l) => l.collection === collection).map((l) => l.id),
-                            $expand: "links",
-                        }),
-                    }),
-                ),
+                collections.flatMap((collection) => {
+                    const ids = list.filter((l) => l.collection === collection).map((l) => l.id);
+                    const chunkedIds = chunk(ids, 200);
+
+                    return chunkedIds.map((ids) => {
+                        return loader<IValue<IResponseWorkItem[]>>(
+                            collection + "/_apis/wit/workitemsbatch?api-version=5.1",
+                            {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    ids: ids,
+                                    $expand: "links",
+                                }),
+                            },
+                        ).then((resp) => {
+                            if (resp.message) throw new Error(resp.message);
+                            return resp;
+                        });
+                    });
+                }),
             );
 
             return workItemResponses.flatMap((x) => x.value).map((wir) => buildWorkItem(wir, query));

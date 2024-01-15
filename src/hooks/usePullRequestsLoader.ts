@@ -11,18 +11,23 @@ const useFishWIs = !!import.meta.env.VITE_USE_FISH;
 
 export function usePullRequestsLoader(projects: IProject[]) {
     const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [pullRequests, setPullRequests] = useState<IPullRequest[]>([]);
     const { refreshRate, tfsUser } = useSelector(settingsSelector);
 
     const load = useCallback(async () => {
         console.log("updating PRs");
+        try {
+            const prs = useFishWIs ? [] : await api.pullRequest.getByProjects(projects.filter((p) => p.enabled));
+            const filteredPRs = prs.filter((x) => x.isMine());
 
-        const prs = useFishWIs ? [] : await api.pullRequest.getByProjects(projects.filter((p) => p.enabled));
-
-        const filteredPRs = prs.filter((x) => x.isMine());
-
-        setPullRequests(filteredPRs);
-        setIsLoading(false);
+            setPullRequests(filteredPRs);
+            if (errorMessage !== null) setErrorMessage(null);
+        } catch (e: any) {
+            setErrorMessage(e.message);
+        } finally {
+            setIsLoading(false);
+        }
     }, [projects, tfsUser]);
 
     const routineStart = useCallback(async () => {
@@ -45,5 +50,5 @@ export function usePullRequestsLoader(projects: IProject[]) {
         };
     }, [routineStart, projects]);
 
-    return { isLoading, routineStart, pullRequests };
+    return { isLoading, routineStart, pullRequests, errorMessage };
 }

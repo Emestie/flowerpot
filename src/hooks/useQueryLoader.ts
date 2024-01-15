@@ -17,7 +17,7 @@ export function useQueryLoader(query: IQuery) {
     const { refreshRate } = useSelector(settingsSelector);
 
     const loadWorkItemsForThisQuery = useCallback(async () => {
-        console.log("updating query", query.queryId);
+        console.log("updating query ->", query.queryName, `(${query.queryId})`);
         try {
             const workItems = await api.workItem.getByQuery(query);
             Query.calculateIconLevel(query, workItems);

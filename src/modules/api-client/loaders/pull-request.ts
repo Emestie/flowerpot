@@ -12,7 +12,13 @@ export function createPullRequestLoaders(params: IApiClientParams, loader: Loade
                 projects.map((p) =>
                     loader<IValue<IResponsePullRequest[]>>(
                         `${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`,
-                    ),
+                    ).then((resp) => {
+                        if (resp?.message && resp.errorCode !== undefined) {
+                            throw new Error(resp.message);
+                        }
+
+                        return resp;
+                    }),
                 ),
             );
 
