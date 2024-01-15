@@ -86,7 +86,7 @@ export function WorkItemsBlock(props: IProps) {
 
     const isPermawatch = props.query.queryId === "___permawatch";
     const totalItemsCount = workItems.filter(
-        (wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev),
+        (wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)
     ).length;
     const redItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
@@ -106,7 +106,7 @@ export function WorkItemsBlock(props: IProps) {
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
         Platform.current.openUrl(
-            settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query",
+            settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query"
         );
     };
 

@@ -40,7 +40,7 @@ export function useQueryLoader(query: IQuery) {
         if (useFishWIs && Platform.current.isDev()) {
             setIsLoading(false);
             dispatch(
-                dataWorkItemsForQuerySet(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)]),
+                dataWorkItemsForQuerySet(query, [WorkItem.fish(query), WorkItem.fish(query), WorkItem.fish(query)])
             );
             return;
         }

@@ -11,17 +11,17 @@ export function createQueryLoaders(loader: Loader) {
             const queryCollection = await Promise.all(
                 projects.map((project) =>
                     loader<IValue<IResponseQuery[]>>(
-                        project.collectionName + "/" + project.guid + "/_apis/wit/queries?$depth=2&api-version=5.1",
-                    ),
-                ),
+                        project.collectionName + "/" + project.guid + "/_apis/wit/queries?$depth=2&api-version=5.1"
+                    )
+                )
             );
 
             const allQueries = queryCollection.flatMap((qc, index) =>
                 qc.value.flatMap((v) =>
                     (v.children || [])
                         .filter((rq) => !rq.isPublic && !rq.isFolder)
-                        .map((rq) => buildQuery(rq, projects[index])),
-                ),
+                        .map((rq) => buildQuery(rq, projects[index]))
+                )
             );
 
             return allQueries;

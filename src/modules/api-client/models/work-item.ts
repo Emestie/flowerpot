@@ -28,11 +28,11 @@ export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem
         iterationPath: resp.fields["System.IterationPath"] || "",
         areaPath: resp.fields["System.AreaPath"] || "",
         promptness: extractLevel(
-            resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"],
+            resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]
         ),
         promptnessText: resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"] || "",
         importance: extractLevel(
-            resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"],
+            resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"]
         ),
         importanceText: resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"] || "",
         rank: rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]),

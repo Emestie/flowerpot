@@ -5,7 +5,7 @@ export function buildPullRequest(
     resp: IResponsePullRequest,
     tfsPath: string,
     tfsUser: string,
-    collection: string,
+    collection: string
 ): IPullRequest {
     return {
         id: resp.pullRequestId,

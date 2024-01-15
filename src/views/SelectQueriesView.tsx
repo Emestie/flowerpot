@@ -25,7 +25,7 @@ export function SelectQueriesView() {
             api.query.getAvailable().then((queries) => {
                 const currentQueriesIds = settings.queries.map((q) => q.queryId);
                 const queriesToSelect = queries.filter(
-                    (q) => !currentQueriesIds.includes(q.queryId),
+                    (q) => !currentQueriesIds.includes(q.queryId)
                 ) as ISelectableQuery[];
                 queriesToSelect.forEach((q) => (q.checked = false));
 

@@ -86,9 +86,12 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
         //const { updateStatus, view } = store.getState().app;
 
         if (cyclic) {
-            setInterval(() => {
-                this.checkForUpdates();
-            }, 1000 * 60 * 60);
+            setInterval(
+                () => {
+                    this.checkForUpdates();
+                },
+                1000 * 60 * 60
+            );
 
             //!web update
             // setInterval(() => {

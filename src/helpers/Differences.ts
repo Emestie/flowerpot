@@ -67,7 +67,7 @@ export default class Differences {
         changed = changed.filter((wi) => !this.shownWI.find((x) => x.id === wi.id && x.rev === wi.rev));
         this.shownWI.push(
             ...news.map((wi) => ({ id: wi.id, rev: wi.rev })),
-            ...changed.map((wi) => ({ id: wi.id, rev: wi.rev })),
+            ...changed.map((wi) => ({ id: wi.id, rev: wi.rev }))
         );
 
         this.operateNotifsToShow(news, "new");

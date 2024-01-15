@@ -11,27 +11,22 @@ export function createPullRequestLoaders(params: IApiClientParams, loader: Loade
             const responsePullRequestCollections = await Promise.all(
                 projects.map((p) =>
                     loader<IValue<IResponsePullRequest[]>>(
-                        `${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`,
+                        `${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`
                     ).then((resp) => {
                         if (resp?.message && resp.errorCode !== undefined) {
                             throw new Error(resp.message);
                         }
 
                         return resp;
-                    }),
-                ),
+                    })
+                )
             );
 
             return responsePullRequestCollections
                 .flatMap((collection, index) =>
                     collection.value.map((resp) =>
-                        buildPullRequest(
-                            resp,
-                            params.getTfsPath(),
-                            params.getTfsUser(),
-                            projects[index].collectionName,
-                        ),
-                    ),
+                        buildPullRequest(resp, params.getTfsPath(), params.getTfsUser(), projects[index].collectionName)
+                    )
                 )
                 .sort((a, b) => b.id - a.id);
         },

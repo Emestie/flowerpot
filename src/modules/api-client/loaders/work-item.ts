@@ -20,7 +20,7 @@ export function createWorkItemLoaders(loader: Loader) {
                               query.teamId +
                               "/_apis/wit/wiql/" +
                               query.queryId +
-                              "?api-version=5.1",
+                              "?api-version=5.1"
                       );
 
             //if query was deleted
@@ -47,7 +47,7 @@ export function createWorkItemLoaders(loader: Loader) {
         },
         async getOne({ id, collection }: IWorkItemShort, query: IQuery): Promise<IWorkItem | null> {
             const workItemResponse = await loader<IResponseWorkItem>(
-                collection + "/_apis/wit/workItems/" + id + "?api-version=5.1",
+                collection + "/_apis/wit/workItems/" + id + "?api-version=5.1"
             );
 
             if (!workItemResponse.id) {
@@ -74,13 +74,13 @@ export function createWorkItemLoaders(loader: Loader) {
                                     ids: ids,
                                     $expand: "links",
                                 }),
-                            },
+                            }
                         ).then((resp) => {
                             if (resp.message) throw new Error(resp.message);
                             return resp;
                         });
                     });
-                }),
+                })
             );
 
             return workItemResponses.flatMap((x) => x.value).map((wir) => buildWorkItem(wir, query));

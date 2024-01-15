@@ -26,7 +26,7 @@ export function SelectProjectsView() {
             api.project.getAll().then((projects) => {
                 const currentProjectPaths = settings.projects.map((p) => p.path);
                 const projectsToSelect = projects.filter(
-                    (p) => !currentProjectPaths.includes(p.path),
+                    (p) => !currentProjectPaths.includes(p.path)
                 ) as ISelectableProject[];
                 projectsToSelect.forEach((p) => (p.checked = false));
 

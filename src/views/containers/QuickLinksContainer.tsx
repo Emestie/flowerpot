@@ -37,7 +37,7 @@ export function QuickLinksContainer() {
         items.push(
             <span key="nolinkskey" style={{ color: "gray", fontSize: 10, fontStyle: "italic" }}>
                 {s("noLinks")}
-            </span>,
+            </span>
         );
     }
 
@@ -45,7 +45,7 @@ export function QuickLinksContainer() {
         items.push(
             <Label key="addlinkkey" onClick={addNew} size="mini">
                 +
-            </Label>,
+            </Label>
         );
     }
 

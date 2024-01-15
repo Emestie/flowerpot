@@ -10,12 +10,12 @@ export function createProjectLoaders(loader: Loader) {
 
             const projectsCollections = await Promise.all(
                 collections.map((collection) =>
-                    loader<IResponseProject>(collection.name + "/_api/_wit/teamProjects?__v=5"),
-                ),
+                    loader<IResponseProject>(collection.name + "/_api/_wit/teamProjects?__v=5")
+                )
             );
 
             return projectsCollections.flatMap((pc, index) =>
-                pc.projects.map((p) => buildProject(p, collections[index].name)),
+                pc.projects.map((p) => buildProject(p, collections[index].name))
             );
         },
     };

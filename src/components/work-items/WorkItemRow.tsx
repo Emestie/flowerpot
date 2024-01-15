@@ -248,7 +248,7 @@ export function WorkItemRow(props: IProps) {
                 returnee.push(
                     <span key={Math.random()} className="marked">
                         {x}
-                    </span>,
+                    </span>
                 );
         });
 
