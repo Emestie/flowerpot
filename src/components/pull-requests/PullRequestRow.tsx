@@ -48,6 +48,18 @@ export function PullRequestRow(props: IProps) {
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
+                    {!!pullRequest.isDraft && (
+                        <span>
+                            <Label
+                                key={Math.random()}
+                                size="mini"
+                                style={{ padding: "3px 4px", marginRight: 4 }}
+                                color="grey"
+                            >
+                                {s("draftPullRequest")}
+                            </Label>
+                        </span>
+                    )}
                     <span className="IterationInTitle">
                         {pullRequest.projectName}/{pullRequest.repoName}
                     </span>

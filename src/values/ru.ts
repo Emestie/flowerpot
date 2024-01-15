@@ -250,6 +250,7 @@ const ru: ILocalizedStrings = {
     sectionCredits: "Прочие настройки",
 
     pullRequestsBlockCaption: "Запросы на вытягивание",
+    draftPullRequest: "Черновик",
 
     settingsAccountChecked: "Проверен",
     settingsAccountNotChecked: "Не проверен",

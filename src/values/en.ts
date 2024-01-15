@@ -250,6 +250,7 @@ const en: ILocalizedStrings = {
     sectionCredits: "Other settings",
 
     pullRequestsBlockCaption: "Pull Requests",
+    draftPullRequest: "Draft",
 
     settingsAccountChecked: "Validated",
     settingsAccountNotChecked: "Not validated",

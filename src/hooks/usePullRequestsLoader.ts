@@ -19,7 +19,7 @@ export function usePullRequestsLoader(projects: IProject[]) {
 
         const prs = useFishWIs ? [] : await api.pullRequest.getByProjects(projects.filter((p) => p.enabled));
 
-        const filteredPRs = prs.filter((x) => !x.isDraft && x.isMine());
+        const filteredPRs = prs.filter((x) => x.isMine());
 
         setPullRequests(filteredPRs);
         setIsLoading(false);
