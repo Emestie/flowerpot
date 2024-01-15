@@ -1,6 +1,4 @@
-import { ILocalizedStrings } from "./Strings";
-
-const en: ILocalizedStrings = {
+const en = {
     //settings view
     refresh1m: "1 minute",
     refresh3m: "3 minutes",
