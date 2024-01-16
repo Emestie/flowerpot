@@ -1,18 +1,15 @@
 import { IPullRequest, IResponsePullRequest } from "..";
 import { ItemsCommon } from "../../../helpers/ItemsCommon";
+import { getConnectionData } from "/@/helpers/Connection";
 
-export function buildPullRequest(
-    resp: IResponsePullRequest,
-    tfsPath: string,
-    tfsUser: string,
-    collection: string
-): IPullRequest {
+export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, collection: string): IPullRequest {
     return {
         id: resp.pullRequestId,
         authorFullName: ItemsCommon.parseNameField(resp.createdBy),
         authorName: ItemsCommon.shortName(ItemsCommon.parseNameField(resp.createdBy)),
         authorUid: resp.createdBy.uniqueName,
         authorAvatar: resp.createdBy.imageUrl,
+        authorDescriptor: resp.createdBy.descriptor,
         date: resp.creationDate,
         isDraft: resp.isDraft,
         projectName: resp.repository.project.name,
@@ -35,12 +32,14 @@ export function buildPullRequest(
         labels: resp.labels || [],
         mergeStatus: resp.mergeStatus,
         isMine: function () {
-            const lowerAuthor = this.authorUid.toLowerCase();
-            const lowerReviewers = this.reviewers.map((reviewer) => reviewer.uid.toLowerCase());
+            if (this.authorDescriptor === getConnectionData().authenticatedUser.subjectDescriptor) return true;
 
-            if ([lowerAuthor, ...lowerReviewers].includes(tfsUser.toLowerCase())) {
+            if (
+                this.reviewers
+                    .map((rev) => rev.name)
+                    .includes(getConnectionData().authenticatedUser.providerDisplayName)
+            )
                 return true;
-            }
 
             return false;
         },

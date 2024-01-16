@@ -25,7 +25,7 @@ export function createPullRequestLoaders(params: IApiClientParams, loader: Loade
             return responsePullRequestCollections
                 .flatMap((collection, index) =>
                     collection.value.map((resp) =>
-                        buildPullRequest(resp, params.getTfsPath(), params.getTfsUser(), projects[index].collectionName)
+                        buildPullRequest(resp, params.getTfsPath(), projects[index].collectionName)
                     )
                 )
                 .sort((a, b) => b.id - a.id);

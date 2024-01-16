@@ -70,16 +70,15 @@ const en = {
     validate: "Validate and save",
     status: "Status: ",
     credsNoteText: "You must validate credentials you entered before leaving this page.",
-    tfsPwd: "TFS/Azure DevOps password",
-    tfsUser: "TFS/Azure DevOps username (with domain)",
     tfsPath: "TFS/Azure DevOps path (must start with 'http://' and end with '/')",
+    tfsToken: "Personal Access Token",
     credsHeader: "Credentials",
     save: "OK",
     tfsHeader: "Account settings",
     credsState1: "Not validated yet",
     credsState2: "Validating...",
     credsState3: "Server unavailable or TFS/Azure DevOps path is wrong",
-    credsState4: "Incorrect Username or Password",
+    credsState4: "Personal Access Token is incorrect or expired",
     credsState5: "OK",
     //helpers
     throwNoTeams: "No available team projects found",
@@ -271,6 +270,9 @@ const en = {
     requiredReviewer: "Required",
 
     apiClientFetchError: "Loading error: ",
+
+    unauthorized:
+        "Your Personal Access Token is expired or incorrect. Please go to Account Settings and provide correct token.",
 };
 
 export default en;

@@ -72,16 +72,15 @@ const ru: LocalizedStrings = {
     validate: "Проверить и сохранить",
     status: "Статус: ",
     credsNoteText: "Вы должны проверить введенные данные на корректность.",
-    tfsPwd: "Пароль TFS/Azure DevOps",
-    tfsUser: "Имя пользователя TFS/Azure DevOps (с доменом)",
     tfsPath: "Путь к TFS/Azure DevOps (должен начинаться с 'http://' и заканчиваться '/')",
+    tfsToken: "Персональный токен доступа",
     credsHeader: "Учетные данные",
     save: "OK",
     tfsHeader: "Настройки учетной записи",
     credsState1: "Не проверены",
     credsState2: "Проверка...",
     credsState3: "Сервер недоступен или путь к TFS/Azure DevOps не верный",
-    credsState4: "Не верное имя пользователя или пароль",
+    credsState4: "Персональный токен доступа некорректен или истек",
     credsState5: "OK",
     //helpers
     throwNoTeams: "Не найдено доступных проектов",
@@ -273,6 +272,9 @@ const ru: LocalizedStrings = {
     requiredReviewer: "Обязательный",
 
     apiClientFetchError: "Ошибка при загрузке: ",
+
+    unauthorized:
+        "Ваш персональный токен доступа истек или некорректен. Пожалуйста, укажите в настройках учетной записи корректный токен.",
 };
 
 export default ru;

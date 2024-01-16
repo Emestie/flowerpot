@@ -1,30 +1,30 @@
-import React, { useCallback, useEffect } from "react";
-import Settings from "../helpers/Settings";
-import Migration from "../helpers/Migration";
-import { SettingsView } from "../views/SettingsView/SettingsView";
-import { CredentialsView } from "../views/CredentialsView";
-import { SelectQueriesView } from "../views/SelectQueriesView";
-import { ErrorView } from "../views/ErrorView";
-import { MainView } from "../views/MainView";
-import { LoadingView } from "../views/LoadingView";
-import { DebugView } from "../views/DebugView";
-import Platform from "../helpers/Platform";
-import Version from "../helpers/Version";
-import { ListsView } from "../views/ListsView";
-import { RefreshHelperView } from "../views/RefreshHelperView";
-import Festival from "../helpers/Festival";
-import { DialogsContainer } from "../views/containers/DialogsContainer";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { appShowWhatsNewSet, appViewSet } from "../redux/actions/appActions";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { dataChangesCollectionSet } from "../redux/actions/dataActions";
-import { TView } from "../redux/types";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { store } from "../redux/store";
-import { Timers } from "../helpers/Timers";
-import { InfoView } from "../views/InfoView";
-import { SelectProjectsView } from "../views/SelectProjectsView";
+import Festival from "../helpers/Festival";
+import Migration from "../helpers/Migration";
+import Platform from "../helpers/Platform";
+import Settings from "../helpers/Settings";
 import { Stats, UsageStat } from "../helpers/Stats";
+import { Timers } from "../helpers/Timers";
+import Version from "../helpers/Version";
+import { appShowWhatsNewSet, appViewSet } from "../redux/actions/appActions";
+import { dataChangesCollectionSet } from "../redux/actions/dataActions";
+import { appSelector } from "../redux/selectors/appSelectors";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { store } from "../redux/store";
+import { TView } from "../redux/types";
+import { CredentialsView } from "../views/CredentialsView";
+import { DebugView } from "../views/DebugView";
+import { ErrorView } from "../views/ErrorView";
+import { InfoView } from "../views/InfoView";
+import { ListsView } from "../views/ListsView";
+import { LoadingView } from "../views/LoadingView";
+import { MainView } from "../views/MainView";
+import { RefreshHelperView } from "../views/RefreshHelperView";
+import { SelectProjectsView } from "../views/SelectProjectsView";
+import { SelectQueriesView } from "../views/SelectQueriesView";
+import { SettingsView } from "../views/SettingsView/SettingsView";
+import { DialogsContainer } from "../views/containers/DialogsContainer";
 
 export function App() {
     const dispatch = useDispatch();
@@ -52,7 +52,8 @@ export function App() {
             Platform.current.reactIsReady();
 
             await Settings.read();
-            Migration.perform();
+            await Migration.perform();
+
             Timers.create(
                 "festival-icons",
                 60000 * 60 * 3,

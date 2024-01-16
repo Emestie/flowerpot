@@ -1,14 +1,12 @@
 import { IQuery, IResponseWorkItem, IWorkItem } from "../types";
+import { getConnectionData } from "/@/helpers/Connection";
 import { ItemsCommon } from "/@/helpers/ItemsCommon";
 import Lists from "/@/helpers/Lists";
 import { TLists } from "/@/helpers/Settings";
-import { store } from "/@/redux/store";
 
 export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem {
     const isMine =
-        ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "")
-            .toLowerCase()
-            .indexOf(store.getState().settings.tfsUser.toLowerCase()) !== -1;
+        resp.fields["System.AssignedTo"]?.descriptor === getConnectionData().authenticatedUser.subjectDescriptor;
 
     const item: IWorkItem = {
         id: resp.id,

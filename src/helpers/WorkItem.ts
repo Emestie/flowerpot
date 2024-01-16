@@ -1,8 +1,7 @@
-import Lists from "./Lists";
-import { TLists } from "./Settings";
-import { IQuery } from "./Query";
-import { store } from "../redux/store";
 import { ItemsCommon } from "./ItemsCommon";
+import Lists from "./Lists";
+import { IQuery } from "./Query";
+import { TLists } from "./Settings";
 
 export interface IWorkItem {
     id: number;
@@ -124,10 +123,10 @@ export default class WorkItem {
     }
 
     public static buildFromResponse(resp: IResponseWorkItem, query: IQuery) {
-        let isMine =
-            ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "")
-                .toLowerCase()
-                .indexOf(store.getState().settings.tfsUser.toLowerCase()) !== -1;
+        let isMine = false; //TODO: remove whole file
+        // ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "")
+        //     .toLowerCase()
+        //     .indexOf(store.getState().settings.tfsUser.toLowerCase()) !== -1;
         let item: IWorkItem = {
             id: resp.id,
             rev: resp.rev,

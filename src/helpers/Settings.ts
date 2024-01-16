@@ -29,8 +29,10 @@ interface INoteItem {
 
 export interface ISettings {
     tfsPath: string;
-    tfsUser: string;
-    tfsPwd: string;
+    /** @deprecated */
+    tfsUser?: string;
+    /** @deprecated */
+    tfsPwd?: string;
     tfsToken: string;
     credentialsChecked: boolean;
     refreshRate: number;

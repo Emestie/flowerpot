@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Header, Container, Button, Form, Label, Message } from "semantic-ui-react";
-import Loaders from "../helpers/Loaders";
-import Platform from "../helpers/Platform";
-import { s } from "../values/Strings";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Container, Form, Header, Label } from "semantic-ui-react";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
-import Telemetry from "../helpers/Telemetry";
-import { useDispatch, useSelector } from "react-redux";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { appViewSet } from "../redux/actions/appActions";
+import { fillConnectionData } from "../helpers/Connection";
+import Loaders from "../helpers/Loaders";
 import { Stats, UsageStat } from "../helpers/Stats";
+import Telemetry from "../helpers/Telemetry";
+import { appViewSet } from "../redux/actions/appActions";
+import { settingsUpdate } from "../redux/actions/settingsActions";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { s } from "../values/Strings";
 
 enum ECredState {
     NotValidated = 0,
@@ -30,22 +30,19 @@ const statuses = [
 
 export function CredentialsView() {
     const [pathInvalid, setPathInvalid] = useState(false);
-    const [userInvalid, setUserInvalid] = useState(false);
-    const [pwdInvalid, setPwdInvalid] = useState(false);
-    const [pwdNotAscii, setPwdNotAscii] = useState(false);
+    const [tokenInvalid, setTokenInvalid] = useState(false);
     const [credentialsCheckStatus, setCredentialsCheckStatus] = useState(ECredState.NotValidated);
-    const [debugInputValue, setDebugInputValue] = useState("");
 
     const settings = useSelector(settingsSelector);
 
     const dispatch = useDispatch();
 
-    const isBackUnavailable = pathInvalid || userInvalid || pwdInvalid || credentialsCheckStatus !== ECredState.OK;
+    const isBackUnavailable = pathInvalid || tokenInvalid || credentialsCheckStatus !== ECredState.OK;
 
     const checkInProgress = credentialsCheckStatus === ECredState.ValidatingInProgress;
 
     const isCheckUnabailable =
-        pathInvalid || userInvalid || pwdInvalid || checkInProgress || credentialsCheckStatus === ECredState.OK;
+        pathInvalid || tokenInvalid || checkInProgress || credentialsCheckStatus === ECredState.OK;
 
     const statusParams = statuses[credentialsCheckStatus];
 
@@ -79,52 +76,26 @@ export function CredentialsView() {
         [dispatch, setCredentialsStatus, settings.tfsPath]
     );
 
-    const validateTfsUser = useCallback(
-        (val: string, ignoreStore?: boolean) => {
+    const validateTfsToken = useCallback(
+        (token: string, ignoreStore?: boolean) => {
             setCredentialsStatus(ECredState.NotValidated);
+
             if (!ignoreStore) {
-                const tfsUser = val;
-                if (settings.tfsUser !== tfsUser) dispatch(settingsUpdate({ tfsUser }));
+                if (token !== settings.tfsToken) dispatch(settingsUpdate({ tfsToken: token }));
             }
 
-            let invalid = false;
-            if (!val.length) invalid = true;
+            const invalid = token.length < 45;
 
-            if (val.indexOf("\\") < 1 || val.indexOf("\\") === val.length - 1 || val.indexOf("@") !== -1)
-                invalid = true;
-
-            setUserInvalid(invalid);
+            setTokenInvalid(invalid);
         },
-        [dispatch, setCredentialsStatus, settings.tfsUser]
-    );
-
-    const validateTfsPwd = useCallback(
-        (val: string, ignoreStore?: boolean) => {
-            setCredentialsStatus(ECredState.NotValidated);
-            if (!ignoreStore) {
-                const tfsPwd = val;
-                if (settings.tfsPwd !== tfsPwd) dispatch(settingsUpdate({ tfsPwd }));
-            }
-
-            //if val has cyrillic characters show notif
-            var ascii = /^[ -~]+$/;
-            if (!ascii.test(val)) {
-                setPwdNotAscii(true);
-                setPwdInvalid(true);
-            } else {
-                setPwdNotAscii(false);
-                setPwdInvalid(false);
-            }
-        },
-        [dispatch, setCredentialsStatus, settings.tfsPwd]
+        [dispatch, setCredentialsStatus, settings.tfsToken]
     );
 
     useEffect(() => {
-        validateTfsUser(settings.tfsUser, true);
         validateTfsPath(settings.tfsPath, true);
-        validateTfsPwd(settings.tfsPwd, true);
+        validateTfsToken(settings.tfsToken, true);
         //eslint-disable-next-line
-    }, [settings.tfsPath, settings.tfsPwd, settings.tfsUser]);
+    }, [settings.tfsPath, settings.tfsToken]);
 
     const onSave = () => {
         dispatch(appViewSet("settings"));
@@ -143,17 +114,12 @@ export function CredentialsView() {
         if (!result) {
             setCredentialsStatus(ECredState.WrongCredentials);
         } else {
+            await fillConnectionData();
             Stats.increment(UsageStat.AccountVerifications);
             Telemetry.accountVerificationSucceed();
             setCredentialsStatus(ECredState.OK);
             onSave();
         }
-    };
-
-    const onDebugInputChange = (e: any) => {
-        if (e.target.value === "debug") dispatch(appViewSet("debug"));
-        if (e.target.value === "con") Platform.current.toggleConsole();
-        setDebugInputValue(e.target.value);
     };
 
     const debugInputRef = React.createRef();
@@ -179,25 +145,13 @@ export function CredentialsView() {
                         onChange={(e) => validateTfsPath(e.target.value)}
                         error={pathInvalid}
                     />
-                    <Form.Group widths="equal">
-                        <Form.Input
-                            fluid
-                            label={s("tfsUser")}
-                            placeholder="domain\user.name"
-                            value={settings.tfsUser}
-                            onChange={(e) => validateTfsUser(e.target.value)}
-                            error={userInvalid}
-                        />
-                        <Form.Input
-                            fluid
-                            label={s("tfsPwd")}
-                            type="password"
-                            value={settings.tfsPwd}
-                            onChange={(e) => validateTfsPwd(e.target.value)}
-                            error={pwdInvalid}
-                        />
-                    </Form.Group>
-                    {!!pwdNotAscii && <Message color="red">{s("noAscii")}</Message>}
+                    <Form.Input
+                        fluid
+                        label={s("tfsToken")}
+                        value={settings.tfsToken}
+                        onChange={(e) => validateTfsToken(e.target.value)}
+                        error={tokenInvalid}
+                    />
                 </Form>
                 <div>
                     <br />
@@ -215,15 +169,7 @@ export function CredentialsView() {
                 <Button primary loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
                     {s("validate")}
                 </Button>
-                {/* <Button onClick={onTest}>test</Button> */}
             </Container>
-            <input
-                style={{ opacity: 0 }}
-                ref={debugInputRef as any}
-                type="text"
-                value={debugInputValue}
-                onChange={onDebugInputChange}
-            />
         </div>
     );
 }

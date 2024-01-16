@@ -23,8 +23,6 @@ export interface ISettingsState extends ISettings {}
 
 const initialState: ISettingsState = {
     tfsPath: "http://tfs:8080/tfs/",
-    tfsUser: "",
-    tfsPwd: "",
     tfsToken: "",
     credentialsChecked: false,
     refreshRate: 180,

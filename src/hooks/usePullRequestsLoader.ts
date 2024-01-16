@@ -13,7 +13,7 @@ export function usePullRequestsLoader(projects: IProject[]) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [pullRequests, setPullRequests] = useState<IPullRequest[]>([]);
-    const { refreshRate, tfsUser } = useSelector(settingsSelector);
+    const { refreshRate } = useSelector(settingsSelector);
 
     const load = useCallback(async () => {
         console.log("updating PRs");
@@ -28,7 +28,7 @@ export function usePullRequestsLoader(projects: IProject[]) {
         } finally {
             setIsLoading(false);
         }
-    }, [projects, tfsUser]);
+    }, [projects]);
 
     const routineStart = useCallback(async () => {
         setIsLoading(true);

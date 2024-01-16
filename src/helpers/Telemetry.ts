@@ -1,5 +1,7 @@
 import CyrillicToTranslit from "cyrillic-to-translit-js";
+import { IConnectionData } from "../modules/api-client";
 import { store } from "../redux/store";
+import { getConnectionData } from "./Connection";
 import Platform from "./Platform";
 import Version from "./Version";
 
@@ -7,11 +9,18 @@ const cyrillicToTranslit = new CyrillicToTranslit();
 
 export default class Telemetry {
     private static async basicMessage(reason: string, extraInfo?: string, ignoreTelemetryDisability?: boolean) {
-        const { allowTelemetry, tfsUser } = store.getState().settings;
+        const { allowTelemetry } = store.getState().settings;
         if (!allowTelemetry && !ignoreTelemetryDisability) return;
 
+        const connection: IConnectionData | undefined = getConnectionData();
+        const userName = connection?.authenticatedUser?.providerDisplayName ?? "unknown name";
+
         try {
-            const name = tfsUser;
+            const name =
+                cyrillicToTranslit.transform(userName) +
+                " (" +
+                (connection?.authenticatedUser?.properties?.Account?.$value ?? "-") +
+                ")";
             if (!name) return;
             const ver = Version.long;
             const platform = Platform.type;

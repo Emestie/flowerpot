@@ -84,11 +84,7 @@ export default class Differences {
         const settings = store.getState().settings;
 
         wis.forEach((n) => {
-            if (
-                settings.notificationsMode === "all" ||
-                (settings.notificationsMode === "mine" &&
-                    n.assignedToFull.toLowerCase().indexOf(settings.tfsUser.toLowerCase()) !== -1)
-            ) {
+            if (settings.notificationsMode === "all" || (settings.notificationsMode === "mine" && n._isMine)) {
                 wisToShow.push(n);
             }
         });

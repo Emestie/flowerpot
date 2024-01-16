@@ -108,6 +108,7 @@ export function DebugView() {
                 <Button onClick={() => console.log(api.workItem.getByQuery(settings.queries[0]))}>
                     load wi by query
                 </Button>
+                <Button onClick={() => console.log(api.connectionData.get())}>conn data</Button>
                 <Header as="h3" dividing>
                     More
                 </Header>

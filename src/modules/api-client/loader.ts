@@ -1,9 +1,14 @@
 import { IApiClientParams } from "./create";
+import { fillConnectionData, getConnectionData } from "/@/helpers/Connection";
+import { s } from "/@/values/Strings";
 
 export type Loader = ReturnType<typeof createLoader>;
 
 export function createLoader(params: IApiClientParams) {
-    return async function loader<T>(url: string, options?: { method?: "GET" | "POST"; body?: string }): Promise<T> {
+    return async function loader<T>(
+        url: string,
+        options?: { method?: "GET" | "POST"; body?: string; skipConnectionDataCheck?: boolean }
+    ): Promise<T> {
         try {
             const result = await fetch(params.getTfsPath() + url, {
                 method: options?.method || "GET",
@@ -13,6 +18,14 @@ export function createLoader(params: IApiClientParams) {
                     "Content-Type": "application/json",
                 },
             });
+
+            try {
+                if (!options?.skipConnectionDataCheck && !getConnectionData()) await fillConnectionData();
+            } catch {}
+
+            if (result.status === 401) {
+                throw new Error(s("unauthorized"));
+            }
 
             const data = await result.json();
 

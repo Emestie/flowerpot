@@ -3,6 +3,7 @@ export interface IResponsePullRequest {
         displayName: string;
         uniqueName: string;
         imageUrl: string;
+        descriptor: string;
     };
     isDraft: boolean;
     creationDate: string;
@@ -44,6 +45,7 @@ export interface IPullRequest {
     authorFullName: string;
     authorUid: string;
     authorAvatar: string;
+    authorDescriptor: string;
     date: string;
     projectName: string;
     repoName: string;

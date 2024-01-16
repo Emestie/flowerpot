@@ -7,13 +7,11 @@ export const api = createApiClient({
     getTfsPath() {
         return store.getState().settings.tfsPath;
     },
-    getTfsUser() {
-        return store.getState().settings.tfsUser;
-    },
     getAccessToken() {
         return store.getState().settings.tfsToken;
     },
     onError(message) {
-        store.dispatch(appViewSet("error", { errorMessage: s("apiClientFetchError") + message }));
+        if (store.getState().app.view !== "credentials")
+            store.dispatch(appViewSet("error", { errorMessage: s("apiClientFetchError") + message }));
     },
 });

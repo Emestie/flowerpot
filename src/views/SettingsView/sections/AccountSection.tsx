@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Button, Icon, Card, Label } from "semantic-ui-react";
+import { Button, Card, Header, Icon, Label } from "semantic-ui-react";
 import { appViewSet } from "../../../redux/actions/appActions";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { s } from "../../../values/Strings";
+import { getConnectionData } from "/@/helpers/Connection";
 
 export function AccountSection() {
     const dispatch = useDispatch();
-    const { tfsUser, tfsPath, credentialsChecked } = useSelector(settingsSelector);
+    const { tfsPath, credentialsChecked } = useSelector(settingsSelector);
+
+    const authenticatedUser = getConnectionData()?.authenticatedUser;
 
     const openCreds = () => {
         dispatch(appViewSet("credentials"));
@@ -17,10 +20,10 @@ export function AccountSection() {
             <Header as="h3" dividing>
                 {s("accountSettingsHeader")}
             </Header>
-            {tfsUser && tfsPath && (
+            {authenticatedUser && (
                 <Card>
                     <Card.Content>
-                        <Card.Header>{tfsUser}</Card.Header>
+                        <Card.Header>{authenticatedUser.providerDisplayName}</Card.Header>
                         <Card.Meta>{tfsPath}</Card.Meta>
                         <Card.Description>
                             <Label size="small" basic color={credentialsChecked ? "green" : "orange"}>
