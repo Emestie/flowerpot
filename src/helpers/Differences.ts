@@ -1,11 +1,11 @@
+import { IQuery, IWorkItem } from "../modules/api-client";
 import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
-import Query, { IQuery } from "./Query";
+import Query from "./Query";
 import { Stats, UsageStat } from "./Stats";
-import { IWorkItem } from "./WorkItem";
 
 interface IShownWI {
     id: number;

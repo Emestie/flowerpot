@@ -10,4 +10,5 @@ export interface IProject {
     name: string;
     collectionName: string;
     path: string;
+    enabled: boolean;
 }

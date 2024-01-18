@@ -1,5 +1,5 @@
-import { IQuery } from "../../helpers/Query";
 import { IStore } from "../store";
+import { IQuery } from "/@/modules/api-client";
 
 export function dataSelector(store: IStore) {
     return store.data;

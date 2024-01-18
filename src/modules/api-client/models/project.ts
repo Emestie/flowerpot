@@ -6,5 +6,6 @@ export function buildProject(resp: IResponseProject["projects"][number], collect
         guid: resp.guid,
         name: resp.name,
         path: collectionName + "/" + resp.name,
+        enabled: true,
     };
 }

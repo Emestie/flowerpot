@@ -1,3 +1,4 @@
+import { IProject, IQuery } from "../modules/api-client";
 import { appSet } from "../redux/actions/appActions";
 import { settingsSet } from "../redux/actions/settingsActions";
 import { Sections, TableScale } from "../redux/reducers/settingsReducer";
@@ -5,8 +6,6 @@ import { store } from "../redux/store";
 import { TLocale } from "../redux/types";
 import { ILinkItem } from "./Links";
 import Platform from "./Platform";
-import { IProject } from "./Project";
-import { IQuery } from "./Query";
 import { UsageStat } from "./Stats";
 
 export type TSortPattern = "default" | "assignedto" | "id";

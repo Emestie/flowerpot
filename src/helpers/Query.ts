@@ -1,52 +1,11 @@
+import { IQuery, IWorkItem } from "../modules/api-client";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
-import WorkItem, { IWorkItem } from "./WorkItem";
 
 type TBoolProps = "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon" | "empty";
-
-export interface IQuery {
-    collectionName: string;
-    queryId: string;
-    queryName: string;
-    queryPath: string;
-    teamId: string;
-    teamName: string;
-    enabled: boolean;
-    collapsed: boolean;
-    order: number;
-    ignoreIcon: boolean;
-    ignoreNotif: boolean;
-    empty?: boolean;
-}
-
-export interface ITeam {
-    guid: string;
-    name: string;
-}
-
-export interface IResponseQueryWI {
-    id: number;
-    url: string;
-    collection?: string;
-}
-
-export interface IResponseQuery {
-    queryType: "flat" | "tree";
-    workItems: IResponseQueryWI[];
-    workItemRelations?: any;
-}
-
-export interface IFavQuery {
-    queryItem: {
-        id: string;
-        name: string;
-        path: string;
-        isFolder: boolean;
-    };
-}
 
 export interface IWIStorage {
     [queryId: string]: IWorkItem[] | undefined;
@@ -67,26 +26,6 @@ const permawatchQueryObject = {
 };
 
 export default class Query {
-    //! after any operation update queries array in store
-
-    public static buildFromResponse(favQuery: IFavQuery, team: ITeam, collectionName: string): IQuery {
-        let query: IQuery = {
-            collectionName: collectionName,
-            collapsed: false,
-            enabled: true,
-            order: 99,
-            queryId: favQuery.queryItem.id,
-            queryName: favQuery.queryItem.name,
-            queryPath: favQuery.queryItem.path,
-            teamId: team.guid,
-            teamName: team.name,
-            ignoreIcon: false,
-            ignoreNotif: false,
-        };
-
-        return query;
-    }
-
     public static add(query: IQuery) {
         const allQueries = getQueriesSelector(true)(store.getState());
         const allOrders = allQueries.map((q) => q.order);
@@ -185,8 +124,8 @@ export default class Query {
         let level = allWIs.length ? 3 : 4;
 
         allWIs.forEach((wi) => {
-            if (WorkItem.isRed(wi)) level = 1;
-            if (WorkItem.isOrange(wi) && level !== 1) level = 2;
+            if (wi.isRed) level = 1;
+            if (wi.isOrange && level !== 1) level = 2;
         });
 
         Platform.current.updateTrayIcon(level, hasChanges);

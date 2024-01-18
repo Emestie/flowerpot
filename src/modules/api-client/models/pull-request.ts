@@ -43,5 +43,8 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
 
             return false;
         },
+        getAuthorTextName: function () {
+            return this.authorFullName.split(" <")[0];
+        },
     };
 }

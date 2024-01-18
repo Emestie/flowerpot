@@ -8,9 +8,7 @@ import Platform from "../helpers/Platform";
 import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
 import Version from "../helpers/Version";
-import WorkItem from "../helpers/WorkItem";
 import { appViewSet } from "../redux/actions/appActions";
-import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 export function DebugView() {
@@ -33,12 +31,6 @@ export function DebugView() {
 
     const showNotifNative = () => {
         Platform.current.showNativeNotif({ title: "test1", body: "test2" });
-    };
-
-    const setChanges = () => {
-        let wi = WorkItem.fish(settings.queries[0]);
-        wi.id = 1578;
-        dispatch(dataChangesCollectionItemSet(wi, true));
     };
 
     const sendAppUsage = () => {
@@ -119,7 +111,6 @@ export function DebugView() {
                 <Header as="h3" dividing>
                     More
                 </Header>
-                <Button onClick={() => setChanges()}>Set changes to WI</Button>
                 <Button onClick={() => Stats.increment(UsageStat.Test)}>Test stat: {settings.stats.test || 0}</Button>
                 <Button onClick={loadDynamic}>Load DC</Button>
                 <Button

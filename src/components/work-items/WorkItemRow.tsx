@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
-import { IQuery } from "../../helpers/Query";
 import { Stats, UsageStat } from "../../helpers/Stats";
-import WorkItem, { IWorkItem } from "../../helpers/WorkItem";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { dataSelector } from "../../redux/selectors/dataSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
@@ -14,6 +12,7 @@ import { s } from "../../values/Strings";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
+import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 interface IProps {
     item: IWorkItem;
@@ -27,8 +26,8 @@ export function WorkItemRow(props: IProps) {
     const settings = useSelector(settingsSelector);
     const { changesCollection } = useSelector(dataSelector);
 
-    const isRed = WorkItem.isRed(props.item);
-    const isOrange = WorkItem.isOrange(props.item);
+    const isRed = props.item.isRed;
+    const isOrange = props.item.isOrange;
 
     const importanceEl = (() => {
         if (!props.item.importance) return undefined;
@@ -349,7 +348,7 @@ export function WorkItemRow(props: IProps) {
                 collapsing
                 onDoubleClick={() => {
                     Stats.increment(UsageStat.UsersNamesCopied);
-                    Platform.current.copyString(WorkItem.getTextName(item.assignedToFull));
+                    Platform.current.copyString(item.assignedToTextName);
                 }}
             >
                 <ContextMenuTrigger id={uid}>
@@ -364,7 +363,7 @@ export function WorkItemRow(props: IProps) {
                 collapsing
                 onDoubleClick={() => {
                     Stats.increment(UsageStat.UsersNamesCopied);
-                    Platform.current.copyString(WorkItem.getTextName(item.createdByFull));
+                    Platform.current.copyString(item.createdByTextName);
                 }}
             >
                 <ContextMenuTrigger id={uid}>

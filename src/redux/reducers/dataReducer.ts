@@ -1,6 +1,6 @@
-import { IWorkItem } from "../../helpers/WorkItem";
 import { IAction, Reducers } from "../types";
 import { updateState } from "./_common";
+import { IWorkItem } from "/@/modules/api-client";
 
 export interface IDataState {
     workItems: IWorkItem[];

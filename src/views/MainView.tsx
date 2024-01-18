@@ -8,7 +8,7 @@ import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock
 import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
 import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
-import { IQuery } from "../helpers/Query";
+import { IQuery } from "../modules/api-client";
 import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
 import { dataChangesCollectionClear } from "../redux/actions/dataActions";
 import { appSelector } from "../redux/selectors/appSelectors";

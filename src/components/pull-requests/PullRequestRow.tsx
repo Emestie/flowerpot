@@ -1,13 +1,12 @@
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import { IPullRequest } from "../../helpers/PullRequest";
-import WorkItem from "../../helpers/WorkItem";
 import { s } from "../../values/Strings";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
+import { IPullRequest } from "/@/modules/api-client";
 
 interface IProps {
     pullRequest: IPullRequest;
@@ -90,10 +89,7 @@ export function PullRequestRow(props: IProps) {
                 </span>
             </Table.Cell>
             <Table.Cell collapsing>{reviewers}</Table.Cell>
-            <Table.Cell
-                collapsing
-                onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(pullRequest.authorFullName))}
-            >
+            <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
                 <ContextMenuTrigger id={uid}>
                     <ProfileWidget
                         avatarUrl={pullRequest.authorAvatar}

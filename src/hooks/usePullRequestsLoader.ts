@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../api/client";
-import { IProject } from "../helpers/Project";
-import { IPullRequest } from "../helpers/PullRequest";
 import { Timers } from "../helpers/Timers";
+import { IProject, IPullRequest } from "../modules/api-client";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 const PR_TIMER_KEY = "pr-block-timer";

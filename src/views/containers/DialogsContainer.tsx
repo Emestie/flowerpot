@@ -1,15 +1,13 @@
-import React from "react";
-import { s } from "../../values/Strings";
+import { useDispatch, useSelector } from "react-redux";
+import { LinkAddingDialog } from "../../components/dialogs/LinkAddingDialog";
 import { SingleInputColorDialog } from "../../components/dialogs/SingleInputColorDialog";
 import Platform from "../../helpers/Platform";
-import { queriesSorting } from "../MainView";
 import Telemetry from "../../helpers/Telemetry";
-import { LinkAddingDialog } from "../../components/dialogs/LinkAddingDialog";
-import Notif from "../../helpers/Notif";
-import { useDispatch, useSelector } from "react-redux";
-import { getQueriesSelector, settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { appDialogSet } from "../../redux/actions/appActions";
 import { appSelector } from "../../redux/selectors/appSelectors";
+import { getQueriesSelector, settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { s } from "../../values/Strings";
+import { queriesSorting } from "../MainView";
 
 export function DialogsContainer() {
     const dispatch = useDispatch();
@@ -22,7 +20,6 @@ export function DialogsContainer() {
     const openById = (id: string, color?: string, collection?: string) => {
         if (!collection) collection = "DefaultCollection";
         if (!id) {
-            Notif.show(s("enterID"));
             return;
         }
 

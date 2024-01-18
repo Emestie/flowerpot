@@ -1,5 +1,6 @@
 import { TLists } from "/@/helpers/Settings";
 
+//! do not use functions in IWorkItem
 export interface IWorkItem {
     id: number;
     rev: number;
@@ -32,6 +33,10 @@ export interface IWorkItem {
     _queryId: string;
     _collectionName: string;
     _filteredBy: Record<string, string | undefined>;
+    createdByTextName: string;
+    assignedToTextName: string;
+    isOrange: boolean;
+    isRed: boolean;
 }
 
 export interface IResponseWorkItem {

@@ -4,36 +4,43 @@ import { ItemsCommon } from "/@/helpers/ItemsCommon";
 import Lists from "/@/helpers/Lists";
 import { TLists } from "/@/helpers/Settings";
 
+//! do not use functions in IWorkItem
 export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem {
     const isMine =
         resp.fields["System.AssignedTo"]?.descriptor === getConnectionData().authenticatedUser.subjectDescriptor;
+    const promptness = extractLevel(
+        resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]
+    );
+    const importance = extractLevel(
+        resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"]
+    );
+    const rank = rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]);
+    const type = resp.fields["System.WorkItemType"] || "";
+    const createdByFull = ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "");
+    const assignedToFull = ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "");
 
     const item: IWorkItem = {
         id: resp.id,
         rev: resp.rev,
         url: resp._links.html.href,
-        type: resp.fields["System.WorkItemType"] || "",
+        type,
         assignedTo: ItemsCommon.shortName(ItemsCommon.parseNameField(resp.fields["System.AssignedTo"]) || ""),
-        assignedToFull: ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || ""),
+        assignedToFull,
         assignedToImg: resp.fields["System.AssignedTo"]?.imageUrl || "",
         createdDate: resp.fields["System.CreatedDate"],
         freshness: ItemsCommon.getTerm(resp.fields["System.CreatedDate"]),
         createdBy: ItemsCommon.shortName(ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "")) || "",
-        createdByFull: ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || ""),
+        createdByFull,
         createdByImg: resp.fields["System.CreatedBy"]?.imageUrl || "",
         title: ItemsCommon.shortTitle(resp.fields["System.Title"]) || "",
         titleFull: resp.fields["System.Title"] || "",
         iterationPath: resp.fields["System.IterationPath"] || "",
         areaPath: resp.fields["System.AreaPath"] || "",
-        promptness: extractLevel(
-            resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]
-        ),
+        promptness,
         promptnessText: resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"] || "",
-        importance: extractLevel(
-            resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"]
-        ),
+        importance,
         importanceText: resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"] || "",
-        rank: rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]),
+        rank,
         weight: calcWeight(resp),
         state: resp.fields["System.State"] || "",
         tags: resp.fields["System.Tags"] || "",
@@ -44,6 +51,16 @@ export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem
         _queryId: query.queryId,
         _collectionName: query.collectionName,
         _filteredBy: {},
+        createdByTextName: createdByFull.split(" <")[0],
+        assignedToTextName: assignedToFull.split(" <")[0],
+        isOrange:
+            type !== "Task" &&
+            type !== "Epic" &&
+            type !== "User Story" &&
+            type !== "Feature" &&
+            promptness === 2 &&
+            importance !== 3,
+        isRed: promptness === 1 || rank === 1,
     };
 
     return item;

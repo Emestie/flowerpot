@@ -59,4 +59,5 @@ export interface IPullRequest {
     labels: { name: string }[];
     mergeStatus: "conflicts" | "succeeded";
     isMine: () => boolean;
+    getAuthorTextName: () => string;
 }
