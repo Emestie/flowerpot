@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Header } from "semantic-ui-react";
 import { api } from "../api/client";
@@ -15,6 +16,12 @@ import { settingsSelector } from "../redux/selectors/settingsSelectors";
 export function DebugView() {
     const dispatch = useDispatch();
     const settings = useSelector(settingsSelector);
+
+    const [throwErrorState, setThrowErrorState] = useState(false);
+
+    if (throwErrorState) {
+        throw new Error("some render error");
+    }
 
     const changeIconLevel = (level: number, noDot?: boolean) => {
         Platform.current.updateTrayIcon(level, !noDot);
@@ -115,6 +122,13 @@ export function DebugView() {
                 <Button onClick={() => setChanges()}>Set changes to WI</Button>
                 <Button onClick={() => Stats.increment(UsageStat.Test)}>Test stat: {settings.stats.test || 0}</Button>
                 <Button onClick={loadDynamic}>Load DC</Button>
+                <Button
+                    onClick={() => {
+                        setThrowErrorState(true);
+                    }}
+                >
+                    Throw error
+                </Button>
                 <div>
                     {Version.long} / {Version.short}
                 </div>

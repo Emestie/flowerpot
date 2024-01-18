@@ -1,15 +1,23 @@
 import { api } from "../api/client";
 import { IConnectionData } from "../modules/api-client";
 
-let currentConnection: IConnectionData;
+let currentConnectionData: IConnectionData;
 
-export async function fillConnectionData() {
-    const connectionData = await api.connectionData.get();
-    currentConnection = connectionData;
+let singletonPromise: Promise<IConnectionData> | null = null;
 
-    (window as any)._conn = connectionData;
+export function fillConnectionData() {
+    if (!singletonPromise) {
+        singletonPromise = api.connectionData.get().then((resp) => {
+            currentConnectionData = resp;
+            (window as any)._conn = resp;
+
+            return resp;
+        });
+    }
+
+    return singletonPromise;
 }
 
 export function getConnectionData() {
-    return currentConnection;
+    return currentConnectionData;
 }

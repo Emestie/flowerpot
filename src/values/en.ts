@@ -273,6 +273,9 @@ const en = {
 
     unauthorized:
         "Your Personal Access Token is expired or incorrect. Please go to Account Settings and provide correct token.",
+
+    appFatalError: "Application fatal error",
+    reload: "Reload",
 };
 
 export default en;
