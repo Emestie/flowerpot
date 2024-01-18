@@ -21,7 +21,7 @@ export function usePullRequestsLoader(projects: IProject[]) {
             const filteredPRs = prs.filter((x) => x.isMine());
 
             setPullRequests(filteredPRs);
-            if (errorMessage !== null) setErrorMessage(null);
+            if (errorMessage) setErrorMessage(null);
         } catch (e: any) {
             setErrorMessage(e.message);
         } finally {

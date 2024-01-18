@@ -67,7 +67,7 @@ const ru: LocalizedStrings = {
     errorDesc2: "страницу",
     errorDesc3: "Или проверить",
     errorDesc4: "на предмет корректности",
-    tfsSettings: "Настройки TFS/Azure DevOps",
+    tfsSettings: "Настройки учетной записи TFS/Azure DevOps",
     //creds view
     validate: "Проверить и сохранить",
     status: "Статус: ",
@@ -278,6 +278,15 @@ const ru: LocalizedStrings = {
 
     appFatalError: "Критическая ошибка приложения",
     reload: "Перезагрузить",
+
+    credsTokenInfo1: "Для авторизации в приложении вам необходимо получить",
+    credsTokenInfo2: "персональный токен доступа",
+    credsTokenInfo3:
+        "в вашем TFS/Azure DevOps. Инструкция по созданию токена и прямая ссылка на страницу создания токена доступны по кнопкам ниже:",
+    credsTokenOpenDocs: "Открыть документацию по созданию токена (Microsoft)",
+    credsTokenOpenCreatePage: "Открыть страницу создания токена в вашем TFS/Azure DevOps",
+    credsTokenInfo4:
+        "Обратите внимание, что для полноценной работы приложения необходим токен с максимальным уровенем доступа.",
 };
 
 export default ru;

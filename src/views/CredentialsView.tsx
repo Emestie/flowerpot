@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Form, Header, Label } from "semantic-ui-react";
+import { Button, Container, Form, Header, Label, Message } from "semantic-ui-react";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { fillConnectionData } from "../helpers/Connection";
 import Loaders from "../helpers/Loaders";
+import Platform from "../helpers/Platform";
 import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
 import { appViewSet } from "../redux/actions/appActions";
 import { settingsUpdate } from "../redux/actions/settingsActions";
+import { appSelector } from "../redux/selectors/appSelectors";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
 
@@ -34,6 +36,7 @@ export function CredentialsView() {
     const [credentialsCheckStatus, setCredentialsCheckStatus] = useState(ECredState.NotValidated);
 
     const settings = useSelector(settingsSelector);
+    const { locale } = useSelector(appSelector);
 
     const dispatch = useDispatch();
 
@@ -145,6 +148,42 @@ export function CredentialsView() {
                         onChange={(e) => validateTfsPath(e.target.value)}
                         error={pathInvalid}
                     />
+                    <Message info>
+                        {s("credsTokenInfo1")}{" "}
+                        <b>
+                            <i>{s("credsTokenInfo2")}</i>
+                        </b>{" "}
+                        {s("credsTokenInfo3")}
+                        <br />
+                        <div style={{ marginTop: 10, marginBottom: -10 }}>
+                            <Button
+                                primary
+                                size="small"
+                                style={{ marginRight: 10 }}
+                                onClick={() => {
+                                    Platform.current.openUrl(
+                                        "https://learn.microsoft.com/" +
+                                            (locale === "ru" ? "ru-ru" : "en-us") +
+                                            "/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat"
+                                    );
+                                }}
+                            >
+                                {s("credsTokenOpenDocs")}
+                            </Button>
+                            <Button
+                                primary
+                                size="small"
+                                disabled={pathInvalid}
+                                onClick={() => {
+                                    Platform.current.openUrl(settings.tfsPath + "_usersSettings/tokens");
+                                }}
+                            >
+                                {s("credsTokenOpenCreatePage")}
+                            </Button>
+                        </div>
+                        <br />
+                        {s("credsTokenInfo4")}
+                    </Message>
                     <Form.Input
                         fluid
                         label={s("tfsToken")}
@@ -166,7 +205,7 @@ export function CredentialsView() {
                     <Label color={statusParams.color as any}>{statusParams.text}</Label>
                 </div>
                 <br />
-                <Button primary loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
+                <Button positive loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
                     {s("validate")}
                 </Button>
             </Container>

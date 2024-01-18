@@ -36,7 +36,7 @@ const config = {
         category: "public.app-category.utilities",
         target: {
             target: "default",
-            arch: "universal",
+            arch: "arm64",
         },
     },
     publish: {

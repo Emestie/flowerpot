@@ -3,7 +3,7 @@ import { IConnectionData } from "../types";
 
 export function createConnectionDataLoaders(loader: Loader) {
     return {
-        async get(): Promise<IConnectionData> {
+        async get(): Promise<IConnectionData | undefined> {
             const connectionData = await loader<IConnectionData>("_apis/connectionData", {
                 skipConnectionDataCheck: true,
             });

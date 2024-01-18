@@ -23,9 +23,11 @@ export function createLoader(params: IApiClientParams) {
                 if (!options?.skipConnectionDataCheck && !getConnectionData()) await fillConnectionData();
             } catch {}
 
-            if (result.status === 401) {
+            if (result.status === 401 && !url.includes("connectionData")) {
                 throw new Error(s("unauthorized"));
             }
+
+            if (!result.ok) return null as T;
 
             const data = await result.json();
 

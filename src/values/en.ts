@@ -65,7 +65,7 @@ const en = {
     errorDesc2: "page",
     errorDesc3: "Or go to",
     errorDesc4: "to check your account and server",
-    tfsSettings: "TFS/Azure DevOps Settings",
+    tfsSettings: "TFS/Azure DevOps Account Settings",
     //creds view
     validate: "Validate and save",
     status: "Status: ",
@@ -276,6 +276,15 @@ const en = {
 
     appFatalError: "Application fatal error",
     reload: "Reload",
+
+    credsTokenInfo1: "To authorize in the application you need to get",
+    credsTokenInfo2: "Personal Access Token",
+    credsTokenInfo3:
+        "in your TFS/Azure DevOps. Instructions for creating a token and a direct link to the token creation page are available using the buttons below:",
+    credsTokenOpenDocs: "Open the PAT creation docs (Microsoft)",
+    credsTokenOpenCreatePage: "Open the PAT creation page in your TFS/Azure DevOps",
+    credsTokenInfo4:
+        "Please note that for the application to function fully, a token with the maximum access level is required.",
 };
 
 export default en;

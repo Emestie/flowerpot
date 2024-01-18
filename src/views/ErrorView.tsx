@@ -66,7 +66,7 @@ export function ErrorView() {
                         </Button>{" "}
                         {s("errorDesc2")}
                     </div>
-                    <div>
+                    <div style={{ marginTop: 10 }}>
                         {s("errorDesc3")}{" "}
                         <Button size="tiny" compact onClick={onSettingsClick}>
                             {s("tfsSettings")}
