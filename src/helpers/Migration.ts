@@ -11,7 +11,7 @@ export default class Migration {
         const migrations = store.getState().settings.migrationsDone || [];
 
         if (!migrations.includes("v0_4_5_to_v0_5_0")) await this.v0_4_5_to_v0_5_0();
-        //TODO:  if (!migrations.includes("v1_0_0_token")) await this.v1_0_0_token();
+        //TODO:  if (!migrations.includes("v0_6_0_token")) await this.v0_6_0_token();
     }
 
     private static async v0_4_5_to_v0_5_0() {
@@ -25,9 +25,8 @@ export default class Migration {
         this.setMigrationAsDone("v0_4_5_to_v0_5_0");
     }
 
-    private static async v1_0_0_token() {
-        //TODO: rename to v0.6.0 in case of that versioning
-        console.log("Migration v1_0_0_token");
+    private static async v0_6_0_token() {
+        console.log("Migration v0_6_0_token");
 
         const settings = store.getState().settings;
 
@@ -40,6 +39,6 @@ export default class Migration {
             store.dispatch(settingsUpdate({ tfsUser: "", tfsPwd: "", tfsToken, credentialsChecked }));
         }
 
-        this.setMigrationAsDone("v1_0_0_token");
+        this.setMigrationAsDone("v0_6_0_token");
     }
 }
