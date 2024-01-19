@@ -1,6 +1,7 @@
 import { app, ipcMain } from "electron";
 import { autoUpdater } from "electron-updater";
-import { tray, iconUpdateTask, showNotification, registerAutostart } from "./functions";
+import { extractNpmrcPat } from "./extract-pat";
+import { iconUpdateTask, registerAutostart, showNotification, tray } from "./functions";
 import { getAppWindow } from "./main-window";
 import { store } from "./store";
 
@@ -12,6 +13,7 @@ const isDev = import.meta.env.DEV;
 ipcMain.handle("user-data-path", () => userDataPath);
 ipcMain.handle("read-settings-prop", (_, prop) => store.get(prop));
 ipcMain.handle("read-is-dev", (_) => isDev);
+ipcMain.handle("extract-npmrc-pat", (_) => extractNpmrcPat());
 
 ipcMain.on("update-icon", (_, { level, hasChanges }) => {
     if (!tray || level < 0 || level > 4) return;

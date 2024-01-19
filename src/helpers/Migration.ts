@@ -11,7 +11,7 @@ export default class Migration {
         const migrations = store.getState().settings.migrationsDone || [];
 
         if (!migrations.includes("v0_4_5_to_v0_5_0")) await this.v0_4_5_to_v0_5_0();
-        //TODO:  if (!migrations.includes("v0_6_0_token")) await this.v0_6_0_token();
+        if (!migrations.includes("v0_6_0_token")) await this.v0_6_0_token();
     }
 
     private static async v0_4_5_to_v0_5_0() {
@@ -30,13 +30,11 @@ export default class Migration {
 
         const settings = store.getState().settings;
 
-        if (settings.tfsToken === undefined && settings.tfsUser && settings.tfsPwd) {
-            //TODO: load base64 token from .npmrc (try)
+        if (!settings.tfsToken && settings.tfsUser && settings.tfsPwd && settings.tfsPath) {
+            const tfsToken = await Platform.current.extractNpmrcPat();
+            const credentialsChecked = !!tfsToken;
 
-            const tfsToken = ""; //TODO: calc
-            const credentialsChecked = false; //TODO: depend on base64 token success
-
-            store.dispatch(settingsUpdate({ tfsUser: "", tfsPwd: "", tfsToken, credentialsChecked }));
+            store.dispatch(settingsUpdate({ tfsUser: "", tfsPwd: "", tfsToken: tfsToken || "", credentialsChecked }));
         }
 
         this.setMigrationAsDone("v0_6_0_token");

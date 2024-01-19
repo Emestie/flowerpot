@@ -1,6 +1,6 @@
+import { eapi } from "#preload";
 import { TLocale } from "../redux/types";
 import ElectronPlatform from "./platforms/Electron";
-import { eapi } from "#preload";
 
 export interface INotificationData {
     title: string;
@@ -16,6 +16,7 @@ export interface IPlatformExtension {
     toggleAutostart: (autostart: boolean) => void;
     updateTrayIcon: (level: number, hasChanges?: boolean) => void;
     updateTrayIconDot: (hasChanges: boolean) => void;
+    extractNpmrcPat: () => Promise<string | null>;
     openUrl: (url: string) => void;
     isDev: () => boolean;
     toggleConsole: () => void;

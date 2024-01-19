@@ -7,7 +7,7 @@ import { TLists } from "/@/helpers/Settings";
 //! do not use functions in IWorkItem
 export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem {
     const isMine =
-        resp.fields["System.AssignedTo"]?.descriptor === getConnectionData().authenticatedUser.subjectDescriptor;
+        resp.fields["System.AssignedTo"]?.descriptor === getConnectionData()?.authenticatedUser.subjectDescriptor;
     const promptness = extractLevel(
         resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]
     );

@@ -35,6 +35,6 @@ export default class Version {
 
         setTimeout(() => {
             Telemetry.versionUsageInfo();
-        }, 3000);
+        }, 5000);
     }
 }

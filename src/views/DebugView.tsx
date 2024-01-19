@@ -4,6 +4,7 @@ import { Button, Container, Header } from "semantic-ui-react";
 import { api } from "../api/client";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { DynamicContent } from "../helpers/DynamicContent";
+import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
@@ -113,6 +114,8 @@ export function DebugView() {
                 </Header>
                 <Button onClick={() => Stats.increment(UsageStat.Test)}>Test stat: {settings.stats.test || 0}</Button>
                 <Button onClick={loadDynamic}>Load DC</Button>
+                <Button onClick={() => Migration.perform()}>Perform migrations</Button>
+                <Button onClick={() => console.log(Platform.current.extractNpmrcPat())}>Extract PAT</Button>
                 <Button
                     onClick={() => {
                         setThrowErrorState(true);

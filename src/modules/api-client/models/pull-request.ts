@@ -32,13 +32,13 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
         labels: resp.labels || [],
         mergeStatus: resp.mergeStatus,
         isMine: function () {
-            if (this.authorDescriptor === getConnectionData().authenticatedUser.subjectDescriptor) return true;
+            const connectionData = getConnectionData();
 
-            if (
-                this.reviewers
-                    .map((rev) => rev.name)
-                    .includes(getConnectionData().authenticatedUser.providerDisplayName)
-            )
+            if (!connectionData) return false;
+
+            if (this.authorDescriptor === connectionData.authenticatedUser.subjectDescriptor) return true;
+
+            if (this.reviewers.map((rev) => rev.name).includes(connectionData.authenticatedUser.providerDisplayName))
                 return true;
 
             return false;

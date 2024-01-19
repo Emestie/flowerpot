@@ -1,4 +1,4 @@
-import { ipcRenderer, clipboard, shell } from "electron";
+import { clipboard, ipcRenderer, shell } from "electron";
 
 const isDev = import.meta.env.DEV;
 
@@ -9,8 +9,8 @@ export const eapi = {
     isDev,
     clipboard,
     platformName,
-    ipcInvoke: async (channel: string, ...args: any) => {
-        return await ipcRenderer.invoke(channel, ...args);
+    ipcInvoke: async <RT = any>(channel: string, ...args: any) => {
+        return (await ipcRenderer.invoke(channel, ...args)) as RT;
     },
     ipcSend: (channel: string, data?: any) => {
         ipcRenderer.send(channel, data);
