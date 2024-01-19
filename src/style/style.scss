@@ -12,7 +12,6 @@ $keywordColor: #4287f5;
 $keywordColorOpaque: #6280b17e;
 $pinnedColor: #eca06e;
 $pinnedColorOpaque: #eca06e15;
-$rowItemHover: darken(white, 5%);
 
 body,
 #root {
@@ -182,7 +181,7 @@ nav {
 }
 
 .ui.table tr:hover {
-    background-color: $rowItemHover;
+    background-color: darken(white, 5%);
     box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.05);
 }
 
