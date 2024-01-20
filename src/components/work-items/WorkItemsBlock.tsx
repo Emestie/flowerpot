@@ -1,9 +1,8 @@
-import { useSelector, useDispatch } from "react-redux";
-import { Header, Label, Table, Icon } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Header, Icon, Label, Message, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
-import Query, { IQuery } from "../../helpers/Query";
-import WorkItem, { IWorkItem } from "../../helpers/WorkItem";
+import Query from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
 import { appSelector } from "../../redux/selectors/appSelectors";
@@ -11,6 +10,7 @@ import { getWorkItemsForQuerySelector } from "../../redux/selectors/dataSelector
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { WorkItemRow } from "./WorkItemRow";
+import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 interface IProps {
     query: IQuery;
@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export function WorkItemsBlock(props: IProps) {
-    const { isLoading, routineStart } = useQueryLoader(props.query);
+    const { isLoading, routineStart, errorMessage } = useQueryLoader(props.query);
     const allItems = useSelector(getWorkItemsForQuerySelector(props.query));
     const settings = useSelector(settingsSelector);
     const { showMineOnly } = useSelector(appSelector);
@@ -90,10 +90,10 @@ export function WorkItemsBlock(props: IProps) {
     ).length;
     const redItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
-        .filter((wi) => WorkItem.isRed(wi)).length;
+        .filter((wi) => wi.isRed).length;
     const orangeItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
-        .filter((wi) => WorkItem.isOrange(wi)).length;
+        .filter((wi) => wi.isOrange).length;
 
     const onCollapseClick = () => {
         Query.toggleBoolean(props.query, "collapsed");
@@ -213,9 +213,7 @@ export function WorkItemsBlock(props: IProps) {
                         <Icon name="circle notched" loading />
                     </span>
                 )}
-                {!isLoading && !!workItems.length && !isPermawatch && (
-                    <span onClick={onCollapseClick}>{iconCollapse}</span>
-                )}
+                {!isLoading && !!workItems.length && <span onClick={onCollapseClick}>{iconCollapse}</span>}
                 <span onClick={dropAllWiChanges}>
                     <span onClick={onCollapseClick}>
                         {isPermawatch && (
@@ -247,11 +245,17 @@ export function WorkItemsBlock(props: IProps) {
                             {totalItemsCount}
                         </Label>
                     )}
-                    {!totalItemsCount && !isLoading && (
-                        <Label size="mini" circular color="green">
-                            ✔
-                        </Label>
-                    )}
+                    {!totalItemsCount &&
+                        !isLoading &&
+                        (!errorMessage ? (
+                            <Label size="mini" circular color="green">
+                                ✔
+                            </Label>
+                        ) : (
+                            <Label size="mini" circular color="red">
+                                &times;
+                            </Label>
+                        ))}
                 </span>
                 {!!query.queryPath && (
                     <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
@@ -264,6 +268,11 @@ export function WorkItemsBlock(props: IProps) {
                     </span>
                 )}
             </Header>
+            {!!errorMessage && (
+                <Message size="tiny" error>
+                    {errorMessage}
+                </Message>
+            )}
             {!!workItems.length && !query.collapsed && (
                 <Table compact size={getTableSize()}>
                     <tbody>{workItemsComponents}</tbody>

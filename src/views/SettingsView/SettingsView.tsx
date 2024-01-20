@@ -1,18 +1,18 @@
-import { Container, Button, Icon, Sidebar, Menu } from "semantic-ui-react";
-import { s } from "../../values/Strings";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Container, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
 import { appViewSet } from "../../redux/actions/appActions";
-import { useDispatch, useSelector } from "react-redux";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { s } from "../../values/Strings";
 import { AccountSection } from "./sections/AccountSection";
 import { CreditsSection } from "./sections/CreditsSection";
 import { ProjectsSection } from "./sections/ProjectsSection";
 import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
-import { WorkItemsSection } from "./sections/WorkItemsSection";
 import { StatsSection } from "./sections/StatsSection";
+import { WorkItemsSection } from "./sections/WorkItemsSection";
 import { Sections } from "/@/redux/reducers/settingsReducer";
 
 const sectionsList = [
@@ -88,7 +88,7 @@ export function SettingsView() {
             active={section.id === settingsSection}
             onClick={() => dispatch(settingsUpdate({ settingsSection: section.id }))}
         >
-            {s(section.captionKey)}
+            {s(section.captionKey as any)}
         </Menu.Item>
     ));
 

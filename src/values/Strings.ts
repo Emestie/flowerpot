@@ -3,11 +3,9 @@ import { TLocale } from "../redux/types";
 import en from "./en";
 import ru from "./ru";
 
-export interface ILocalizedStrings {
-    [s: string]: string;
-}
+export type LocalizedStrings = Record<keyof typeof en, string>;
 
-export function s(string: string, locale?: TLocale): string {
+export function s(string: keyof LocalizedStrings, locale?: TLocale): string {
     //en locale is default one
 
     if (!locale) locale = store.getState().app.locale;

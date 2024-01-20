@@ -1,20 +1,26 @@
-import React from "react";
-import { Header, Button, Container } from "semantic-ui-react";
-import Platform from "../helpers/Platform";
-import WorkItem from "../helpers/WorkItem";
-import Version from "../helpers/Version";
-import { ViewHeading } from "../components/heading/ViewHeading";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { appViewSet } from "../redux/actions/appActions";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
+import { Button, Container, Header } from "semantic-ui-react";
+import { api } from "../api/client";
+import { ViewHeading } from "../components/heading/ViewHeading";
+import { DynamicContent } from "../helpers/DynamicContent";
+import Migration from "../helpers/Migration";
+import Platform from "../helpers/Platform";
 import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
-import { DynamicContent } from "../helpers/DynamicContent";
+import Version from "../helpers/Version";
+import { appViewSet } from "../redux/actions/appActions";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 export function DebugView() {
     const dispatch = useDispatch();
     const settings = useSelector(settingsSelector);
+
+    const [throwErrorState, setThrowErrorState] = useState(false);
+
+    if (throwErrorState) {
+        throw new Error("some render error");
+    }
 
     const changeIconLevel = (level: number, noDot?: boolean) => {
         Platform.current.updateTrayIcon(level, !noDot);
@@ -26,12 +32,6 @@ export function DebugView() {
 
     const showNotifNative = () => {
         Platform.current.showNativeNotif({ title: "test1", body: "test2" });
-    };
-
-    const setChanges = () => {
-        let wi = WorkItem.fish(settings.queries[0]);
-        wi.id = 1578;
-        dispatch(dataChangesCollectionItemSet(wi, true));
     };
 
     const sendAppUsage = () => {
@@ -99,11 +99,30 @@ export function DebugView() {
                 <Button onClick={() => sendAppUsage()}>Send app usage</Button>
                 <Button onClick={() => sendFeedback()}>Send feedback</Button>
                 <Header as="h3" dividing>
+                    New API
+                </Header>
+                <Button onClick={() => console.log(api.pullRequest.getByProjects(settings.projects))}>load PR</Button>
+                <Button onClick={() => console.log(api.collection.getAll())}>load collections</Button>
+                <Button onClick={() => console.log(api.project.getAll())}>load projects</Button>
+                <Button onClick={() => console.log(api.query.getAvailable())}>load av queries</Button>
+                <Button onClick={() => console.log(api.workItem.getByQuery(settings.queries[0]))}>
+                    load wi by query
+                </Button>
+                <Button onClick={() => console.log(api.connectionData.get())}>conn data</Button>
+                <Header as="h3" dividing>
                     More
                 </Header>
-                <Button onClick={() => setChanges()}>Set changes to WI</Button>
                 <Button onClick={() => Stats.increment(UsageStat.Test)}>Test stat: {settings.stats.test || 0}</Button>
                 <Button onClick={loadDynamic}>Load DC</Button>
+                <Button onClick={() => Migration.perform()}>Perform migrations</Button>
+                <Button onClick={() => console.log(Platform.current.extractNpmrcPat())}>Extract PAT</Button>
+                <Button
+                    onClick={() => {
+                        setThrowErrorState(true);
+                    }}
+                >
+                    Throw error
+                </Button>
                 <div>
                     {Version.long} / {Version.short}
                 </div>

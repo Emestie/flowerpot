@@ -2,18 +2,17 @@ import React from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
-import Festival from "../../helpers/Festival";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
-import { IQuery } from "../../helpers/Query";
 import { Stats, UsageStat } from "../../helpers/Stats";
-import WorkItem, { IWorkItem } from "../../helpers/WorkItem";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { dataSelector } from "../../redux/selectors/dataSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
+import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 interface IProps {
     item: IWorkItem;
@@ -27,8 +26,8 @@ export function WorkItemRow(props: IProps) {
     const settings = useSelector(settingsSelector);
     const { changesCollection } = useSelector(dataSelector);
 
-    const isRed = WorkItem.isRed(props.item);
-    const isOrange = WorkItem.isOrange(props.item);
+    const isRed = props.item.isRed;
+    const isOrange = props.item.isOrange;
 
     const importanceEl = (() => {
         if (!props.item.importance) return undefined;
@@ -205,13 +204,13 @@ export function WorkItemRow(props: IProps) {
             case "Решенный":
             case "Решённый":
                 return <Icon name="check square outline" />;
+            case "Ready for Review":
+                return <Icon name="hand paper outline" />;
             case "New":
             case "Новый":
                 return <Icon name="genderless" />;
-            case "Ready for Review":
-                return <Icon name="hand paper outline" />;
             default:
-                return <>{state}</>;
+                return <Icon name="fire" />;
         }
     };
 
@@ -248,7 +247,7 @@ export function WorkItemRow(props: IProps) {
                 returnee.push(
                     <span key={Math.random()} className="marked">
                         {x}
-                    </span>,
+                    </span>
                 );
         });
 
@@ -259,7 +258,7 @@ export function WorkItemRow(props: IProps) {
         ? item.tags
               .split(";")
               .map((x) => x.trim())
-              .map((x) => <Tag text={x} />)
+              .map((x, i) => <Tag key={i} text={x} />)
         : null;
 
     return (
@@ -349,22 +348,30 @@ export function WorkItemRow(props: IProps) {
                 collapsing
                 onDoubleClick={() => {
                     Stats.increment(UsageStat.UsersNamesCopied);
-                    Platform.current.copyString(WorkItem.getTextName(item.assignedToFull));
+                    Platform.current.copyString(item.assignedToTextName);
                 }}
             >
                 <ContextMenuTrigger id={uid}>
-                    {Festival.getSpecialNameEffect(item.assignedTo, item.assignedToFull, item.assignedToImg)}
+                    <ProfileWidget
+                        avatarUrl={item.assignedToImg}
+                        displayName={item.assignedTo}
+                        nameFull={item.assignedToFull}
+                    />
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell
                 collapsing
                 onDoubleClick={() => {
                     Stats.increment(UsageStat.UsersNamesCopied);
-                    Platform.current.copyString(WorkItem.getTextName(item.createdByFull));
+                    Platform.current.copyString(item.createdByTextName);
                 }}
             >
                 <ContextMenuTrigger id={uid}>
-                    {Festival.getSpecialNameEffect(item.createdBy, item.createdByFull, item.createdByImg)}
+                    <ProfileWidget
+                        avatarUrl={item.createdByImg}
+                        displayName={item.createdBy}
+                        nameFull={item.createdByFull}
+                    />
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>

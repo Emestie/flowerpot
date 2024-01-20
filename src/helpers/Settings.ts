@@ -1,13 +1,12 @@
-import { IQuery } from "./Query";
-import Platform from "./Platform";
-import { ILinkItem } from "./Links";
-import { store } from "../redux/store";
-import { settingsSet } from "../redux/actions/settingsActions";
+import { IProject, IQuery } from "../modules/api-client";
 import { appSet } from "../redux/actions/appActions";
+import { settingsSet } from "../redux/actions/settingsActions";
 import { Sections, TableScale } from "../redux/reducers/settingsReducer";
-import { IProject } from "./Project";
-import { UsageStat } from "./Stats";
+import { store } from "../redux/store";
 import { TLocale } from "../redux/types";
+import { ILinkItem } from "./Links";
+import Platform from "./Platform";
+import { UsageStat } from "./Stats";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -29,8 +28,11 @@ interface INoteItem {
 
 export interface ISettings {
     tfsPath: string;
-    tfsUser: string;
-    tfsPwd: string;
+    /** @deprecated */
+    tfsUser?: string;
+    /** @deprecated */
+    tfsPwd?: string;
+    tfsToken: string;
     credentialsChecked: boolean;
     refreshRate: number;
     sortPattern: TSortPattern;
@@ -48,7 +50,6 @@ export interface ISettings {
     darkTheme: boolean;
     allowTelemetry: boolean;
     showUnreads: boolean;
-    showAvatars: boolean;
     showQuickLinks: boolean;
     lastTimeVersion: string;
     lastTimeVersionLong: string;

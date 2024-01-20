@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Confirm, Form } from "semantic-ui-react";
 import Links from "../../helpers/Links";
-import Notif from "../../helpers/Notif";
 import { s } from "../../values/Strings";
 import ColorPicker from "../ColorPicker";
 
@@ -24,7 +23,6 @@ export function LinkAddingDialog(p: P) {
 
     const onConfirm = () => {
         if (!name || !url || !url.startsWith("http")) {
-            Notif.show(s("wrongCaptionOrUrl"));
             return;
         }
 

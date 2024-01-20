@@ -1,13 +1,7 @@
+import { IProject } from "../modules/api-client";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { getProjectsSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
-
-export interface IProject {
-    collectionName: string;
-    name: string;
-    path: string;
-    enabled: boolean;
-}
 
 type TBoolProps = "enabled";
 

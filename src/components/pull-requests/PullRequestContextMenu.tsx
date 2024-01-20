@@ -1,8 +1,8 @@
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import { Icon, Menu } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import { IPullRequest } from "../../helpers/PullRequest";
 import { s } from "../../values/Strings";
+import { IPullRequest } from "/@/modules/api-client";
 
 interface IProps {
     uid: string;

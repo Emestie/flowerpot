@@ -1,9 +1,10 @@
 import { Icon, Image, Label } from "semantic-ui-react";
-import { IPRReviewer } from "/@/helpers/PullRequest";
+import { useAvatar } from "/@/hooks/useAvatar";
+import { IPullRequestReviewer } from "/@/modules/api-client";
 import { s } from "/@/values/Strings";
 
 interface P {
-    reviewer: IPRReviewer;
+    reviewer: IPullRequestReviewer;
 }
 
 const statusIconStyle = {
@@ -24,6 +25,8 @@ export function PRReviewer({ reviewer }: P) {
         return <Icon style={statusIconStyle} name={iconName} color={color} />;
     };
 
+    const avatar = useAvatar(reviewer.imageUrl);
+
     return (
         <span
             title={reviewer.name + (reviewer.isRequired ? ` (${s("requiredReviewer")})` : "")}
@@ -33,7 +36,7 @@ export function PRReviewer({ reviewer }: P) {
                 <Image
                     className="av-class"
                     avatar
-                    src={reviewer.imageUrl}
+                    src={avatar}
                     style={reviewer.isRequired ? { border: "2px solid #21cfff" } : {}}
                 />
                 {getStatusIcon(reviewer.vote)}

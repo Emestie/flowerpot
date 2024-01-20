@@ -1,8 +1,8 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.5.3",
-    "description": "TFS/Azure work items watch tool",
+    "version": "0.6.0",
+    "description": "TFS/Azure DevOps work items tracking tool",
     "author": {
         "name": "Valery Murashko",
         "url": "https://github.com/Emestie"
@@ -25,12 +25,14 @@
         "@trodi/electron-splashscreen": "^1.0.2",
         "cyrillic-to-translit-js": "3.1.0",
         "electron-updater": "^6.1.4",
+        "lodash": "^4.17.21",
         "markdown-to-jsx": "^7.3.2",
         "moment": "^2.29.4"
     },
     "devDependencies": {
         "@babel/core": "^7.23.0",
         "@types/jest": "^29.5.5",
+        "@types/lodash": "^4.14.202",
         "@types/node": "^18.18.4",
         "@types/react": "^17.0.52",
         "@types/react-dom": "^17.0.18",

@@ -166,6 +166,11 @@ $rowItemHover: lighten($bg, 10%);
         border-top: 1px solid rgba(228, 230, 231, 0.1);
     }
 
+    .ui.table tr:hover {
+        background-color: lighten($bg, 10%);
+        box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.05);
+    }
+
     .ui.table td.warning,
     .ui.table tr.warning {
         color: $text !important;
@@ -190,5 +195,11 @@ $rowItemHover: lighten($bg, 10%);
 
     .mar8NameLabel {
         color: pink !important;
+    }
+
+    .ql-container {
+        .label.quick-link-label {
+            background-color: #252526 !important;
+        }
     }
 }

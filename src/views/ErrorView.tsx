@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect } from "react";
-import { Button, Container, Message } from "semantic-ui-react";
-import { s } from "../values/Strings";
-import { ViewHeading } from "../components/heading/ViewHeading";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { appViewSet } from "../redux/actions/appActions";
-import { Timers } from "../helpers/Timers";
+import { Button, Container, Message } from "semantic-ui-react";
+import { ViewHeading } from "../components/heading/ViewHeading";
 import Platform from "../helpers/Platform";
+import { Timers } from "../helpers/Timers";
+import { appViewSet } from "../redux/actions/appActions";
 import { IAppState } from "../redux/reducers/appReducer";
+import { appSelector } from "../redux/selectors/appSelectors";
+import { store } from "../redux/store";
+import { s } from "../values/Strings";
 
 export interface IErrorViewParams extends Record<string, any> {
     errorMessage: string;
@@ -31,7 +32,7 @@ export function ErrorView() {
     const routineStart = useCallback(() => {
         Timers.delete("error-interval");
         Timers.create("error-interval", 60000, () => {
-            onRefreshClick();
+            if (store.getState().app.view === "error") onRefreshClick();
         });
     }, [onRefreshClick]);
 
@@ -43,6 +44,10 @@ export function ErrorView() {
     useEffect(() => {
         routineStart();
         Platform.current.updateTrayIcon(0, false);
+
+        return () => {
+            Timers.delete("error-interval");
+        };
     }, [routineStart]);
 
     return (
@@ -61,7 +66,7 @@ export function ErrorView() {
                         </Button>{" "}
                         {s("errorDesc2")}
                     </div>
-                    <div>
+                    <div style={{ marginTop: 10 }}>
                         {s("errorDesc3")}{" "}
                         <Button size="tiny" compact onClick={onSettingsClick}>
                             {s("tfsSettings")}

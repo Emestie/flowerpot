@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import { useDispatch } from "react-redux";
-import { Menu, Icon } from "semantic-ui-react";
+import { Icon, Menu } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
-import { IQuery } from "../../helpers/Query";
 import { TLists } from "../../helpers/Settings";
 import { Stats, UsageStat } from "../../helpers/Stats";
-import { IWorkItem } from "../../helpers/WorkItem";
 import { appViewSet } from "../../redux/actions/appActions";
 import { s } from "../../values/Strings";
 import { SingleInputColorDialog } from "../dialogs/SingleInputColorDialog";
+import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 interface IProps {
     uid: string;

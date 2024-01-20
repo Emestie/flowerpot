@@ -2,17 +2,16 @@ $hasChangesColor: #3cb371;
 $hasNoChangesColor: transparent;
 $mineColor: skyblue;
 $deferredColor: rgb(173, 173, 173);
-$deferredColorOpaque: rgba(173, 173, 173, .1);
+$deferredColorOpaque: rgba(173, 173, 173, 0.1);
 $favoritesColor: rgb(161, 99, 202);
-$favoritesColorOpaque: rgb(161, 99, 202, .08);
-$forwardedColor: #21ba45;// rgb(72, 176, 124);
-$forwardedColorOpaque: #21ba4515;// rgb(72, 176, 124);
+$favoritesColorOpaque: rgb(161, 99, 202, 0.08);
+$forwardedColor: #21ba45; // rgb(72, 176, 124);
+$forwardedColorOpaque: #21ba4515; // rgb(72, 176, 124);
 $permawatchColor: #e696ae;
 $keywordColor: #4287f5;
 $keywordColorOpaque: #6280b17e;
 $pinnedColor: #eca06e;
 $pinnedColorOpaque: #eca06e15;
-$rowItemHover: darken(white, 5%);
 
 body,
 #root {
@@ -95,7 +94,7 @@ tr.workItemDeferred {
 }
 
 tr.workItemFavorite {
-   background-color: $favoritesColorOpaque;
+    background-color: $favoritesColorOpaque;
 }
 
 .workItemForwarded {
@@ -182,7 +181,7 @@ nav {
 }
 
 .ui.table tr:hover {
-    background-color: $rowItemHover;
+    background-color: darken(white, 5%);
     box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.05);
 }
 
@@ -219,9 +218,10 @@ nav {
     width: 25px;
 }
 
-img.av-class {
-    height: 20px !important;
-    width: 20px !important;
+img.av-class,
+img.ui.avatar.image.av-class {
+    height: 26px !important;
+    width: 26px !important;
     border-radius: 50% !important;
 }
 

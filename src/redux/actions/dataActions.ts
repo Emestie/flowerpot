@@ -1,10 +1,9 @@
 import Differences from "../../helpers/Differences";
 import Platform from "../../helpers/Platform";
-import { IQuery } from "../../helpers/Query";
-import { IWorkItem } from "../../helpers/WorkItem";
 import { Actions } from "../actions-enum";
 import { store } from "../store";
 import { createAction } from "./_common";
+import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 export function dataChangesCollectionSet(changesCollection: any) {
     Platform.current.updateTrayIconDot(Differences.isChangesCollectionHasChanges(changesCollection));

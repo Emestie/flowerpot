@@ -1,11 +1,10 @@
-import Query, { IQuery } from "./Query";
-import { IWorkItem } from "./WorkItem";
-import Loaders from "./Loaders";
-import Platform from "./Platform";
-import { s } from "../values/Strings";
+import { IQuery, IWorkItem } from "../modules/api-client";
+import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
-import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
+import { s } from "../values/Strings";
+import Platform from "./Platform";
+import Query from "./Query";
 import { Stats, UsageStat } from "./Stats";
 
 interface IShownWI {
@@ -28,11 +27,12 @@ export default class Differences {
             if (!allQueriesIds.includes(x)) wiStorage[x] = undefined;
         }
 
-        if (Loaders.outage) {
-            (wiStorage as any) = undefined;
-            Loaders.outage = false;
-            return;
-        }
+        // if (Loaders.outage) {
+        //     (wiStorage as any) = undefined;
+        //     Loaders.outage = false;
+        //     return;
+        // }
+        //TODO:
 
         if (!wiStorage[query.queryId]) {
             wiStorage[query.queryId] = [...workItems];
@@ -84,11 +84,7 @@ export default class Differences {
         const settings = store.getState().settings;
 
         wis.forEach((n) => {
-            if (
-                settings.notificationsMode === "all" ||
-                (settings.notificationsMode === "mine" &&
-                    n.assignedToFull.toLowerCase().indexOf(settings.tfsUser.toLowerCase()) !== -1)
-            ) {
+            if (settings.notificationsMode === "all" || (settings.notificationsMode === "mine" && n._isMine)) {
                 wisToShow.push(n);
             }
         });

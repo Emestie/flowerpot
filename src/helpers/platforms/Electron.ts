@@ -1,10 +1,10 @@
+import { eapi } from "#preload";
 import { appUpdateStatusSet } from "../../redux/actions/appActions";
 import { store } from "../../redux/store";
 import { TLocale } from "../../redux/types";
 import Platform, { INotificationData, IPlatformExtension } from "../Platform";
 import { Stats, UsageStat } from "../Stats";
 import CommonPlatform from "./_Common";
-import { eapi } from "#preload";
 
 export default class ElectronPlatform extends CommonPlatform implements IPlatformExtension {
     public get os() {
@@ -43,6 +43,10 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
 
     public updateTrayIconDot(hasChanges: boolean) {
         eapi.ipcSend("update-icon-dot-only", !!hasChanges);
+    }
+
+    public async extractNpmrcPat(): Promise<string | null> {
+        return await eapi.ipcInvoke<string | null>("extract-npmrc-pat");
     }
 
     public isDev() {
@@ -86,9 +90,12 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
         //const { updateStatus, view } = store.getState().app;
 
         if (cyclic) {
-            setInterval(() => {
-                this.checkForUpdates();
-            }, 1000 * 60 * 60);
+            setInterval(
+                () => {
+                    this.checkForUpdates();
+                },
+                1000 * 60 * 60
+            );
 
             //!web update
             // setInterval(() => {

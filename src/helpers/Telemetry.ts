@@ -1,18 +1,26 @@
+import CyrillicToTranslit from "cyrillic-to-translit-js";
+import { IConnectionData } from "../modules/api-client";
+import { store } from "../redux/store";
+import { getConnectionData } from "./Connection";
 import Platform from "./Platform";
 import Version from "./Version";
-import CyrillicToTranslit from "cyrillic-to-translit-js";
-import { store } from "../redux/store";
-import { UsageStat } from "./Stats";
 
 const cyrillicToTranslit = new CyrillicToTranslit();
 
 export default class Telemetry {
     private static async basicMessage(reason: string, extraInfo?: string, ignoreTelemetryDisability?: boolean) {
-        const { allowTelemetry, tfsUser } = store.getState().settings;
+        const { allowTelemetry } = store.getState().settings;
         if (!allowTelemetry && !ignoreTelemetryDisability) return;
 
+        const connection: IConnectionData | undefined = getConnectionData();
+        const userName = connection?.authenticatedUser?.providerDisplayName ?? "unknown name";
+
         try {
-            const name = tfsUser;
+            const name =
+                cyrillicToTranslit.transform(userName) +
+                " (" +
+                (connection?.authenticatedUser?.properties?.Account?.$value ?? "-") +
+                ")";
             if (!name) return;
             const ver = Version.long;
             const platform = Platform.type;
@@ -22,20 +30,13 @@ export default class Telemetry {
 
             const encodedString = btoa(JSON.stringify({ app, reason, name, ver, platform, os, iid, extraInfo }));
 
-            //https://mysweetbot-php.herokuapp.com/flowerpot-usage.php?data=
             //http://localhost:8888/.netlify/functions/handle-app-usage?data=
             await fetch("https://mysweetbot.netlify.app/.netlify/functions/handle-app-usage?data=" + encodedString);
         } catch (e: any) {}
     }
 
     public static versionUsageInfo() {
-        const { stats } = store.getState().settings;
-
-        const statString = Object.keys(stats)
-            .map((key) => `${key}=${stats[key as UsageStat]}`)
-            .join(", ");
-
-        this.basicMessage("Version installed", `stats: ${statString}`);
+        this.basicMessage("Version installed");
     }
 
     public static accountVerificationSucceed() {

@@ -1,13 +1,12 @@
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
-import Festival from "../../helpers/Festival";
 import Platform from "../../helpers/Platform";
-import { IPullRequest } from "../../helpers/PullRequest";
-import WorkItem from "../../helpers/WorkItem";
 import { s } from "../../values/Strings";
+import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
+import { IPullRequest } from "/@/modules/api-client";
 
 interface IProps {
     pullRequest: IPullRequest;
@@ -32,7 +31,7 @@ export function PullRequestRow(props: IProps) {
         );
     })();
 
-    const tags = pullRequest.labels.map((x) => x.name).map((x) => <Tag text={x} />);
+    const tags = pullRequest.labels.map((x) => x.name).map((x, i) => <Tag key={i} text={x} />);
 
     const reviewers = pullRequest.reviewers
         .sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1))
@@ -48,6 +47,18 @@ export function PullRequestRow(props: IProps) {
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
+                    {!!pullRequest.isDraft && (
+                        <span>
+                            <Label
+                                key={Math.random()}
+                                size="mini"
+                                style={{ padding: "3px 4px", marginRight: 4 }}
+                                color="grey"
+                            >
+                                {s("draftPullRequest")}
+                            </Label>
+                        </span>
+                    )}
                     <span className="IterationInTitle">
                         {pullRequest.projectName}/{pullRequest.repoName}
                     </span>
@@ -78,16 +89,13 @@ export function PullRequestRow(props: IProps) {
                 </span>
             </Table.Cell>
             <Table.Cell collapsing>{reviewers}</Table.Cell>
-            <Table.Cell
-                collapsing
-                onDoubleClick={() => Platform.current.copyString(WorkItem.getTextName(pullRequest.authorFullName))}
-            >
+            <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
                 <ContextMenuTrigger id={uid}>
-                    {Festival.getSpecialNameEffect(
-                        pullRequest.authorName,
-                        pullRequest.authorFullName,
-                        pullRequest.authorAvatar,
-                    )}
+                    <ProfileWidget
+                        avatarUrl={pullRequest.authorAvatar}
+                        displayName={pullRequest.authorName}
+                        nameFull={pullRequest.authorFullName}
+                    />
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>

@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
 import { LINKS_COUNT_LIMIT } from "../../helpers/Links";
@@ -22,7 +21,14 @@ export function QuickLinksContainer() {
     };
 
     const items = links.map((x) => (
-        <Label key={x.url} color={x.color as any} onClick={() => openLink(x.url)} size="mini" basic>
+        <Label
+            key={x.url}
+            color={x.color as any}
+            onClick={() => openLink(x.url)}
+            size="mini"
+            basic
+            className="quick-link-label"
+        >
             {x.name}
         </Label>
     ));

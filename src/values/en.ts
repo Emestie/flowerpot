@@ -1,6 +1,4 @@
-import { ILocalizedStrings } from "./Strings";
-
-const en: ILocalizedStrings = {
+const en = {
     //settings view
     refresh1m: "1 minute",
     refresh3m: "3 minutes",
@@ -22,7 +20,7 @@ const en: ILocalizedStrings = {
     updateStateNone: "Check for updates",
     updateStateError: "Update error. Click to try again",
     settingsHeader: "Settings",
-    editTfsSettingsBtn: "Manage TFS & Account settings",
+    editTfsSettingsBtn: "Manage account settings",
     settingsBackButton: "OK",
     settingsQueriesHeader: "Queries to watch",
     settingsOthersHeader: "Others",
@@ -38,7 +36,8 @@ const en: ILocalizedStrings = {
     quickLinksSettingsHeader: "Quick Links",
     //sel queries view
     loading: "Loading...",
-    noQueriesAvailable: "You don't have any available queries. Make sure you added desired ones to Favorites in TFS.",
+    noQueriesAvailable:
+        "You don't have any available queries. Make sure you added desired ones to Favorites in TFS/Azure DevOps.",
     selQHeader: "Select Queries",
     cancel: "Cancel",
     add: "Add",
@@ -66,26 +65,26 @@ const en: ILocalizedStrings = {
     errorDesc2: "page",
     errorDesc3: "Or go to",
     errorDesc4: "to check your account and server",
-    tfsSettings: "TFS Settings",
+    tfsSettings: "TFS/Azure DevOps Account Settings",
     //creds view
     validate: "Validate and save",
     status: "Status: ",
     credsNoteText: "You must validate credentials you entered before leaving this page.",
-    tfsPwd: "TFS password",
-    tfsUser: "TFS username (with domain)",
-    tfsPath: "TFS path (must start with 'http://' and end with '/')",
+    tfsPath: "TFS/Azure DevOps path (must start with 'http://' and end with '/')",
+    tfsToken: "Personal Access Token",
     credsHeader: "Credentials",
     save: "OK",
-    tfsHeader: "TFS & Account settings",
+    tfsHeader: "Account settings",
     credsState1: "Not validated yet",
     credsState2: "Validating...",
-    credsState3: "Server unavailable or TFS path is wrong",
-    credsState4: "Incorrect Username or Password",
+    credsState3: "Server unavailable or TFS/Azure DevOps path is wrong",
+    credsState4: "Personal Access Token is incorrect or expired",
     credsState5: "OK",
     //helpers
     throwNoTeams: "No available team projects found",
     throwQueryLoading: "Error while loading query",
-    throwAuth: "Cannot authenticate with provided credentials, TFS path is not valid or network problems occured",
+    throwAuth:
+        "Cannot authenticate with provided credentials, TFS/Azure DevOps path is not valid or network problems occured",
     throwUnknown: "Something went wrong during request processing",
     notifNewItem: ": new item",
     notifChangedItem: ": item changed",
@@ -178,8 +177,6 @@ const en: ILocalizedStrings = {
 
     collection: "Collection",
 
-    showAvatars: "Show avatars",
-
     flowerbot: "Set up Flowerbot",
 
     flowerbotBanner1: "Meet Flowerbot - a Telegram bot to catch your bugs and tasks.",
@@ -248,6 +245,7 @@ const en: ILocalizedStrings = {
     sectionCredits: "Other settings",
 
     pullRequestsBlockCaption: "Pull Requests",
+    draftPullRequest: "Draft",
 
     settingsAccountChecked: "Validated",
     settingsAccountNotChecked: "Not validated",
@@ -270,6 +268,23 @@ const en: ILocalizedStrings = {
 
     mergeStatus: "Merge status",
     requiredReviewer: "Required",
+
+    apiClientFetchError: "Loading error: ",
+
+    unauthorized:
+        "Your Personal Access Token is expired or incorrect. Please go to Account Settings and provide correct token.",
+
+    appFatalError: "Application fatal error",
+    reload: "Reload",
+
+    credsTokenInfo1: "To authorize in the application you need to get",
+    credsTokenInfo2: "Personal Access Token",
+    credsTokenInfo3:
+        "in your TFS/Azure DevOps. Instructions for creating a token and a direct link to the token creation page are available using the buttons below:",
+    credsTokenOpenDocs: "Open the PAT creation docs (Microsoft)",
+    credsTokenOpenCreatePage: "Open the PAT creation page in your TFS/Azure DevOps",
+    credsTokenInfo4:
+        "Please note that for the application to function fully, a token with the maximum access level is required.",
 };
 
 export default en;

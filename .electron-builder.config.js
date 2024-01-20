@@ -27,17 +27,17 @@ const config = {
     win: {
         icon: "build-resources/icons/ico/flower4.ico",
         target: {
-            target: 'default', 
-            arch: 'x64'
-        }
+            target: "default",
+            arch: "x64",
+        },
     },
     mac: {
         icon: "build-resources/icons/macicon2.icns",
         category: "public.app-category.utilities",
         target: {
-            target: 'default',
-            arch: 'universal'
-        }
+            target: "default",
+            arch: "arm64",
+        },
     },
     publish: {
         provider: "github",

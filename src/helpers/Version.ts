@@ -33,6 +33,8 @@ export default class Version {
 
         store.dispatch(settingsUpdate({ lastTimeVersion, lastTimeVersionLong }));
 
-        Telemetry.versionUsageInfo();
+        setTimeout(() => {
+            Telemetry.versionUsageInfo();
+        }, 5000);
     }
 }

@@ -1,6 +1,6 @@
-import { ILocalizedStrings } from "./Strings";
+import { LocalizedStrings } from "./Strings";
 
-const ru: ILocalizedStrings = {
+const ru: LocalizedStrings = {
     //settings view
     refresh1m: "1 минута",
     refresh3m: "3 минуты",
@@ -22,7 +22,7 @@ const ru: ILocalizedStrings = {
     updateStateError: "Ошибка при обновлении. Нажмите чтобы попробовать еще раз",
     updateStateNone: "Проверить наличие обновлений",
     settingsHeader: "Настройки",
-    editTfsSettingsBtn: "Настройки TFS и учетной записи",
+    editTfsSettingsBtn: "Настройки учетной записи",
     settingsBackButton: "OK",
     settingsQueriesHeader: "Отслеживаемые запросы",
     settingsOthersHeader: "Другие",
@@ -38,7 +38,8 @@ const ru: ILocalizedStrings = {
     quickLinksSettingsHeader: "Быстрые ссылки",
     //sel queries view
     loading: "Загрузка...",
-    noQueriesAvailable: "Нет ни одного доступного вам запроса. Убедитесь, что добавили нужные в 'Избранное' в TFS.",
+    noQueriesAvailable:
+        "Нет ни одного доступного вам запроса. Убедитесь, что добавили нужные в 'Избранное' в TFS/Azure DevOps.",
     selQHeader: "Выбор запросов",
     cancel: "Отмена",
     add: "Добавить",
@@ -66,27 +67,26 @@ const ru: ILocalizedStrings = {
     errorDesc2: "страницу",
     errorDesc3: "Или проверить",
     errorDesc4: "на предмет корректности",
-    tfsSettings: "Настройки TFS",
+    tfsSettings: "Настройки учетной записи TFS/Azure DevOps",
     //creds view
     validate: "Проверить и сохранить",
     status: "Статус: ",
     credsNoteText: "Вы должны проверить введенные данные на корректность.",
-    tfsPwd: "Пароль TFS",
-    tfsUser: "Имя пользователя TFS (с доменом)",
-    tfsPath: "Путь к TFS (должен начинаться с 'http://' и заканчиваться '/')",
+    tfsPath: "Путь к TFS/Azure DevOps (должен начинаться с 'http://' и заканчиваться '/')",
+    tfsToken: "Персональный токен доступа",
     credsHeader: "Учетные данные",
     save: "OK",
-    tfsHeader: "Настройки TFS и учетной записи",
+    tfsHeader: "Настройки учетной записи",
     credsState1: "Не проверены",
     credsState2: "Проверка...",
-    credsState3: "Сервер недоступен или путь к TFS не верный",
-    credsState4: "Не верное имя пользователя или пароль",
+    credsState3: "Сервер недоступен или путь к TFS/Azure DevOps не верный",
+    credsState4: "Персональный токен доступа некорректен или истек",
     credsState5: "OK",
     //helpers
     throwNoTeams: "Не найдено доступных проектов",
     throwQueryLoading: "Ошибка при загрузке запроса",
     throwAuth:
-        "Невозможно авторизоваться с предоставленными учетными данными, путь к TFS некорректен или проблемы с сетью",
+        "Невозможно авторизоваться с предоставленными учетными данными, путь к TFS/Azure DevOps некорректен или проблемы с сетью",
     throwUnknown: "Что-то пошло не так во время обработки запроса",
     notifNewItem: ": новое",
     notifChangedItem: ": изменения",
@@ -180,8 +180,6 @@ const ru: ILocalizedStrings = {
 
     collection: "Коллекция",
 
-    showAvatars: "Показывать аватары",
-
     flowerbot: "Настроить Flowerbot",
 
     flowerbotBanner1: "Встречайте Flowerbot - Telegram-бот для отслеживания ваших ошибок и задач.",
@@ -249,6 +247,7 @@ const ru: ILocalizedStrings = {
     sectionCredits: "Прочие настройки",
 
     pullRequestsBlockCaption: "Запросы на вытягивание",
+    draftPullRequest: "Черновик",
 
     settingsAccountChecked: "Проверен",
     settingsAccountNotChecked: "Не проверен",
@@ -271,6 +270,23 @@ const ru: ILocalizedStrings = {
 
     mergeStatus: "Статус слияния",
     requiredReviewer: "Обязательный",
+
+    apiClientFetchError: "Ошибка при загрузке: ",
+
+    unauthorized:
+        "Ваш персональный токен доступа истек или некорректен. Пожалуйста, укажите в настройках учетной записи корректный токен.",
+
+    appFatalError: "Критическая ошибка приложения",
+    reload: "Перезагрузить",
+
+    credsTokenInfo1: "Для авторизации в приложении вам необходимо получить",
+    credsTokenInfo2: "персональный токен доступа",
+    credsTokenInfo3:
+        "в вашем TFS/Azure DevOps. Инструкция по созданию токена и прямая ссылка на страницу создания токена доступны по кнопкам ниже:",
+    credsTokenOpenDocs: "Открыть документацию по созданию токена (Microsoft)",
+    credsTokenOpenCreatePage: "Открыть страницу создания токена в вашем TFS/Azure DevOps",
+    credsTokenInfo4:
+        "Обратите внимание, что для полноценной работы приложения необходим токен с максимальным уровенем доступа.",
 };
 
 export default ru;
