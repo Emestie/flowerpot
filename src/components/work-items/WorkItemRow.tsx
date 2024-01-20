@@ -208,8 +208,9 @@ export function WorkItemRow(props: IProps) {
                 return <Icon name="hand paper outline" />;
             case "New":
             case "Новый":
-            default:
                 return <Icon name="genderless" />;
+            default:
+                return <Icon name="fire" />;
         }
     };
 
