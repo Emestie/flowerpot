@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "description": "TFS/Azure DevOps work items tracking tool",
     "author": {
         "name": "Valery Murashko",
