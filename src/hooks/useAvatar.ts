@@ -7,7 +7,7 @@ export function useAvatar(avatarUrl: string) {
     useEffect(() => {
         (async () => {
             const base64 = await getAvatarContent(avatarUrl);
-            setAvatar(base64);
+            if (base64) setAvatar(base64);
         })();
     }, [avatarUrl]);
 

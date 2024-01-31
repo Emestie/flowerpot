@@ -115,7 +115,6 @@ export function DebugView() {
                 <Button onClick={() => Stats.increment(UsageStat.Test)}>Test stat: {settings.stats.test || 0}</Button>
                 <Button onClick={loadDynamic}>Load DC</Button>
                 <Button onClick={() => Migration.perform()}>Perform migrations</Button>
-                <Button onClick={() => console.log(Platform.current.extractNpmrcPat())}>Extract PAT</Button>
                 <Button
                     onClick={() => {
                         setThrowErrorState(true);

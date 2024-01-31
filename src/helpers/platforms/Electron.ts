@@ -45,10 +45,6 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
         eapi.ipcSend("update-icon-dot-only", !!hasChanges);
     }
 
-    public async extractNpmrcPat(): Promise<string | null> {
-        return await eapi.ipcInvoke<string | null>("extract-npmrc-pat");
-    }
-
     public isDev() {
         return eapi.isDev;
     }
