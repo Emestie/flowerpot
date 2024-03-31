@@ -176,8 +176,6 @@ const ru: LocalizedStrings = {
     itemsWasChanged: " элемента(ов) изменено",
     itemsNew: " элемента(ов) добавлено",
 
-    moveToProd: "Запрос на перенос",
-
     collection: "Коллекция",
 
     flowerbot: "Настроить Flowerbot",

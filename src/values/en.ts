@@ -173,8 +173,6 @@ const en = {
     itemsWasChanged: " work items was changed",
     itemsNew: " new work items",
 
-    moveToProd: "Move request",
-
     collection: "Collection",
 
     flowerbot: "Set up Flowerbot",
