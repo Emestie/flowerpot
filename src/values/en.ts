@@ -263,7 +263,6 @@ const en = {
     statDisplayName_workItemsAddedToLists: "Work Items added to lists",
     statDisplayName_accountVerifications: "Account verifications",
 
-    mergeStatus: "Merge status",
     requiredReviewer: "Required",
 
     apiClientFetchError: "Loading error: ",
@@ -282,6 +281,9 @@ const en = {
     credsTokenOpenCreatePage: "Open the PAT creation page in your TFS/Azure DevOps",
     credsTokenInfo4:
         "Please note that for the application to function fully, a token with the maximum access level is required.",
+
+    prComments: "Resolved/Total comments",
+    prMergeConflicts: "Conflicts",
 };
 
 export default en;

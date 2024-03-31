@@ -265,7 +265,6 @@ const ru: LocalizedStrings = {
     statDisplayName_workItemsAddedToLists: "Добавлено рабочих элементов в списки",
     statDisplayName_accountVerifications: "Проверок учетной записи",
 
-    mergeStatus: "Статус слияния",
     requiredReviewer: "Обязательный",
 
     apiClientFetchError: "Ошибка при загрузке: ",
@@ -284,6 +283,9 @@ const ru: LocalizedStrings = {
     credsTokenOpenCreatePage: "Открыть страницу создания токена в вашем TFS/Azure DevOps",
     credsTokenInfo4:
         "Обратите внимание, что для полноценной работы приложения необходим токен с максимальным уровенем доступа.",
+
+    prComments: "Выполненные/Все комментарии",
+    prMergeConflicts: "Конфликт",
 };
 
 export default ru;

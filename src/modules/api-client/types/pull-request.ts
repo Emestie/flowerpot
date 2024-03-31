@@ -9,6 +9,7 @@ export interface IResponsePullRequest {
     creationDate: string;
     pullRequestId: number;
     repository: {
+        id: string;
         name: string;
         project: {
             name: string;
@@ -23,6 +24,7 @@ export interface IResponsePullRequest {
         uniqueName: string;
         isRequired: boolean;
         vote: number;
+        id: string;
     }[];
     targetRefName: string;
     sourceRefName: string;
@@ -36,6 +38,7 @@ export interface IPullRequestReviewer {
     imageUrl: string;
     isRequired: boolean;
     vote: number;
+    id: string;
 }
 
 export interface IPullRequest {
@@ -47,8 +50,10 @@ export interface IPullRequest {
     authorAvatar: string;
     authorDescriptor: string;
     date: string;
+    collectionName: string;
     projectName: string;
     repoName: string;
+    repoId: string;
     title: string;
     url: string;
     status: string;
