@@ -47,7 +47,6 @@ export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem
         _isMine: isMine,
         _list: getListName(resp.id, query.collectionName),
         _isHasShelve: isHasShelve(resp.fields["System.History"]),
-        _moveToProdMessage: getMoveToProdMessage(resp.fields["System.History"]),
         _queryId: query.queryId,
         _collectionName: query.collectionName,
         _filteredBy: {},
@@ -125,15 +124,4 @@ function isHasShelve(text: string) {
     if (text.toLowerCase().indexOf("shelve") !== -1) return true;
     if (text.toLowerCase().indexOf("шелв") !== -1) return true;
     return false;
-}
-
-//TODO: remove this? questionable functionality
-function getMoveToProdMessage(text: string) {
-    if (!text) return null;
-    if (text.toLowerCase().indexOf(" prod") !== -1) return text;
-    if (text.toLowerCase().indexOf(" прод") !== -1) return text;
-    if (text.toLowerCase().indexOf(" продакшен") !== -1) return text;
-    if (text.toLowerCase().indexOf(" продакшн") !== -1) return text;
-    if (text.toLowerCase().indexOf(" переносить") !== -1) return text;
-    return null;
 }

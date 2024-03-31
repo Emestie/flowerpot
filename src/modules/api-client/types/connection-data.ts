@@ -11,8 +11,13 @@ interface IAuthenticatedUser {
     };
     resourceVersion: number;
     metaTypeId: number;
+    memberOfGroups?: string[];
 }
 
 export interface IConnectionData {
     authenticatedUser: IAuthenticatedUser;
+}
+
+export interface IIdentityMembership {
+    value: { id: string; providerDisplayName: string; memberOf: string[] }[];
 }

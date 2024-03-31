@@ -2,6 +2,7 @@ import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { buildPullRequest } from "../models";
 import { IProject, IPullRequest, IResponsePullRequest, IValue } from "../types";
+import { IPullRequestThread } from "../types/thread";
 
 export function createPullRequestLoaders(params: IApiClientParams, loader: Loader) {
     return {
@@ -29,6 +30,18 @@ export function createPullRequestLoaders(params: IApiClientParams, loader: Loade
                     )
                 )
                 .sort((a, b) => b.id - a.id);
+        },
+        async getCommentsCount(pullRequest: IPullRequest): Promise<{ resolved: number; total: number }> {
+            const threadsResult = await loader<{ value: IPullRequestThread[] }>(
+                `${pullRequest.collectionName}/${pullRequest.projectName}/_apis/git/repositories/${pullRequest.repoId}/pullRequests/${pullRequest.id}/threads?api-version=7.0`
+            );
+
+            const threads = threadsResult.value.filter((x) => !x.isDeleted);
+
+            const allWithStatus = threads.filter((th) => !!th.status).length;
+            const allResolved = threads.filter((th) => th.status === "fixed" || th.status === "closed").length;
+
+            return { resolved: allResolved, total: allWithStatus };
         },
     };
 }

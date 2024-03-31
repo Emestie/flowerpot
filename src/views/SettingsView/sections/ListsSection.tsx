@@ -1,25 +1,13 @@
-import React from "react";
-import { Header, Container, Button, Icon, Label } from "semantic-ui-react";
-import { s } from "../values/Strings";
-import { ListBlock } from "../components/ListBlock";
-import { ViewHeading } from "../components/heading/ViewHeading";
-import { useDispatch } from "react-redux";
-import { appViewSet } from "../redux/actions/appActions";
+import { Container, Header, Icon, Label } from "semantic-ui-react";
+import { ListBlock } from "../../../components/ListBlock";
+import { s } from "../../../values/Strings";
 
 export function ListsView() {
-    const dispatch = useDispatch();
-
-    const onSave = () => {
-        dispatch(appViewSet("settings"));
-    };
-
     return (
-        <div className="Page">
-            <ViewHeading>
-                <Button positive onClick={onSave}>
-                    {s("save")}
-                </Button>
-            </ViewHeading>
+        <>
+            <Header as="h3" dividing>
+                {s("sectionLists")}
+            </Header>
             <Container fluid>
                 <Label color="orange">
                     <span>{s("note")}</span>
@@ -82,6 +70,6 @@ export function ListsView() {
                 {s("deferredDescription")}
                 <ListBlock listName="deferred" />
             </Container>
-        </div>
+        </>
     );
 }

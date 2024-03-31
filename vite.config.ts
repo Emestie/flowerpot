@@ -1,8 +1,9 @@
-import { chrome } from "./.electron-vendors.cache.json";
+import react from "@vitejs/plugin-react";
 import { join } from "path";
 import { renderer } from "unplugin-auto-expose";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import checker from "vite-plugin-checker";
+import { chrome } from "./.electron-vendors.cache.json";
 import * as packagejson from "./package.json";
 
 const PACKAGE_ROOT = __dirname;
@@ -43,6 +44,9 @@ export default defineConfig({
         react(),
         renderer.vite({
             preloadEntry: join(PACKAGE_ROOT, "./host/preload/src/index.ts"),
+        }),
+        checker({
+            typescript: true,
         }),
     ],
     define: {

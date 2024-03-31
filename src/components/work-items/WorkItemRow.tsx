@@ -305,22 +305,7 @@ export function WorkItemRow(props: IProps) {
                     <span className="IterationInTitle" title={item.areaPath}>
                         {yellowMarkedVal("iterationPath")}
                     </span>
-                    <span>
-                        {!!item._moveToProdMessage && (
-                            <span className="hasShelve" title={s("moveToProd")}>
-                                <Label
-                                    color="teal"
-                                    basic
-                                    size="mini"
-                                    title={item._moveToProdMessage}
-                                    style={{ padding: "3px 4px", marginRight: 2 }}
-                                >
-                                    -&gt; Prod
-                                </Label>
-                            </span>
-                        )}
-                        {tags}
-                    </span>
+                    <span>{tags}</span>
                     <span
                         className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}
                         onClick={() => {

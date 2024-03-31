@@ -103,10 +103,8 @@ const ru: LocalizedStrings = {
     teamProject: "Проект",
     sortPattern: "Сортировка результатов запроса: ",
     //lists
-    manageLists: "Управление списками",
     mineOnTop: "Показывать мои рабочие элементы первыми",
     settingsWIHeader: "Рабочие элементы",
-    listsHeader: "Списки",
     favoritesDescription: "ID рабочих элементов, которые будут помечены звездочкой.",
     favorites: "Избранные",
     forwardedDescription: "ID рабочих элементов, которые будут помечены стрелкой.",
@@ -176,8 +174,6 @@ const ru: LocalizedStrings = {
     itemsWasChanged: " элемента(ов) изменено",
     itemsNew: " элемента(ов) добавлено",
 
-    moveToProd: "Запрос на перенос",
-
     collection: "Коллекция",
 
     flowerbot: "Настроить Flowerbot",
@@ -240,11 +236,12 @@ const ru: LocalizedStrings = {
     projectsTableSettingsHeader: "Проекты для отслеживания запросов на вытягивание",
 
     sectionAccount: "Учетная запись",
-    sectionQueries: "Запросы и списки",
+    sectionQueries: "Запросы",
     sectionWI: "Рабочие элементы",
     sectionProjects: "Проекты и запросы на вытягивание",
     sectionQL: "Быстрые ссылки",
-    sectionCredits: "Прочие настройки",
+    sectionCredits: "Прочие",
+    sectionLists: "Списки",
 
     pullRequestsBlockCaption: "Запросы на вытягивание",
     draftPullRequest: "Черновик",
@@ -268,7 +265,6 @@ const ru: LocalizedStrings = {
     statDisplayName_workItemsAddedToLists: "Добавлено рабочих элементов в списки",
     statDisplayName_accountVerifications: "Проверок учетной записи",
 
-    mergeStatus: "Статус слияния",
     requiredReviewer: "Обязательный",
 
     apiClientFetchError: "Ошибка при загрузке: ",
@@ -287,6 +283,9 @@ const ru: LocalizedStrings = {
     credsTokenOpenCreatePage: "Открыть страницу создания токена в вашем TFS/Azure DevOps",
     credsTokenInfo4:
         "Обратите внимание, что для полноценной работы приложения необходим токен с максимальным уровенем доступа.",
+
+    prComments: "Выполненные/Все комментарии",
+    prMergeConflicts: "Конфликт",
 };
 
 export default ru;

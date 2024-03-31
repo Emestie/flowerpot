@@ -13,7 +13,7 @@ export function ProfileWidget({ avatarUrl, displayName, nameFull }: IProps) {
     return (
         <span title={nameFull}>
             <Label basic image className="user-label">
-                {avatar && <Image className="av-class" avatar spaced="right" src={avatar} />}
+                {avatar && !!displayName && <Image className="av-class" avatar spaced="right" src={avatar} />}
                 {displayName}
             </Label>
         </span>

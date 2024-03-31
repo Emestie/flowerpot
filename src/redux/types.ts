@@ -12,7 +12,6 @@ export type TView =
     | "selectqueries"
     | "selectprojects"
     | "debug"
-    | "lists"
     | "refreshhelper"
     | "info";
 

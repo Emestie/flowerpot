@@ -12,14 +12,17 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
         authorDescriptor: resp.createdBy.descriptor,
         date: resp.creationDate,
         isDraft: resp.isDraft,
+        collectionName: collection,
         projectName: resp.repository.project.name,
         repoName: resp.repository.name,
+        repoId: resp.repository.id,
         reviewers: resp.reviewers.map((rev) => ({
             name: rev.displayName,
             uid: rev.uniqueName,
             imageUrl: rev.imageUrl,
             isRequired: !!rev.isRequired,
             vote: rev.vote,
+            id: rev.id,
         })),
         status: resp.status,
         title: resp.title,
@@ -36,9 +39,19 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
 
             if (!connectionData) return false;
 
+            //if author
             if (this.authorDescriptor === connectionData.authenticatedUser.subjectDescriptor) return true;
 
+            //if in reviewers list as person
             if (this.reviewers.map((rev) => rev.name).includes(connectionData.authenticatedUser.providerDisplayName))
+                return true;
+
+            //if member of review group
+            if (
+                this.reviewers
+                    .map((rev) => rev.name)
+                    .some((name) => (connectionData.authenticatedUser.memberOfGroups || []).includes(name))
+            )
                 return true;
 
             return false;

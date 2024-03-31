@@ -29,7 +29,6 @@ export interface IWorkItem {
     _isMine: boolean;
     _list?: TLists;
     _isHasShelve: boolean;
-    _moveToProdMessage: string | null;
     _queryId: string;
     _collectionName: string;
     _filteredBy: Record<string, string | undefined>;

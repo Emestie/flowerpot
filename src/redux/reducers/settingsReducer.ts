@@ -17,6 +17,7 @@ export enum Sections {
     QuickLinks,
     Stats,
     Credits,
+    Lists,
 }
 
 export interface ISettingsState extends ISettings {}

@@ -101,10 +101,8 @@ const en = {
     teamProject: "Team project",
     sortPattern: "Work Items sort pattern: ",
     //lists
-    manageLists: "Manage custom lists",
     mineOnTop: "Show my Work Items on top",
     settingsWIHeader: "Work Items",
-    listsHeader: "Lists",
     favoritesDescription: "IDs of Work Items you will see marked with a star.",
     favorites: "Favorites",
     forwardedDescription: "IDs of Work Items you will see marked with an arrow",
@@ -173,8 +171,6 @@ const en = {
     itemsWasChanged: " work items was changed",
     itemsNew: " new work items",
 
-    moveToProd: "Move request",
-
     collection: "Collection",
 
     flowerbot: "Set up Flowerbot",
@@ -235,14 +231,15 @@ const en = {
 
     addProject: "Add project",
     projectName: "Project name",
-    projectsTableSettingsHeader: "Projects to watch Pull Requests",
+    projectsTableSettingsHeader: "Projects to watch Pull Requests in",
 
     sectionAccount: "Account and Credentials",
-    sectionQueries: "Queries and Lists",
+    sectionQueries: "Queries",
     sectionWI: "Work Items",
     sectionProjects: "Projects and Pull Requests",
     sectionQL: "Quick Links",
-    sectionCredits: "Other settings",
+    sectionCredits: "Other",
+    sectionLists: "Lists",
 
     pullRequestsBlockCaption: "Pull Requests",
     draftPullRequest: "Draft",
@@ -266,7 +263,6 @@ const en = {
     statDisplayName_workItemsAddedToLists: "Work Items added to lists",
     statDisplayName_accountVerifications: "Account verifications",
 
-    mergeStatus: "Merge status",
     requiredReviewer: "Required",
 
     apiClientFetchError: "Loading error: ",
@@ -285,6 +281,9 @@ const en = {
     credsTokenOpenCreatePage: "Open the PAT creation page in your TFS/Azure DevOps",
     credsTokenInfo4:
         "Please note that for the application to function fully, a token with the maximum access level is required.",
+
+    prComments: "Resolved/Total comments",
+    prMergeConflicts: "Conflicts",
 };
 
 export default en;

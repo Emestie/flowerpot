@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
@@ -6,6 +7,7 @@ import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
+import { api } from "/@/api/client";
 import { IPullRequest } from "/@/modules/api-client";
 
 interface IProps {
@@ -14,6 +16,17 @@ interface IProps {
 
 export function PullRequestRow(props: IProps) {
     const { pullRequest } = props;
+
+    const [totalComments, setTotalComments] = useState<number | null>(null);
+    const [resolvedComments, setResolvedComments] = useState<number | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            const { resolved, total } = await api.pullRequest.getCommentsCount(pullRequest);
+            setResolvedComments(resolved);
+            setTotalComments(total);
+        })();
+    }, [pullRequest]);
 
     const uid = pullRequest.id + Math.random() + "";
 
@@ -27,6 +40,19 @@ export function PullRequestRow(props: IProps) {
                     <Icon name="leaf" />
                 </span>
                 {pullRequest.freshness}
+            </span>
+        );
+    })();
+
+    const commentsEl = (() => {
+        if (totalComments === null) return null;
+
+        return (
+            <span title={s("prComments")} style={{ marginLeft: 4 }}>
+                <span>
+                    <Icon name="comments" />
+                </span>
+                {resolvedComments}/{totalComments}
             </span>
         );
     })();
@@ -59,6 +85,18 @@ export function PullRequestRow(props: IProps) {
                             </Label>
                         </span>
                     )}
+                    {pullRequest.mergeStatus === "conflicts" && (
+                        <span>
+                            <Label
+                                key={Math.random()}
+                                size="mini"
+                                style={{ padding: "3px 4px", marginRight: 4 }}
+                                color="red"
+                            >
+                                {s("prMergeConflicts")}
+                            </Label>
+                        </span>
+                    )}
                     <span className="IterationInTitle">
                         {pullRequest.projectName}/{pullRequest.repoName}
                     </span>
@@ -78,16 +116,6 @@ export function PullRequestRow(props: IProps) {
                     </span>
                 </ContextMenuTrigger>
             </Table.Cell>
-            <Table.Cell collapsing>
-                <span title={`${s("mergeStatus")}: ${pullRequest.mergeStatus}`}>
-                    <Icon
-                        name="code branch"
-                        flipped="vertically"
-                        color={pullRequest.mergeStatus === "conflicts" ? "red" : "green"}
-                        style={{ height: 20, width: 20 }}
-                    />
-                </span>
-            </Table.Cell>
             <Table.Cell collapsing>{reviewers}</Table.Cell>
             <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
                 <ContextMenuTrigger id={uid}>
@@ -97,6 +125,9 @@ export function PullRequestRow(props: IProps) {
                         nameFull={pullRequest.authorFullName}
                     />
                 </ContextMenuTrigger>
+            </Table.Cell>
+            <Table.Cell collapsing>
+                <ContextMenuTrigger id={uid}>{commentsEl}</ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
                 <ContextMenuTrigger id={uid}>{freshnessEl}</ContextMenuTrigger>
