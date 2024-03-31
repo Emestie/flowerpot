@@ -20,8 +20,6 @@ const getHeaderTextByViewName = (viewName: TView) => {
             return "DebugView";
         case "error":
             return s("errorHeader");
-        case "lists":
-            return s("listsHeader");
         case "main":
             return s("mainHeader");
         case "selectqueries":

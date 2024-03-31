@@ -8,6 +8,7 @@ import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { AccountSection } from "./sections/AccountSection";
 import { CreditsSection } from "./sections/CreditsSection";
+import { ListsView } from "./sections/ListsSection";
 import { ProjectsSection } from "./sections/ProjectsSection";
 import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
@@ -25,12 +26,16 @@ const sectionsList = [
         captionKey: "sectionQueries",
     },
     {
-        id: Sections.WorkItems,
-        captionKey: "sectionWI",
-    },
-    {
         id: Sections.Projects,
         captionKey: "sectionProjects",
+    },
+    {
+        id: Sections.Lists,
+        captionKey: "sectionLists",
+    },
+    {
+        id: Sections.WorkItems,
+        captionKey: "sectionWI",
     },
     {
         id: Sections.QuickLinks,
@@ -62,6 +67,8 @@ const getSectionComponent = (sectionId: Sections) => {
             return <QuickLinksSections />;
         case Sections.Stats:
             return <StatsSection />;
+        case Sections.Lists:
+            return <ListsView />;
         default:
             return <></>;
     }

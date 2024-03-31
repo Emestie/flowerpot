@@ -103,10 +103,8 @@ const ru: LocalizedStrings = {
     teamProject: "Проект",
     sortPattern: "Сортировка результатов запроса: ",
     //lists
-    manageLists: "Управление списками",
     mineOnTop: "Показывать мои рабочие элементы первыми",
     settingsWIHeader: "Рабочие элементы",
-    listsHeader: "Списки",
     favoritesDescription: "ID рабочих элементов, которые будут помечены звездочкой.",
     favorites: "Избранные",
     forwardedDescription: "ID рабочих элементов, которые будут помечены стрелкой.",
@@ -238,11 +236,12 @@ const ru: LocalizedStrings = {
     projectsTableSettingsHeader: "Проекты для отслеживания запросов на вытягивание",
 
     sectionAccount: "Учетная запись",
-    sectionQueries: "Запросы и списки",
+    sectionQueries: "Запросы",
     sectionWI: "Рабочие элементы",
     sectionProjects: "Проекты и запросы на вытягивание",
     sectionQL: "Быстрые ссылки",
-    sectionCredits: "Прочие настройки",
+    sectionCredits: "Прочие",
+    sectionLists: "Списки",
 
     pullRequestsBlockCaption: "Запросы на вытягивание",
     draftPullRequest: "Черновик",

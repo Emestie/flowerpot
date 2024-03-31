@@ -17,7 +17,6 @@ import { CredentialsView } from "../views/CredentialsView";
 import { DebugView } from "../views/DebugView";
 import { ErrorView } from "../views/ErrorView";
 import { InfoView } from "../views/InfoView";
-import { ListsView } from "../views/ListsView";
 import { LoadingView } from "../views/LoadingView";
 import { MainView } from "../views/MainView";
 import { RefreshHelperView } from "../views/RefreshHelperView";
@@ -108,8 +107,6 @@ export function App() {
                 return <SelectQueriesView />;
             case "selectprojects":
                 return <SelectProjectsView />;
-            case "lists":
-                return <ListsView />;
             case "refreshhelper":
                 return <RefreshHelperView />;
             case "info":
