@@ -37,7 +37,7 @@
         "@types/react": "^17.0.52",
         "@types/react-dom": "^17.0.18",
         "@types/redux-logger": "^3.0.10",
-        "@vitejs/plugin-react": "^4.1.0",
+        "@vitejs/plugin-react": "^4.2.1",
         "cross-env": "^7.0.3",
         "electron": "^19.1.9",
         "electron-builder": "^24.13.3",
@@ -54,10 +54,11 @@
         "semantic-ui-react": "^2.1.4",
         "typescript": "^5.2.2",
         "unplugin-auto-expose": "0.0.2",
-        "vite": "^4.4.11"
+        "vite": "^4.5.3",
+        "vite-plugin-checker": "^0.6.4"
     },
     "scripts": {
-        "dev": "tsc && node scripts/watch.js",
+        "dev": "node scripts/watch.js",
         "build": "npm run build:main && npm run build:preload && npm run build:renderer",
         "build:main": "cd ./host/main && tsc && vite build",
         "build:preload": "cd ./host/preload && tsc && vite build",
