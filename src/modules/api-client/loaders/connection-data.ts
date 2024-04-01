@@ -1,6 +1,12 @@
 import { Loader } from "../loader";
 import { IConnectionData, IIdentityMembership } from "../types";
 
+const arrayChunks = <T>(array: T[], chunkSize: number) =>
+    Array(Math.ceil(array.length / chunkSize))
+        .fill(1)
+        .map((_, index) => index * chunkSize)
+        .map((begin) => array.slice(begin, begin + chunkSize));
+
 export function createConnectionDataLoaders(loader: Loader) {
     return {
         async get(): Promise<IConnectionData | undefined> {
@@ -17,12 +23,22 @@ export function createConnectionDataLoaders(loader: Loader) {
                 const descriptors = userMembership.value.flatMap((x) => x.memberOf);
 
                 if (descriptors.length) {
-                    const groups = await loader<IIdentityMembership>(
-                        `_apis/identities?queryMembership=Direct&descriptors=${descriptors.join(",")}&api-version=7.0`,
-                        { skipConnectionDataCheck: true }
-                    );
+                    const chunks = arrayChunks(descriptors, 15);
 
-                    connectionData.authenticatedUser.memberOfGroups = groups.value.map((x) => x.providerDisplayName);
+                    const groups = (
+                        await Promise.all(
+                            chunks.map((chunk) =>
+                                loader<IIdentityMembership>(
+                                    `_apis/identities?queryMembership=Direct&descriptors=${chunk.join(
+                                        ","
+                                    )}&api-version=7.0`,
+                                    { skipConnectionDataCheck: true }
+                                )
+                            )
+                        )
+                    ).flatMap((x) => x.value);
+
+                    connectionData.authenticatedUser.memberOfGroups = groups.map((x) => x.providerDisplayName);
                 }
             }
 
