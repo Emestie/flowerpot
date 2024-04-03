@@ -63,6 +63,6 @@ export interface IPullRequest {
     targetBranch: string;
     labels: { name: string }[];
     mergeStatus: "conflicts" | "succeeded";
-    isMine: () => boolean;
+    getBelonging: () => null | "author" | "reviewer" | "team";
     getAuthorTextName: () => string;
 }

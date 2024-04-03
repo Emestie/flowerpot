@@ -286,6 +286,7 @@ const ru: LocalizedStrings = {
 
     prComments: "Выполненные/Все комментарии",
     prMergeConflicts: "Конфликт",
+    groupPrFilter: "Отображать командные",
 };
 
 export default ru;

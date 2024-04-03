@@ -55,6 +55,7 @@ const initialState: ISettingsState = {
     bannersShown: [],
     stats: {} as Record<UsageStat, number>,
     settingsSection: Sections.Queries,
+    includeTeamsPRs: true,
 };
 
 export function settingsReducer(state = initialState, action: IAction) {

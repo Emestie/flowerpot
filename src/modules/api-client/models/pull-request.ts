@@ -34,17 +34,17 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
         targetBranch: resp.targetRefName.replace("refs/heads/", ""),
         labels: resp.labels || [],
         mergeStatus: resp.mergeStatus,
-        isMine: function () {
+        getBelonging: function () {
             const connectionData = getConnectionData();
 
-            if (!connectionData) return false;
+            if (!connectionData) return null;
 
             //if author
-            if (this.authorDescriptor === connectionData.authenticatedUser.subjectDescriptor) return true;
+            if (this.authorDescriptor === connectionData.authenticatedUser.subjectDescriptor) return "author";
 
             //if in reviewers list as person
             if (this.reviewers.map((rev) => rev.name).includes(connectionData.authenticatedUser.providerDisplayName))
-                return true;
+                return "reviewer";
 
             //if member of review group
             if (
@@ -52,9 +52,9 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
                     .map((rev) => rev.name)
                     .some((name) => (connectionData.authenticatedUser.memberOfGroups || []).includes(name))
             )
-                return true;
+                return "team";
 
-            return false;
+            return null;
         },
         getAuthorTextName: function () {
             return this.authorFullName.split(" <")[0];

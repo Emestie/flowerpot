@@ -161,6 +161,12 @@ td.workItemKeyword {
     }
 }
 
+.group-pr-checkbox {
+    float: right;
+    margin-right: 20px;
+    font-weight: normal;
+}
+
 .react-contextmenu-item {
     &:focus {
         outline: none;
