@@ -3,6 +3,7 @@ import { getConnectionData } from "/@/helpers/Connection";
 import { ItemsCommon } from "/@/helpers/ItemsCommon";
 import Lists from "/@/helpers/Lists";
 import { TLists } from "/@/helpers/Settings";
+import { store } from "/@/redux/store";
 
 //! do not use functions in IWorkItem
 export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem {
@@ -18,6 +19,7 @@ export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem
     const type = resp.fields["System.WorkItemType"] || "";
     const createdByFull = ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "");
     const assignedToFull = ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "");
+    const _list = getListName(resp.id, query.collectionName);
 
     const item: IWorkItem = {
         id: resp.id,
@@ -45,7 +47,7 @@ export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem
         state: resp.fields["System.State"] || "",
         tags: resp.fields["System.Tags"] || "",
         _isMine: isMine,
-        _list: getListName(resp.id, query.collectionName),
+        _list,
         _isHasShelve: isHasShelve(resp.fields["System.History"]),
         _queryId: query.queryId,
         _collectionName: query.collectionName,
@@ -61,6 +63,11 @@ export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem
             importance !== 3,
         isRed: promptness === 1 || rank === 1,
     };
+
+    if (query.queryId === "___permawatch") {
+        const itemFromList = store.getState().settings.lists.permawatch.find((x) => x.id === item.id);
+        item._collectionName = itemFromList?.collection || "";
+    }
 
     return item;
 }

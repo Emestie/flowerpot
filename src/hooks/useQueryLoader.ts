@@ -29,7 +29,7 @@ export function useQueryLoader(query: IQuery) {
         } finally {
             setIsLoading(false);
         }
-    }, [dispatch, query]);
+    }, [dispatch, query.queryId]);
 
     const routineStart = useCallback(async () => {
         setIsLoading(true);
@@ -41,7 +41,7 @@ export function useQueryLoader(query: IQuery) {
             setIsLoading(true);
             loadWorkItemsForThisQuery();
         });
-    }, [dispatch, loadWorkItemsForThisQuery, refreshRate, query]);
+    }, [dispatch, loadWorkItemsForThisQuery, refreshRate, query.queryId]);
 
     useEffect(() => {
         routineStart();
