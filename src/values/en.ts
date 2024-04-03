@@ -284,6 +284,7 @@ const en = {
 
     prComments: "Resolved/Total comments",
     prMergeConflicts: "Conflicts",
+    groupPrFilter: "Include assigned to teams",
 };
 
 export default en;

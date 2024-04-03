@@ -1,21 +1,26 @@
-import { useSelector } from "react-redux";
-import { Header, Icon, Label, Message, Table } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Checkbox, Header, Icon, Label, Message, Table } from "semantic-ui-react";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { PullRequestRow } from "./PullRequestRow";
+import { settingsUpdate } from "/@/redux/actions/settingsActions";
 
 export function PullRequestsBlock() {
-    const { projects, tableScale } = useSelector(settingsSelector);
+    const { projects, tableScale, includeTeamsPRs } = useSelector(settingsSelector);
+    const dispatch = useDispatch();
 
-    const { isLoading, pullRequests, routineStart, errorMessage } = usePullRequestsLoader(projects);
+    const { isLoading, pullRequests, routineStart, errorMessage, hasTeams } = usePullRequestsLoader(
+        projects,
+        includeTeamsPRs
+    );
 
     if (!projects.filter((p) => p.enabled).length) return null;
 
     const totalItemsCount = pullRequests.length;
 
     const refreshBlock = () => {
-        routineStart();
+        if (!isLoading) routineStart();
     };
 
     const getTableSize = () => {
@@ -56,9 +61,23 @@ export function PullRequestsBlock() {
                             </Label>
                         ))}
                 </span>
-                {!isLoading && (
-                    <span title={s("refresh")} className="externalLink" onClick={refreshBlock}>
-                        <Icon size="small" name="refresh" />
+                <span
+                    title={s("refresh")}
+                    className="externalLink"
+                    onClick={refreshBlock}
+                    style={{ opacity: isLoading ? 0 : 1 }}
+                >
+                    <Icon size="small" name="refresh" />
+                </span>
+                {hasTeams && (
+                    <span className="group-pr-checkbox">
+                        <Checkbox
+                            label={s("groupPrFilter")}
+                            checked={includeTeamsPRs}
+                            onChange={() => {
+                                dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
+                            }}
+                        />
                     </span>
                 )}
             </Header>

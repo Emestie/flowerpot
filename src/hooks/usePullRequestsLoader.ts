@@ -8,19 +8,18 @@ import { settingsSelector } from "../redux/selectors/settingsSelectors";
 const PR_TIMER_KEY = "pr-block-timer";
 const useFishWIs = !!import.meta.env.VITE_USE_FISH;
 
-export function usePullRequestsLoader(projects: IProject[]) {
+export function usePullRequestsLoader(projects: IProject[], includeTeams: boolean) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [pullRequests, setPullRequests] = useState<IPullRequest[]>([]);
+    const [allPullRequests, setAllPullRequests] = useState<IPullRequest[]>([]);
     const { refreshRate } = useSelector(settingsSelector);
 
     const load = useCallback(async () => {
         console.log("updating PRs");
         try {
-            const prs = useFishWIs ? [] : await api.pullRequest.getByProjects(projects.filter((p) => p.enabled));
-            const filteredPRs = prs.filter((x) => x.isMine());
+            const allPRs = useFishWIs ? [] : await api.pullRequest.getByProjects(projects.filter((p) => p.enabled));
+            setAllPullRequests(allPRs);
 
-            setPullRequests(filteredPRs);
             if (errorMessage) setErrorMessage(null);
         } catch (e: any) {
             setErrorMessage(e.message);
@@ -49,5 +48,21 @@ export function usePullRequestsLoader(projects: IProject[]) {
         };
     }, [routineStart, projects]);
 
-    return { isLoading, routineStart, pullRequests, errorMessage };
+    const pullRequests = allPullRequests.filter((x) => {
+        const belonging = x.getBelonging();
+
+        if (!belonging) return false;
+        if (belonging === "team") return includeTeams;
+        return true;
+    });
+
+    const hasTeams = allPullRequests.some((x) => x.getBelonging() === "team");
+
+    return {
+        isLoading,
+        routineStart,
+        pullRequests,
+        errorMessage,
+        hasTeams,
+    };
 }

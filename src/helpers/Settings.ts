@@ -57,6 +57,7 @@ export interface ISettings {
     bannersShown: number[];
     stats: Record<UsageStat, number>;
     settingsSection: Sections;
+    includeTeamsPRs: boolean;
 }
 
 export default class Settings {
