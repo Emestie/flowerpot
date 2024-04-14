@@ -161,6 +161,14 @@ td.workItemKeyword {
     }
 }
 
+.externalLinkNoFloat {
+    color: rgb(155, 155, 155);
+    cursor: pointer;
+    &:hover {
+        color: #4798da;
+    }
+}
+
 .group-pr-checkbox {
     float: right;
     margin-right: 20px;

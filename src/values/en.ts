@@ -42,11 +42,8 @@ const en = {
     cancel: "Cancel",
     add: "Add",
     note: "NOTE!",
-    selqNote1: "You can see here only queries that ",
-    selqNote2: "",
-    selqNote3: "",
-    selqNote4: "not yet added",
-    selqNote5: " to watch list.",
+    selqNote1:
+        "For technical reasons, only queries at the first and second hierarchy levels are available for selection",
     selqAvailableHeader: "Available queries",
     refresh: "Refresh",
     //main view
@@ -285,6 +282,8 @@ const en = {
     prComments: "Resolved/Total comments",
     prMergeConflicts: "Conflicts",
     groupPrFilter: "Include assigned to teams",
+
+    showPublicQueries: "Show shared queries",
 };
 
 export default en;

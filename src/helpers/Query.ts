@@ -11,7 +11,7 @@ export interface IWIStorage {
     [queryId: string]: IWorkItem[] | undefined;
 }
 
-const permawatchQueryObject = {
+const permawatchQueryObject: IQuery = {
     collectionName: "",
     collapsed: false,
     enabled: true,
@@ -23,6 +23,7 @@ const permawatchQueryObject = {
     queryPath: "",
     teamId: "___permawatch",
     teamName: "",
+    nameInList: "",
 };
 
 export default class Query {

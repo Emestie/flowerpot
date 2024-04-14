@@ -44,11 +44,7 @@ const ru: LocalizedStrings = {
     cancel: "Отмена",
     add: "Добавить",
     note: "Важно!",
-    selqNote1: "Здесь видны только те запросы, которые ",
-    selqNote2: "",
-    selqNote3: "",
-    selqNote4: "еще не были добавлены",
-    selqNote5: " в список отслеживания.",
+    selqNote1: "По техническим причинам для выбора доступны запросы только на первом и втором уровне иерархии",
     selqAvailableHeader: "Доступные запросы",
     refresh: "Обновить",
     //main view
@@ -287,6 +283,8 @@ const ru: LocalizedStrings = {
     prComments: "Выполненные/Все комментарии",
     prMergeConflicts: "Конфликт",
     groupPrFilter: "Отображать командные",
+
+    showPublicQueries: "Показывать общие запросы",
 };
 
 export default ru;

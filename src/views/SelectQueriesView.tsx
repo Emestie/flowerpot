@@ -18,6 +18,7 @@ export function SelectQueriesView() {
     const settings = useSelector(settingsSelector);
     const [isLoading, setIsLoading] = useState(true);
     const [availableQueries, setAvailableQueries] = useState<ISelectableQuery[]>([]);
+    const [showPublic, setShowPublic] = useState(false);
 
     const isAddAvailable = !!availableQueries.filter((q) => q.checked).length;
 
@@ -54,6 +55,7 @@ export function SelectQueriesView() {
     };
 
     const onRefresh = () => {
+        if (isLoading) return;
         setIsLoading(true);
         loadQueries();
     };
@@ -65,23 +67,21 @@ export function SelectQueriesView() {
         setAvailableQueries([...all]);
     };
 
+    const filteredAvailableQueries = availableQueries.filter((x) => (showPublic ? true : !x.isPublic));
+
     const queryList = isLoading ? (
         <Message icon>
             <Icon name="circle notched" loading />
             <Message.Content> {s("loading")}</Message.Content>
         </Message>
-    ) : availableQueries.length ? (
-        availableQueries.map((q) => (
+    ) : filteredAvailableQueries.length ? (
+        filteredAvailableQueries.map((q) => (
             <div key={q.queryId} style={{ marginBottom: 5 }}>
-                <Checkbox
-                    label={q.collectionName + " / " + q.teamName + " / " + q.queryName}
-                    checked={q.checked}
-                    onChange={() => toggleCheck(q)}
-                />
+                <Checkbox label={q.nameInList} checked={q.checked} onChange={() => toggleCheck(q)} />
             </div>
         ))
     ) : (
-        <Message visible color="red">
+        <Message visible info>
             {s("noQueriesAvailable")}
         </Message>
     );
@@ -96,14 +96,17 @@ export function SelectQueriesView() {
             </ViewHeading>
             <Container fluid>
                 <Label color="orange">{s("note")}</Label> {s("selqNote1")}
-                <b>{s("selqNote4")}</b>
-                {s("selqNote5")}
                 <Header as="h3" dividing>
-                    {s("selqAvailableHeader")}{" "}
-                    <span>
-                        <Button compact size="tiny" onClick={onRefresh} disabled={isLoading}>
-                            {s("refresh")}
-                        </Button>
+                    <span title={s("refresh")} className="externalLinkNoFloat" onClick={onRefresh}>
+                        <Icon size="small" name="refresh" disabled={isLoading} />
+                    </span>
+                    {s("selqAvailableHeader")}
+                    <span style={{ marginLeft: 20 }}>
+                        <Checkbox
+                            label={s("showPublicQueries")}
+                            onChange={(_, a) => setShowPublic(!!a.checked)}
+                            checked={showPublic}
+                        />
                     </span>
                 </Header>
                 {queryList}
