@@ -1,6 +1,6 @@
 import { Loader } from "../loader";
 import { buildQuery } from "../models";
-import { IQuery, IResponseQuery, IValue } from "../types";
+import { IProject, IQuery, IResponseQuery, IValue } from "../types";
 import { createProjectLoaders } from "./project";
 
 export function createQueryLoaders(loader: Loader) {
@@ -16,15 +16,20 @@ export function createQueryLoaders(loader: Loader) {
                 )
             );
 
-            const allQueries = queryCollection.flatMap((qc, index) =>
-                qc.value.flatMap((v) =>
-                    (v.children || [])
-                        .filter((rq) => !rq.isPublic && !rq.isFolder)
-                        .map((rq) => buildQuery(rq, projects[index]))
-                )
-            );
+            const allQueries = queryCollection
+                .flatMap((qc, index) => qc.value.flatMap((v) => pullOutAllQueries(v, projects[index])))
+                .sort((a, b) => (a.nameInList < b.nameInList ? -1 : 1));
 
             return allQueries;
         },
     };
+}
+
+function pullOutAllQueries(rq: IResponseQuery, project: IProject): IQuery[] {
+    if (!rq.isPublic && rq.isFolder) console.log(rq);
+    if (rq.isFolder) {
+        return (rq.children || []).flatMap((crq) => pullOutAllQueries(crq, project));
+    }
+
+    return [buildQuery(rq, project)];
 }

@@ -22,6 +22,8 @@ export interface IQuery {
     ignoreIcon: boolean;
     ignoreNotif: boolean;
     empty?: boolean;
+    isPublic?: boolean;
+    nameInList: string;
 }
 
 interface IQueryResultWorkItem {

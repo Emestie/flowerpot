@@ -1,4 +1,5 @@
 import { IQuery, IResponseWorkItem, IWorkItem } from "../types";
+import { IWorkItemType } from "../types/work-item-type";
 import { getConnectionData } from "/@/helpers/Connection";
 import { ItemsCommon } from "/@/helpers/ItemsCommon";
 import Lists from "/@/helpers/Lists";
@@ -6,7 +7,11 @@ import { TLists } from "/@/helpers/Settings";
 import { store } from "/@/redux/store";
 
 //! do not use functions in IWorkItem
-export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem {
+export function buildWorkItem(
+    resp: IResponseWorkItem,
+    query: IQuery,
+    workItemType: IWorkItemType | undefined
+): IWorkItem {
     const isMine =
         resp.fields["System.AssignedTo"]?.descriptor === getConnectionData()?.authenticatedUser.subjectDescriptor;
     const promptness = extractLevel(
@@ -26,6 +31,7 @@ export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem
         rev: resp.rev,
         url: resp._links.html.href,
         type,
+        typeIconUrl: workItemType?.icon.url,
         assignedTo: ItemsCommon.shortName(ItemsCommon.parseNameField(resp.fields["System.AssignedTo"]) || ""),
         assignedToFull,
         assignedToImg: resp.fields["System.AssignedTo"]?.imageUrl || "",
@@ -45,6 +51,7 @@ export function buildWorkItem(resp: IResponseWorkItem, query: IQuery): IWorkItem
         rank,
         weight: calcWeight(resp),
         state: resp.fields["System.State"] || "",
+        stateColor: workItemType?.states.find((state) => state.name === resp.fields["System.State"])?.color,
         tags: resp.fields["System.Tags"] || "",
         _isMine: isMine,
         _list,

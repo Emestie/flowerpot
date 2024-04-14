@@ -2,13 +2,17 @@ import chunk from "lodash/chunk";
 import { Loader } from "../loader";
 import { buildWorkItem } from "../models";
 import { IQuery, IQueryResult, IResponseWorkItem, IValue, IWorkItem, IWorkItemShort } from "../types";
+import { createWorkItemTypeLoaders } from "./work-item-type";
 import Differences from "/@/helpers/Differences";
 import Lists from "/@/helpers/Lists";
 import Query from "/@/helpers/Query";
 import { getListsSelector } from "/@/redux/selectors/settingsSelectors";
 import { store } from "/@/redux/store";
 
-export function createWorkItemLoaders(loader: Loader) {
+export function createWorkItemLoaders(
+    loader: Loader,
+    workItemTypeLoaders: ReturnType<typeof createWorkItemTypeLoaders>
+) {
     return {
         async getByQuery(query: IQuery): Promise<IWorkItem[]> {
             const queryResult =
@@ -55,7 +59,13 @@ export function createWorkItemLoaders(loader: Loader) {
                 return null;
             }
 
-            return buildWorkItem(workItemResponse, query);
+            const workItemType = await workItemTypeLoaders.getTypeInfo(
+                collection,
+                workItemResponse.fields["System.TeamProject"],
+                workItemResponse.fields["System.WorkItemType"]
+            );
+
+            return buildWorkItem(workItemResponse, query, workItemType);
         },
         async getList(list: IWorkItemShort[], query: IQuery): Promise<IWorkItem[]> {
             const collections = list.map((x) => x.collection).filter((i, v, a) => a.indexOf(i) === v);
@@ -83,7 +93,21 @@ export function createWorkItemLoaders(loader: Loader) {
                 })
             );
 
-            return workItemResponses.flatMap((x) => x.value).map((wir) => buildWorkItem(wir, query));
+            const workItemTypes = await Promise.all(
+                workItemResponses
+                    .flatMap((x) => x.value)
+                    .map((wir) =>
+                        workItemTypeLoaders.getTypeInfo(
+                            query.collectionName,
+                            wir.fields["System.TeamProject"],
+                            wir.fields["System.WorkItemType"]
+                        )
+                    )
+            );
+
+            return workItemResponses
+                .flatMap((x) => x.value)
+                .map((wir, index) => buildWorkItem(wir, query, workItemTypes[index]));
         },
     };
 }

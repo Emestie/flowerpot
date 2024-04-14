@@ -161,6 +161,14 @@ td.workItemKeyword {
     }
 }
 
+.externalLinkNoFloat {
+    color: rgb(155, 155, 155);
+    cursor: pointer;
+    &:hover {
+        color: #4798da;
+    }
+}
+
 .group-pr-checkbox {
     float: right;
     margin-right: 20px;
@@ -253,4 +261,21 @@ img.ui.avatar.image.av-class {
         padding: 2px 4px;
         cursor: pointer;
     }
+}
+
+.wiStatus {
+    display: flex;
+    align-items: center;
+}
+
+.wiStatusText {
+    font-size: 10px;
+}
+
+.wiStatusDot {
+    width: 9px;
+    height: 9px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 4px;
 }

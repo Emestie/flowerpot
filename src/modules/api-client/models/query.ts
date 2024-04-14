@@ -10,8 +10,10 @@ export function buildQuery(resp: IResponseQuery, project: IProject): IQuery {
         queryName: resp.name,
         queryPath: resp.path,
         teamId: project.guid,
-        teamName: project.name, //todo: put here project itself maybe
+        teamName: project.name,
         ignoreIcon: false,
         ignoreNotif: false,
+        isPublic: resp.isPublic,
+        nameInList: project.collectionName + " / " + project.name + " / " + resp.path.replaceAll("/", " / "),
     };
 }

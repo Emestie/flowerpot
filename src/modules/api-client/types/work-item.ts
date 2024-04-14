@@ -5,6 +5,7 @@ export interface IWorkItem {
     id: number;
     rev: number;
     type: string;
+    typeIconUrl: string | undefined;
     iterationPath: string;
     areaPath: string;
     assignedTo: string;
@@ -25,6 +26,7 @@ export interface IWorkItem {
     weight: number;
     url: string;
     state: string;
+    stateColor: string | undefined;
     tags: string;
     _isMine: boolean;
     _list?: TLists;
@@ -48,6 +50,7 @@ export interface IResponseWorkItem {
         "System.CreatedDate": string;
         "System.CreatedBy": any;
         "System.Title": string;
+        "System.TeamProject": string;
         "EOS.QA.PromptnessLevel"?: string;
         "EOS.QA.ImportanceLevel"?: string;
         "Microsoft.VSTS.Common.Rank"?: string;
