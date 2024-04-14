@@ -262,3 +262,20 @@ img.ui.avatar.image.av-class {
         cursor: pointer;
     }
 }
+
+.wiStatus {
+    display: flex;
+    align-items: center;
+}
+
+.wiStatusText {
+    font-size: 10px;
+}
+
+.wiStatusDot {
+    width: 9px;
+    height: 9px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 4px;
+}

@@ -12,6 +12,7 @@ import { s } from "../../values/Strings";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
+import { Status } from "./status";
 import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 interface IProps {
@@ -184,36 +185,6 @@ export function WorkItemRow(props: IProps) {
         return undefined;
     };
 
-    const getStatusIcon = (state: string) => {
-        if (!state) return null;
-
-        switch (state) {
-            case "Active":
-            case "Активный":
-                return <Icon name="angle double right" />; // code
-            case "К реализации":
-                return <Icon name="hand point right outline" />;
-            case "В обсуждении":
-                return <Icon name="comments outline" />;
-            case "Closed":
-            case "Закрыт":
-            case "Закрыто":
-                return <Icon name="window close outline" />;
-            case "Resolved":
-            case "Реализовано":
-            case "Решенный":
-            case "Решённый":
-                return <Icon name="check square outline" />;
-            case "Ready for Review":
-                return <Icon name="hand paper outline" />;
-            case "New":
-            case "Новый":
-                return <Icon name="genderless" />;
-            default:
-                return <Icon name="fire" />;
-        }
-    };
-
     const item = props.item;
     const hasChanges = settings.showUnreads ? !!changesCollection[item.id] : false;
     const uid = props.item.id + Math.random() + "";
@@ -326,7 +297,7 @@ export function WorkItemRow(props: IProps) {
             </Table.Cell>
             <Table.Cell collapsing>
                 <ContextMenuTrigger id={uid}>
-                    <span title={s("wiStatus") + item.state}>{getStatusIcon(item.state)}</span>
+                    <Status workItem={item} />
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell
