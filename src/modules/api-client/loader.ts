@@ -10,7 +10,10 @@ export function createLoader(params: IApiClientParams) {
         options?: { method?: "GET" | "POST"; body?: string; skipConnectionDataCheck?: boolean }
     ): Promise<T> {
         try {
-            const result = await fetch(params.getTfsPath() + url, {
+            const _tfsPath = params.getTfsPath();
+            const _url = url.replace(_tfsPath, "");
+
+            const result = await fetch(_tfsPath + _url, {
                 method: options?.method || "GET",
                 body: options?.body,
                 headers: {

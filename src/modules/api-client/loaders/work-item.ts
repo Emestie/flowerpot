@@ -59,11 +59,7 @@ export function createWorkItemLoaders(
                 return null;
             }
 
-            const workItemType = await workItemTypeLoaders.getTypeInfo(
-                collection,
-                workItemResponse.fields["System.TeamProject"],
-                workItemResponse.fields["System.WorkItemType"]
-            );
+            const workItemType = await workItemTypeLoaders.getTypeInfo(workItemResponse);
 
             return buildWorkItem(workItemResponse, query, workItemType);
         },
@@ -94,15 +90,7 @@ export function createWorkItemLoaders(
             );
 
             const workItemTypes = await Promise.all(
-                workItemResponses
-                    .flatMap((x) => x.value)
-                    .map((wir) =>
-                        workItemTypeLoaders.getTypeInfo(
-                            query.collectionName,
-                            wir.fields["System.TeamProject"],
-                            wir.fields["System.WorkItemType"]
-                        )
-                    )
+                workItemResponses.flatMap((x) => x.value).map((wir) => workItemTypeLoaders.getTypeInfo(wir))
             );
 
             return workItemResponses

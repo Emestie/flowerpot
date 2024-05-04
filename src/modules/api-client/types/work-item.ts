@@ -63,9 +63,8 @@ export interface IResponseWorkItem {
         "System.Tags": string;
     };
     _links: {
-        html: {
-            href: string;
-        };
+        workItemType: { href: string };
+        html: { href: string };
     };
 }
 
