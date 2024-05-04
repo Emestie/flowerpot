@@ -105,6 +105,8 @@ export function WorkItemRow(props: IProps) {
                 return <Icon name="book" />;
             case "Epic":
                 return <Icon name="chess queen" />;
+            case "Test Case":
+                return <Icon name="gavel" />;
             default:
                 return <Icon name="fire" />;
         }
