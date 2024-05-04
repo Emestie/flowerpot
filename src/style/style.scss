@@ -40,6 +40,10 @@ body,
     width: calc(100% - 10px);
     background-color: white;
     z-index: 1000;
+
+    h1 {
+        min-height: 36px;
+    }
 }
 
 .WorkItemLink {

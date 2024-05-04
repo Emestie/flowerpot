@@ -4,12 +4,12 @@
         "dateFrom": "YEAR-12-20T00:00",
         "dateTo": "YEAR-12-31T23:59",
         "icon": {
-            "path": "festival-icons/santa-hat.svg",
-            "top": 7,
+            "path": "festival-icons/christmas-tree.svg",
+            "top": 12,
             "left": 14,
-            "width": 26,
-            "height": 26,
-            "offset": 8
+            "width": 32,
+            "height": 32,
+            "offset": 40
         }
     },
     {

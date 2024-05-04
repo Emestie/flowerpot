@@ -50,7 +50,6 @@ const ru: LocalizedStrings = {
     //main view
     noQueriesToWatch: "Нет отслеживаемых запросов",
     noQueriesToWatchText: "Добавьте их в настройках",
-    mainHeader: "Запросы",
     settings: "Настройки",
     updateArrived: "Обновление доступно!",
     updateArrivedText1: "Обновление Flowerpot готово. ",

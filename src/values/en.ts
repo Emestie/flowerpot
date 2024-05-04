@@ -49,7 +49,6 @@ const en = {
     //main view
     noQueriesToWatch: "No queries to watch",
     noQueriesToWatchText: "Go to settings and add some",
-    mainHeader: "Queries",
     settings: "Settings",
     updateArrived: "Update arrived!",
     updateArrivedText1: "Flowerpot update is available. You can",

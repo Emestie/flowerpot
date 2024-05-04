@@ -21,7 +21,7 @@ const getHeaderTextByViewName = (viewName: TView) => {
         case "error":
             return s("errorHeader");
         case "main":
-            return s("mainHeader");
+            return null;
         case "selectqueries":
             return s("selQHeader");
         case "selectprojects":
