@@ -8,7 +8,10 @@ interface Props {
 
 export function PageLayout(props: Props) {
     return (
-        <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+        <div
+            className="PageLayout"
+            style={{ display: "flex", flexDirection: "column", height: "100vh", userSelect: "none" }}
+        >
             <div style={{ padding: 15 }}>{props.heading}</div>
             <div style={{ display: "flex", height: "100%", overflowY: "auto", padding: 0 }}>
                 {props.sidebar ? <div style={{ paddingLeft: 10 }}>{props.sidebar}</div> : null}

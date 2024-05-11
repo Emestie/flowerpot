@@ -116,7 +116,7 @@ export function SettingsView() {
                 </ViewHeading>
             }
             sidebar={
-                <Menu vertical size="small" secondary>
+                <Menu inverted={darkTheme} vertical size="small" secondary>
                     {sectionsMenuItems}
                 </Menu>
             }

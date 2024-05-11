@@ -274,7 +274,7 @@ export function WorkItemsBlock(props: IProps) {
                 </Message>
             )}
             {!!workItems.length && !query.collapsed && (
-                <Table compact size={getTableSize()}>
+                <Table className="wiTable" compact size={getTableSize()}>
                     <tbody>{workItemsComponents}</tbody>
                 </Table>
             )}
