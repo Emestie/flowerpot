@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Form, Header, Label, Message } from "semantic-ui-react";
+import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { fillConnectionData } from "../helpers/Connection";
@@ -128,12 +129,15 @@ export function CredentialsView() {
     const debugInputRef = React.createRef();
 
     return (
-        <div className="Page">
-            <ViewHeading>
-                <Button positive disabled={isBackUnavailable} onClick={onSave}>
-                    {s("save")}
-                </Button>
-            </ViewHeading>
+        <PageLayout
+            heading={
+                <ViewHeading>
+                    <Button positive disabled={isBackUnavailable} onClick={onSave}>
+                        {s("save")}
+                    </Button>
+                </ViewHeading>
+            }
+        >
             <Container fluid>
                 <Header as="h3" dividing>
                     {s("credsHeader")}
@@ -209,6 +213,6 @@ export function CredentialsView() {
                     {s("validate")}
                 </Button>
             </Container>
-        </div>
+        </PageLayout>
     );
 }

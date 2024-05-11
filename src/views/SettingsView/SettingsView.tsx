@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Icon, Menu, Sidebar } from "semantic-ui-react";
+import { Button, Container, Icon, Menu } from "semantic-ui-react";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
 import { appViewSet } from "../../redux/actions/appActions";
@@ -14,6 +14,7 @@ import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
 import { StatsSection } from "./sections/StatsSection";
 import { WorkItemsSection } from "./sections/WorkItemsSection";
+import { PageLayout } from "/@/components/PageLayout";
 import { Sections } from "/@/redux/reducers/settingsReducer";
 
 const sectionsList = [
@@ -102,23 +103,25 @@ export function SettingsView() {
     const sectionComponent = getSectionComponent(settingsSection);
 
     return (
-        <div className="Page">
-            <ViewHeading>
-                <LocalVersionBanner />
-                <Button icon onClick={toggleTheme}>
-                    {darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
-                </Button>
-                <Button positive onClick={onSave}>
-                    {s("settingsBackButton")}
-                </Button>
-            </ViewHeading>
-            <Sidebar as={Menu} inverted={darkTheme} vertical visible width="thin">
-                <div style={{ height: 62 }}></div>
-                {sectionsMenuItems}
-            </Sidebar>
-            <Container fluid>
-                <div style={{ paddingLeft: 150 }}>{sectionComponent}</div>
-            </Container>
-        </div>
+        <PageLayout
+            heading={
+                <ViewHeading>
+                    <LocalVersionBanner />
+                    <Button icon onClick={toggleTheme}>
+                        {darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
+                    </Button>
+                    <Button positive onClick={onSave}>
+                        {s("settingsBackButton")}
+                    </Button>
+                </ViewHeading>
+            }
+            sidebar={
+                <Menu vertical size="small" secondary>
+                    {sectionsMenuItems}
+                </Menu>
+            }
+        >
+            <Container fluid>{sectionComponent}</Container>
+        </PageLayout>
     );
 }

@@ -19,31 +19,10 @@ body,
     overflow: overlay;
 }
 
-.Page {
-    user-select: none;
-    padding: 15px;
-    padding-top: 70px;
-    position: relative;
-}
-
 .RightTopCorner {
     position: absolute;
     top: 12px;
     right: 15px;
-}
-
-.TopBar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 15px;
-    width: calc(100% - 10px);
-    background-color: white;
-    z-index: 1000;
-
-    h1 {
-        min-height: 36px;
-    }
 }
 
 .WorkItemLink {

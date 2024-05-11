@@ -1,7 +1,8 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Form, Icon, Message } from "semantic-ui-react";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
+import { PageLayout } from "../components/PageLayout";
 import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock";
@@ -80,59 +81,55 @@ export function MainView() {
 
     const qlEnabled = settings.showQuickLinks;
 
-    const [headHeight, setHeadHeight] = useState(0);
-
-    useLayoutEffect(() => {
-        const vh = document.getElementById("ViewHeading");
-        setHeadHeight((vh?.clientHeight || 0) + 5);
-    }, [settings.links.length]);
-
     return (
-        <div className="Page" style={{ paddingTop: headHeight }}>
-            <ViewHeading underCaption={qlEnabled && <QuickLinksContainer />}>
-                <div>
-                    <LocalVersionBanner />
-                    {updateStatus === "ready" && (
-                        <Button icon positive onClick={updateApp} title={s("updateArrived")}>
-                            {s("installUpdate")}
+        <PageLayout
+            heading={
+                <ViewHeading underCaption={qlEnabled && <QuickLinksContainer />}>
+                    <div>
+                        <LocalVersionBanner />
+                        {updateStatus === "ready" && (
+                            <Button icon positive onClick={updateApp} title={s("updateArrived")}>
+                                {s("installUpdate")}
+                            </Button>
+                        )}
+                        <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
+                            <Icon name="user outline" />
                         </Button>
-                    )}
-                    <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
-                        <Icon name="user outline" />
-                    </Button>
-                    <div style={{ display: "inline-block", marginRight: 3.5 }}>
-                        <Form.Input
-                            size="small"
-                            placeholder={s("quicksearch")}
-                            value={quickSearchVal}
-                            onChange={(e) => {
-                                if (e.target.value && !e.target.value.trim()) setQuickSearchVal("");
-                                else setQuickSearchVal(e.target.value);
-                            }}
-                        />
+                        <div style={{ display: "inline-block", marginRight: 3.5 }}>
+                            <Form.Input
+                                size="small"
+                                placeholder={s("quicksearch")}
+                                value={quickSearchVal}
+                                onChange={(e) => {
+                                    if (e.target.value && !e.target.value.trim()) setQuickSearchVal("");
+                                    else setQuickSearchVal(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <Button icon onClick={onOpenById} hint={s("openById")}>
+                            <Icon name="external share" />
+                        </Button>
+                        {!!settings.showUnreads && isChangesCollectionHasItems && (
+                            <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
+                                <Icon name="check circle outline" />
+                            </Button>
+                        )}
+                        <Button icon onClick={onRefresh} disabled={!isRefreshAvailable} hint={s("refresh")}>
+                            <Icon name="refresh" />
+                        </Button>
+                        <Button icon onClick={onSettings} hint={s("settings")}>
+                            <Icon name="setting" />
+                        </Button>
                     </div>
-                    <Button icon onClick={onOpenById} hint={s("openById")}>
-                        <Icon name="external share" />
-                    </Button>
-                    {!!settings.showUnreads && isChangesCollectionHasItems && (
-                        <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
-                            <Icon name="check circle outline" />
-                        </Button>
-                    )}
-                    <Button icon onClick={onRefresh} disabled={!isRefreshAvailable} hint={s("refresh")}>
-                        <Icon name="refresh" />
-                    </Button>
-                    <Button icon onClick={onSettings} hint={s("settings")}>
-                        <Icon name="setting" />
-                    </Button>
-                </div>
-            </ViewHeading>
+                </ViewHeading>
+            }
+        >
             <Container fluid>
                 <WhatsNewBanner />
                 <ActionBannersContainer />
                 <PullRequestsBlock />
                 {queriesBlocks}
             </Container>
-        </div>
+        </PageLayout>
     );
 }

@@ -17,11 +17,6 @@ $rowItemHover: lighten($bg, 10%);
     .ui.menu .item,
     .ui.popup,
     .ui.form .field > label,
-    .TopBar {
-        background-color: $bg;
-        color: $text;
-    }
-
     .ui.form input:not([type]):focus,
     .ui.form input[type="date"]:focus,
     .ui.form input[type="datetime-local"]:focus,

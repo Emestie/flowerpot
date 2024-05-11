@@ -43,13 +43,15 @@ export function ViewHeading(p: P) {
     const leftMargin = currentFestival ? currentFestival.icon.offset : 0;
 
     return (
-        <div className="TopBar" id="ViewHeading">
-            <Header as="h1" style={{ marginLeft: leftMargin, marginBottom: 0 }}>
-                {viewCaption}
-            </Header>
-            <div className="RightTopCorner">{p.children}</div>
+        <>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Header as="h1" style={{ marginLeft: leftMargin, marginBottom: 0 }}>
+                    {viewCaption}
+                </Header>
+                <div>{p.children}</div>
+            </div>
             <div>{p.underCaption}</div>
             <FestivalBanner />
-        </div>
+        </>
     );
 }

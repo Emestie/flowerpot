@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Message } from "semantic-ui-react";
+import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import Platform from "../helpers/Platform";
 import { Timers } from "../helpers/Timers";
@@ -51,8 +52,7 @@ export function ErrorView() {
     }, [routineStart]);
 
     return (
-        <div className="Page">
-            <ViewHeading />
+        <PageLayout heading={<ViewHeading />}>
             <Container fluid>
                 <Message negative>
                     <Message.Header>{s("errorMsg")}</Message.Header>
@@ -75,6 +75,6 @@ export function ErrorView() {
                     </div>
                 </div>
             </Container>
-        </div>
+        </PageLayout>
     );
 }

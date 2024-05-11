@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Header, Icon, Label, Message } from "semantic-ui-react";
 import { api } from "../api/client";
+import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import Query from "../helpers/Query";
 import { IQuery } from "../modules/api-client";
@@ -87,13 +88,16 @@ export function SelectQueriesView() {
     );
 
     return (
-        <div className="Page">
-            <ViewHeading>
-                <Button onClick={onCancel}>{s("cancel")}</Button>
-                <Button onClick={onAdd} positive disabled={!isAddAvailable}>
-                    {s("add")}
-                </Button>
-            </ViewHeading>
+        <PageLayout
+            heading={
+                <ViewHeading>
+                    <Button onClick={onCancel}>{s("cancel")}</Button>
+                    <Button onClick={onAdd} positive disabled={!isAddAvailable}>
+                        {s("add")}
+                    </Button>
+                </ViewHeading>
+            }
+        >
             <Container fluid>
                 <Label color="orange">{s("note")}</Label> {s("selqNote1")}
                 <Header as="h3" dividing>
@@ -111,6 +115,6 @@ export function SelectQueriesView() {
                 </Header>
                 {queryList}
             </Container>
-        </div>
+        </PageLayout>
     );
 }

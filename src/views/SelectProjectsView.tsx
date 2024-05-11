@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
 import { api } from "../api/client";
+import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Project } from "../helpers/Project";
 import { IProject } from "../modules/api-client";
@@ -87,24 +88,25 @@ export function SelectProjectsView() {
     );
 
     return (
-        <div className="Page">
-            <ViewHeading>
-                <Button onClick={onCancel}>{s("cancel")}</Button>
-                <Button onClick={onAdd} positive disabled={!isAddAvailable}>
-                    {s("add")}
-                </Button>
-            </ViewHeading>
+        <PageLayout
+            heading={
+                <ViewHeading>
+                    <Button onClick={onCancel}>{s("cancel")}</Button>
+                    <Button onClick={onAdd} positive disabled={!isAddAvailable}>
+                        {s("add")}
+                    </Button>
+                </ViewHeading>
+            }
+        >
             <Container fluid>
                 <Header as="h3" dividing>
-                    {s("selpAvailableHeader")}{" "}
-                    <span>
-                        <Button compact size="tiny" onClick={onRefresh} disabled={isLoading}>
-                            {s("refresh")}
-                        </Button>
+                    <span title={s("refresh")} className="externalLinkNoFloat" onClick={onRefresh}>
+                        <Icon size="small" name="refresh" disabled={isLoading} />
                     </span>
+                    {s("selpAvailableHeader")}
                 </Header>
                 {queryList}
             </Container>
-        </div>
+        </PageLayout>
     );
 }
