@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Form } from "semantic-ui-react";
+import { Form, Header } from "semantic-ui-react";
 import { LinksSettingsTable } from "../../../components/tables/LinksSettingsTable";
 import { settingsUpdate } from "../../../redux/actions/settingsActions";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
@@ -19,12 +19,12 @@ export function QuickLinksSections() {
             <Header as="h3" dividing>
                 {s("quickLinksSettingsHeader")}
             </Header>
-            <LinksSettingsTable />
             <Form.Checkbox
                 label={s("cbQuickLinksLabel")}
                 checked={settings.showQuickLinks}
                 onChange={toggleQuickLinks}
             />
+            <LinksSettingsTable />
         </>
     );
 }
