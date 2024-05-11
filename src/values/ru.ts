@@ -2,10 +2,10 @@ import { LocalizedStrings } from "./Strings";
 
 const ru: LocalizedStrings = {
     //settings view
-    refresh1m: "1 минута",
     refresh3m: "3 минуты",
     refresh5m: "5 минут",
     refresh10m: "10 минут",
+    refresh20m: "20 минут",
     refreshdebug: "(debug) 10 секунд",
     sortPatternWeight: "Вес, Дата",
     sortPatternAssigned: '"Назначен", Дата',

@@ -1,9 +1,9 @@
 const en = {
     //settings view
-    refresh1m: "1 minute",
     refresh3m: "3 minutes",
     refresh5m: "5 minutes",
     refresh10m: "10 minutes",
+    refresh20m: "20 minutes",
     refreshdebug: "(debug) 10 seconds",
     sortPatternWeight: "Weight, Date",
     sortPatternAssigned: '"Assigned To", Date',

@@ -26,10 +26,10 @@ const tableScales: DropdownItemProps[] = [
 ];
 
 const refreshRates: DropdownItemProps[] = [
-    { key: 1, text: s("refresh1m"), value: 60 },
     { key: 2, text: s("refresh3m"), value: 180 },
     { key: 3, text: s("refresh5m"), value: 300 },
     { key: 4, text: s("refresh10m"), value: 600 },
+    { key: 5, text: s("refresh20m"), value: 1200 },
 ];
 
 export function WorkItemsSection() {
