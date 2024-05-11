@@ -91,9 +91,6 @@ export function WorkItemsBlock(props: IProps) {
     const redItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => wi.isRed).length;
-    const orangeItemsCount = workItems
-        .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
-        .filter((wi) => wi.isOrange).length;
 
     const onCollapseClick = () => {
         Query.toggleBoolean(props.query, "collapsed");
@@ -140,8 +137,8 @@ export function WorkItemsBlock(props: IProps) {
         let listRes = sortByLists(a, b);
         if (listRes) return listRes;
 
-        if (a.weight < b.weight) return -1;
-        else if (a.weight > b.weight) return 1;
+        if ((a.priority ?? 99) < (b.priority ?? 99)) return -1;
+        else if ((a.priority ?? 99) > (b.priority ?? 99)) return 1;
 
         if (a.createdDate < b.createdDate) return -1;
         else return 1;
@@ -233,11 +230,6 @@ export function WorkItemsBlock(props: IProps) {
                     {!!redItemsCount && (
                         <Label size="mini" circular color="red">
                             {redItemsCount}
-                        </Label>
-                    )}
-                    {!!orangeItemsCount && (
-                        <Label size="mini" circular color="orange">
-                            {orangeItemsCount}
                         </Label>
                     )}
                     {!!totalItemsCount && (

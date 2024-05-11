@@ -5,6 +5,7 @@ import { ItemsCommon } from "/@/helpers/ItemsCommon";
 import Lists from "/@/helpers/Lists";
 import { TLists } from "/@/helpers/Settings";
 import { store } from "/@/redux/store";
+import { s } from "/@/values/Strings";
 
 //! do not use functions in IWorkItem
 export function buildWorkItem(
@@ -14,17 +15,13 @@ export function buildWorkItem(
 ): IWorkItem {
     const isMine =
         resp.fields["System.AssignedTo"]?.descriptor === getConnectionData()?.authenticatedUser.subjectDescriptor;
-    const promptness = extractLevel(
-        resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"]
-    );
-    const importance = extractLevel(
-        resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"]
-    );
-    const rank = rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]);
+
     const type = resp.fields["System.WorkItemType"] || "";
     const createdByFull = ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "");
     const assignedToFull = ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "");
     const _list = getListName(resp.id, query.collectionName);
+
+    const { priority, priorityText } = calculatePriority(resp);
 
     const item: IWorkItem = {
         id: resp.id,
@@ -44,12 +41,7 @@ export function buildWorkItem(
         titleFull: resp.fields["System.Title"] || "",
         iterationPath: resp.fields["System.IterationPath"] || "",
         areaPath: resp.fields["System.AreaPath"] || "",
-        promptness,
-        promptnessText: resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"] || "",
-        importance,
-        importanceText: resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"] || "",
-        rank,
-        weight: calcWeight(resp),
+
         state: resp.fields["System.State"] || "",
         stateColor: workItemType?.states.find((state) => state.name === resp.fields["System.State"])?.color,
         tags: resp.fields["System.Tags"] || "",
@@ -61,14 +53,10 @@ export function buildWorkItem(
         _filteredBy: {},
         createdByTextName: createdByFull.split(" <")[0],
         assignedToTextName: assignedToFull.split(" <")[0],
-        isOrange:
-            type !== "Task" &&
-            type !== "Epic" &&
-            type !== "User Story" &&
-            type !== "Feature" &&
-            promptness === 2 &&
-            importance !== 3,
-        isRed: promptness === 1 || rank === 1,
+        priority,
+        priorityText,
+
+        isRed: priority === 1,
     };
 
     if (query.queryId === "___permawatch") {
@@ -88,6 +76,29 @@ function extractLevel(level?: string): number | undefined {
     if (!level) return undefined;
     if (+level) return +level;
     return +level[0];
+}
+
+function calculatePriority(resp: IResponseWorkItem): { priority: number | undefined; priorityText: string } {
+    const promptness = resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"];
+    const importance = resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"];
+    const rank = resp.fields["Microsoft.VSTS.Common.Rank"];
+
+    const priorityText = [
+        promptness ? s("priority") + " " + promptness : undefined,
+        importance ? s("severity") + " " + importance : undefined,
+        rank ? "Rank " + rank : undefined,
+    ]
+        .filter((x) => !!x)
+        .join(", ");
+
+    const priority =
+        extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) ??
+        extractLevel(resp.fields["Microsoft.VSTS.Common.Priority"]) ??
+        extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) ??
+        extractLevel(resp.fields["Microsoft.VSTS.Common.Severity"]) ??
+        rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]);
+
+    return { priorityText, priority };
 }
 
 function calcWeight(resp: IResponseWorkItem) {

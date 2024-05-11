@@ -7,7 +7,7 @@ const ru: LocalizedStrings = {
     refresh10m: "10 минут",
     refresh20m: "20 минут",
     refreshdebug: "(debug) 10 секунд",
-    sortPatternWeight: "Вес, Дата",
+    sortPatternWeight: "Приоритет, Дата",
     sortPatternAssigned: '"Назначен", Дата',
     sortPatternId: "ID",
     notifModeAll: "Все",
@@ -88,8 +88,8 @@ const ru: LocalizedStrings = {
     //comps
     timeSinceCreated: "Время с момента создания",
     revision: "Ревизия",
-    priority: "Приоритет ",
-    severity: "Важность ",
+    priority: "Приоритет",
+    severity: "Важность",
     addQuery: "Добавить запрос",
     actions: "Действия",
     ignoreNotif: "Игнор. уведом.",
@@ -284,6 +284,13 @@ const ru: LocalizedStrings = {
     groupPrFilter: "Отображать командные",
 
     showPublicQueries: "Показывать общие запросы",
+
+    addQueryByUrl: "Добавить по URL",
+    checkQueryUrlAndAdd: "Проверить и добавить",
+    queryUrlLabel: "Вставьте ссылку на запрос, чтобы добавить его в систему",
+    queryByUrlError1: "Переданная ссылка не относится к запросам",
+    queryByUrlError2: "Ссылка на запрос неправильная или у вас нет прав для чтения этого запроса",
+    queryByUrlError3: "Невозможно вычислить имя проекта",
 };
 
 export default ru;

@@ -18,12 +18,7 @@ export interface IWorkItem {
     createdByImg: string;
     title: string;
     titleFull: string;
-    promptness?: number;
-    promptnessText?: string;
-    importance?: number;
-    importanceText?: string;
-    rank?: number;
-    weight: number;
+
     url: string;
     state: string;
     stateColor: string | undefined;
@@ -36,7 +31,8 @@ export interface IWorkItem {
     _filteredBy: Record<string, string | undefined>;
     createdByTextName: string;
     assignedToTextName: string;
-    isOrange: boolean;
+    priority: number | undefined;
+    priorityText: string;
     isRed: boolean;
 }
 

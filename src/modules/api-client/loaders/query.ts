@@ -2,6 +2,7 @@ import { Loader } from "../loader";
 import { buildQuery } from "../models";
 import { IProject, IQuery, IResponseQuery, IValue } from "../types";
 import { createProjectLoaders } from "./project";
+import { s } from "/@/values/Strings";
 
 export function createQueryLoaders(loader: Loader) {
     return {
@@ -22,11 +23,28 @@ export function createQueryLoaders(loader: Loader) {
 
             return allQueries;
         },
+        async getByUrl(urlToQuery: string): Promise<IQuery> {
+            if (!urlToQuery.includes("_queries/query")) throw new Error(s("queryByUrlError1"));
+
+            let urlToLoad = urlToQuery.replace("_queries/query", "_apis/wit/queries");
+            if (urlToLoad.at(-1) === "/") urlToLoad = urlToLoad.slice(0, -1);
+
+            const queryData = await loader<IResponseQuery>(urlToLoad);
+
+            if (!queryData) throw new Error(s("queryByUrlError2"));
+
+            const projectName = urlToLoad.split("/_apis/").at(0)?.split("/").at(-1);
+            const projects = await createProjectLoaders(loader).getAll();
+            const project = projects.find((p) => p.name === projectName);
+
+            if (!project) throw new Error(s("queryByUrlError3"));
+
+            return buildQuery(queryData, project);
+        },
     };
 }
 
 function pullOutAllQueries(rq: IResponseQuery, project: IProject): IQuery[] {
-    if (!rq.isPublic && rq.isFolder) console.log(rq);
     if (rq.isFolder) {
         return (rq.children || []).flatMap((crq) => pullOutAllQueries(crq, project));
     }

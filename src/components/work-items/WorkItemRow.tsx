@@ -28,40 +28,15 @@ export function WorkItemRow(props: IProps) {
     const { changesCollection } = useSelector(dataSelector);
 
     const isRed = props.item.isRed;
-    const isOrange = props.item.isOrange;
-
-    const importanceEl = (() => {
-        if (!props.item.importance) return undefined;
-        return (
-            <span title={s("severity") + props.item.importanceText}>
-                <span style={{ fontSize: 12 }}>
-                    <Icon name="exclamation triangle" />
-                </span>
-                {props.item.importance}
-            </span>
-        );
-    })();
 
     const promptnessEl = (() => {
-        if (!props.item.promptness) return undefined;
+        if (!props.item.priority) return undefined;
         return (
-            <span title={s("priority") + props.item.promptnessText} style={{ marginLeft: 4 }}>
+            <span title={props.item.priorityText} style={{ marginLeft: 4 }}>
                 <span style={{ fontSize: 12 }}>
-                    <Icon name="clock" />
+                    <Icon name="clock outline" />
                 </span>
-                {props.item.promptness}
-            </span>
-        );
-    })();
-
-    const rankEl = (() => {
-        if (props.item.rank === undefined) return undefined;
-        return (
-            <span title={"Rank " + props.item.rank}>
-                <span style={{ fontSize: 12 }}>
-                    <Icon name="chess queen" />
-                </span>
-                {props.item.rank}
+                {props.item.priority}
             </span>
         );
     })();
@@ -235,7 +210,7 @@ export function WorkItemRow(props: IProps) {
         : null;
 
     return (
-        <Table.Row warning={isOrange} negative={isRed} onClick={dropChanges} className={getClass()}>
+        <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
             <Table.Cell
                 collapsing
                 className={"cellRelative " + getClass()}
@@ -254,9 +229,7 @@ export function WorkItemRow(props: IProps) {
                 <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid + ""}>
-                    {importanceEl} {promptnessEl} {rankEl}
-                </ContextMenuTrigger>
+                <ContextMenuTrigger id={uid + ""}>{promptnessEl}</ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
