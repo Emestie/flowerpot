@@ -13,15 +13,18 @@ $rowItemHover: lighten($bg, 10%);
     background-color: $bg;
     color: $text;
 
-    .ui.header,
+    .PageLayout {
+        background-color: $bg;
+    }
+
+    .ui.header {
+        background-color: $bg;
+        color: $textNoDim;
+    }
+
     .ui.menu .item,
     .ui.popup,
     .ui.form .field > label,
-    .TopBar {
-        background-color: $bg;
-        color: $text;
-    }
-
     .ui.form input:not([type]):focus,
     .ui.form input[type="date"]:focus,
     .ui.form input[type="datetime-local"]:focus,
@@ -124,7 +127,7 @@ $rowItemHover: lighten($bg, 10%);
     }
 
     .ui.menu {
-        border: 1px solid $bg1;
+        border: 1px solid $bg;
     }
 
     .ui.menu .item {
@@ -174,13 +177,13 @@ $rowItemHover: lighten($bg, 10%);
     .ui.table td.warning,
     .ui.table tr.warning {
         color: $text !important;
-        background-color: rgba(133, 116, 69, 0.829) !important;
+        background-color: rgba(133, 116, 69, 0.425) !important;
     }
 
     .ui.table td.negative,
     .ui.table tr.negative {
         color: $text !important;
-        background-color: rgba(145, 49, 40, 0.836) !important;
+        background-color: rgba(145, 49, 40, 0.384) !important;
     }
 
     .ui.info.message {
@@ -201,5 +204,9 @@ $rowItemHover: lighten($bg, 10%);
         .label.quick-link-label {
             background-color: #252526 !important;
         }
+    }
+
+    .pr-comments-green {
+        color: rgb(146, 199, 146);
     }
 }

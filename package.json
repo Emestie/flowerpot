@@ -27,7 +27,9 @@
         "electron-updater": "^6.1.4",
         "lodash": "^4.17.21",
         "markdown-to-jsx": "^7.3.2",
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "zustand": "^4.5.2",
+        "zustand-log-and-expose": "^0.2.1"
     },
     "devDependencies": {
         "@babel/core": "^7.23.0",

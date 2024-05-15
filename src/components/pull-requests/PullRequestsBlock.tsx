@@ -87,7 +87,7 @@ export function PullRequestsBlock() {
                 </Message>
             )}
             {!!pullRequestsComponents.length && (
-                <Table compact size={getTableSize()}>
+                <Table className="wiTable" compact size={getTableSize()}>
                     <tbody>{pullRequestsComponents}</tbody>
                 </Table>
             )}

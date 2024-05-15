@@ -4,7 +4,7 @@ import { Header } from "semantic-ui-react";
 import { appSelector } from "../../redux/selectors/appSelectors";
 import { TView } from "../../redux/types";
 import { s } from "../../values/Strings";
-import FestivalBanner from "./FestivalBanner";
+import { FestivalBanner, defaultFestivalIcon } from "./FestivalBanner";
 
 interface P {
     children?: React.ReactNode;
@@ -21,7 +21,7 @@ const getHeaderTextByViewName = (viewName: TView) => {
         case "error":
             return s("errorHeader");
         case "main":
-            return s("mainHeader");
+            return null;
         case "selectqueries":
             return s("selQHeader");
         case "selectprojects":
@@ -40,16 +40,18 @@ export function ViewHeading(p: P) {
 
     const viewCaption = p.viewCaption || getHeaderTextByViewName(view);
 
-    const leftMargin = currentFestival ? currentFestival.icon.offset : 0;
+    const leftMargin = currentFestival ? currentFestival.icon.offset : defaultFestivalIcon.icon.offset;
 
     return (
-        <div className="TopBar" id="ViewHeading">
-            <Header as="h1" style={{ marginLeft: leftMargin, marginBottom: 0 }}>
-                {viewCaption}
-            </Header>
-            <div className="RightTopCorner">{p.children}</div>
+        <>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Header as="h1" style={{ marginLeft: leftMargin, marginBottom: 0 }}>
+                    {viewCaption}
+                </Header>
+                <div>{p.children}</div>
+            </div>
             <div>{p.underCaption}</div>
             <FestivalBanner />
-        </div>
+        </>
     );
 }

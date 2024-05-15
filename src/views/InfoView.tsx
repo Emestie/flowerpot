@@ -1,13 +1,14 @@
+import Markdown from "markdown-to-jsx";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Icon, Message } from "semantic-ui-react";
+import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Info } from "../helpers/Info";
 import { appViewSet } from "../redux/actions/appActions";
 import { IAppState } from "../redux/reducers/appReducer";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { s } from "../values/Strings";
-import Markdown from "markdown-to-jsx";
 
 interface IInfoViewParams extends Record<string, any> {
     contentFileName: string;
@@ -55,13 +56,16 @@ export function InfoView() {
     }, [contentText, isLoading, isMarkdown]);
 
     return (
-        <div className="Page">
-            <ViewHeading viewCaption={viewParams.viewCaption}>
-                <Button positive onClick={onSave}>
-                    {s("settingsBackButton")}
-                </Button>
-            </ViewHeading>
+        <PageLayout
+            heading={
+                <ViewHeading viewCaption={viewParams.viewCaption}>
+                    <Button positive onClick={onSave}>
+                        {s("settingsBackButton")}
+                    </Button>
+                </ViewHeading>
+            }
+        >
             {content()}
-        </div>
+        </PageLayout>
     );
 }

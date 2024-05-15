@@ -98,11 +98,10 @@ export default class Differences {
     }
 
     private static createTextForWI(wi: IWorkItem) {
-        let text = wi.title;
-        let id = wi.id;
-        let promptness = wi.promptness && wi.promptness < 3 ? `(${wi.promptnessText})` : "";
-        let rank = wi.rank && wi.rank === 1 ? `(Rank 1)` : "";
-        return `${promptness}${rank} ${id}: ${text}`;
+        const text = wi.title;
+        const id = wi.id;
+        const priorityWarn = wi.priority && wi.priority < 2 ? `(${wi.priorityText}) ` : "";
+        return `${priorityWarn}${id}: ${text}`;
     }
 
     private static getWIById(storage: IWorkItem[], id: number) {

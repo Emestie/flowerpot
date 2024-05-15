@@ -47,8 +47,14 @@ export function PullRequestRow(props: IProps) {
     const commentsEl = (() => {
         if (totalComments === null) return null;
 
+        const commentsElIsGreen = resolvedComments === totalComments;
+
         return (
-            <span title={s("prComments")} style={{ marginLeft: 4 }}>
+            <span
+                title={s("prComments")}
+                className={commentsElIsGreen ? "pr-comments-green" : undefined}
+                style={{ marginLeft: 4 }}
+            >
                 <span>
                     <Icon name="comments" />
                 </span>
@@ -116,6 +122,9 @@ export function PullRequestRow(props: IProps) {
                     </span>
                 </ContextMenuTrigger>
             </Table.Cell>
+            <Table.Cell collapsing>
+                <ContextMenuTrigger id={uid}>{commentsEl}</ContextMenuTrigger>
+            </Table.Cell>
             <Table.Cell collapsing>{reviewers}</Table.Cell>
             <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
                 <ContextMenuTrigger id={uid}>
@@ -125,9 +134,6 @@ export function PullRequestRow(props: IProps) {
                         nameFull={pullRequest.authorFullName}
                     />
                 </ContextMenuTrigger>
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>{commentsEl}</ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
                 <ContextMenuTrigger id={uid}>{freshnessEl}</ContextMenuTrigger>

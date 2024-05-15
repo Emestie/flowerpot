@@ -1,4 +1,5 @@
 import { Label } from "semantic-ui-react";
+import { HighlightenText } from "./HighlightenText";
 
 interface IProps {
     text: string;
@@ -18,7 +19,7 @@ export function Tag(props: IProps) {
             basic
             style={{ padding: "3px 4px", marginRight: 2, color: "white", backgroundColor: color, borderColor: color }}
         >
-            {text}
+            <HighlightenText text={text} />
         </Label>
     );
 }

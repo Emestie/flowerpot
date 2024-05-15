@@ -18,12 +18,7 @@ export interface IWorkItem {
     createdByImg: string;
     title: string;
     titleFull: string;
-    promptness?: number;
-    promptnessText?: string;
-    importance?: number;
-    importanceText?: string;
-    rank?: number;
-    weight: number;
+
     url: string;
     state: string;
     stateColor: string | undefined;
@@ -33,10 +28,10 @@ export interface IWorkItem {
     _isHasShelve: boolean;
     _queryId: string;
     _collectionName: string;
-    _filteredBy: Record<string, string | undefined>;
     createdByTextName: string;
     assignedToTextName: string;
-    isOrange: boolean;
+    priority: number | undefined;
+    priorityText: string;
     isRed: boolean;
 }
 
@@ -63,9 +58,8 @@ export interface IResponseWorkItem {
         "System.Tags": string;
     };
     _links: {
-        html: {
-            href: string;
-        };
+        workItemType: { href: string };
+        html: { href: string };
     };
 }
 

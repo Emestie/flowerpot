@@ -1,5 +1,6 @@
 import { Image, Label } from "semantic-ui-react";
 import { useAvatar } from "../hooks/useAvatar";
+import { HighlightenText } from "./HighlightenText";
 
 interface IProps {
     nameFull: string;
@@ -14,7 +15,7 @@ export function ProfileWidget({ avatarUrl, displayName, nameFull }: IProps) {
         <span title={nameFull}>
             <Label basic image className="user-label">
                 {avatar && !!displayName && <Image className="av-class" avatar spaced="right" src={avatar} />}
-                {displayName}
+                <HighlightenText text={displayName} />
             </Label>
         </span>
     );

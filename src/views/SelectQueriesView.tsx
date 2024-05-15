@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Checkbox, Container, Header, Icon, Label, Message } from "semantic-ui-react";
+import { Button, Checkbox, Container, Form, Header, Icon, Label, Message } from "semantic-ui-react";
 import { api } from "../api/client";
+import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import Query from "../helpers/Query";
 import { IQuery } from "../modules/api-client";
@@ -19,6 +20,10 @@ export function SelectQueriesView() {
     const [isLoading, setIsLoading] = useState(true);
     const [availableQueries, setAvailableQueries] = useState<ISelectableQuery[]>([]);
     const [showPublic, setShowPublic] = useState(false);
+
+    const [url, setUrl] = useState("");
+    const [urlErrorText, setUrlErrorText] = useState<string | undefined>(undefined);
+    const [urlCheckInProgress, setUrlCheckInProgress] = useState(false);
 
     const isAddAvailable = !!availableQueries.filter((q) => q.checked).length;
 
@@ -47,6 +52,20 @@ export function SelectQueriesView() {
         setAvailableQueries([]);
 
         dispatch(appViewSet("settings"));
+    };
+
+    const onUrlCheck = async () => {
+        setUrlCheckInProgress(true);
+        try {
+            const query = await api.query.getByUrl(url);
+
+            Query.add(query);
+            dispatch(appViewSet("settings"));
+        } catch (e: any) {
+            setUrlErrorText(e.message);
+        } finally {
+            setUrlCheckInProgress(false);
+        }
     };
 
     const onCancel = () => {
@@ -87,15 +106,36 @@ export function SelectQueriesView() {
     );
 
     return (
-        <div className="Page">
-            <ViewHeading>
-                <Button onClick={onCancel}>{s("cancel")}</Button>
-                <Button onClick={onAdd} positive disabled={!isAddAvailable}>
-                    {s("add")}
-                </Button>
-            </ViewHeading>
+        <PageLayout
+            heading={
+                <ViewHeading>
+                    <Button onClick={onCancel}>{s("cancel")}</Button>
+                    <Button onClick={onAdd} positive disabled={!isAddAvailable}>
+                        {s("add")}
+                    </Button>
+                </ViewHeading>
+            }
+        >
             <Container fluid>
                 <Label color="orange">{s("note")}</Label> {s("selqNote1")}
+                <Header as="h3" dividing>
+                    {s("addQueryByUrl")}
+                </Header>
+                <Form loading={urlCheckInProgress}>
+                    <Form.Input
+                        fluid
+                        label={s("queryUrlLabel")}
+                        value={url}
+                        onChange={(e) => {
+                            if (urlErrorText) setUrlErrorText(undefined);
+                            setUrl(e.target.value);
+                        }}
+                        error={urlErrorText}
+                    />
+                    <Form.Button onClick={onUrlCheck} disabled={!url.length}>
+                        {s("checkQueryUrlAndAdd")}
+                    </Form.Button>
+                </Form>
                 <Header as="h3" dividing>
                     <span title={s("refresh")} className="externalLinkNoFloat" onClick={onRefresh}>
                         <Icon size="small" name="refresh" disabled={isLoading} />
@@ -111,6 +151,6 @@ export function SelectQueriesView() {
                 </Header>
                 {queryList}
             </Container>
-        </div>
+        </PageLayout>
     );
 }

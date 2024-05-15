@@ -32,6 +32,9 @@ export default class Query {
         const allOrders = allQueries.map((q) => q.order);
         const maxOrder = allOrders.length ? Math.max(...allOrders) : 0;
         query.order = maxOrder + 1;
+
+        if (!!allQueries.find((aq) => aq.queryId === query.queryId)) return;
+
         allQueries.push(query);
         this.updateAllInStore(allQueries);
     }
@@ -126,7 +129,6 @@ export default class Query {
 
         allWIs.forEach((wi) => {
             if (wi.isRed) level = 1;
-            if (wi.isOrange && level !== 1) level = 2;
         });
 
         Platform.current.updateTrayIcon(level, hasChanges);

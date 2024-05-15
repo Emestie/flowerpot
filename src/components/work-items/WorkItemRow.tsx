@@ -1,4 +1,3 @@
-import React from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
@@ -9,6 +8,7 @@ import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { dataSelector } from "../../redux/selectors/dataSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { HighlightenText } from "../HighlightenText";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
@@ -28,40 +28,15 @@ export function WorkItemRow(props: IProps) {
     const { changesCollection } = useSelector(dataSelector);
 
     const isRed = props.item.isRed;
-    const isOrange = props.item.isOrange;
-
-    const importanceEl = (() => {
-        if (!props.item.importance) return undefined;
-        return (
-            <span title={s("severity") + props.item.importanceText}>
-                <span style={{ fontSize: 12 }}>
-                    <Icon name="exclamation triangle" />
-                </span>
-                {props.item.importance}
-            </span>
-        );
-    })();
 
     const promptnessEl = (() => {
-        if (!props.item.promptness) return undefined;
+        if (!props.item.priority) return undefined;
         return (
-            <span title={s("priority") + props.item.promptnessText} style={{ marginLeft: 4 }}>
+            <span title={props.item.priorityText} style={{ marginLeft: 4 }}>
                 <span style={{ fontSize: 12 }}>
-                    <Icon name="clock" />
+                    <Icon name="clock outline" />
                 </span>
-                {props.item.promptness}
-            </span>
-        );
-    })();
-
-    const rankEl = (() => {
-        if (props.item.rank === undefined) return undefined;
-        return (
-            <span title={"Rank " + props.item.rank}>
-                <span style={{ fontSize: 12 }}>
-                    <Icon name="chess queen" />
-                </span>
-                {props.item.rank}
+                {props.item.priority}
             </span>
         );
     })();
@@ -105,6 +80,8 @@ export function WorkItemRow(props: IProps) {
                 return <Icon name="book" />;
             case "Epic":
                 return <Icon name="chess queen" />;
+            case "Test Case":
+                return <Icon name="gavel" />;
             default:
                 return <Icon name="fire" />;
         }
@@ -191,40 +168,6 @@ export function WorkItemRow(props: IProps) {
 
     const [isDone, doneByUser] = [false, "user"];
 
-    const yellowMarkedVal = (field: keyof IWorkItem) => {
-        if (item._filteredBy[field] === undefined) return (item as any)[field];
-
-        const val = (item as any)[field] + "" || "";
-        const splittee = item._filteredBy[field];
-        const pieces = val.toLocaleLowerCase().split(splittee || "");
-
-        const splitteeLength = (splittee || "").length;
-
-        const trueValPieces: any[] = [];
-
-        let start = 0;
-        pieces.forEach((x) => {
-            const xLen = x.length;
-            const p = val.slice(start, start + xLen);
-            const spl = val.slice(start + xLen, start + xLen + splitteeLength);
-            trueValPieces.push(p, spl);
-            start = start + xLen + splitteeLength;
-        });
-
-        const returnee: any[] = [];
-        trueValPieces.forEach((x: any, i: number) => {
-            if (i % 2 === 0) returnee.push(<React.Fragment key={Math.random()}>{x}</React.Fragment>);
-            else
-                returnee.push(
-                    <span key={Math.random()} className="marked">
-                        {x}
-                    </span>
-                );
-        });
-
-        return returnee;
-    };
-
     const tags = item.tags
         ? item.tags
               .split(";")
@@ -233,7 +176,7 @@ export function WorkItemRow(props: IProps) {
         : null;
 
     return (
-        <Table.Row warning={isOrange} negative={isRed} onClick={dropChanges} className={getClass()}>
+        <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
             <Table.Cell
                 collapsing
                 className={"cellRelative " + getClass()}
@@ -245,16 +188,14 @@ export function WorkItemRow(props: IProps) {
                 <ContextMenuTrigger id={uid}>
                     {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
                     <span title={item.type}>
-                        {typeEl} {yellowMarkedVal("id")}
+                        {typeEl} <HighlightenText text={item.id.toString()} />
                     </span>
                 </ContextMenuTrigger>
 
                 <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid + ""}>
-                    {importanceEl} {promptnessEl} {rankEl}
-                </ContextMenuTrigger>
+                <ContextMenuTrigger id={uid + ""}>{promptnessEl}</ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
@@ -274,7 +215,7 @@ export function WorkItemRow(props: IProps) {
                     )}
                     {getListIndicator()}
                     <span className="IterationInTitle" title={item.areaPath}>
-                        {yellowMarkedVal("iterationPath")}
+                        <HighlightenText text={item.iterationPath} />
                     </span>
                     <span>{tags}</span>
                     <span
@@ -284,7 +225,7 @@ export function WorkItemRow(props: IProps) {
                             Platform.current.openUrl(item.url);
                         }}
                     >
-                        {yellowMarkedVal("titleFull")}
+                        <HighlightenText text={item.titleFull} />
                     </span>
                     {!!fullNote && (
                         <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + fullNote}>

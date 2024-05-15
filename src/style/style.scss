@@ -19,27 +19,10 @@ body,
     overflow: overlay;
 }
 
-.Page {
-    user-select: none;
-    padding: 15px;
-    padding-top: 70px;
-    position: relative;
-}
-
 .RightTopCorner {
     position: absolute;
     top: 12px;
     right: 15px;
-}
-
-.TopBar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 15px;
-    width: calc(100% - 10px);
-    background-color: white;
-    z-index: 1000;
 }
 
 .WorkItemLink {
@@ -251,6 +234,7 @@ img.ui.avatar.image.av-class {
 
 .marked {
     background-color: yellow;
+    color: black;
 }
 
 .ql-container {
@@ -278,4 +262,12 @@ img.ui.avatar.image.av-class {
     display: inline-block;
     border-radius: 50%;
     margin-right: 4px;
+}
+
+.pr-comments-green {
+    color: green;
+}
+
+.ui.table.wiTable td {
+    padding: 0.25em 0.6em;
 }

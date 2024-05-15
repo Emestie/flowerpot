@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Header } from "semantic-ui-react";
 import { api } from "../api/client";
+import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { DynamicContent } from "../helpers/DynamicContent";
 import Migration from "../helpers/Migration";
@@ -46,13 +47,8 @@ export function DebugView() {
         DynamicContent.loadFestivalJson();
     };
 
-    // const handleClick = (e: any, data: any) => {
-    //     console.log(data.foo);
-    // };
-
     return (
-        <div className="Page">
-            <ViewHeading />
+        <PageLayout heading={<ViewHeading />}>
             <Container fluid>
                 <Header as="h3" dividing>
                     Electron
@@ -125,6 +121,6 @@ export function DebugView() {
                     {Version.long} / {Version.short}
                 </div>
             </Container>
-        </div>
+        </PageLayout>
     );
 }
