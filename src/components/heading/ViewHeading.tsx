@@ -4,7 +4,7 @@ import { Header } from "semantic-ui-react";
 import { appSelector } from "../../redux/selectors/appSelectors";
 import { TView } from "../../redux/types";
 import { s } from "../../values/Strings";
-import FestivalBanner from "./FestivalBanner";
+import { FestivalBanner, defaultFestivalIcon } from "./FestivalBanner";
 
 interface P {
     children?: React.ReactNode;
@@ -40,7 +40,7 @@ export function ViewHeading(p: P) {
 
     const viewCaption = p.viewCaption || getHeaderTextByViewName(view);
 
-    const leftMargin = currentFestival ? currentFestival.icon.offset : 0;
+    const leftMargin = currentFestival ? currentFestival.icon.offset : defaultFestivalIcon.icon.offset;
 
     return (
         <>

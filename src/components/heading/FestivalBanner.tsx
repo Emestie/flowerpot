@@ -3,17 +3,17 @@ import flowerpotLogo from "../../assets/flower4.png";
 import { IFestivalDescriptor } from "/@/helpers/Festival";
 import { appSelector } from "/@/redux/selectors/appSelectors";
 
-const defaultLogo: IFestivalDescriptor = {
-    icon: { width: 28, height: 28, left: 16, top: 16, offset: 0, path: flowerpotLogo },
+export const defaultFestivalIcon: IFestivalDescriptor = {
+    icon: { width: 28, height: 28, left: 16, top: 16, offset: 40, path: flowerpotLogo },
     dateFrom: "",
     dateTo: "",
     name: "",
 };
 
-export default () => {
+export function FestivalBanner() {
     const { currentFestival } = useSelector(appSelector);
 
-    const _currentFestival = currentFestival ?? defaultLogo;
+    const _currentFestival = currentFestival ?? defaultFestivalIcon;
 
     const {
         icon: { height, left, path, top, width },
@@ -24,4 +24,4 @@ export default () => {
             <img src={path} alt={""} style={{ maxWidth: "100%", maxHeight: "100%" }} />
         </div>
     );
-};
+}
