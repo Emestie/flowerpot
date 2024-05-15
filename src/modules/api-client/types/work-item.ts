@@ -28,7 +28,6 @@ export interface IWorkItem {
     _isHasShelve: boolean;
     _queryId: string;
     _collectionName: string;
-    _filteredBy: Record<string, string | undefined>;
     createdByTextName: string;
     assignedToTextName: string;
     priority: number | undefined;

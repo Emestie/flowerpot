@@ -16,6 +16,7 @@ import { appSelector } from "../redux/selectors/appSelectors";
 import { dataSelector } from "../redux/selectors/dataSelectors";
 import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
+import { useQuickSearchStore } from "../zustand/quick-search";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
 
@@ -32,7 +33,8 @@ export function MainView() {
     const { changesCollection } = useSelector(dataSelector);
     const storedQueries = useSelector(getQueriesSelector());
 
-    const [quickSearchVal, setQuickSearchVal] = useState("");
+    const quickSearchValue = useQuickSearchStore((s) => s.value);
+    const setQuickSearchValue = useQuickSearchStore((s) => s.setValue);
 
     const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
 
@@ -67,7 +69,7 @@ export function MainView() {
     const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
     const queriesBlocks = queries.length ? (
-        queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} filter={quickSearchVal} />)
+        queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
     ) : (
         <Message info>
             <Message.Header>{s("noQueriesToWatch")}</Message.Header>
@@ -99,10 +101,10 @@ export function MainView() {
                             <Form.Input
                                 size="small"
                                 placeholder={s("quicksearch")}
-                                value={quickSearchVal}
+                                value={quickSearchValue}
                                 onChange={(e) => {
-                                    if (e.target.value && !e.target.value.trim()) setQuickSearchVal("");
-                                    else setQuickSearchVal(e.target.value);
+                                    if (e.target.value && !e.target.value.trim()) setQuickSearchValue("");
+                                    else setQuickSearchValue(e.target.value);
                                 }}
                             />
                         </div>

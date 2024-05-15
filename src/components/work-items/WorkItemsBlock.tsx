@@ -6,83 +6,24 @@ import Query from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
 import { appSelector } from "../../redux/selectors/appSelectors";
-import { getWorkItemsForQuerySelector } from "../../redux/selectors/dataSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { WorkItemRow } from "./WorkItemRow";
+import { useFilteredWorkItems } from "./use-filtered-work-items";
 import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 interface IProps {
     query: IQuery;
-    filter: string;
 }
 
 export function WorkItemsBlock(props: IProps) {
     const { isLoading, routineStart, errorMessage } = useQueryLoader(props.query);
-    const allItems = useSelector(getWorkItemsForQuerySelector(props.query));
     const settings = useSelector(settingsSelector);
     const { showMineOnly } = useSelector(appSelector);
 
     const dispatch = useDispatch();
 
-    const filterValue = props.filter && props.filter.trim() ? props.filter.trim().toLowerCase() : "";
-
-    const filteredItems = () => {
-        if (!filterValue) {
-            allItems.forEach((x) => {
-                x._filteredBy = {};
-            });
-            return allItems;
-        }
-        const filtered = allItems.filter((i) => {
-            let flag = false;
-            const itf = (i.titleFull || "").toLowerCase().indexOf(filterValue);
-            const iid = (i.id || "").toString().indexOf(filterValue);
-            const iatf = (i.assignedToFull || "").toLowerCase().indexOf(filterValue);
-            const icbf = (i.createdByFull || "").toLowerCase().indexOf(filterValue);
-            const iitp = (i.iterationPath || "").toLowerCase().indexOf(filterValue);
-
-            if (itf !== -1) {
-                flag = true;
-                i._filteredBy["titleFull"] = filterValue;
-            } else {
-                i._filteredBy["titleFull"] = undefined;
-            }
-
-            if (iid !== -1) {
-                flag = true;
-                i._filteredBy["id"] = filterValue;
-            } else {
-                i._filteredBy["id"] = undefined;
-            }
-
-            if (iatf !== -1) {
-                flag = true;
-                i._filteredBy["assignedToFull"] = filterValue;
-            } else {
-                i._filteredBy["assignedToFull"] = undefined;
-            }
-
-            if (icbf !== -1) {
-                flag = true;
-                i._filteredBy["createdByFull"] = filterValue;
-            } else {
-                i._filteredBy["createdByFull"] = undefined;
-            }
-
-            if (iitp !== -1) {
-                flag = true;
-                i._filteredBy["iterationPath"] = filterValue;
-            } else {
-                i._filteredBy["iterationPath"] = undefined;
-            }
-
-            return flag;
-        });
-        return filtered;
-    };
-
-    const workItems = filteredItems();
+    const workItems = useFilteredWorkItems(props.query);
 
     const isPermawatch = props.query.queryId === "___permawatch";
     const totalItemsCount = workItems.filter(

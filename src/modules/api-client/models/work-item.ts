@@ -50,12 +50,10 @@ export function buildWorkItem(
         _isHasShelve: isHasShelve(resp.fields["System.History"]),
         _queryId: query.queryId,
         _collectionName: query.collectionName,
-        _filteredBy: {},
         createdByTextName: createdByFull.split(" <")[0],
         assignedToTextName: assignedToFull.split(" <")[0],
         priority,
         priorityText,
-
         isRed: priority === 1,
     };
 

@@ -1,3 +1,4 @@
+import { HighlightenText } from "../HighlightenText";
 import { IWorkItem } from "/@/modules/api-client";
 import { s } from "/@/values/Strings";
 
@@ -11,7 +12,9 @@ export function Status({ workItem }: Props) {
     return (
         <div className="wiStatus" title={s("wiStatus") + text}>
             <span className="wiStatusDot" style={{ backgroundColor: "#" + workItem.stateColor }} />
-            <span className="wiStatusText">{shrink(text)}</span>
+            <span className="wiStatusText">
+                <HighlightenText text={shrink(text)} />
+            </span>
         </div>
     );
 }
