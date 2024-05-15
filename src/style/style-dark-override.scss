@@ -177,13 +177,13 @@ $rowItemHover: lighten($bg, 10%);
     .ui.table td.warning,
     .ui.table tr.warning {
         color: $text !important;
-        background-color: rgba(133, 116, 69, 0.829) !important;
+        background-color: rgba(133, 116, 69, 0.425) !important;
     }
 
     .ui.table td.negative,
     .ui.table tr.negative {
         color: $text !important;
-        background-color: rgba(145, 49, 40, 0.836) !important;
+        background-color: rgba(145, 49, 40, 0.384) !important;
     }
 
     .ui.info.message {
