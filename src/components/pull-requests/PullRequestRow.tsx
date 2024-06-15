@@ -8,10 +8,28 @@ import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
 import { api } from "/@/api/client";
-import { IPullRequest } from "/@/modules/api-client";
+import { IPullRequest, IPullRequestReviewer } from "/@/modules/api-client";
 
 interface IProps {
     pullRequest: IPullRequest;
+}
+
+function createReviewersComponents(revs: IPullRequestReviewer[]): React.ReactNode[] {
+    const sortedRevs = revs.slice().sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1));
+
+    const firstFive = sortedRevs.slice(0, 5);
+    const others = sortedRevs.slice(5);
+
+    const othersComponent =
+        others.length > 0 ? (
+            <span title={others.map((o) => o.name + (o.isRequired ? ` (${s("requiredReviewer")})` : "")).join("\n")}>
+                +{others.length}
+            </span>
+        ) : (
+            <></>
+        );
+
+    return firstFive.map((rev) => <PRReviewer key={rev.uid} reviewer={rev} />).concat(othersComponent);
 }
 
 export function PullRequestRow(props: IProps) {
@@ -65,9 +83,7 @@ export function PullRequestRow(props: IProps) {
 
     const tags = pullRequest.labels.map((x) => x.name).map((x, i) => <Tag key={i} text={x} />);
 
-    const reviewers = pullRequest.reviewers
-        .sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1))
-        .map((rev) => <PRReviewer key={rev.uid} reviewer={rev} />);
+    const reviewers = createReviewersComponents(pullRequest.reviewers);
 
     return (
         <Table.Row>
