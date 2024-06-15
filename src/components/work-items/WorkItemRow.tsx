@@ -163,7 +163,7 @@ export function WorkItemRow(props: IProps) {
     };
 
     const item = props.item;
-    const hasChanges = settings.showUnreads ? !!changesCollection[item.id] : false;
+    const hasChanges = false; // settings.showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
     const uid = props.item.id + Math.random() + "";
 
     const [isDone, doneByUser] = [false, "user"];

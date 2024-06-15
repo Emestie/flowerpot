@@ -114,8 +114,8 @@ export function WorkItemsSection() {
             <br />
             <Form.Checkbox label={s("mineOnTop")} checked={settings.mineOnTop} onChange={toggleMineOnTop} />
             <br />
-            <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
-            <br />
+            {/* <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
+            <br /> //TODO: FL-11 */}
             <Form.Select
                 label={s("ddTableScale")}
                 options={tableScales}
