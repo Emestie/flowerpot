@@ -1,12 +1,10 @@
 import { ContextMenuTrigger } from "react-contextmenu";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { Stats, UsageStat } from "../../helpers/Stats";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
-import { dataSelector } from "../../redux/selectors/dataSelectors";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
 import { ProfileWidget } from "../ProfileWidget";
@@ -22,10 +20,16 @@ interface IProps {
     onUpdate: (wi: IWorkItem) => void;
 }
 
+function createIterationPathParts(iterationPath: string) {
+    const [last, ...rest] = iterationPath.split("\\").reverse();
+
+    return [rest.reverse().join("\\"), last];
+}
+
 export function WorkItemRow(props: IProps) {
     const dispatch = useDispatch();
-    const settings = useSelector(settingsSelector);
-    const { changesCollection } = useSelector(dataSelector);
+    //const settings = useSelector(settingsSelector);
+    //const { changesCollection } = useSelector(dataSelector);
 
     const isRed = props.item.isRed;
 
@@ -173,6 +177,8 @@ export function WorkItemRow(props: IProps) {
               .map((x, i) => <Tag key={i} text={x} />)
         : null;
 
+    const [iterationPathA, iterationPathB] = createIterationPathParts(item.iterationPath);
+
     return (
         <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
             <Table.Cell
@@ -199,7 +205,13 @@ export function WorkItemRow(props: IProps) {
                 <ContextMenuTrigger id={uid}>
                     {getListIndicator()}
                     <span className="IterationInTitle" title={item.areaPath}>
-                        <HighlightenText text={item.iterationPath} />
+                        <HighlightenText text={iterationPathA} />
+                        {iterationPathB && (
+                            <>
+                                <>\</>
+                                <HighlightenText text={iterationPathB} isBold color={"red"} /> //TODO: color calculation
+                            </>
+                        )}
                     </span>
                     <span>{tags}</span>
                     <span
