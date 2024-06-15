@@ -25,7 +25,6 @@ export interface IWorkItem {
     tags: string;
     _isMine: boolean;
     _list?: TLists;
-    _isHasShelve: boolean;
     _queryId: string;
     _collectionName: string;
     createdByTextName: string;

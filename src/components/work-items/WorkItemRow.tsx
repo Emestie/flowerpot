@@ -166,8 +166,6 @@ export function WorkItemRow(props: IProps) {
     const hasChanges = false; // settings.showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
     const uid = props.item.id + Math.random() + "";
 
-    const [isDone, doneByUser] = [false, "user"];
-
     const tags = item.tags
         ? item.tags
               .split(";")
@@ -199,20 +197,6 @@ export function WorkItemRow(props: IProps) {
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
-                    {isDone && (
-                        <span className="hasShelve" title={s("itemIsDone") + doneByUser}>
-                            <Label color="blue" size="mini" style={{ padding: "3px 4px", marginRight: 5 }}>
-                                {s("done")}
-                            </Label>
-                        </span>
-                    )}
-                    {!!item._isHasShelve && (
-                        <span className="hasShelve" title={s("hasShelve")}>
-                            <Label color="green" size="mini" style={{ padding: "3px 4px", marginRight: 5 }}>
-                                Shelve
-                            </Label>
-                        </span>
-                    )}
                     {getListIndicator()}
                     <span className="IterationInTitle" title={item.areaPath}>
                         <HighlightenText text={item.iterationPath} />

@@ -47,7 +47,6 @@ export function buildWorkItem(
         tags: resp.fields["System.Tags"] || "",
         _isMine: isMine,
         _list,
-        _isHasShelve: isHasShelve(resp.fields["System.History"]),
         _queryId: query.queryId,
         _collectionName: query.collectionName,
         createdByTextName: createdByFull.split(" <")[0],
@@ -140,11 +139,4 @@ function getListName(id: number, collectionName: string): TLists | undefined {
     if (Lists.isIn("forwarded", collectionName, id)) return "forwarded";
 
     return undefined;
-}
-
-function isHasShelve(text: string) {
-    if (!text) return false;
-    if (text.toLowerCase().indexOf("shelve") !== -1) return true;
-    if (text.toLowerCase().indexOf("шелв") !== -1) return true;
-    return false;
 }
