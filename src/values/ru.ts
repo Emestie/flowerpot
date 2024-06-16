@@ -291,6 +291,8 @@ const ru: LocalizedStrings = {
     queryByUrlError1: "Переданная ссылка не относится к запросам",
     queryByUrlError2: "Ссылка на запрос неправильная или у вас нет прав для чтения этого запроса",
     queryByUrlError3: "Невозможно вычислить имя проекта",
+
+    enableIterationColors: "Использовать цветовую раскраску Iteration Path",
 };
 
 export default ru;

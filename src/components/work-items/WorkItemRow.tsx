@@ -1,17 +1,16 @@
 import { ContextMenuTrigger } from "react-contextmenu";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { Stats, UsageStat } from "../../helpers/Stats";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
-import { dataSelector } from "../../redux/selectors/dataSelectors";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
+import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
 import { IQuery, IWorkItem } from "/@/modules/api-client";
 
@@ -24,8 +23,8 @@ interface IProps {
 
 export function WorkItemRow(props: IProps) {
     const dispatch = useDispatch();
-    const settings = useSelector(settingsSelector);
-    const { changesCollection } = useSelector(dataSelector);
+    //const settings = useSelector(settingsSelector);
+    //const { changesCollection } = useSelector(dataSelector);
 
     const isRed = props.item.isRed;
 
@@ -163,10 +162,8 @@ export function WorkItemRow(props: IProps) {
     };
 
     const item = props.item;
-    const hasChanges = settings.showUnreads ? !!changesCollection[item.id] : false;
+    const hasChanges = false; // settings.showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
     const uid = props.item.id + Math.random() + "";
-
-    const [isDone, doneByUser] = [false, "user"];
 
     const tags = item.tags
         ? item.tags
@@ -199,24 +196,8 @@ export function WorkItemRow(props: IProps) {
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
-                    {isDone && (
-                        <span className="hasShelve" title={s("itemIsDone") + doneByUser}>
-                            <Label color="blue" size="mini" style={{ padding: "3px 4px", marginRight: 5 }}>
-                                {s("done")}
-                            </Label>
-                        </span>
-                    )}
-                    {!!item._isHasShelve && (
-                        <span className="hasShelve" title={s("hasShelve")}>
-                            <Label color="green" size="mini" style={{ padding: "3px 4px", marginRight: 5 }}>
-                                Shelve
-                            </Label>
-                        </span>
-                    )}
                     {getListIndicator()}
-                    <span className="IterationInTitle" title={item.areaPath}>
-                        <HighlightenText text={item.iterationPath} />
-                    </span>
+                    <IterationPath item={item} />
                     <span>{tags}</span>
                     <span
                         className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}

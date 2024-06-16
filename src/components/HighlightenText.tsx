@@ -7,7 +7,7 @@ interface Props {
 export function HighlightenText({ text }: Props) {
     const highlights = useHighlights();
 
-    if (!highlights.length) return <>{text}</>;
+    if (!highlights.length) return <span>{text}</span>;
 
     const replaced = text.replace(
         new RegExp(`(${highlights.join("|")})`, "gi"),
