@@ -10,6 +10,7 @@ import { HighlightenText } from "../HighlightenText";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
+import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
 import { IQuery, IWorkItem } from "/@/modules/api-client";
 
@@ -18,12 +19,6 @@ interface IProps {
     query: IQuery;
     isPermawatch: boolean;
     onUpdate: (wi: IWorkItem) => void;
-}
-
-function createIterationPathParts(iterationPath: string) {
-    const [last, ...rest] = iterationPath.split("\\").reverse();
-
-    return [rest.reverse().join("\\"), last];
 }
 
 export function WorkItemRow(props: IProps) {
@@ -177,8 +172,6 @@ export function WorkItemRow(props: IProps) {
               .map((x, i) => <Tag key={i} text={x} />)
         : null;
 
-    const [iterationPathA, iterationPathB] = createIterationPathParts(item.iterationPath);
-
     return (
         <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
             <Table.Cell
@@ -204,15 +197,7 @@ export function WorkItemRow(props: IProps) {
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
                     {getListIndicator()}
-                    <span className="IterationInTitle" title={item.areaPath}>
-                        <HighlightenText text={iterationPathA} />
-                        {iterationPathB && (
-                            <>
-                                <>\</>
-                                <HighlightenText text={iterationPathB} isBold color={"red"} /> //TODO: color calculation
-                            </>
-                        )}
-                    </span>
+                    <IterationPath item={item} />
                     <span>{tags}</span>
                     <span
                         className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}
