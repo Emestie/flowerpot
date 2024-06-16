@@ -7,6 +7,7 @@ export function IterationPath({ item }: { item: IWorkItem }) {
     const [iterationPathA, iterationPathB] = createIterationPathParts(item.iterationPath);
 
     const themeNumber = useSelector((s: IStore) => s.settings.darkTheme) ? 1 : 0;
+    const enableColors = useSelector((s: IStore) => s.settings.enableIterationColors);
 
     return (
         <span className="IterationInTitle" title={item.areaPath}>
@@ -14,7 +15,12 @@ export function IterationPath({ item }: { item: IWorkItem }) {
             {iterationPathB && (
                 <>
                     <>\</>
-                    <span style={{ fontWeight: "bold", color: colors[getColorNumber(iterationPathB)][themeNumber] }}>
+                    <span
+                        style={{
+                            fontWeight: "bold",
+                            color: enableColors ? colors[getColorNumber(iterationPathB)][themeNumber] : undefined,
+                        }}
+                    >
                         <HighlightenText text={iterationPathB} />
                     </span>
                 </>

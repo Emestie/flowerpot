@@ -7,25 +7,25 @@ import { TableScale } from "../../../redux/reducers/settingsReducer";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { s } from "../../../values/Strings";
 
-const sortPatterns: DropdownItemProps[] = [
+const getSortPatterns: () => DropdownItemProps[] = () => [
     { key: 1, text: s("sortPatternWeight"), value: "default" },
     { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
     { key: 3, text: s("sortPatternId"), value: "id" },
 ];
 
-const notificationsModes: DropdownItemProps[] = [
+const getNotificationsModes: () => DropdownItemProps[] = () => [
     { key: 1, text: s("notifModeAll"), value: "all" },
     { key: 2, text: s("notifModeMine"), value: "mine" },
     { key: 3, text: s("notifModeNone"), value: "none" },
 ];
 
-const tableScales: DropdownItemProps[] = [
+const getTableScales: () => DropdownItemProps[] = () => [
     { key: 0, text: s("tableSizeSmall"), value: 0 },
     { key: 1, text: s("tableSizeMedium"), value: 1 },
     { key: 2, text: s("tableSizeLarge"), value: 2 },
 ];
 
-const refreshRates: DropdownItemProps[] = [
+const getRefreshRates: () => DropdownItemProps[] = () => [
     { key: 2, text: s("refresh3m"), value: 180 },
     { key: 3, text: s("refresh5m"), value: 300 },
     { key: 4, text: s("refresh10m"), value: 600 },
@@ -35,6 +35,11 @@ const refreshRates: DropdownItemProps[] = [
 export function WorkItemsSection() {
     const dispatch = useDispatch();
     const settings = useSelector(settingsSelector);
+
+    const refreshRates = getRefreshRates();
+    const tableScales = getTableScales();
+    const notificationsModes = getNotificationsModes();
+    const sortPatterns = getSortPatterns();
 
     if (Platform.current.isDev()) {
         if (refreshRates.length !== 5)
@@ -58,6 +63,11 @@ export function WorkItemsSection() {
     const toggleMineOnTop = () => {
         const mineOnTop = !settings.mineOnTop;
         dispatch(settingsUpdate({ mineOnTop }));
+    };
+
+    const toggleIterationColors = () => {
+        const enableIterationColors = !settings.enableIterationColors;
+        dispatch(settingsUpdate({ enableIterationColors }));
     };
 
     const onTableScaleSelect = (val: TableScale) => {
@@ -116,6 +126,12 @@ export function WorkItemsSection() {
             <br />
             {/* <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
             <br /> //TODO: FL-11 */}
+            <Form.Checkbox
+                label={s("enableIterationColors")}
+                checked={settings.enableIterationColors}
+                onChange={toggleIterationColors}
+            />
+            <br />
             <Form.Select
                 label={s("ddTableScale")}
                 options={tableScales}

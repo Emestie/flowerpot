@@ -290,6 +290,8 @@ const en = {
     queryByUrlError1: "Provided URL does not targets query",
     queryByUrlError2: "Query URL is invalid or you don't have permission to read it",
     queryByUrlError3: "Cannot figure out Project name",
+
+    enableIterationColors: "Use Iteration Path colors",
 };
 
 export default en;

@@ -58,6 +58,7 @@ export interface ISettings {
     stats: Record<UsageStat, number>;
     settingsSection: Sections;
     includeTeamsPRs: boolean;
+    enableIterationColors: boolean;
 }
 
 export default class Settings {
