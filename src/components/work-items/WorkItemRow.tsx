@@ -1,5 +1,5 @@
 import { ContextMenuTrigger } from "react-contextmenu";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
@@ -13,6 +13,8 @@ import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
 import { IQuery, IWorkItem } from "/@/modules/api-client";
+import { dataSelector } from "/@/redux/selectors/dataSelectors";
+import { settingsSelector } from "/@/redux/selectors/settingsSelectors";
 
 interface IProps {
     item: IWorkItem;
@@ -23,8 +25,8 @@ interface IProps {
 
 export function WorkItemRow(props: IProps) {
     const dispatch = useDispatch();
-    //const settings = useSelector(settingsSelector);
-    //const { changesCollection } = useSelector(dataSelector);
+    const settings = useSelector(settingsSelector);
+    const { changesCollection } = useSelector(dataSelector);
 
     const isRed = props.item.isRed;
 
@@ -162,7 +164,7 @@ export function WorkItemRow(props: IProps) {
     };
 
     const item = props.item;
-    const hasChanges = false; // settings.showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
+    const hasChanges = settings.showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
     const uid = props.item.id + Math.random() + "";
 
     const tags = item.tags
