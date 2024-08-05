@@ -59,6 +59,7 @@ export interface ISettings {
     settingsSection: Sections;
     includeTeamsPRs: boolean;
     enableIterationColors: boolean;
+    enableQueryColorCode: boolean;
 }
 
 export default class Settings {

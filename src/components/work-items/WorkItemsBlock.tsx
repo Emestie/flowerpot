@@ -11,6 +11,7 @@ import { s } from "../../values/Strings";
 import { WorkItemRow } from "./WorkItemRow";
 import { useFilteredWorkItems } from "./use-filtered-work-items";
 import { IQuery, IWorkItem } from "/@/modules/api-client";
+import { tagPalette } from "/@/modules/palette";
 
 interface IProps {
     query: IQuery;
@@ -153,7 +154,20 @@ export function WorkItemsBlock(props: IProps) {
                 )}
                 {!isLoading && !!workItems.length && <span onClick={onCollapseClick}>{iconCollapse}</span>}
                 <span onClick={dropAllWiChanges}>
-                    <span onClick={onCollapseClick}>
+                    <span
+                        onClick={onCollapseClick}
+                        style={
+                            isPermawatch || !settings.enableQueryColorCode
+                                ? undefined
+                                : {
+                                      backgroundColor: tagPalette
+                                          .getColor(query.queryName)
+                                          .hexWithTransparency(settings.darkTheme ? 0.3 : 0.2),
+                                      padding: "0 8px",
+                                      borderRadius: 4,
+                                  }
+                        }
+                    >
                         {isPermawatch && (
                             <span>
                                 <Icon name="eye" />

@@ -26,6 +26,17 @@ export class Color {
         return luminance < 0.2 ? "light" : "dark";
     }
 
+    hexWithTransparency(transparencyLevel: number): string {
+        if (transparencyLevel < 0 || transparencyLevel > 1)
+            throw new Error("Invalid transparency value: " + transparencyLevel);
+
+        const raw = this.hexValue.substring(0, 7);
+
+        const alpha = Math.round((transparencyLevel * 100 * 255) / 100).toString(16);
+
+        return raw + (alpha.length === 1 ? "0" + alpha : alpha);
+    }
+
     private getLuminanace(rgbValues: [number, number, number]) {
         const rgb = rgbValues.map((v) => {
             const val = v / 255;

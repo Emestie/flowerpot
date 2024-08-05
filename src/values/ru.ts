@@ -293,6 +293,7 @@ const ru: LocalizedStrings = {
     queryByUrlError3: "Невозможно вычислить имя проекта",
 
     enableIterationColors: "Использовать цветовую раскраску Iteration Path",
+    enableQueryColorCode: "Использовать цветовое кодирование в заголовках запросов",
 };
 
 export default ru;

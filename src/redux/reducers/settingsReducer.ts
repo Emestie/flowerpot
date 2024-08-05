@@ -57,6 +57,7 @@ const initialState: ISettingsState = {
     settingsSection: Sections.Queries,
     includeTeamsPRs: true,
     enableIterationColors: true,
+    enableQueryColorCode: false,
 };
 
 export function settingsReducer(state = initialState, action: IAction) {
