@@ -18,6 +18,7 @@ export function PullRequestsBlock() {
     if (!projects.filter((p) => p.enabled).length) return null;
 
     const totalItemsCount = pullRequests.length;
+    const totalTeamsCount = pullRequests.filter((x) => x.getBelonging() === "team").length;
 
     const refreshBlock = () => {
         if (!isLoading) routineStart();
@@ -47,6 +48,11 @@ export function PullRequestsBlock() {
                     {!!totalItemsCount && (
                         <Label size="mini" circular>
                             {totalItemsCount}
+                        </Label>
+                    )}
+                    {!!totalTeamsCount && (
+                        <Label size="mini" circular color="blue">
+                            {totalTeamsCount}
                         </Label>
                     )}
                     {!totalItemsCount &&
