@@ -3,7 +3,6 @@ import { IProject, IQuery, IResponseQuery } from "../types";
 export function buildQuery(resp: IResponseQuery, project: IProject): IQuery {
     return {
         collectionName: project.collectionName,
-        collapsed: false,
         enabled: true,
         order: 99,
         queryId: resp.id,

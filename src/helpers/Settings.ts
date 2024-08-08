@@ -60,6 +60,7 @@ export interface ISettings {
     includeTeamsPRs: boolean;
     enableIterationColors: boolean;
     enableQueryColorCode: boolean;
+    collapsedBlocks: string[];
 }
 
 export default class Settings {

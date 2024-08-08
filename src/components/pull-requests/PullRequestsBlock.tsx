@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Checkbox, Header, Icon, Label, Message, Table } from "semantic-ui-react";
+import { Checkbox, Icon, Message, Table } from "semantic-ui-react";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { CollapsibleBlock } from "../CollapsibleBlock";
 import { PullRequestRow } from "./PullRequestRow";
 import { settingsUpdate } from "/@/redux/actions/settingsActions";
 
@@ -31,72 +32,51 @@ export function PullRequestsBlock() {
     const pullRequestsComponents = pullRequests.map((pr) => <PullRequestRow key={pr.id} pullRequest={pr} />);
 
     return (
-        <>
-            <Header as="h3" dividing>
-                {isLoading && (
-                    <span>
-                        <Icon name="circle notched" loading />
+        <CollapsibleBlock
+            id="PR"
+            caption={s("pullRequestsBlockCaption")}
+            isCollapseEnabled={!!pullRequests.length}
+            isLoading={isLoading}
+            enableColorCode={false}
+            counters={{ total: { count: totalItemsCount }, teams: { count: totalTeamsCount, color: "blue" } }}
+            status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
+            iconComponent={<Icon name="level up alternate" />}
+            rightBlock={
+                <>
+                    <span
+                        title={s("refresh")}
+                        className="externalLink"
+                        onClick={refreshBlock}
+                        style={{ opacity: isLoading ? 0 : 1 }}
+                    >
+                        <Icon size="small" name="refresh" />
                     </span>
-                )}
-                <span>
-                    <span>
-                        <Icon name="level up alternate" />
-                    </span>{" "}
-                    {s("pullRequestsBlockCaption")}
-                </span>
-                <span className="WICounts">
-                    {!!totalItemsCount && (
-                        <Label size="mini" circular>
-                            {totalItemsCount}
-                        </Label>
+                    {hasTeams && (
+                        <span className="group-pr-checkbox">
+                            <Checkbox
+                                label={s("groupPrFilter")}
+                                checked={includeTeamsPRs}
+                                onChange={() => {
+                                    dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
+                                }}
+                            />
+                        </span>
                     )}
-                    {!!totalTeamsCount && (
-                        <Label size="mini" circular color="blue">
-                            {totalTeamsCount}
-                        </Label>
-                    )}
-                    {!totalItemsCount &&
-                        !isLoading &&
-                        (!errorMessage ? (
-                            <Label size="mini" circular color="green">
-                                ✔
-                            </Label>
-                        ) : (
-                            <Label size="mini" circular color="red">
-                                &times;
-                            </Label>
-                        ))}
-                </span>
-                <span
-                    title={s("refresh")}
-                    className="externalLink"
-                    onClick={refreshBlock}
-                    style={{ opacity: isLoading ? 0 : 1 }}
-                >
-                    <Icon size="small" name="refresh" />
-                </span>
-                {hasTeams && (
-                    <span className="group-pr-checkbox">
-                        <Checkbox
-                            label={s("groupPrFilter")}
-                            checked={includeTeamsPRs}
-                            onChange={() => {
-                                dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
-                            }}
-                        />
-                    </span>
+                </>
+            }
+        >
+            <>
+                {!!errorMessage && (
+                    <Message size="tiny" error>
+                        {errorMessage}
+                    </Message>
                 )}
-            </Header>
-            {!!errorMessage && (
-                <Message size="tiny" error>
-                    {errorMessage}
-                </Message>
-            )}
-            {!!pullRequestsComponents.length && (
-                <Table className="wiTable" compact size={getTableSize()}>
-                    <tbody>{pullRequestsComponents}</tbody>
-                </Table>
-            )}
-        </>
+                {!!pullRequestsComponents.length && (
+                    <Table className="wiTable" compact size={getTableSize()}>
+                        <tbody>{pullRequestsComponents}</tbody>
+                    </Table>
+                )}
+            </>
+        </CollapsibleBlock>
     );
 }

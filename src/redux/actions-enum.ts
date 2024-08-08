@@ -16,4 +16,5 @@ export enum Actions {
     SettingsUpdate = "settings/update",
     SettingsMigrationsDonePush = "settings/migrations-done-push",
     SettingsListUpdate = "settings/list-update",
+    SettingsCollapseBlockToggle = "settings/collapse-block-toggle",
 }

@@ -24,3 +24,13 @@ export function settingsListUpdate(listName: TLists, items: IListItem[]) {
 
     return createAction(Actions.SettingsListUpdate, { lists: { ...lists } });
 }
+
+export function settingsCollapseBlock(collapseId: string, state: boolean) {
+    const collapsedBlocks = store.getState().settings.collapsedBlocks;
+
+    const newCollapsedBlocks = state
+        ? [...collapsedBlocks, collapseId]
+        : collapsedBlocks.filter((x) => x !== collapseId);
+
+    return createAction(Actions.SettingsCollapseBlockToggle, { collapsedBlocks: newCollapsedBlocks });
+}

@@ -17,7 +17,6 @@ export interface IQuery {
     teamId: string;
     teamName: string;
     enabled: boolean;
-    collapsed: boolean;
     order: number;
     ignoreIcon: boolean;
     ignoreNotif: boolean;

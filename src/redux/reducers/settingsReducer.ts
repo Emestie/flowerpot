@@ -58,6 +58,7 @@ const initialState: ISettingsState = {
     includeTeamsPRs: true,
     enableIterationColors: true,
     enableQueryColorCode: false,
+    collapsedBlocks: [],
 };
 
 export function settingsReducer(state = initialState, action: IAction) {

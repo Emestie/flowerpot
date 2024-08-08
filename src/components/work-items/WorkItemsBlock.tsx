@@ -1,17 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, Message, Table } from "semantic-ui-react";
+import { Icon, Message, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
-import Query from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
-import { dataChangesCollectionClear, dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
+import { dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
 import { appSelector } from "../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { CollapsibleBlock } from "../CollapsibleBlock";
 import { WorkItemRow } from "./WorkItemRow";
 import { useFilteredWorkItems } from "./use-filtered-work-items";
 import { IQuery, IWorkItem } from "/@/modules/api-client";
-import { tagPalette } from "/@/modules/palette";
 
 interface IProps {
     query: IQuery;
@@ -33,10 +32,6 @@ export function WorkItemsBlock(props: IProps) {
     const redItemsCount = workItems
         .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => wi.isRed).length;
-
-    const onCollapseClick = () => {
-        Query.toggleBoolean(props.query, "collapsed");
-    };
 
     const onOpenQueryInBrowser = () => {
         let q = props.query;
@@ -105,13 +100,6 @@ export function WorkItemsBlock(props: IProps) {
         else return 1;
     };
 
-    const dropAllWiChanges = () => {
-        dispatch(dataChangesCollectionClear());
-        // workItems.forEach((wi) => {
-        //     dispatch(dataChangesCollectionItemSet(wi, false))
-        // });
-    };
-
     const updateWorkItems = (wi: IWorkItem) => {
         let newList = workItems.filter((w) => w.id !== wi.id);
         newList.push(wi);
@@ -138,93 +126,49 @@ export function WorkItemsBlock(props: IProps) {
             />
         ));
 
-    const iconCollapse = query.collapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
-
     const getTableSize = () => {
         return settings.tableScale === 1 ? undefined : settings.tableScale === 2 ? "large" : "small";
     };
 
     return (
-        <>
-            <Header as="h3" dividing>
-                {isLoading && (
-                    <span>
-                        <Icon name="circle notched" loading />
-                    </span>
-                )}
-                {!isLoading && !!workItems.length && <span onClick={onCollapseClick}>{iconCollapse}</span>}
-                <span onClick={dropAllWiChanges}>
-                    <span
-                        onClick={onCollapseClick}
-                        style={
-                            isPermawatch || !settings.enableQueryColorCode
-                                ? undefined
-                                : {
-                                      backgroundColor: tagPalette
-                                          .getColor(query.queryName)
-                                          .hexWithTransparency(settings.darkTheme ? 0.3 : 0.2),
-                                      padding: "0 8px",
-                                      borderRadius: 4,
-                                  }
-                        }
-                    >
-                        {isPermawatch && (
-                            <span>
-                                <Icon name="eye" />
-                            </span>
-                        )}
-                        {query.queryName}
-                    </span>
-                    <small>
-                        <span style={{ marginLeft: 10, color: "gray" }} title={query.collectionName}>
-                            {query.teamName}
+        <CollapsibleBlock
+            id={query.queryId}
+            caption={query.queryName}
+            subcaption={query.teamName}
+            subcaptionTooltip={query.collectionName}
+            enableColorCode={!isPermawatch && settings.enableQueryColorCode}
+            isCollapseEnabled={!!workItems.length}
+            isLoading={isLoading}
+            iconComponent={isPermawatch ? <Icon name="eye" /> : null}
+            counters={{ total: { count: totalItemsCount }, red: { count: redItemsCount, color: "red" } }}
+            status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
+            rightBlock={
+                <>
+                    {!!query.queryPath && (
+                        <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
+                            <Icon size="small" name="external share" />
                         </span>
-                    </small>
-                </span>
-                <span className="WICounts">
-                    {!!redItemsCount && (
-                        <Label size="mini" circular color="red">
-                            {redItemsCount}
-                        </Label>
                     )}
-                    {!!totalItemsCount && (
-                        <Label size="mini" circular>
-                            {totalItemsCount}
-                        </Label>
+                    {!isLoading && (
+                        <span title={s("refresh")} className="externalLink" onClick={refreshBlock}>
+                            <Icon size="small" name="refresh" />
+                        </span>
                     )}
-                    {!totalItemsCount &&
-                        !isLoading &&
-                        (!errorMessage ? (
-                            <Label size="mini" circular color="green">
-                                ✔
-                            </Label>
-                        ) : (
-                            <Label size="mini" circular color="red">
-                                &times;
-                            </Label>
-                        ))}
-                </span>
-                {!!query.queryPath && (
-                    <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
-                        <Icon size="small" name="external share" />
-                    </span>
+                </>
+            }
+        >
+            <>
+                {!!errorMessage && (
+                    <Message size="tiny" error>
+                        {errorMessage}
+                    </Message>
                 )}
-                {!isLoading && (
-                    <span title={s("refresh")} className="externalLink" onClick={refreshBlock}>
-                        <Icon size="small" name="refresh" />
-                    </span>
+                {!!workItems.length && (
+                    <Table className="wiTable" compact size={getTableSize()}>
+                        <tbody>{workItemsComponents}</tbody>
+                    </Table>
                 )}
-            </Header>
-            {!!errorMessage && (
-                <Message size="tiny" error>
-                    {errorMessage}
-                </Message>
-            )}
-            {!!workItems.length && !query.collapsed && (
-                <Table className="wiTable" compact size={getTableSize()}>
-                    <tbody>{workItemsComponents}</tbody>
-                </Table>
-            )}
-        </>
+            </>
+        </CollapsibleBlock>
     );
 }
