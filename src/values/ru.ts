@@ -294,6 +294,8 @@ const ru: LocalizedStrings = {
 
     enableIterationColors: "Использовать цветовую раскраску Iteration Path",
     enableQueryColorCode: "Использовать цветовое кодирование в заголовках запросов",
+
+    expandCollapseAll: "Свернуть/развернуть все",
 };
 
 export default ru;

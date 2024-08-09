@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticCOLORS } from "semantic-ui-react";
 import { tagPalette } from "../modules/palette";
-import { settingsCollapseBlock } from "../redux/actions/settingsActions";
+import { settingsCollapseBlock, settingsUpdate } from "../redux/actions/settingsActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useEventStore } from "../zustand/event";
 
 export function CollapsibleBlock(props: {
     id: string;
@@ -37,6 +38,18 @@ export function CollapsibleBlock(props: {
     const dispatch = useDispatch();
 
     const settings = useSelector(settingsSelector);
+
+    useEffect(() => {
+        return useEventStore.subscribe((state, prev) => {
+            if (state.collapseCounter !== prev.collapseCounter) {
+                dispatch(settingsCollapseBlock(id, true));
+            }
+
+            if (state.expandCounter !== prev.expandCounter) {
+                dispatch(settingsUpdate({ collapsedBlocks: [] }));
+            }
+        });
+    }, []);
 
     const isCollapsed = settings.collapsedBlocks.includes(id);
     const toggleCollapse = () => dispatch(settingsCollapseBlock(id, !isCollapsed));

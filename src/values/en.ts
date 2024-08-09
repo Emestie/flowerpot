@@ -293,6 +293,8 @@ const en = {
 
     enableIterationColors: "Use Iteration Path colors",
     enableQueryColorCode: "Use color coding in query headers",
+
+    expandCollapseAll: "Collapse/expand all",
 };
 
 export default en;
