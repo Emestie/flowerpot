@@ -295,6 +295,9 @@ const en = {
     enableQueryColorCode: "Use color coding in query headers",
 
     expandCollapseAll: "Collapse/expand all",
+
+    prBanner: "To work with Pull Requests add Projects in settings",
+    prBannerAction: "Add",
 };
 
 export default en;

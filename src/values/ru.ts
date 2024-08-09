@@ -296,6 +296,9 @@ const ru: LocalizedStrings = {
     enableQueryColorCode: "Использовать цветовое кодирование в заголовках запросов",
 
     expandCollapseAll: "Свернуть/развернуть все",
+
+    prBanner: "Для работы с Pull Request добавьте проекты в настройках",
+    prBannerAction: "Добавить",
 };
 
 export default ru;
