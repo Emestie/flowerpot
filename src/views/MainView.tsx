@@ -16,6 +16,7 @@ import { appSelector } from "../redux/selectors/appSelectors";
 import { dataSelector } from "../redux/selectors/dataSelectors";
 import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
+import { useEventStore } from "../zustand/event";
 import { useQuickSearchStore } from "../zustand/quick-search";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
@@ -38,12 +39,19 @@ export function MainView() {
 
     const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
 
+    const expandCollapseOperation = settings.collapsedBlocks.length ? "expand" : "collapse";
+
     useEffect(() => {
         setTimeout(() => setIsRefreshAvailable(true), 5000);
     }, []);
 
     const onShowMineOnly = () => {
         dispatch(appShowMineOnlySet(!showMineOnly));
+    };
+
+    const onExpandCollapse = () => {
+        if (expandCollapseOperation === "collapse") useEventStore.getState().collapseAll();
+        else useEventStore.getState().expandAll();
     };
 
     const onRefresh = () => {
@@ -94,6 +102,13 @@ export function MainView() {
                                 {s("installUpdate")}
                             </Button>
                         )}
+                        <Button icon onClick={onExpandCollapse} hint={s("expandCollapseAll")}>
+                            {expandCollapseOperation === "collapse" ? (
+                                <Icon name="angle double down" />
+                            ) : (
+                                <Icon name="angle double right" />
+                            )}
+                        </Button>
                         <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
                             <Icon name="user outline" />
                         </Button>

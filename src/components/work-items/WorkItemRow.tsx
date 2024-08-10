@@ -10,6 +10,7 @@ import { HighlightenText } from "../HighlightenText";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
+import { Id } from "./id";
 import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
 import { IQuery, IWorkItem } from "/@/modules/api-client";
@@ -65,27 +66,6 @@ export function WorkItemRow(props: IProps) {
                 {props.item.freshness}
             </span>
         );
-    })();
-
-    const typeEl = (() => {
-        switch (props.item.type) {
-            case "Bug":
-                return <Icon name="bug" />;
-            case "Task":
-                return <Icon name="check" />;
-            case "Issue":
-                return <Icon name="question" />;
-            case "Feature":
-                return <Icon name="trophy" />;
-            case "User Story":
-                return <Icon name="book" />;
-            case "Epic":
-                return <Icon name="chess queen" />;
-            case "Test Case":
-                return <Icon name="gavel" />;
-            default:
-                return <Icon name="fire" />;
-        }
     })();
 
     const dropChanges = () => {
@@ -185,12 +165,8 @@ export function WorkItemRow(props: IProps) {
                 }}
             >
                 <ContextMenuTrigger id={uid}>
-                    {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
-                    <span title={item.type}>
-                        {typeEl} <HighlightenText text={item.id.toString()} />
-                    </span>
+                    <Id item={item} hasChanges={hasChanges} />
                 </ContextMenuTrigger>
-
                 <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
             </Table.Cell>
             <Table.Cell collapsing>

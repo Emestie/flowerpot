@@ -293,6 +293,12 @@ const ru: LocalizedStrings = {
     queryByUrlError3: "Невозможно вычислить имя проекта",
 
     enableIterationColors: "Использовать цветовую раскраску Iteration Path",
+    enableQueryColorCode: "Использовать цветовое кодирование в заголовках запросов",
+
+    expandCollapseAll: "Свернуть/развернуть все",
+
+    prBanner: "Для работы с Pull Request добавьте проекты в настройках",
+    prBannerAction: "Добавить",
 };
 
 export default ru;

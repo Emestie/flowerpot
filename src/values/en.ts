@@ -292,6 +292,12 @@ const en = {
     queryByUrlError3: "Cannot figure out Project name",
 
     enableIterationColors: "Use Iteration Path colors",
+    enableQueryColorCode: "Use color coding in query headers",
+
+    expandCollapseAll: "Collapse/expand all",
+
+    prBanner: "To work with Pull Requests add Projects in settings",
+    prBannerAction: "Add",
 };
 
 export default en;

@@ -5,7 +5,7 @@ import { store } from "../redux/store";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
 
-type TBoolProps = "enabled" | "collapsed" | "ignoreNotif" | "ignoreIcon" | "empty";
+type TBoolProps = "enabled" | "ignoreNotif" | "ignoreIcon" | "empty";
 
 export interface IWIStorage {
     [queryId: string]: IWorkItem[] | undefined;
@@ -13,7 +13,6 @@ export interface IWIStorage {
 
 const permawatchQueryObject: IQuery = {
     collectionName: "",
-    collapsed: false,
     enabled: true,
     ignoreIcon: true,
     ignoreNotif: false,

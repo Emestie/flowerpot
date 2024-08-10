@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Message } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
@@ -14,6 +13,7 @@ export interface IActionBannerProps {
     action?: () => void;
     img?: string;
     type?: "negative" | "positive" | "info" | "warning";
+    condition?: () => boolean;
 }
 
 export function ActionBanner(p: IActionBannerProps) {
@@ -35,7 +35,9 @@ export function ActionBanner(p: IActionBannerProps) {
 
     const bannersShown = settings.bannersShown;
     const isBannerShown = bannersShown.indexOf(p.id) !== -1;
-    if (isBannerShown) return null;
+    const cantShow = p.condition?.() === false;
+
+    if (isBannerShown || cantShow) return null;
 
     const types = {} as any;
     if (p.type) types[p.type] = true;
@@ -51,10 +53,15 @@ export function ActionBanner(p: IActionBannerProps) {
             )}
             <span style={{ marginLeft: p.img ? 32 : 5 }}>
                 {p.text}
-                <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={doActionAndHideBanner}>
+
+                <span
+                    className="LinkStyleButton"
+                    style={{ marginLeft: 20, fontWeight: "bold" }}
+                    onClick={doActionAndHideBanner}
+                >
                     {p.actionText}
                 </span>
-                <span className="LinkStyleButton" style={{ marginLeft: 5 }} onClick={hideMessage}>
+                <span className="LinkStyleButton" style={{ marginLeft: 20 }} onClick={hideMessage}>
                     {s("hideBanner")}
                 </span>
             </span>

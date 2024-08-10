@@ -70,6 +70,11 @@ export function WorkItemsSection() {
         dispatch(settingsUpdate({ enableIterationColors }));
     };
 
+    const toggleQueryColorCode = () => {
+        const enableQueryColorCode = !settings.enableQueryColorCode;
+        dispatch(settingsUpdate({ enableQueryColorCode }));
+    };
+
     const onTableScaleSelect = (val: TableScale) => {
         const tableScale = val;
         dispatch(settingsUpdate({ tableScale }));
@@ -130,6 +135,12 @@ export function WorkItemsSection() {
                 label={s("enableIterationColors")}
                 checked={settings.enableIterationColors}
                 onChange={toggleIterationColors}
+            />
+            <br />
+            <Form.Checkbox
+                label={s("enableQueryColorCode")}
+                checked={settings.enableQueryColorCode}
+                onChange={toggleQueryColorCode}
             />
             <br />
             <Form.Select
