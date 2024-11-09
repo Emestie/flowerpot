@@ -171,9 +171,6 @@ const en = {
 
     flowerbot: "Set up Flowerbot",
 
-    flowerbotBanner1: "Meet Flowerbot - a Telegram bot to catch your bugs and tasks.",
-    flowerbotBanner2: "Give it a try.",
-
     quicksearch: "Quick Search",
 
     TenYearsAnny: "10 years of MR",
@@ -211,7 +208,6 @@ const en = {
     infoHeader: "Information",
     fetchingInfoPageContent: "Fetching info page content...",
 
-    rocketBanner1: "Say hello to Rocket - a new Solution Launcher tool!",
     rocketBanner2: "Try Rocket",
 
     ddTableScale: "Work Items table font size: ",
@@ -280,7 +276,7 @@ const en = {
 
     prComments: "Resolved/Total comments",
     prMergeConflicts: "Conflicts",
-    groupPrFilter: "Include assigned to teams",
+    groupPrFilter: "Show assigned to teams",
 
     showPublicQueries: "Show shared queries",
 
@@ -298,6 +294,8 @@ const en = {
 
     prBanner: "To work with Pull Requests add Projects in settings",
     prBannerAction: "Add",
+
+    acceptedByMeFilter: "Show accepted by me",
 };
 
 export default en;

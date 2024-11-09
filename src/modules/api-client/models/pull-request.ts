@@ -3,6 +3,8 @@ import { ItemsCommon } from "../../../helpers/ItemsCommon";
 import { getConnectionData } from "/@/helpers/Connection";
 
 export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, collection: string): IPullRequest {
+    const connectionData = getConnectionData();
+
     return {
         id: resp.pullRequestId,
         authorFullName: ItemsCommon.parseNameField(resp.createdBy),
@@ -35,8 +37,6 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
         labels: resp.labels || [],
         mergeStatus: resp.mergeStatus,
         getBelonging: function () {
-            const connectionData = getConnectionData();
-
             if (!connectionData) return null;
 
             //if author
@@ -58,6 +58,11 @@ export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, co
         },
         getAuthorTextName: function () {
             return this.authorFullName.split(" <")[0];
+        },
+        isAcceptedByMe: function () {
+            return this.reviewers.some(
+                (rev) => connectionData?.authenticatedUser.providerDisplayName === rev.name && rev.vote > 0
+            );
         },
     };
 }

@@ -58,6 +58,7 @@ export interface ISettings {
     stats: Record<UsageStat, number>;
     settingsSection: Sections;
     includeTeamsPRs: boolean;
+    includeAcceptedByMePRs: boolean;
     enableIterationColors: boolean;
     enableQueryColorCode: boolean;
     collapsedBlocks: string[];

@@ -56,6 +56,7 @@ const initialState: ISettingsState = {
     stats: {} as Record<UsageStat, number>,
     settingsSection: Sections.Queries,
     includeTeamsPRs: true,
+    includeAcceptedByMePRs: true,
     enableIterationColors: true,
     enableQueryColorCode: false,
     collapsedBlocks: [],
