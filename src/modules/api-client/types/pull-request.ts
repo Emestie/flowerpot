@@ -65,4 +65,5 @@ export interface IPullRequest {
     mergeStatus: "conflicts" | "succeeded";
     getBelonging: () => null | "author" | "reviewer" | "team";
     getAuthorTextName: () => string;
+    isAcceptedByMe: () => boolean;
 }

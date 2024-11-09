@@ -8,7 +8,7 @@ import { settingsSelector } from "../redux/selectors/settingsSelectors";
 const PR_TIMER_KEY = "pr-block-timer";
 const useFishWIs = !!import.meta.env.VITE_USE_FISH;
 
-export function usePullRequestsLoader(projects: IProject[], includeTeams: boolean) {
+export function usePullRequestsLoader(projects: IProject[], includeTeams: boolean, includeAcceptedByMePRs: boolean) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [allPullRequests, setAllPullRequests] = useState<IPullRequest[]>([]);
@@ -48,15 +48,21 @@ export function usePullRequestsLoader(projects: IProject[], includeTeams: boolea
         };
     }, [routineStart, projects]);
 
-    const pullRequests = allPullRequests.filter((x) => {
-        const belonging = x.getBelonging();
+    const pullRequests = allPullRequests
+        .filter((x) => {
+            const belonging = x.getBelonging();
 
-        if (!belonging) return false;
-        if (belonging === "team") return includeTeams;
-        return true;
-    });
+            if (!belonging) return false;
+            if (belonging === "team") return includeTeams;
+            return true;
+        })
+        .filter((x) => {
+            if (includeAcceptedByMePRs) return true;
+            return !x.isAcceptedByMe();
+        });
 
     const hasTeams = allPullRequests.some((x) => x.getBelonging() === "team");
+    const hasAcceptedByMe = allPullRequests.some((x) => x.isAcceptedByMe());
 
     return {
         isLoading,
@@ -64,5 +70,6 @@ export function usePullRequestsLoader(projects: IProject[], includeTeams: boolea
         pullRequests,
         errorMessage,
         hasTeams,
+        hasAcceptedByMe,
     };
 }

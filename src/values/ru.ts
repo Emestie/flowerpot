@@ -173,9 +173,6 @@ const ru: LocalizedStrings = {
 
     flowerbot: "Настроить Flowerbot",
 
-    flowerbotBanner1: "Встречайте Flowerbot - Telegram-бот для отслеживания ваших ошибок и задач.",
-    flowerbotBanner2: "Попробовать.",
-
     quicksearch: "Быстрый поиск",
 
     TenYearsAnny: "10 лет МР",
@@ -212,7 +209,6 @@ const ru: LocalizedStrings = {
     infoHeader: "Информация",
     fetchingInfoPageContent: "Загрузка содержимого информационной страницы...",
 
-    rocketBanner1: "Встречайте Rocket - инструмент для запуска проектов и автоматизации!",
     rocketBanner2: "Попробовать Rocket",
 
     ddTableScale: "Размер шрифта в таблице рабочих элементов: ",
@@ -299,6 +295,8 @@ const ru: LocalizedStrings = {
 
     prBanner: "Для работы с Pull Request добавьте проекты в настройках",
     prBannerAction: "Добавить",
+
+    acceptedByMeFilter: "Отображать принятые мной",
 };
 
 export default ru;

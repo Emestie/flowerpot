@@ -8,12 +8,13 @@ import { PullRequestRow } from "./PullRequestRow";
 import { settingsUpdate } from "/@/redux/actions/settingsActions";
 
 export function PullRequestsBlock() {
-    const { projects, tableScale, includeTeamsPRs } = useSelector(settingsSelector);
+    const { projects, tableScale, includeTeamsPRs, includeAcceptedByMePRs } = useSelector(settingsSelector);
     const dispatch = useDispatch();
 
-    const { isLoading, pullRequests, routineStart, errorMessage, hasTeams } = usePullRequestsLoader(
+    const { isLoading, pullRequests, routineStart, errorMessage, hasTeams, hasAcceptedByMe } = usePullRequestsLoader(
         projects,
-        includeTeamsPRs
+        includeTeamsPRs,
+        includeAcceptedByMePRs
     );
 
     if (!projects.filter((p) => p.enabled).length) return null;
@@ -58,6 +59,17 @@ export function PullRequestsBlock() {
                                 checked={includeTeamsPRs}
                                 onChange={() => {
                                     dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
+                                }}
+                            />
+                        </span>
+                    )}
+                    {hasAcceptedByMe && (
+                        <span className="group-pr-checkbox">
+                            <Checkbox
+                                label={s("acceptedByMeFilter")}
+                                checked={includeAcceptedByMePRs}
+                                onChange={() => {
+                                    dispatch(settingsUpdate({ includeAcceptedByMePRs: !includeAcceptedByMePRs }));
                                 }}
                             />
                         </span>
