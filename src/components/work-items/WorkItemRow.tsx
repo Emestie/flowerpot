@@ -176,6 +176,7 @@ export function WorkItemRow(props: IProps) {
                 <ContextMenuTrigger id={uid}>
                     {getListIndicator()}
                     <IterationPath item={item} />
+                    <span title={item.requestNumber}>{item.requestNumber ? <Icon name="phone volume" /> : <></>}</span>
                     <span>{tags}</span>
                     <span
                         className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}

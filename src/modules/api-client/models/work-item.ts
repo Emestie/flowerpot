@@ -41,7 +41,6 @@ export function buildWorkItem(
         titleFull: resp.fields["System.Title"] || "",
         iterationPath: resp.fields["System.IterationPath"] || "",
         areaPath: resp.fields["System.AreaPath"] || "",
-
         state: resp.fields["System.State"] || "",
         stateColor: workItemType?.states.find((state) => state.name === resp.fields["System.State"])?.color,
         tags: resp.fields["System.Tags"] || "",
@@ -54,6 +53,7 @@ export function buildWorkItem(
         priority,
         priorityText,
         isRed: priority === 1,
+        requestNumber: resp.fields["Custom.RequestNumber"] || undefined
     };
 
     if (query.queryId === "___permawatch") {
