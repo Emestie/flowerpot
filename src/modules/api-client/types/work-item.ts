@@ -18,7 +18,6 @@ export interface IWorkItem {
     createdByImg: string;
     title: string;
     titleFull: string;
-
     url: string;
     state: string;
     stateColor: string | undefined;
@@ -32,6 +31,7 @@ export interface IWorkItem {
     priority: number | undefined;
     priorityText: string;
     isRed: boolean;
+    requestNumber: string | undefined
 }
 
 export interface IResponseWorkItem {
@@ -55,6 +55,7 @@ export interface IResponseWorkItem {
         "System.State": string;
         "System.History": string;
         "System.Tags": string;
+        "Custom.RequestNumber"?: string 
     };
     _links: {
         workItemType: { href: string };
