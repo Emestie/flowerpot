@@ -1,7 +1,12 @@
 import { IProject, IResponseProject } from "../types";
 
-export function buildProject(resp: IResponseProject["projects"][number], collectionName: string): IProject {
+export function buildProject(
+    accountId: string,
+    resp: IResponseProject["projects"][number],
+    collectionName: string
+): IProject {
     return {
+        accountId,
         collectionName,
         guid: resp.guid,
         name: resp.name,

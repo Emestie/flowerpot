@@ -144,7 +144,9 @@ export function MainView() {
             <Container fluid>
                 <WhatsNewBanner />
                 <ActionBannersContainer />
-                <PullRequestsBlock />
+                {settings.accounts.map((account) => (
+                    <PullRequestsBlock key={account.id} accountId={account.id} />
+                ))}
                 {queriesBlocks}
             </Container>
         </PageLayout>

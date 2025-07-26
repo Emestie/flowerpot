@@ -138,6 +138,9 @@ export function CredentialsView() {
         dispatch(appViewSet("settings"));
     };
 
+    //TODO: add cancel button (add new case)
+    //TODO: ban same account adding
+
     const onCheck = async () => {
         setCredentialsStatus(ECredState.ValidatingInProgress);
 

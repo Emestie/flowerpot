@@ -26,7 +26,7 @@ export function AccountSection() {
             <Button
                 icon
                 labelPosition="left"
-                positive
+                primary
                 onClick={() => {
                     useCredentialsModeStore.getState().setSelectedAccountId(null);
                     store.dispatch(appViewSet("credentials"));
@@ -44,11 +44,9 @@ function AccountCard(props: { account: IAccount; deleteable: boolean }) {
         <Card>
             <Card.Content>
                 <Card.Header>
-                    <AccountBadge accountId={props.account.id} />
-                    {props.account.displayName}
+                    <AccountBadge accountId={props.account.id} /> {props.account.displayName}
                 </Card.Header>
                 <Card.Meta>{props.account.url}</Card.Meta>
-                <Card.Description></Card.Description>
                 <div style={{ marginTop: 8 }}>
                     <ButtonGroup size="tiny" compact>
                         <Button

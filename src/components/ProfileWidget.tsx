@@ -6,10 +6,11 @@ interface IProps {
     nameFull: string;
     displayName: string;
     avatarUrl: string;
+    accountId: string;
 }
 
-export function ProfileWidget({ avatarUrl, displayName, nameFull }: IProps) {
-    const avatar = useAvatar(avatarUrl);
+export function ProfileWidget({ avatarUrl, displayName, nameFull, accountId }: IProps) {
+    const avatar = useAvatar(accountId, avatarUrl);
 
     return (
         <span title={nameFull}>

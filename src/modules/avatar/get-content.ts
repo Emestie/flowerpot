@@ -3,22 +3,24 @@ import { store } from "/@/redux/store";
 
 const singletonPromises: Record<string, Promise<string | null>> = {};
 
-export async function getAvatarContent(url: string): Promise<string | null> {
+export async function getAvatarContent(accountId: string, url: string): Promise<string | null> {
     if (!url) return null;
 
     const cached = getFromCache(url);
     if (cached !== undefined) return cached;
 
-    if (!singletonPromises[url]) singletonPromises[url] = loadAvatar(url);
+    const token = store.getState().settings.accounts.find((x) => x.id === accountId)?.token;
+
+    if (!singletonPromises[url]) singletonPromises[url] = loadAvatar(url, token || "");
     return singletonPromises[url];
 }
 
-async function loadAvatar(url: string): Promise<string | null> {
+async function loadAvatar(url: string, token: string): Promise<string | null> {
     try {
         //TODO: add accountId resolver here
         const blob = await fetch(url, {
             headers: {
-                Authorization: "Basic " + btoa(":" + store.getState().settings.accounts[0].token),
+                Authorization: "Basic " + btoa(":" + token),
             },
         }).then((x) => x.blob());
 

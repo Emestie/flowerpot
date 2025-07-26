@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Form, Header, Icon, Label, Message } from "semantic-ui-react";
-import { api } from "../api/client";
+import { api, getApi } from "../api/client";
+import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import Query from "../helpers/Query";
@@ -29,14 +30,22 @@ export function SelectQueriesView() {
 
     const loadQueries = useCallback(() => {
         setTimeout(() => {
-            api.query.getAvailable().then((queries) => {
-                const currentQueriesIds = settings.queries.map((q) => q.queryId);
-                const queriesToSelect = queries.filter(
-                    (q) => !currentQueriesIds.includes(q.queryId)
-                ) as ISelectableQuery[];
-                queriesToSelect.forEach((q) => (q.checked = false));
+            Promise.all(
+                settings.accounts.map((account) =>
+                    getApi(account.id)
+                        .query.getAvailable()
+                        .then((queries) => {
+                            const currentQueriesIds = settings.queries.map((q) => q.queryId);
+                            const queriesToSelect = queries.filter(
+                                (q) => !currentQueriesIds.includes(q.queryId)
+                            ) as ISelectableQuery[];
+                            queriesToSelect.forEach((q) => (q.checked = false));
 
-                setAvailableQueries(queriesToSelect);
+                            return queriesToSelect;
+                        })
+                )
+            ).then((queries) => {
+                setAvailableQueries(queries.flat());
                 setIsLoading(false);
             });
         }, 50);
@@ -55,6 +64,7 @@ export function SelectQueriesView() {
     };
 
     const onUrlCheck = async () => {
+        //TODO: check this functionality
         setUrlCheckInProgress(true);
         try {
             const query = await api.query.getByUrl(url);
@@ -96,6 +106,7 @@ export function SelectQueriesView() {
     ) : filteredAvailableQueries.length ? (
         filteredAvailableQueries.map((q) => (
             <div key={q.queryId} style={{ marginBottom: 5 }}>
+                <AccountBadge accountId={q.accountId} />{" "}
                 <Checkbox label={q.nameInList} checked={q.checked} onChange={() => toggleCheck(q)} />
             </div>
         ))

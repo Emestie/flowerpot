@@ -11,7 +11,9 @@ export interface IWIStorage {
     [queryId: string]: IWorkItem[] | undefined;
 }
 
+//TODO: fix
 const permawatchQueryObject: IQuery = {
+    accountId: "",
     collectionName: "",
     enabled: true,
     ignoreIcon: true,

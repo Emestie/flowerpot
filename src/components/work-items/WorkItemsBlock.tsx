@@ -134,6 +134,7 @@ export function WorkItemsBlock(props: IProps) {
         <CollapsibleBlock
             id={query.queryId}
             caption={query.queryName}
+            accountId={query.accountId}
             subcaption={query.teamName}
             subcaptionTooltip={query.collectionName}
             enableColorCode={!isPermawatch && settings.enableQueryColorCode}

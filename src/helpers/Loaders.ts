@@ -4,6 +4,9 @@ export default class Loaders {
     public static async checkCredentials(url: string, token: string) {
         try {
             const api = createApiClient({
+                getAccountId() {
+                    return "";
+                },
                 getAccessToken() {
                     return token;
                 },
@@ -33,6 +36,9 @@ export default class Loaders {
 
     public static async getUserDisplayName(url: string, token: string) {
         const api = createApiClient({
+            getAccountId() {
+                return "";
+            },
             getAccessToken() {
                 return token;
             },

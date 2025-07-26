@@ -5,6 +5,7 @@ import { tagPalette } from "../modules/palette";
 import { settingsCollapseBlock, settingsUpdate } from "../redux/actions/settingsActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { useEventStore } from "../zustand/event";
+import { AccountBadge } from "./AccountBadge";
 
 export function CollapsibleBlock(props: {
     id: string;
@@ -12,6 +13,7 @@ export function CollapsibleBlock(props: {
     isLoading: boolean;
     isCollapseEnabled: boolean;
     iconComponent?: ReactNode;
+    accountId: string;
     caption: string;
     subcaption?: string;
     subcaptionTooltip?: string;
@@ -33,6 +35,7 @@ export function CollapsibleBlock(props: {
         subcaptionTooltip,
         enableColorCode,
         status,
+        accountId,
     } = props;
 
     const dispatch = useDispatch();
@@ -78,6 +81,7 @@ export function CollapsibleBlock(props: {
                 )}
                 {!isLoading && isCollapseEnabled && <span onClick={toggleCollapse}>{iconCollapse}</span>}
                 <span>
+                    <AccountBadge accountId={accountId} />
                     {iconComponent && <span>{iconComponent}</span>}
                     <span
                         onClick={toggleCollapse}

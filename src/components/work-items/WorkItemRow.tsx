@@ -210,6 +210,7 @@ export function WorkItemRow(props: IProps) {
             >
                 <ContextMenuTrigger id={uid}>
                     <ProfileWidget
+                        accountId={props.query.accountId}
                         avatarUrl={item.assignedToImg}
                         displayName={item.assignedTo}
                         nameFull={item.assignedToFull}
@@ -225,6 +226,7 @@ export function WorkItemRow(props: IProps) {
             >
                 <ContextMenuTrigger id={uid}>
                     <ProfileWidget
+                        accountId={props.query.accountId}
                         avatarUrl={item.createdByImg}
                         displayName={item.createdBy}
                         nameFull={item.createdByFull}
