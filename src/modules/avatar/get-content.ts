@@ -15,9 +15,10 @@ export async function getAvatarContent(url: string): Promise<string | null> {
 
 async function loadAvatar(url: string): Promise<string | null> {
     try {
+        //TODO: add accountId resolver here
         const blob = await fetch(url, {
             headers: {
-                Authorization: "Basic " + btoa(":" + store.getState().settings.tfsToken),
+                Authorization: "Basic " + btoa(":" + store.getState().settings.accounts[0].token),
             },
         }).then((x) => x.blob());
 

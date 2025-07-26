@@ -1,6 +1,7 @@
 import { settingsMigrationsDonePush, settingsUpdate } from "../redux/actions/settingsActions";
 import { store } from "../redux/store";
-import Platform from "./Platform";
+import { Account } from "./Account";
+import { ISettings } from "./Settings";
 
 export default class Migration {
     private static setMigrationAsDone(name: string) {
@@ -10,30 +11,24 @@ export default class Migration {
     public static async perform() {
         const migrations = store.getState().settings.migrationsDone || [];
 
-        if (!migrations.includes("v0_4_5_to_v0_5_0")) await this.v0_4_5_to_v0_5_0();
-        if (!migrations.includes("v0_6_6_refresh")) this.v0_6_6_refresh();
+        if (!migrations.includes("v0_7_0")) this.v0_7_0();
     }
 
-    private static async v0_4_5_to_v0_5_0() {
-        console.log("Migration v0_4_5_to_v0_5_0");
+    private static v0_7_0() {
+        console.log("Migration v0_7_0");
 
-        const iid = await Platform.current.getStoreProp<string>("installationID");
-        if (iid && !iid.startsWith("FLW-")) {
-            Platform.current.setStoreProp("installationID", "FLW-" + iid);
-        }
+        const settings = store.getState().settings;
 
-        this.setMigrationAsDone("v0_4_5_to_v0_5_0");
-    }
+        const account: ISettings["accounts"][number] = {
+            url: settings.tfsPath,
+            token: settings.tfsToken,
+            id: "migrated",
+            displayName: settings.tfsToken ? Account.generateDisplayNameByToken(settings.tfsToken) : "unknown",
+            badge: 1,
+        };
 
-    private static v0_6_6_refresh() {
-        console.log("Migration v0_6_6_refresh");
+        if (!store.getState().settings.accounts?.length) store.dispatch(settingsUpdate({ accounts: [account] }));
 
-        const refreshRate = store.getState().settings.refreshRate;
-
-        if (refreshRate === 60) {
-            store.dispatch(settingsUpdate({ refreshRate: 300 }));
-        }
-
-        this.setMigrationAsDone("v0_6_6_refresh");
+        this.setMigrationAsDone("v0_7_0");
     }
 }

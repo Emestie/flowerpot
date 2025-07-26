@@ -4,6 +4,7 @@ import { settingsSet } from "../redux/actions/settingsActions";
 import { Sections, TableScale } from "../redux/reducers/settingsReducer";
 import { store } from "../redux/store";
 import { TLocale } from "../redux/types";
+import { AccountBadge } from "./Account";
 import { ILinkItem } from "./Links";
 import Platform from "./Platform";
 import { UsageStat } from "./Stats";
@@ -11,6 +12,14 @@ import { UsageStat } from "./Stats";
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned" | "forwarded";
+
+export interface IAccount {
+    url: string;
+    token: string;
+    id: string;
+    displayName: string;
+    badge: AccountBadge;
+}
 
 export interface IListItem {
     id: number;
@@ -27,12 +36,15 @@ interface INoteItem {
 }
 
 export interface ISettings {
+    /** @deprecated */
     tfsPath: string;
     /** @deprecated */
     tfsUser?: string;
     /** @deprecated */
     tfsPwd?: string;
+    /** @deprecated */
     tfsToken: string;
+    accounts: IAccount[];
     credentialsChecked: boolean;
     refreshRate: number;
     sortPattern: TSortPattern;

@@ -4,16 +4,19 @@ import { Button, Container, Form, Header, Label, Message } from "semantic-ui-rea
 import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
-import { fillConnectionData } from "../helpers/Connection";
+import { Account } from "../helpers/Account";
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
+import { IAccount } from "../helpers/Settings";
 import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
 import { appViewSet } from "../redux/actions/appActions";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { IStore, store } from "../redux/store";
 import { s } from "../values/Strings";
+import { useCredentialsModeStore } from "../zustand/credentials-mode";
 
 enum ECredState {
     NotValidated = 0,
@@ -31,13 +34,39 @@ const statuses = [
     { color: "olive", text: s("credsState5") },
 ];
 
+function addAccount(account: IAccount) {
+    store.dispatch(settingsUpdate({ accounts: store.getState().settings.accounts.concat(account) }));
+}
+
+function updateAccount(account: Partial<IAccount> & { id: string }) {
+    const accounts = store.getState().settings.accounts;
+    const index = accounts.findIndex((acc) => acc.id === account.id);
+
+    accounts[index] = { ...accounts[index], ...account };
+
+    store.dispatch(settingsUpdate({ accounts }));
+}
+
 export function CredentialsView() {
+    const accountId = useCredentialsModeStore((s) => s.selectedAccoundId);
+
     const [pathInvalid, setPathInvalid] = useState(false);
     const [tokenInvalid, setTokenInvalid] = useState(false);
     const [credentialsCheckStatus, setCredentialsCheckStatus] = useState(ECredState.NotValidated);
 
     const settings = useSelector(settingsSelector);
     const { locale } = useSelector(appSelector);
+
+    const _currentAccount = useSelector((state: IStore) => state.settings.accounts.find((x) => x.id === accountId));
+    const [currentAccount, setCurrentAccount] = useState<IAccount>(
+        _currentAccount || {
+            id: Math.random().toString(),
+            displayName: "",
+            token: "",
+            url: "",
+            badge: Account.getNextAvailableBadge(),
+        }
+    );
 
     const dispatch = useDispatch();
 
@@ -55,6 +84,7 @@ export function CredentialsView() {
             const credentialsChecked = status === ECredState.OK ? true : false;
             setCredentialsCheckStatus(status);
 
+            //TODO: get rid of global cred checked status
             if (settings.credentialsChecked !== credentialsChecked) {
                 dispatch(settingsUpdate({ credentialsChecked }));
             }
@@ -67,7 +97,8 @@ export function CredentialsView() {
             setCredentialsStatus(ECredState.NotValidated);
             if (!ignoreStore) {
                 const tfsPath = val;
-                if (tfsPath !== settings.tfsPath) dispatch(settingsUpdate({ tfsPath }));
+                //  if (tfsPath !== settings.tfsPath) dispatch(settingsUpdate({ tfsPath }));
+                setCurrentAccount((ca) => ({ ...ca, url: tfsPath }));
             }
 
             let invalid = false;
@@ -77,7 +108,7 @@ export function CredentialsView() {
             if (val.length < 11) invalid = true;
             setPathInvalid(invalid);
         },
-        [dispatch, setCredentialsStatus, settings.tfsPath]
+        [dispatch, setCredentialsStatus, currentAccount.url]
     );
 
     const validateTfsToken = useCallback(
@@ -86,43 +117,56 @@ export function CredentialsView() {
 
             if (!ignoreStore) {
                 if (token !== settings.tfsToken) dispatch(settingsUpdate({ tfsToken: token }));
+                // if (token !== currentAccount?.token) updateAccount({ token, id: currentAccount?.id });
+                setCurrentAccount((ca) => ({ ...ca, token }));
             }
 
             const invalid = token.length < 45;
 
             setTokenInvalid(invalid);
         },
-        [dispatch, setCredentialsStatus, settings.tfsToken]
+        [dispatch, setCredentialsStatus, currentAccount.token]
     );
 
     useEffect(() => {
-        validateTfsPath(settings.tfsPath, true);
-        validateTfsToken(settings.tfsToken, true);
+        validateTfsPath(currentAccount.url, true);
+        validateTfsToken(currentAccount.token, true);
         //eslint-disable-next-line
-    }, [settings.tfsPath, settings.tfsToken]);
+    }, [currentAccount]);
 
-    const onSave = () => {
+    const onOk = () => {
         dispatch(appViewSet("settings"));
     };
 
     const onCheck = async () => {
         setCredentialsStatus(ECredState.ValidatingInProgress);
 
-        const tfscheck = await Loaders.checkTfsPath();
+        const tfscheck = await Loaders.checkTfsPath(currentAccount.url);
         if (!tfscheck) {
             setCredentialsStatus(ECredState.ServerUnavailable);
             return;
         }
 
-        const result = await Loaders.checkCredentials();
+        const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
         if (!result) {
             setCredentialsStatus(ECredState.WrongCredentials);
         } else {
-            await fillConnectionData();
+            const displayName =
+                (await Loaders.getUserDisplayName(currentAccount.url, currentAccount.token)) ??
+                Account.generateDisplayNameByToken(currentAccount.token);
+
             Stats.increment(UsageStat.AccountVerifications);
-            Telemetry.accountVerificationSucceed();
             setCredentialsStatus(ECredState.OK);
-            onSave();
+
+            if (accountId) {
+                updateAccount({ ...currentAccount, displayName });
+            } else {
+                addAccount({ ...currentAccount, displayName });
+            }
+
+            Telemetry.accountVerificationSucceed(currentAccount.id);
+
+            onOk();
         }
     };
 
@@ -132,7 +176,7 @@ export function CredentialsView() {
         <PageLayout
             heading={
                 <ViewHeading>
-                    <Button positive disabled={isBackUnavailable} onClick={onSave}>
+                    <Button positive disabled={isBackUnavailable} onClick={onOk}>
                         {s("save")}
                     </Button>
                 </ViewHeading>
@@ -148,7 +192,7 @@ export function CredentialsView() {
                         fluid
                         label={s("tfsPath")}
                         placeholder="http://tfs:8080/tfs/"
-                        value={settings.tfsPath}
+                        value={currentAccount?.url ?? ""}
                         onChange={(e) => validateTfsPath(e.target.value)}
                         error={pathInvalid}
                     />
@@ -179,7 +223,7 @@ export function CredentialsView() {
                                 size="small"
                                 disabled={pathInvalid}
                                 onClick={() => {
-                                    Platform.current.openUrl(settings.tfsPath + "_usersSettings/tokens");
+                                    Platform.current.openUrl(currentAccount?.url + "_usersSettings/tokens");
                                 }}
                             >
                                 {s("credsTokenOpenCreatePage")}
@@ -191,7 +235,7 @@ export function CredentialsView() {
                     <Form.Input
                         fluid
                         label={s("tfsToken")}
-                        value={settings.tfsToken}
+                        value={currentAccount?.token ?? ""}
                         onChange={(e) => validateTfsToken(e.target.value)}
                         error={tokenInvalid}
                     />

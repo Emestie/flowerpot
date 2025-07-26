@@ -1,61 +1,89 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Header, Icon, Label } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { Button, ButtonGroup, Card, CardGroup, Header, Icon } from "semantic-ui-react";
+import { AccountBadge } from "../../../components/AccountBadge";
+import { IAccount } from "../../../helpers/Settings";
 import { appViewSet } from "../../../redux/actions/appActions";
+import { settingsUpdate } from "../../../redux/actions/settingsActions";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
+import { store } from "../../../redux/store";
 import { s } from "../../../values/Strings";
-import { fillConnectionData, getConnectionData } from "/@/helpers/Connection";
-import { IConnectionData } from "/@/modules/api-client";
+import { useCredentialsModeStore } from "../../../zustand/credentials-mode";
 
 export function AccountSection() {
-    const dispatch = useDispatch();
-    const { tfsPath, credentialsChecked } = useSelector(settingsSelector);
-
-    const [authenticatedUser, setAuthenticatedUser] = useState<IConnectionData["authenticatedUser"] | undefined>(
-        undefined
-    );
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        (async () => {
-            await fillConnectionData();
-            setAuthenticatedUser(getConnectionData()?.authenticatedUser);
-            setIsLoading(false);
-        })();
-    }, []);
-
-    const openCreds = () => {
-        dispatch(appViewSet("credentials"));
-    };
+    const { accounts } = useSelector(settingsSelector);
 
     return (
         <>
             <Header as="h3" dividing>
                 {s("accountSettingsHeader")}
             </Header>
-            <Button icon labelPosition="left" onClick={openCreds}>
-                <Icon name="plug" />
-                {s("editTfsSettingsBtn")}
+            <CardGroup>
+                {accounts.map((account) => (
+                    <AccountCard key={account.id} account={account} deleteable={accounts.length > 1} />
+                ))}
+            </CardGroup>
+            <div style={{ marginTop: 16 }}></div>
+            <Button
+                icon
+                labelPosition="left"
+                positive
+                onClick={() => {
+                    useCredentialsModeStore.getState().setSelectedAccountId(null);
+                    store.dispatch(appViewSet("credentials"));
+                }}
+            >
+                <Icon name="plus" />
+                Add account
             </Button>
-            {isLoading && (
-                <>
-                    <Icon name="circle notched" loading />
-                    <br />
-                </>
-            )}
-            {authenticatedUser && !isLoading && (
-                <Card>
-                    <Card.Content>
-                        <Card.Header>{authenticatedUser.providerDisplayName}</Card.Header>
-                        <Card.Meta>{tfsPath}</Card.Meta>
-                        <Card.Description>
-                            <Label size="small" basic color={credentialsChecked ? "green" : "orange"}>
-                                {s(credentialsChecked ? "settingsAccountChecked" : "settingsAccountNotChecked")}
-                            </Label>
-                        </Card.Description>
-                    </Card.Content>
-                </Card>
-            )}
         </>
+    );
+}
+
+function AccountCard(props: { account: IAccount; deleteable: boolean }) {
+    return (
+        <Card>
+            <Card.Content>
+                <Card.Header>
+                    <AccountBadge accountId={props.account.id} />
+                    {props.account.displayName}
+                </Card.Header>
+                <Card.Meta>{props.account.url}</Card.Meta>
+                <Card.Description></Card.Description>
+                <div style={{ marginTop: 8 }}>
+                    <ButtonGroup size="tiny" compact>
+                        <Button
+                            icon
+                            labelPosition="left"
+                            onClick={() => {
+                                useCredentialsModeStore.getState().setSelectedAccountId(props.account.id);
+                                store.dispatch(appViewSet("credentials"));
+                            }}
+                        >
+                            <Icon name="edit" />
+                            Edit
+                        </Button>
+                        {props.deleteable && (
+                            <Button
+                                icon
+                                labelPosition="left"
+                                negative
+                                onClick={() => {
+                                    store.dispatch(
+                                        settingsUpdate({
+                                            accounts: store
+                                                .getState()
+                                                .settings.accounts.filter((x) => x.id !== props.account.id),
+                                        })
+                                    );
+                                }}
+                            >
+                                <Icon name="delete" />
+                                Delete
+                            </Button>
+                        )}
+                    </ButtonGroup>
+                </div>
+            </Card.Content>
+        </Card>
     );
 }

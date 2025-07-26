@@ -23,8 +23,9 @@ export enum Sections {
 export interface ISettingsState extends ISettings {}
 
 const initialState: ISettingsState = {
-    tfsPath: "http://tfs:8080/tfs/",
+    tfsPath: "",
     tfsToken: "",
+    accounts: [],
     credentialsChecked: false,
     refreshRate: 180,
     sortPattern: "default",

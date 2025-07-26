@@ -33,7 +33,7 @@ const ru: LocalizedStrings = {
     cbAutostartLabel: "Запускать вместе с Windows (применяется при перезапуске приложения)",
     settingsCreditsHeader: "Автор и обновления",
     versionWord: "Версия",
-    accountSettingsHeader: "Учетная запись",
+    accountSettingsHeader: "Учетные записи",
     customListsSettingsHeader: "Списки",
     quickLinksSettingsHeader: "Быстрые ссылки",
     //sel queries view
@@ -226,7 +226,7 @@ const ru: LocalizedStrings = {
     projectName: "Проект",
     projectsTableSettingsHeader: "Проекты для отслеживания запросов на вытягивание",
 
-    sectionAccount: "Учетная запись",
+    sectionAccount: "Учетные записи",
     sectionQueries: "Запросы",
     sectionWI: "Рабочие элементы",
     sectionProjects: "Проекты и запросы на вытягивание",

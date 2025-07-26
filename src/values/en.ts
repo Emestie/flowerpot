@@ -31,7 +31,7 @@ const en = {
     cbAutostartLabel: "Start with Windows (applies on app restart)",
     settingsCreditsHeader: "Credits",
     versionWord: "Version",
-    accountSettingsHeader: "Account",
+    accountSettingsHeader: "Accounts",
     customListsSettingsHeader: "Custom Lists",
     quickLinksSettingsHeader: "Quick Links",
     //sel queries view
@@ -225,7 +225,7 @@ const en = {
     projectName: "Project name",
     projectsTableSettingsHeader: "Projects to watch Pull Requests in",
 
-    sectionAccount: "Account and Credentials",
+    sectionAccount: "Accounts",
     sectionQueries: "Queries",
     sectionWI: "Work Items",
     sectionProjects: "Projects and Pull Requests",
