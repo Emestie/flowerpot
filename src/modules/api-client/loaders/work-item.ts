@@ -84,8 +84,7 @@ export function createWorkItemLoaders(
                             }
                         ).then((resp) => {
                             if (resp?.message) throw new Error(resp.message);
-
-                            return resp || { value: [], count: 0 };
+                            return resp;
                         });
                     });
                 })

@@ -85,7 +85,6 @@ export function CredentialsView() {
             setCredentialsCheckStatus(ECredState.NotValidated);
             if (!ignoreStore) {
                 const tfsPath = val;
-                //  if (tfsPath !== settings.tfsPath) dispatch(settingsUpdate({ tfsPath }));
                 setCurrentAccount((ca) => ({ ...ca, url: tfsPath }));
             }
 
@@ -104,8 +103,6 @@ export function CredentialsView() {
             setCredentialsCheckStatus(ECredState.NotValidated);
 
             if (!ignoreStore) {
-                if (token !== settings.tfsToken) dispatch(settingsUpdate({ tfsToken: token }));
-                // if (token !== currentAccount?.token) updateAccount({ token, id: currentAccount?.id });
                 setCurrentAccount((ca) => ({ ...ca, token }));
             }
 

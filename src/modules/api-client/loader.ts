@@ -25,15 +25,18 @@ export function createLoader(params: IApiClientParams) {
                 throw new Error(s("unauthorized"));
             }
 
-            if (!result.ok) return null as T;
+            if (result.status === 404) {
+                throw new Error(s("notFoundOrNoAccess"));
+            }
 
-            const data = await result.json();
-
-            return data as T;
+            try {
+                const data = await result.json();
+                return data as T;
+            } catch {
+                throw new Error(s("jsonParseError"));
+            }
         } catch (e: any) {
-            params.onError(e.message);
-
-            return null as T;
+            throw e;
         }
     };
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Header } from "semantic-ui-react";
-import { api } from "../api/client";
+import { getApi } from "../api/client";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { DynamicContent } from "../helpers/DynamicContent";
@@ -16,6 +16,8 @@ import { settingsSelector } from "../redux/selectors/settingsSelectors";
 export function DebugView() {
     const dispatch = useDispatch();
     const settings = useSelector(settingsSelector);
+
+    const api = settings.accounts[0] ? getApi(settings.accounts[0]?.id) : undefined;
 
     const [throwErrorState, setThrowErrorState] = useState(false);
 
@@ -96,14 +98,14 @@ export function DebugView() {
                 <Header as="h3" dividing>
                     New API
                 </Header>
-                <Button onClick={() => console.log(api.pullRequest.getByProjects(settings.projects))}>load PR</Button>
-                <Button onClick={() => console.log(api.collection.getAll())}>load collections</Button>
-                <Button onClick={() => console.log(api.project.getAll())}>load projects</Button>
-                <Button onClick={() => console.log(api.query.getAvailable())}>load av queries</Button>
-                <Button onClick={() => console.log(api.workItem.getByQuery(settings.queries[0]))}>
+                <Button onClick={() => console.log(api?.pullRequest.getByProjects(settings.projects))}>load PR</Button>
+                <Button onClick={() => console.log(api?.collection.getAll())}>load collections</Button>
+                <Button onClick={() => console.log(api?.project.getAll())}>load projects</Button>
+                <Button onClick={() => console.log(api?.query.getAvailable())}>load av queries</Button>
+                <Button onClick={() => console.log(api?.workItem.getByQuery(settings.queries[0]))}>
                     load wi by query
                 </Button>
-                <Button onClick={() => console.log(api.connectionData.get())}>conn data</Button>
+                <Button onClick={() => console.log(api?.connectionData.get())}>conn data</Button>
                 <Header as="h3" dividing>
                     More
                 </Header>

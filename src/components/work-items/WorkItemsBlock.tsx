@@ -134,7 +134,7 @@ export function WorkItemsBlock(props: IProps) {
 
     return (
         <CollapsibleBlock
-            id={query.queryId}
+            id={`${query.accountId}-${query.queryId}`}
             caption={query.queryName}
             accountId={query.accountId}
             subcaption={query.teamName}

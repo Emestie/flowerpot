@@ -13,9 +13,6 @@ export default class Loaders {
                 getTfsPath() {
                     return url;
                 },
-                onError() {
-                    throw new Error("Some api error during account validations");
-                },
             });
             await api.collection.getAll();
             return true;
@@ -44,9 +41,6 @@ export default class Loaders {
             },
             getTfsPath() {
                 return url;
-            },
-            onError() {
-                throw new Error("Some api error during connection check");
             },
         });
 

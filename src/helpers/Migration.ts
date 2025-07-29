@@ -4,7 +4,7 @@ import { Account } from "./Account";
 import Loaders from "./Loaders";
 import { ISettings } from "./Settings";
 
-const V_070 = "v0_7_0g";
+const V_070 = "v0_7_0h";
 
 export default class Migration {
     private static setMigrationAsDone(name: string) {
@@ -22,7 +22,10 @@ export default class Migration {
 
         const settings = store.getState().settings;
 
-        const userdata = await Loaders.getUserData(settings.tfsPath, settings.tfsToken);
+        const userdata = await Loaders.getUserData(settings.tfsPath, settings.tfsToken).catch(() => ({
+            displayName: Account.generateDisplayNameByToken(settings.tfsToken),
+            descriptor: "",
+        }));
 
         const account: ISettings["accounts"][number] = {
             url: settings.tfsPath,

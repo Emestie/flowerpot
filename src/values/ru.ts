@@ -48,6 +48,8 @@ const ru: LocalizedStrings = {
     selqAvailableHeader: "Доступные запросы",
     refresh: "Обновить",
     //main view
+    noAccountsSetup: "Нет настроенных аккаунтов",
+    noAccountsSetupText: "Добавьте их в настройках",
     noQueriesToWatch: "Нет отслеживаемых запросов",
     noQueriesToWatchText: "Добавьте их в настройках",
     settings: "Настройки",
@@ -301,6 +303,10 @@ const ru: LocalizedStrings = {
     acceptedByMeFilter: "Отобр. принятые мной",
 
     addAccount: "Добавить учетную запись",
+
+    notFoundOrNoAccess: "Результат не найден или отсутствуют права доступа",
+    jsonParseError: "Некорректный ответ от сервера",
+    noAccountWithGivenDomain: "Отсутсвует аккаунт с указанным доменным именем",
 };
 
 export default ru;

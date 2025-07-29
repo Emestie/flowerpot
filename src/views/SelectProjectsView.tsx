@@ -30,7 +30,9 @@ export function SelectProjectsView() {
                     return getApi(account.id)
                         .project.getAll()
                         .then((projects) => {
-                            const currentProjectPaths = settings.projects.map((p) => p.path);
+                            const currentProjectPaths = settings.projects
+                                .filter((x) => x.accountId === account.id)
+                                .map((p) => p.path);
                             const projectsToSelect = projects.filter(
                                 (p) => !currentProjectPaths.includes(p.path)
                             ) as ISelectableProject[];

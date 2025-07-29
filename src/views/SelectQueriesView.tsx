@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Form, Header, Icon, Label, Message } from "semantic-ui-react";
-import { api, getApi } from "../api/client";
+import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
@@ -35,7 +35,9 @@ export function SelectQueriesView() {
                     getApi(account.id)
                         .query.getAvailable()
                         .then((queries) => {
-                            const currentQueriesIds = settings.queries.map((q) => q.queryId);
+                            const currentQueriesIds = settings.queries
+                                .filter((x) => x.accountId === account.id)
+                                .map((q) => q.queryId);
                             const queriesToSelect = queries.filter(
                                 (q) => !currentQueriesIds.includes(q.queryId)
                             ) as ISelectableQuery[];
@@ -64,10 +66,13 @@ export function SelectQueriesView() {
     };
 
     const onUrlCheck = async () => {
-        //TODO: check this functionality
         setUrlCheckInProgress(true);
         try {
-            const query = await api.query.getByUrl(url);
+            const account = settings.accounts.find((x) => url.startsWith(x.url));
+
+            if (!account) throw new Error(s("noAccountWithGivenDomain"));
+
+            const query = await getApi(account.id).query.getByUrl(url);
 
             Query.add(query);
             dispatch(appViewSet("settings"));
@@ -91,7 +96,7 @@ export function SelectQueriesView() {
 
     const toggleCheck = (query: ISelectableQuery) => {
         const all = availableQueries;
-        const index = all.findIndex((q) => q.queryId === query.queryId);
+        const index = all.findIndex((q) => q.queryId === query.queryId && q.accountId === query.accountId);
         all[index].checked = !all[index].checked;
         setAvailableQueries([...all]);
     };

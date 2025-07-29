@@ -18,7 +18,7 @@ export default class Query {
         const maxOrder = allOrders.length ? Math.max(...allOrders) : 0;
         query.order = maxOrder + 1;
 
-        if (!!allQueries.find((aq) => aq.queryId === query.queryId)) return;
+        if (!!allQueries.find((aq) => aq.queryId === query.queryId && aq.accountId === query.accountId)) return;
 
         allQueries.push(query);
         this.updateAllInStore(allQueries);

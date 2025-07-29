@@ -13,7 +13,6 @@ export interface IApiClientParams {
     getAccountId: () => string;
     getTfsPath: () => string;
     getAccessToken: () => string;
-    onError: (message: string) => void;
 }
 
 export function createApiClient(params: IApiClientParams) {

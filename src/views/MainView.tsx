@@ -76,14 +76,20 @@ export function MainView() {
 
     const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
-    const queriesBlocks = queries.length ? (
-        queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
-    ) : (
-        <Message info>
-            <Message.Header>{s("noQueriesToWatch")}</Message.Header>
-            <p>{s("noQueriesToWatchText")}</p>
-        </Message>
-    );
+    const queriesBlocks =
+        settings.accounts.length === 0 ? (
+            <Message info>
+                <Message.Header>{s("noAccountsSetup")}</Message.Header>
+                <p>{s("noAccountsSetupText")}</p>
+            </Message>
+        ) : queries.length ? (
+            queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
+        ) : (
+            <Message info>
+                <Message.Header>{s("noQueriesToWatch")}</Message.Header>
+                <p>{s("noQueriesToWatchText")}</p>
+            </Message>
+        );
 
     if (!queries.length) {
         Platform.current.updateTrayIcon(4);
