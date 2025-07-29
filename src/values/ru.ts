@@ -126,6 +126,7 @@ const ru: LocalizedStrings = {
     //context
     copy: "Копировать сводку",
     copyId: "Копировать ID",
+    copyUrl: "Копировать URL",
     removeFromList: "Исключить из ",
     addToP: "Добавить в наблюдаемые",
     addToF: "Добавить в избранное",

@@ -14,12 +14,16 @@ export function PullRequestContextMenu(props: IProps) {
 
     const onCopy = (_: any) => {
         const pr = pullRequest;
-        const s = `PR #${pr.id} - ${pr.projectName}/${pr.repoName}: ${pr.title} (${pr.url})`;
+        const s = `PR #${pr.id} - ${pr.projectName}/${pr.repoName}: ${pr.title} - ${pr.url}`;
         Platform.current.copyString(s);
     };
 
     const onCopyId = (_: any) => {
         Platform.current.copyString(pullRequest.id.toString());
+    };
+
+    const onCopyUrl = (_: any) => {
+        Platform.current.copyString(pullRequest.url);
     };
 
     return (
@@ -31,6 +35,14 @@ export function PullRequestContextMenu(props: IProps) {
                             <Icon name="copy outline" />
                         </span>
                         {s("copy")}
+                    </Menu.Item>
+                </MenuItem>
+                <MenuItem data={{ action: "copyurl" }} onClick={onCopyUrl}>
+                    <Menu.Item>
+                        <span>
+                            <Icon name="copy outline" />
+                        </span>
+                        {s("copyUrl")}
                     </Menu.Item>
                 </MenuItem>
                 <MenuItem data={{ action: "copyid" }} onClick={onCopyId}>

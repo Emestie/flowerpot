@@ -125,6 +125,7 @@ const en = {
     //context
     copy: "Copy info",
     copyId: "Copy ID",
+    copyUrl: "Copy URL",
     removeFromList: "Remove from ",
     addToP: "Add to permawatch",
     addToF: "Add to favorites",

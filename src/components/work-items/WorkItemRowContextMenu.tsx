@@ -46,7 +46,7 @@ export function WorkItemRowContextMenu(props: IProps) {
 
     const onCopy = (_: any) => {
         const wi = workItem;
-        const s = `${wi.type} ${wi.id} - ${wi.iterationPath}: ${wi.title} (${wi.url})`;
+        const s = `${wi.type} ${wi.id} - ${wi.iterationPath}: ${wi.title} - ${wi.url}`;
 
         Stats.increment(UsageStat.WorkItemsInfoCopied);
         Platform.current.copyString(s);
@@ -55,6 +55,11 @@ export function WorkItemRowContextMenu(props: IProps) {
     const onCopyId = (_: any) => {
         Stats.increment(UsageStat.WorkItemsInfoCopied);
         Platform.current.copyString(workItem.id.toString());
+    };
+
+    const onCopyUrl = (_: any) => {
+        Stats.increment(UsageStat.WorkItemsInfoCopied);
+        Platform.current.copyString(workItem.url);
     };
 
     const onEditNote = (text: string, color?: string) => {
@@ -71,6 +76,14 @@ export function WorkItemRowContextMenu(props: IProps) {
                             <Icon name="copy outline" />
                         </span>
                         {s("copy")}
+                    </Menu.Item>
+                </MenuItem>
+                <MenuItem data={{ action: "copyurl" }} onClick={onCopyUrl}>
+                    <Menu.Item>
+                        <span>
+                            <Icon name="copy outline" />
+                        </span>
+                        {s("copyUrl")}
                     </Menu.Item>
                 </MenuItem>
                 <MenuItem data={{ action: "copyid" }} onClick={onCopyId}>
