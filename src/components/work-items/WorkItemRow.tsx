@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
-import { Stats, UsageStat } from "../../helpers/Stats";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
@@ -164,7 +163,6 @@ export function WorkItemRow(props: IProps) {
                 collapsing
                 className={"cellRelative " + getClass()}
                 onDoubleClick={() => {
-                    Stats.increment(UsageStat.WorkItemsInfoCopied);
                     Platform.current.copyString(item.id.toString());
                 }}
             >
@@ -185,7 +183,6 @@ export function WorkItemRow(props: IProps) {
                     <span
                         className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}
                         onClick={() => {
-                            Stats.increment(UsageStat.WorkItemsOpened);
                             Platform.current.openUrl(item.url);
                         }}
                     >
@@ -208,7 +205,6 @@ export function WorkItemRow(props: IProps) {
             <Table.Cell
                 collapsing
                 onDoubleClick={() => {
-                    Stats.increment(UsageStat.UsersNamesCopied);
                     Platform.current.copyString(item.assignedToTextName);
                 }}
             >
@@ -224,7 +220,6 @@ export function WorkItemRow(props: IProps) {
             <Table.Cell
                 collapsing
                 onDoubleClick={() => {
-                    Stats.increment(UsageStat.UsersNamesCopied);
                     Platform.current.copyString(item.createdByTextName);
                 }}
             >

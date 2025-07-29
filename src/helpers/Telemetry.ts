@@ -1,5 +1,6 @@
 import CyrillicToTranslit from "cyrillic-to-translit-js";
 import { store } from "../redux/store";
+import { preloadConnectionData } from "./Connection";
 import Platform from "./Platform";
 import Version from "./Version";
 
@@ -12,16 +13,19 @@ export default class Telemetry {
         extraInfo?: string,
         ignoreTelemetryDisability?: boolean
     ) {
-        const { allowTelemetry } = store.getState().settings;
+        const { allowTelemetry, accounts } = store.getState().settings;
         if (!allowTelemetry && !ignoreTelemetryDisability) return;
 
-        const userName =
-            accountId === null
-                ? store.getState().settings.accounts[0]?.displayName
-                : (store.getState().settings.accounts.find((a) => a.id === accountId)?.displayName ?? "Unknown");
+        const account0 = accounts.at(0);
+        const _accountId = accountId ?? account0?.id;
+        const userName = accounts.find((a) => a.id === _accountId)?.displayName ?? "Unknown";
+
+        const accountName = _accountId
+            ? (await preloadConnectionData(_accountId))?.authenticatedUser?.properties?.Account?.$value
+            : undefined;
 
         try {
-            const name = cyrillicToTranslit.transform(userName);
+            const name = [cyrillicToTranslit.transform(userName), accountName].join(" / ");
             if (!name) return;
             const ver = Version.long;
             const platform = Platform.type;

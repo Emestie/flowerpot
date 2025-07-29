@@ -2,7 +2,6 @@ import { settingsListUpdate, settingsUpdate } from "../redux/actions/settingsAct
 import { getListsSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
 import { TLists } from "./Settings";
-import { Stats, UsageStat } from "./Stats";
 
 export default class Lists {
     public static push(accountId: string, listName: TLists, collection: string, id: number, rev?: number) {
@@ -21,7 +20,6 @@ export default class Lists {
 
         const lists = { deferred, permawatch, favorites, hidden, pinned, forwarded, [listName]: list } as any;
 
-        Stats.increment(UsageStat.WorkItemsAddedToLists);
         store.dispatch(settingsUpdate({ lists }));
     }
 

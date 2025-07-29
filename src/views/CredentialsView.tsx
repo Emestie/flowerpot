@@ -8,7 +8,6 @@ import { Account } from "../helpers/Account";
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
 import { IAccount } from "../helpers/Settings";
-import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
 import { appViewSet } from "../redux/actions/appActions";
 import { settingsUpdate } from "../redux/actions/settingsActions";
@@ -154,7 +153,6 @@ export function CredentialsView() {
         const displayName = userData.displayName ?? Account.generateDisplayNameByToken(currentAccount.token);
         const descriptor = userData.descriptor;
 
-        Stats.increment(UsageStat.AccountVerifications);
         setCredentialsCheckStatus(ECredState.OK);
 
         if (accountId) {

@@ -4,7 +4,6 @@ import Festival from "../helpers/Festival";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Settings from "../helpers/Settings";
-import { Stats, UsageStat } from "../helpers/Stats";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
 import { appShowWhatsNewSet, appViewSet } from "../redux/actions/appActions";
@@ -61,17 +60,6 @@ export function App() {
                 },
                 true
             );
-
-            Timers.create(
-                "time-spent-stat",
-                60000,
-                () => {
-                    Stats.increment(UsageStat.MinutesSpentInApp);
-                },
-                false
-            );
-
-            Stats.increment(UsageStat.AppStarts);
 
             Platform.current.checkForUpdates(true);
 

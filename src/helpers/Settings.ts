@@ -7,7 +7,6 @@ import { TLocale } from "../redux/types";
 import { AccountBadge } from "./Account";
 import { ILinkItem } from "./Links";
 import Platform from "./Platform";
-import { UsageStat } from "./Stats";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -65,7 +64,6 @@ export interface ISettings {
     lastTimeVersionLong: string;
     migrationsDone: string[];
     bannersShown: number[];
-    stats: Record<UsageStat, number>;
     settingsSection: Sections;
     includeTeamsPRs: boolean;
     includeAcceptedByMePRs: boolean;

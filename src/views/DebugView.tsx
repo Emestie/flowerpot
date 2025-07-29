@@ -7,7 +7,6 @@ import { ViewHeading } from "../components/heading/ViewHeading";
 import { DynamicContent } from "../helpers/DynamicContent";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
-import { Stats, UsageStat } from "../helpers/Stats";
 import Telemetry from "../helpers/Telemetry";
 import Version from "../helpers/Version";
 import { appViewSet } from "../redux/actions/appActions";
@@ -109,7 +108,6 @@ export function DebugView() {
                 <Header as="h3" dividing>
                     More
                 </Header>
-                <Button onClick={() => Stats.increment(UsageStat.Test)}>Test stat: {settings.stats.test || 0}</Button>
                 <Button onClick={loadDynamic}>Load DC</Button>
                 <Button onClick={() => Migration.perform()}>Perform migrations</Button>
                 <Button
