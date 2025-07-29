@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
@@ -23,11 +23,14 @@ function createReviewersComponents(revs: IPullRequestReviewer[], accountId: stri
 
     const othersComponent =
         others.length > 0 ? (
-            <span title={others.map((o) => o.name + (o.isRequired ? ` (${s("requiredReviewer")})` : "")).join("\n")}>
+            <span
+                key="othcmp"
+                title={others.map((o) => o.name + (o.isRequired ? ` (${s("requiredReviewer")})` : "")).join("\n")}
+            >
                 +{others.length}
             </span>
         ) : (
-            <></>
+            <React.Fragment key="othplchdr"></React.Fragment>
         );
 
     return firstFive
@@ -142,7 +145,9 @@ export function PullRequestRow(props: IProps) {
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>{commentsEl}</ContextMenuTrigger>
+                <ContextMenuTrigger id={uid}>
+                    <>{commentsEl}</>
+                </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>{reviewers}</Table.Cell>
             <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
@@ -156,7 +161,9 @@ export function PullRequestRow(props: IProps) {
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>{freshnessEl}</ContextMenuTrigger>
+                <ContextMenuTrigger id={uid}>
+                    <>{freshnessEl}</>
+                </ContextMenuTrigger>
             </Table.Cell>
         </Table.Row>
     );

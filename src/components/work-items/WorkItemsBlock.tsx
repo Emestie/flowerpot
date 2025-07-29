@@ -17,7 +17,7 @@ interface IProps {
 }
 
 export function WorkItemsBlock(props: IProps) {
-    const { isLoading, routineStart, errorMessage } = useQueryLoader(props.query);
+    const { isLoading, routineStart, errorMessage, hiddenCount } = useQueryLoader(props.query);
     const settings = useSelector(settingsSelector);
     const { showMineOnly } = useSelector(appSelector);
 
@@ -143,7 +143,11 @@ export function WorkItemsBlock(props: IProps) {
             isCollapseEnabled={!!workItems.length}
             isLoading={isLoading}
             iconComponent={isPermawatch ? <Icon name="eye" /> : null}
-            counters={{ total: { count: totalItemsCount }, red: { count: redItemsCount, color: "red" } }}
+            counters={{
+                total: { count: totalItemsCount },
+                red: { count: redItemsCount, color: "red" },
+                hidden: { count: hiddenCount, basic: true },
+            }}
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             rightBlock={
                 <>

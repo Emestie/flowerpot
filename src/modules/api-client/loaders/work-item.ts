@@ -16,7 +16,7 @@ export function createWorkItemLoaders(
     workItemTypeLoaders: ReturnType<typeof createWorkItemTypeLoaders>
 ) {
     return {
-        async getByQuery(query: IQuery): Promise<IWorkItem[]> {
+        async getByQuery(query: IQuery): Promise<{ workItems: IWorkItem[]; hiddenCount: number }> {
             const queryResult = query.queryId.startsWith("___permawatch")
                 ? null
                 : await loader<IQueryResult>(
@@ -31,7 +31,7 @@ export function createWorkItemLoaders(
             //if query was deleted
             if (queryResult?.errorCode === 600288) {
                 Query.delete(query);
-                return [];
+                return { workItems: [], hiddenCount: 0 };
             }
 
             if (queryResult?.message && queryResult.errorCode !== undefined) {
@@ -46,9 +46,11 @@ export function createWorkItemLoaders(
                 .filter((x) => x !== null)
                 .filter((x) => x?._list !== "hidden") as IWorkItem[];
 
+            const hiddenCount = workItemsAll.filter((x) => x?._list === "hidden").length;
+
             Differences.put(query, workItemsFiltered);
 
-            return workItemsFiltered;
+            return { workItems: workItemsFiltered, hiddenCount };
         },
         async getOne({ id, collection }: IWorkItemShort, query: IQuery): Promise<IWorkItem | null> {
             const workItemResponse = await loader<IResponseWorkItem>(
