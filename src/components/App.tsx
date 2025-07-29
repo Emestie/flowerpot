@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Festival from "../helpers/Festival";
 import Migration from "../helpers/Migration";
@@ -28,6 +28,7 @@ export function App() {
     const dispatch = useDispatch();
     const { view } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
+    const [ready, setIsReady] = useState(false);
 
     const setWIChangesCollection = useCallback(() => {
         const ls = localStorage.getItem("WIChangesCollection");
@@ -84,10 +85,14 @@ export function App() {
 
                 setWIChangesCollection();
                 afterUpdateHandler();
+
+                setIsReady(true);
             }, 250);
         })();
         // eslint-disable-next-line
     }, []);
+
+    if (!ready) return <LoadingView />;
 
     function getScene(view: TView) {
         switch (view) {

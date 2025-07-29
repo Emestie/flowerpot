@@ -60,6 +60,8 @@ const initialState: ISettingsState = {
     enableIterationColors: true,
     enableQueryColorCode: false,
     collapsedBlocks: [],
+    openByIdLastAccountId: undefined,
+    openByIdLastCollection: undefined,
 };
 
 export function settingsReducer(state = initialState, action: IAction) {

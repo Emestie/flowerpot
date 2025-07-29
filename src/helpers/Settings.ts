@@ -72,6 +72,8 @@ export interface ISettings {
     enableIterationColors: boolean;
     enableQueryColorCode: boolean;
     collapsedBlocks: string[];
+    openByIdLastCollection: string | undefined;
+    openByIdLastAccountId: string | undefined;
 }
 
 export default class Settings {

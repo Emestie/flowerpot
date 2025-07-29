@@ -22,6 +22,8 @@ export default class Migration {
 
         const settings = store.getState().settings;
 
+        if (!settings.tfsToken) return this.setMigrationAsDone(V_070);
+
         const userdata = await Loaders.getUserData(settings.tfsPath, settings.tfsToken).catch(() => ({
             displayName: Account.generateDisplayNameByToken(settings.tfsToken),
             descriptor: "",
