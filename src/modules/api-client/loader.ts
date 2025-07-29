@@ -1,5 +1,4 @@
 import { IApiClientParams } from "./create";
-import { fillConnectionData, getConnectionData } from "/@/helpers/Connection";
 import { s } from "/@/values/Strings";
 
 export type Loader = ReturnType<typeof createLoader>;
@@ -21,10 +20,6 @@ export function createLoader(params: IApiClientParams) {
                     "Content-Type": "application/json",
                 },
             });
-
-            try {
-                if (!options?.skipConnectionDataCheck && !getConnectionData()) await fillConnectionData();
-            } catch {}
 
             if (result.status === 401 && !url.includes("connectionData")) {
                 throw new Error(s("unauthorized"));

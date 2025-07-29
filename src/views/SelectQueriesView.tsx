@@ -105,8 +105,8 @@ export function SelectQueriesView() {
         </Message>
     ) : filteredAvailableQueries.length ? (
         filteredAvailableQueries.map((q) => (
-            <div key={q.queryId} style={{ marginBottom: 5 }}>
-                <AccountBadge accountId={q.accountId} />{" "}
+            <div key={q.queryId} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+                <AccountBadge accountId={q.accountId} rightGap={8} />
                 <Checkbox label={q.nameInList} checked={q.checked} onChange={() => toggleCheck(q)} />
             </div>
         ))

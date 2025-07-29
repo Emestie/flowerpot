@@ -1,3 +1,4 @@
+import { preloadConnectionData } from "../../../helpers/Connection";
 import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { buildPullRequest } from "../models";
@@ -9,24 +10,32 @@ export function createPullRequestLoaders(params: IApiClientParams, loader: Loade
         async getByProjects(projects: IProject[]): Promise<IPullRequest[]> {
             if (!projects.length) return [];
 
-            const responsePullRequestCollections = await Promise.all(
-                projects.map((p) =>
-                    loader<IValue<IResponsePullRequest[]>>(
-                        `${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`
-                    ).then((resp) => {
-                        if (resp?.message && resp.errorCode !== undefined) {
-                            throw new Error(resp.message);
-                        }
+            const [responsePullRequestCollections] = await Promise.all([
+                await Promise.all(
+                    projects.map((p) =>
+                        loader<IValue<IResponsePullRequest[]>>(
+                            `${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`
+                        ).then((resp) => {
+                            if (resp?.message && resp.errorCode !== undefined) {
+                                throw new Error(resp.message);
+                            }
 
-                        return resp;
-                    })
-                )
-            );
+                            return resp;
+                        })
+                    )
+                ),
+                await preloadConnectionData(params.getAccountId()),
+            ]);
 
             return responsePullRequestCollections
                 .flatMap((collection, index) =>
                     collection.value.map((resp) =>
-                        buildPullRequest(resp, params.getTfsPath(), projects[index].collectionName)
+                        buildPullRequest(
+                            resp,
+                            params.getTfsPath(),
+                            projects[index].collectionName,
+                            params.getAccountId()
+                        )
                     )
                 )
                 .sort((a, b) => b.id - a.id);

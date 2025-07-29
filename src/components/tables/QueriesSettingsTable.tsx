@@ -25,7 +25,9 @@ export function QueriesSettingsTable() {
                 />
             </Table.Cell>
             <Table.Cell>
-                <AccountBadge accountId={q.accountId} /> {q.collectionName}
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <AccountBadge accountId={q.accountId} display="flex" rightGap={4} size="l" /> {q.collectionName}
+                </div>
             </Table.Cell>
             <Table.Cell>{q.teamName}</Table.Cell>
             <Table.Cell>{q.queryName}</Table.Cell>

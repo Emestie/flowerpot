@@ -1,6 +1,5 @@
 import { IQuery, IResponseWorkItem, IWorkItem } from "../types";
 import { IWorkItemType } from "../types/work-item-type";
-import { getConnectionData } from "/@/helpers/Connection";
 import { ItemsCommon } from "/@/helpers/ItemsCommon";
 import Lists from "/@/helpers/Lists";
 import { TLists } from "/@/helpers/Settings";
@@ -14,7 +13,8 @@ export function buildWorkItem(
     workItemType: IWorkItemType | undefined
 ): IWorkItem {
     const isMine =
-        resp.fields["System.AssignedTo"]?.descriptor === getConnectionData()?.authenticatedUser.subjectDescriptor;
+        resp.fields["System.AssignedTo"]?.descriptor ===
+        store.getState().settings.accounts.find((x) => x.id === query.accountId)?.descriptor;
 
     const type = resp.fields["System.WorkItemType"] || "";
     const createdByFull = ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "");
@@ -53,7 +53,7 @@ export function buildWorkItem(
         priority,
         priorityText,
         isRed: priority === 1,
-        requestNumber: resp.fields["Custom.RequestNumber"] || undefined
+        requestNumber: resp.fields["Custom.RequestNumber"] || undefined,
     };
 
     if (query.queryId === "___permawatch") {

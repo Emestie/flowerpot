@@ -34,7 +34,7 @@ export default class Loaders {
         }
     }
 
-    public static async getUserDisplayName(url: string, token: string) {
+    public static async getUserData(url: string, token: string) {
         const api = createApiClient({
             getAccountId() {
                 return "";
@@ -52,6 +52,9 @@ export default class Loaders {
 
         const conn = await api.connectionData.get();
 
-        return conn?.authenticatedUser.providerDisplayName;
+        return {
+            displayName: conn?.authenticatedUser.providerDisplayName,
+            descriptor: conn?.authenticatedUser.subjectDescriptor,
+        };
     }
 }

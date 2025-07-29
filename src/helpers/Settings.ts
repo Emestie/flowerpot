@@ -18,6 +18,7 @@ export interface IAccount {
     token: string;
     id: string;
     displayName: string;
+    descriptor: string | undefined;
     badge: AccountBadge;
 }
 

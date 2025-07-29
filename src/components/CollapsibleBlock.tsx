@@ -74,53 +74,57 @@ export function CollapsibleBlock(props: {
     return (
         <>
             <Header as="h3" style={{ marginBottom: 0 }}>
-                {isLoading && (
-                    <span>
-                        <Icon name="circle notched" loading />
-                    </span>
-                )}
-                {!isLoading && isCollapseEnabled && <span onClick={toggleCollapse}>{iconCollapse}</span>}
-                <span>
-                    <AccountBadge accountId={accountId} />
-                    {iconComponent && <span>{iconComponent}</span>}
-                    <span
-                        onClick={toggleCollapse}
-                        style={
-                            !enableColorCode
-                                ? undefined
-                                : {
-                                      backgroundColor: tagPalette
-                                          .getColor(caption)
-                                          .hexWithTransparency(settings.darkTheme ? 0.3 : 0.2),
-                                      padding: "0 8px",
-                                      borderRadius: 4,
-                                  }
-                        }
-                    >
-                        {caption}
-                    </span>
-                    {subcaption && (
-                        <small>
-                            <span style={{ marginLeft: 10, color: "gray" }} title={subcaptionTooltip}>
-                                {subcaption}
+                <div style={{ display: "flex", height: 24 }}>
+                    <div style={{ display: "flex", verticalAlign: "middle", width: "100%" }}>
+                        {isLoading && (
+                            <span>
+                                <Icon name="circle notched" loading />
                             </span>
-                        </small>
-                    )}
-                </span>
-                <span className="WICounts">
-                    {countersComponents}
-                    {status === "done" && (
-                        <Label size="mini" circular color="green">
-                            ✔
-                        </Label>
-                    )}
-                    {status === "error" && (
-                        <Label size="mini" circular color="red">
-                            &times;
-                        </Label>
-                    )}
-                </span>
-                {rightBlock}
+                        )}
+                        {!isLoading && isCollapseEnabled && <span onClick={toggleCollapse}>{iconCollapse}</span>}
+                        {settings.accounts.length > 1 && (
+                            <AccountBadge accountId={accountId} size="l" display="flex" rightGap={6} />
+                        )}
+                        {iconComponent && <span>{iconComponent}</span>}
+                        <span
+                            onClick={toggleCollapse}
+                            style={
+                                !enableColorCode
+                                    ? undefined
+                                    : {
+                                          backgroundColor: tagPalette
+                                              .getColor(caption)
+                                              .hexWithTransparency(settings.darkTheme ? 0.3 : 0.2),
+                                          padding: "0 8px",
+                                          borderRadius: 4,
+                                      }
+                            }
+                        >
+                            {caption}
+                        </span>
+                        {subcaption && (
+                            <small>
+                                <span style={{ marginLeft: 10, color: "gray" }} title={subcaptionTooltip}>
+                                    {subcaption}
+                                </span>
+                            </small>
+                        )}
+                        <span className="WICounts">
+                            {countersComponents}
+                            {status === "done" && (
+                                <Label size="mini" circular color="green">
+                                    ✔
+                                </Label>
+                            )}
+                            {status === "error" && (
+                                <Label size="mini" circular color="red">
+                                    &times;
+                                </Label>
+                            )}
+                        </span>
+                    </div>
+                    <div style={{ minWidth: 400, maxWidth: 600 }}>{rightBlock}</div>
+                </div>
             </Header>
             {(isCollapseEnabled ? !isCollapsed : true) && children}
         </>

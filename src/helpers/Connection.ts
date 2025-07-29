@@ -1,27 +1,25 @@
 import { getApi } from "../api/client";
 import { IConnectionData } from "../modules/api-client";
 
-let currentConnectionData: IConnectionData | undefined;
-//TODO: diff by ID, actually add to account model and preload on migration
+const currentConnectionData: Record<string, IConnectionData | undefined> = {};
+const singletonPromise: Record<string, Promise<IConnectionData | undefined> | null> = {};
 
-let singletonPromise: Promise<IConnectionData | undefined> | null = null;
-
-export function fillConnectionData(accountId: string) {
-    if (!singletonPromise) {
-        singletonPromise = getApi(accountId)
+export function preloadConnectionData(accountId: string) {
+    if (!singletonPromise[accountId]) {
+        singletonPromise[accountId] = getApi(accountId)
             .connectionData.get()
             .then((resp) => {
-                currentConnectionData = resp;
+                currentConnectionData[accountId] = resp;
                 (window as any)._conn = resp;
-                singletonPromise = null;
+                singletonPromise[accountId] = null;
 
                 return resp;
             });
     }
 
-    return singletonPromise;
+    return singletonPromise[accountId];
 }
 
-export function getConnectionData() {
-    return currentConnectionData;
+export function getConnectionData(accountId: string) {
+    return currentConnectionData[accountId];
 }

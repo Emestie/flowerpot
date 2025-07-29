@@ -55,7 +55,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             iconComponent={<Icon name="level up alternate" />}
             rightBlock={
-                <>
+                <div style={{ display: "flex", flexDirection: "row-reverse" }}>
                     <span
                         title={s("refresh")}
                         className="externalLink"
@@ -64,7 +64,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                     >
                         <Icon size="small" name="refresh" />
                     </span>
-                    {hasTeams && (
+                    {
                         <span className="group-pr-checkbox">
                             <Checkbox
                                 label={s("groupPrFilter")}
@@ -74,7 +74,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                                 }}
                             />
                         </span>
-                    )}
+                    }
                     {hasAcceptedByMe && (
                         <span className="group-pr-checkbox">
                             <Checkbox
@@ -86,7 +86,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                             />
                         </span>
                     )}
-                </>
+                </div>
             }
         >
             <>

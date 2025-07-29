@@ -20,7 +20,10 @@ export function ProjectsSettingsTable() {
                 <Checkbox checked={project.enabled} onChange={() => Project.toggleBoolean(project, "enabled")} />
             </Table.Cell>
             <Table.Cell>
-                <AccountBadge accountId={project.accountId} /> {project.collectionName}
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <AccountBadge accountId={project.accountId} display="flex" rightGap={4} size="l" />{" "}
+                    {project.collectionName}
+                </div>
             </Table.Cell>
             <Table.Cell>{project.name}</Table.Cell>
             <Table.Cell collapsing>

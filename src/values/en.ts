@@ -66,9 +66,10 @@ const en = {
     validate: "Validate and save",
     status: "Status: ",
     credsNoteText: "You must validate credentials you entered before leaving this page.",
-    tfsPath: "TFS/Azure DevOps path (must start with 'http://' and end with '/')",
+    tfsPath: "TFS/Azure DevOps path (must start with 'http://' or 'https://' and end with '/')",
     tfsToken: "Personal Access Token",
-    credsHeader: "Credentials",
+    credsHeaderAdd: "Add account",
+    credsHeaderEdit: "Edit account",
     save: "OK",
     tfsHeader: "Account settings",
     credsState1: "Not validated yet",
@@ -76,6 +77,7 @@ const en = {
     credsState3: "Server unavailable or TFS/Azure DevOps path is wrong",
     credsState4: "Personal Access Token is incorrect or expired",
     credsState5: "OK",
+    credsState6: "This account is already added",
     //helpers
     throwNoTeams: "No available team projects found",
     throwQueryLoading: "Error while loading query",
@@ -296,6 +298,8 @@ const en = {
     prBannerAction: "Add",
 
     acceptedByMeFilter: "Show accepted by me",
+
+    addAccount: "Add account",
 };
 
 export default en;

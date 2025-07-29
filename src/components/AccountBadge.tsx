@@ -1,47 +1,60 @@
 import { useSelector } from "react-redux";
-import { Label } from "semantic-ui-react";
+import acc1 from "../assets/account-badges/acc1.png";
+import acc2 from "../assets/account-badges/acc2.png";
+import acc3 from "../assets/account-badges/acc3.png";
+import acc4 from "../assets/account-badges/acc4.png";
+import acc5 from "../assets/account-badges/acc5.png";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
-export function AccountBadge(props: { accountId: string }) {
+const SIZE_M = 14;
+const SIZE_L = 20;
+
+export function AccountBadge(props: {
+    accountId: string;
+    size?: "m" | "l";
+    display?: "flex" | "inline";
+    rightGap?: number;
+}) {
     const { accounts } = useSelector(settingsSelector);
 
     if (accounts.length < 2) return null;
 
     const account = accounts.find((x) => x.id === props.accountId);
+    const title = `${account?.url}\n${account?.displayName}`;
+    const size = props.size === "l" ? SIZE_L : SIZE_M;
 
-    //TODO: redo badges
-    switch (account?.badge) {
+    let image = null;
+
+    switch (account?.badge || 5) {
         case 1:
-            return (
-                <Label title={`${account.url}\n${account.displayName}`} color="green" size="tiny">
-                    A
-                </Label>
-            );
+            image = <img style={{ width: size, height: size }} src={acc1} title={title} />;
+            break;
         case 2:
-            return (
-                <Label title={`${account.url}\n${account.displayName}`} color="purple" size="tiny">
-                    B
-                </Label>
-            );
+            image = <img style={{ width: size, height: size }} src={acc2} title={title} />;
+            break;
         case 3:
-            return (
-                <Label title={`${account.url}\n${account.displayName}`} color="yellow" size="tiny">
-                    C
-                </Label>
-            );
+            image = <img style={{ width: size, height: size }} src={acc3} title={title} />;
+            break;
         case 4:
-            return (
-                <Label title={`${account.url}\n${account.displayName}`} color="red" size="tiny">
-                    D
-                </Label>
-            );
+            image = <img style={{ width: size, height: size }} src={acc4} title={title} />;
+            break;
         case 5:
-            return (
-                <Label title={`${account.url}\n${account.displayName}`} color="blue" size="tiny">
-                    E
-                </Label>
-            );
+            image = <img style={{ width: size, height: size }} src={acc5} title={title} />;
+            break;
     }
 
-    return null;
+    return (
+        <span
+            style={{
+                width: size,
+                height: props.display === "flex" ? undefined : size,
+                display: props.display === "flex" ? "flex" : "inline-block",
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: props.rightGap,
+            }}
+        >
+            {image}
+        </span>
+    );
 }

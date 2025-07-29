@@ -24,6 +24,7 @@ enum ECredState {
     ServerUnavailable = 2,
     WrongCredentials = 3,
     OK = 4,
+    Duplication = 5,
 }
 
 const statuses = [
@@ -32,6 +33,7 @@ const statuses = [
     { color: "red", text: s("credsState3") },
     { color: "red", text: s("credsState4") },
     { color: "olive", text: s("credsState5") },
+    { color: "orange", text: s("credsState6") },
 ];
 
 function addAccount(account: IAccount) {
@@ -64,13 +66,12 @@ export function CredentialsView() {
             displayName: "",
             token: "",
             url: "",
+            descriptor: undefined,
             badge: Account.getNextAvailableBadge(),
         }
     );
 
     const dispatch = useDispatch();
-
-    const isBackUnavailable = pathInvalid || tokenInvalid || credentialsCheckStatus !== ECredState.OK;
 
     const checkInProgress = credentialsCheckStatus === ECredState.ValidatingInProgress;
 
@@ -81,13 +82,7 @@ export function CredentialsView() {
 
     const setCredentialsStatus = useCallback(
         (status: number) => {
-            const credentialsChecked = status === ECredState.OK ? true : false;
             setCredentialsCheckStatus(status);
-
-            //TODO: get rid of global cred checked status
-            if (settings.credentialsChecked !== credentialsChecked) {
-                dispatch(settingsUpdate({ credentialsChecked }));
-            }
         },
         [dispatch, settings.credentialsChecked]
     );
@@ -134,12 +129,9 @@ export function CredentialsView() {
         //eslint-disable-next-line
     }, [currentAccount]);
 
-    const onOk = () => {
+    const goToSettings = () => {
         dispatch(appViewSet("settings"));
     };
-
-    //TODO: add cancel button (add new case)
-    //TODO: ban same account adding
 
     const onCheck = async () => {
         setCredentialsStatus(ECredState.ValidatingInProgress);
@@ -153,41 +145,46 @@ export function CredentialsView() {
         const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
         if (!result) {
             setCredentialsStatus(ECredState.WrongCredentials);
-        } else {
-            const displayName =
-                (await Loaders.getUserDisplayName(currentAccount.url, currentAccount.token)) ??
-                Account.generateDisplayNameByToken(currentAccount.token);
-
-            Stats.increment(UsageStat.AccountVerifications);
-            setCredentialsStatus(ECredState.OK);
-
-            if (accountId) {
-                updateAccount({ ...currentAccount, displayName });
-            } else {
-                addAccount({ ...currentAccount, displayName });
-            }
-
-            Telemetry.accountVerificationSucceed(currentAccount.id);
-
-            onOk();
+            return;
         }
+
+        if (
+            settings.accounts.some(
+                (acc) => acc.id !== accountId && acc.url === currentAccount.url && acc.token === currentAccount.token
+            )
+        ) {
+            setCredentialsStatus(ECredState.Duplication);
+            return;
+        }
+
+        const userData =
+            (await Loaders.getUserData(currentAccount.url, currentAccount.token)) ??
+            Account.generateDisplayNameByToken(currentAccount.token);
+
+        const displayName = userData.displayName ?? Account.generateDisplayNameByToken(currentAccount.token);
+        const descriptor = userData.descriptor;
+
+        Stats.increment(UsageStat.AccountVerifications);
+        setCredentialsStatus(ECredState.OK);
+
+        if (accountId) {
+            updateAccount({ ...currentAccount, displayName, descriptor });
+        } else {
+            addAccount({ ...currentAccount, displayName, descriptor });
+        }
+
+        Telemetry.accountVerificationSucceed(currentAccount.id);
+
+        goToSettings();
     };
 
     const debugInputRef = React.createRef();
 
     return (
-        <PageLayout
-            heading={
-                <ViewHeading>
-                    <Button positive disabled={isBackUnavailable} onClick={onOk}>
-                        {s("save")}
-                    </Button>
-                </ViewHeading>
-            }
-        >
+        <PageLayout heading={<ViewHeading />}>
             <Container fluid>
                 <Header as="h3" dividing>
-                    {s("credsHeader")}
+                    {s(accountId ? "credsHeaderEdit" : "credsHeaderAdd")}
                 </Header>
                 <UpdateBanner />
                 <Form loading={checkInProgress}>
@@ -258,6 +255,9 @@ export function CredentialsView() {
                 <br />
                 <Button positive loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
                     {s("validate")}
+                </Button>
+                <Button loading={checkInProgress} onClick={goToSettings}>
+                    {s("cancel")}
                 </Button>
             </Container>
         </PageLayout>

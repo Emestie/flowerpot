@@ -67,9 +67,10 @@ const ru: LocalizedStrings = {
     validate: "Проверить и сохранить",
     status: "Статус: ",
     credsNoteText: "Вы должны проверить введенные данные на корректность.",
-    tfsPath: "Путь к TFS/Azure DevOps (должен начинаться с 'http://' и заканчиваться '/')",
+    tfsPath: "Путь к TFS/Azure DevOps (должен начинаться с 'http://' или 'https://' и заканчиваться '/')",
     tfsToken: "Персональный токен доступа",
-    credsHeader: "Учетные данные",
+    credsHeaderAdd: "Добавление учетной записи",
+    credsHeaderEdit: "Редактирование учетной записи",
     save: "OK",
     tfsHeader: "Настройки учетной записи",
     credsState1: "Не проверены",
@@ -77,6 +78,7 @@ const ru: LocalizedStrings = {
     credsState3: "Сервер недоступен или путь к TFS/Azure DevOps не верный",
     credsState4: "Персональный токен доступа некорректен или истек",
     credsState5: "OK",
+    credsState6: "Такой аккаунт уже добавлен",
     //helpers
     throwNoTeams: "Не найдено доступных проектов",
     throwQueryLoading: "Ошибка при загрузке запроса",
@@ -277,7 +279,7 @@ const ru: LocalizedStrings = {
 
     prComments: "Выполненные/Все комментарии",
     prMergeConflicts: "Конфликт",
-    groupPrFilter: "Отображать командные",
+    groupPrFilter: "Отобр. командные",
 
     showPublicQueries: "Показывать общие запросы",
 
@@ -296,7 +298,9 @@ const ru: LocalizedStrings = {
     prBanner: "Для работы с Pull Request добавьте проекты в настройках",
     prBannerAction: "Добавить",
 
-    acceptedByMeFilter: "Отображать принятые мной",
+    acceptedByMeFilter: "Отобр. принятые мной",
+
+    addAccount: "Добавить учетную запись",
 };
 
 export default ru;

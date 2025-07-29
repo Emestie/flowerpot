@@ -82,8 +82,8 @@ export function SelectProjectsView() {
         </Message>
     ) : availableProjects.length ? (
         availableProjects.map((p) => (
-            <div key={p.path} style={{ marginBottom: 5 }}>
-                <AccountBadge accountId={p.accountId} />{" "}
+            <div key={p.path} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+                <AccountBadge accountId={p.accountId} rightGap={8} />
                 <Checkbox
                     label={p.collectionName + " / " + p.name}
                     checked={p.checked}

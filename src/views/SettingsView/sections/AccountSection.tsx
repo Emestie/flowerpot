@@ -23,18 +23,20 @@ export function AccountSection() {
                 ))}
             </CardGroup>
             <div style={{ marginTop: 16 }}></div>
-            <Button
-                icon
-                labelPosition="left"
-                primary
-                onClick={() => {
-                    useCredentialsModeStore.getState().setSelectedAccountId(null);
-                    store.dispatch(appViewSet("credentials"));
-                }}
-            >
-                <Icon name="plus" />
-                Add account
-            </Button>
+            {accounts.length < 3 && (
+                <Button
+                    icon
+                    labelPosition="left"
+                    primary
+                    onClick={() => {
+                        useCredentialsModeStore.getState().setSelectedAccountId(null);
+                        store.dispatch(appViewSet("credentials"));
+                    }}
+                >
+                    <Icon name="plus" />
+                    {s("addAccount")}
+                </Button>
+            )}
         </>
     );
 }
@@ -44,26 +46,21 @@ function AccountCard(props: { account: IAccount; deleteable: boolean }) {
         <Card>
             <Card.Content>
                 <Card.Header>
-                    <AccountBadge accountId={props.account.id} /> {props.account.displayName}
+                    <AccountBadge accountId={props.account.id} size="l" /> {props.account.displayName}
                 </Card.Header>
                 <Card.Meta>{props.account.url}</Card.Meta>
                 <div style={{ marginTop: 8 }}>
-                    <ButtonGroup size="tiny" compact>
+                    <ButtonGroup size="tiny" compact icon>
                         <Button
-                            icon
-                            labelPosition="left"
                             onClick={() => {
                                 useCredentialsModeStore.getState().setSelectedAccountId(props.account.id);
                                 store.dispatch(appViewSet("credentials"));
                             }}
                         >
                             <Icon name="edit" />
-                            Edit
                         </Button>
                         {props.deleteable && (
                             <Button
-                                icon
-                                labelPosition="left"
                                 negative
                                 onClick={() => {
                                     store.dispatch(
@@ -76,7 +73,6 @@ function AccountCard(props: { account: IAccount; deleteable: boolean }) {
                                 }}
                             >
                                 <Icon name="delete" />
-                                Delete
                             </Button>
                         )}
                     </ButtonGroup>
