@@ -6,6 +6,7 @@ export interface IResponseProject {
 }
 
 export interface IProject {
+    accountId: string;
     guid: string;
     name: string;
     collectionName: string;

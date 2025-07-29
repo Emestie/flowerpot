@@ -5,6 +5,7 @@ import { tagPalette } from "../modules/palette";
 import { settingsCollapseBlock, settingsUpdate } from "../redux/actions/settingsActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { useEventStore } from "../zustand/event";
+import { AccountBadge } from "./AccountBadge";
 
 export function CollapsibleBlock(props: {
     id: string;
@@ -12,11 +13,12 @@ export function CollapsibleBlock(props: {
     isLoading: boolean;
     isCollapseEnabled: boolean;
     iconComponent?: ReactNode;
+    accountId: string;
     caption: string;
     subcaption?: string;
     subcaptionTooltip?: string;
     rightBlock?: ReactNode;
-    counters?: { [id: string | number]: { count: number | string; color?: SemanticCOLORS } };
+    counters?: { [id: string | number]: { count: number | string; color?: SemanticCOLORS; basic?: boolean } };
     enableColorCode: boolean;
     status?: "done" | "error";
 }) {
@@ -33,6 +35,7 @@ export function CollapsibleBlock(props: {
         subcaptionTooltip,
         enableColorCode,
         status,
+        accountId,
     } = props;
 
     const dispatch = useDispatch();
@@ -61,7 +64,7 @@ export function CollapsibleBlock(props: {
               if (!counter.count) return null;
 
               return (
-                  <Label key={id} size="mini" circular color={counter.color}>
+                  <Label key={id} size="mini" circular color={counter.color} basic={counter.basic}>
                       {counter.count}
                   </Label>
               );
@@ -71,52 +74,57 @@ export function CollapsibleBlock(props: {
     return (
         <>
             <Header as="h3" style={{ marginBottom: 0 }}>
-                {isLoading && (
-                    <span>
-                        <Icon name="circle notched" loading />
-                    </span>
-                )}
-                {!isLoading && isCollapseEnabled && <span onClick={toggleCollapse}>{iconCollapse}</span>}
-                <span>
-                    {iconComponent && <span>{iconComponent}</span>}
-                    <span
-                        onClick={toggleCollapse}
-                        style={
-                            !enableColorCode
-                                ? undefined
-                                : {
-                                      backgroundColor: tagPalette
-                                          .getColor(caption)
-                                          .hexWithTransparency(settings.darkTheme ? 0.3 : 0.2),
-                                      padding: "0 8px",
-                                      borderRadius: 4,
-                                  }
-                        }
-                    >
-                        {caption}
-                    </span>
-                    {subcaption && (
-                        <small>
-                            <span style={{ marginLeft: 10, color: "gray" }} title={subcaptionTooltip}>
-                                {subcaption}
+                <div style={{ display: "flex", height: 24 }}>
+                    <div style={{ display: "flex", verticalAlign: "middle", width: "100%" }}>
+                        {isLoading && (
+                            <span>
+                                <Icon name="circle notched" loading />
                             </span>
-                        </small>
-                    )}
-                </span>
-                <span className="WICounts">
-                    {countersComponents}
-                    {status === "done" && (
-                        <Label size="mini" circular color="green">
-                            ✔
-                        </Label>
-                    )}
-                    {status === "error" && (
-                        <Label size="mini" circular color="red">
-                            &times;
-                        </Label>
-                    )}
-                </span>
-                {rightBlock}
+                        )}
+                        {!isLoading && isCollapseEnabled && <span onClick={toggleCollapse}>{iconCollapse}</span>}
+                        {settings.accounts.length > 1 && (
+                            <AccountBadge accountId={accountId} size="l" display="flex" rightGap={6} />
+                        )}
+                        {iconComponent && <span>{iconComponent}</span>}
+                        <span
+                            onClick={toggleCollapse}
+                            style={
+                                !enableColorCode
+                                    ? undefined
+                                    : {
+                                          backgroundColor: tagPalette
+                                              .getColor(caption)
+                                              .hexWithTransparency(settings.darkTheme ? 0.3 : 0.2),
+                                          padding: "0 8px",
+                                          borderRadius: 4,
+                                      }
+                            }
+                        >
+                            {caption}
+                        </span>
+                        {subcaption && (
+                            <small>
+                                <span style={{ marginLeft: 10, color: "gray" }} title={subcaptionTooltip}>
+                                    {subcaption}
+                                </span>
+                            </small>
+                        )}
+                        <span className="WICounts">
+                            {countersComponents}
+                            {status === "done" && (
+                                <Label size="mini" circular color="green">
+                                    ✔
+                                </Label>
+                            )}
+                            {status === "error" && (
+                                <Label size="mini" circular color="red">
+                                    &times;
+                                </Label>
+                            )}
+                        </span>
+                    </div>
+                    <div style={{ minWidth: 400, maxWidth: 600 }}>{rightBlock}</div>
+                </div>
             </Header>
             {(isCollapseEnabled ? !isCollapsed : true) && children}
         </>

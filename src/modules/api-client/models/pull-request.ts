@@ -2,8 +2,13 @@ import { IPullRequest, IResponsePullRequest } from "..";
 import { ItemsCommon } from "../../../helpers/ItemsCommon";
 import { getConnectionData } from "/@/helpers/Connection";
 
-export function buildPullRequest(resp: IResponsePullRequest, tfsPath: string, collection: string): IPullRequest {
-    const connectionData = getConnectionData();
+export function buildPullRequest(
+    resp: IResponsePullRequest,
+    tfsPath: string,
+    collection: string,
+    accountId: string
+): IPullRequest {
+    const connectionData = getConnectionData(accountId);
 
     return {
         id: resp.pullRequestId,

@@ -11,9 +11,11 @@ export function getQueriesSelector(all?: boolean) {
         let queries = store.settings.queries.sort((a, b) => a.order - b.order);
         if (all) return queries;
 
-        if (store.settings.lists.permawatch.length && !queries.some((x) => x.queryId === "___permawatch")) {
-            const pwq = Query.getFakePermawatchQuery();
-            queries = [...queries, pwq];
+        if (store.settings.lists.permawatch.length && !queries.some((x) => x.queryId.startsWith("___permawatch"))) {
+            const pwq = store.settings.accounts
+                .filter((acc) => store.settings.lists.permawatch.some((x) => x.accountId === acc.id))
+                .map((acc) => Query.getFakePermawatchQuery(acc.id));
+            queries = [...queries, ...pwq];
         }
 
         return queries.filter((q) => !!q.enabled);

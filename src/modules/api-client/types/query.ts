@@ -10,6 +10,7 @@ export interface IResponseQuery {
 }
 
 export interface IQuery {
+    accountId: string;
     collectionName: string;
     queryId: string;
     queryName: string;

@@ -4,15 +4,25 @@ import { settingsSet } from "../redux/actions/settingsActions";
 import { Sections, TableScale } from "../redux/reducers/settingsReducer";
 import { store } from "../redux/store";
 import { TLocale } from "../redux/types";
+import { AccountBadge } from "./Account";
 import { ILinkItem } from "./Links";
 import Platform from "./Platform";
-import { UsageStat } from "./Stats";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned" | "forwarded";
 
+export interface IAccount {
+    url: string;
+    token: string;
+    id: string;
+    displayName: string;
+    descriptor: string | undefined;
+    badge: AccountBadge;
+}
+
 export interface IListItem {
+    accountId: string;
     id: number;
     rev: number;
     word?: string;
@@ -20,6 +30,7 @@ export interface IListItem {
 }
 
 interface INoteItem {
+    accountId: string;
     collection: string;
     id: number;
     note: string;
@@ -27,13 +38,11 @@ interface INoteItem {
 }
 
 export interface ISettings {
+    /** @deprecated */
     tfsPath: string;
     /** @deprecated */
-    tfsUser?: string;
-    /** @deprecated */
-    tfsPwd?: string;
     tfsToken: string;
-    credentialsChecked: boolean;
+    accounts: IAccount[];
     refreshRate: number;
     sortPattern: TSortPattern;
     tableScale: TableScale;
@@ -55,13 +64,14 @@ export interface ISettings {
     lastTimeVersionLong: string;
     migrationsDone: string[];
     bannersShown: number[];
-    stats: Record<UsageStat, number>;
     settingsSection: Sections;
     includeTeamsPRs: boolean;
     includeAcceptedByMePRs: boolean;
     enableIterationColors: boolean;
     enableQueryColorCode: boolean;
     collapsedBlocks: string[];
+    openByIdLastCollection: string | undefined;
+    openByIdLastAccountId: string | undefined;
 }
 
 export default class Settings {

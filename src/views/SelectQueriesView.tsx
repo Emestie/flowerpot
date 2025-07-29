@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Form, Header, Icon, Label, Message } from "semantic-ui-react";
-import { api } from "../api/client";
+import { getApi } from "../api/client";
+import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import Query from "../helpers/Query";
@@ -29,14 +30,24 @@ export function SelectQueriesView() {
 
     const loadQueries = useCallback(() => {
         setTimeout(() => {
-            api.query.getAvailable().then((queries) => {
-                const currentQueriesIds = settings.queries.map((q) => q.queryId);
-                const queriesToSelect = queries.filter(
-                    (q) => !currentQueriesIds.includes(q.queryId)
-                ) as ISelectableQuery[];
-                queriesToSelect.forEach((q) => (q.checked = false));
+            Promise.all(
+                settings.accounts.map((account) =>
+                    getApi(account.id)
+                        .query.getAvailable()
+                        .then((queries) => {
+                            const currentQueriesIds = settings.queries
+                                .filter((x) => x.accountId === account.id)
+                                .map((q) => q.queryId);
+                            const queriesToSelect = queries.filter(
+                                (q) => !currentQueriesIds.includes(q.queryId)
+                            ) as ISelectableQuery[];
+                            queriesToSelect.forEach((q) => (q.checked = false));
 
-                setAvailableQueries(queriesToSelect);
+                            return queriesToSelect;
+                        })
+                )
+            ).then((queries) => {
+                setAvailableQueries(queries.flat());
                 setIsLoading(false);
             });
         }, 50);
@@ -57,7 +68,11 @@ export function SelectQueriesView() {
     const onUrlCheck = async () => {
         setUrlCheckInProgress(true);
         try {
-            const query = await api.query.getByUrl(url);
+            const account = settings.accounts.find((x) => url.startsWith(x.url));
+
+            if (!account) throw new Error(s("noAccountWithGivenDomain"));
+
+            const query = await getApi(account.id).query.getByUrl(url);
 
             Query.add(query);
             dispatch(appViewSet("settings"));
@@ -81,7 +96,7 @@ export function SelectQueriesView() {
 
     const toggleCheck = (query: ISelectableQuery) => {
         const all = availableQueries;
-        const index = all.findIndex((q) => q.queryId === query.queryId);
+        const index = all.findIndex((q) => q.queryId === query.queryId && q.accountId === query.accountId);
         all[index].checked = !all[index].checked;
         setAvailableQueries([...all]);
     };
@@ -95,7 +110,8 @@ export function SelectQueriesView() {
         </Message>
     ) : filteredAvailableQueries.length ? (
         filteredAvailableQueries.map((q) => (
-            <div key={q.queryId} style={{ marginBottom: 5 }}>
+            <div key={q.queryId} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+                <AccountBadge accountId={q.accountId} rightGap={8} />
                 <Checkbox label={q.nameInList} checked={q.checked} onChange={() => toggleCheck(q)} />
             </div>
         ))

@@ -10,9 +10,9 @@ import {
 import { createWorkItemTypeLoaders } from "./loaders/work-item-type";
 
 export interface IApiClientParams {
+    getAccountId: () => string;
     getTfsPath: () => string;
     getAccessToken: () => string;
-    onError: (message: string) => void;
 }
 
 export function createApiClient(params: IApiClientParams) {
@@ -23,9 +23,9 @@ export function createApiClient(params: IApiClientParams) {
     return {
         pullRequest: createPullRequestLoaders(params, loader),
         collection: createCollectionLoaders(loader),
-        project: createProjectLoaders(loader),
-        query: createQueryLoaders(loader),
-        workItem: createWorkItemLoaders(loader, workItemTypeLoaders),
+        project: createProjectLoaders(params, loader),
+        query: createQueryLoaders(params, loader),
+        workItem: createWorkItemLoaders(params, loader, workItemTypeLoaders),
         workItemType: workItemTypeLoaders,
         connectionData: createConnectionDataLoaders(loader),
     };

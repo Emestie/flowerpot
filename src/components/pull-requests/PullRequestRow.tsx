@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
@@ -7,14 +7,15 @@ import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
-import { api } from "/@/api/client";
+import { getApi } from "/@/api/client";
 import { IPullRequest, IPullRequestReviewer } from "/@/modules/api-client";
 
 interface IProps {
     pullRequest: IPullRequest;
+    accountId: string;
 }
 
-function createReviewersComponents(revs: IPullRequestReviewer[]): React.ReactNode[] {
+function createReviewersComponents(revs: IPullRequestReviewer[], accountId: string): React.ReactNode[] {
     const sortedRevs = revs.slice().sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1));
 
     const firstFive = sortedRevs.slice(0, 5);
@@ -22,14 +23,19 @@ function createReviewersComponents(revs: IPullRequestReviewer[]): React.ReactNod
 
     const othersComponent =
         others.length > 0 ? (
-            <span title={others.map((o) => o.name + (o.isRequired ? ` (${s("requiredReviewer")})` : "")).join("\n")}>
+            <span
+                key="othcmp"
+                title={others.map((o) => o.name + (o.isRequired ? ` (${s("requiredReviewer")})` : "")).join("\n")}
+            >
                 +{others.length}
             </span>
         ) : (
-            <></>
+            <React.Fragment key="othplchdr"></React.Fragment>
         );
 
-    return firstFive.map((rev) => <PRReviewer key={rev.uid} reviewer={rev} />).concat(othersComponent);
+    return firstFive
+        .map((rev) => <PRReviewer key={rev.uid} accountId={accountId} reviewer={rev} />)
+        .concat(othersComponent);
 }
 
 export function PullRequestRow(props: IProps) {
@@ -40,7 +46,7 @@ export function PullRequestRow(props: IProps) {
 
     useEffect(() => {
         (async () => {
-            const { resolved, total } = await api.pullRequest.getCommentsCount(pullRequest);
+            const { resolved, total } = await getApi(props.accountId).pullRequest.getCommentsCount(pullRequest);
             setResolvedComments(resolved);
             setTotalComments(total);
         })();
@@ -83,7 +89,7 @@ export function PullRequestRow(props: IProps) {
 
     const tags = pullRequest.labels.map((x) => x.name).map((x, i) => <Tag key={i} text={x} />);
 
-    const reviewers = createReviewersComponents(pullRequest.reviewers);
+    const reviewers = createReviewersComponents(pullRequest.reviewers, props.accountId);
 
     return (
         <Table.Row>
@@ -139,12 +145,15 @@ export function PullRequestRow(props: IProps) {
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>{commentsEl}</ContextMenuTrigger>
+                <ContextMenuTrigger id={uid}>
+                    <>{commentsEl}</>
+                </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>{reviewers}</Table.Cell>
             <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
                 <ContextMenuTrigger id={uid}>
                     <ProfileWidget
+                        accountId={props.accountId}
                         avatarUrl={pullRequest.authorAvatar}
                         displayName={pullRequest.authorName}
                         nameFull={pullRequest.authorFullName}
@@ -152,7 +161,9 @@ export function PullRequestRow(props: IProps) {
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>{freshnessEl}</ContextMenuTrigger>
+                <ContextMenuTrigger id={uid}>
+                    <>{freshnessEl}</>
+                </ContextMenuTrigger>
             </Table.Cell>
         </Table.Row>
     );

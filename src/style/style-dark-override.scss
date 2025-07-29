@@ -186,9 +186,32 @@ $rowItemHover: lighten($bg, 10%);
         background-color: rgba(145, 49, 40, 0.384) !important;
     }
 
+    .ui.card {
+        background-color: $bg1;
+        .content .header,
+        .content .meta {
+            color: $text !important;
+        }
+    }
+
+    .ui.card,
+    .ui.cards > .card {
+        box-shadow: none;
+    }
+
     .ui.info.message {
         background-color: #405a5ac4;
         color: #dfe4e6;
+    }
+
+    .ui.error.message {
+        background-color: #532d2dc4;
+        color: #e6dfdf;
+    }
+
+    .ui.icon.message {
+        background-color: $bg3;
+        color: $text;
     }
 
     .table tr:hover {

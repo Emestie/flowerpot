@@ -1,7 +1,8 @@
 import { IProject, IQuery, IResponseQuery } from "../types";
 
-export function buildQuery(resp: IResponseQuery, project: IProject): IQuery {
+export function buildQuery(accountId: string, resp: IResponseQuery, project: IProject): IQuery {
     return {
+        accountId,
         collectionName: project.collectionName,
         enabled: true,
         order: 99,

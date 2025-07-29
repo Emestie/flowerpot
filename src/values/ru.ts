@@ -33,7 +33,7 @@ const ru: LocalizedStrings = {
     cbAutostartLabel: "Запускать вместе с Windows (применяется при перезапуске приложения)",
     settingsCreditsHeader: "Автор и обновления",
     versionWord: "Версия",
-    accountSettingsHeader: "Учетная запись",
+    accountSettingsHeader: "Учетные записи",
     customListsSettingsHeader: "Списки",
     quickLinksSettingsHeader: "Быстрые ссылки",
     //sel queries view
@@ -48,6 +48,8 @@ const ru: LocalizedStrings = {
     selqAvailableHeader: "Доступные запросы",
     refresh: "Обновить",
     //main view
+    noAccountsSetup: "Нет настроенных аккаунтов",
+    noAccountsSetupText: "Добавьте их в настройках",
     noQueriesToWatch: "Нет отслеживаемых запросов",
     noQueriesToWatchText: "Добавьте их в настройках",
     settings: "Настройки",
@@ -67,9 +69,10 @@ const ru: LocalizedStrings = {
     validate: "Проверить и сохранить",
     status: "Статус: ",
     credsNoteText: "Вы должны проверить введенные данные на корректность.",
-    tfsPath: "Путь к TFS/Azure DevOps (должен начинаться с 'http://' и заканчиваться '/')",
+    tfsPath: "Путь к TFS/Azure DevOps (должен начинаться с 'http://' или 'https://' и заканчиваться '/')",
     tfsToken: "Персональный токен доступа",
-    credsHeader: "Учетные данные",
+    credsHeaderAdd: "Добавление учетной записи",
+    credsHeaderEdit: "Редактирование учетной записи",
     save: "OK",
     tfsHeader: "Настройки учетной записи",
     credsState1: "Не проверены",
@@ -77,6 +80,7 @@ const ru: LocalizedStrings = {
     credsState3: "Сервер недоступен или путь к TFS/Azure DevOps не верный",
     credsState4: "Персональный токен доступа некорректен или истек",
     credsState5: "OK",
+    credsState6: "Такой аккаунт уже добавлен",
     //helpers
     throwNoTeams: "Не найдено доступных проектов",
     throwQueryLoading: "Ошибка при загрузке запроса",
@@ -122,6 +126,7 @@ const ru: LocalizedStrings = {
     //context
     copy: "Копировать сводку",
     copyId: "Копировать ID",
+    copyUrl: "Копировать URL",
     removeFromList: "Исключить из ",
     addToP: "Добавить в наблюдаемые",
     addToF: "Добавить в избранное",
@@ -226,7 +231,7 @@ const ru: LocalizedStrings = {
     projectName: "Проект",
     projectsTableSettingsHeader: "Проекты для отслеживания запросов на вытягивание",
 
-    sectionAccount: "Учетная запись",
+    sectionAccount: "Учетные записи",
     sectionQueries: "Запросы",
     sectionWI: "Рабочие элементы",
     sectionProjects: "Проекты и запросы на вытягивание",
@@ -277,7 +282,7 @@ const ru: LocalizedStrings = {
 
     prComments: "Выполненные/Все комментарии",
     prMergeConflicts: "Конфликт",
-    groupPrFilter: "Отображать командные",
+    groupPrFilter: "Отобр. командные",
 
     showPublicQueries: "Показывать общие запросы",
 
@@ -296,7 +301,13 @@ const ru: LocalizedStrings = {
     prBanner: "Для работы с Pull Request добавьте проекты в настройках",
     prBannerAction: "Добавить",
 
-    acceptedByMeFilter: "Отображать принятые мной",
+    acceptedByMeFilter: "Отобр. принятые мной",
+
+    addAccount: "Добавить учетную запись",
+
+    notFoundOrNoAccess: "Результат не найден или отсутствуют права доступа",
+    jsonParseError: "Некорректный ответ от сервера",
+    noAccountWithGivenDomain: "Отсутсвует аккаунт с указанным доменным именем",
 };
 
 export default ru;

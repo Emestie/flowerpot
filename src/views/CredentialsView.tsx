@@ -4,16 +4,18 @@ import { Button, Container, Form, Header, Label, Message } from "semantic-ui-rea
 import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
-import { fillConnectionData } from "../helpers/Connection";
+import { Account } from "../helpers/Account";
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
-import { Stats, UsageStat } from "../helpers/Stats";
+import { IAccount } from "../helpers/Settings";
 import Telemetry from "../helpers/Telemetry";
 import { appViewSet } from "../redux/actions/appActions";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { IStore, store } from "../redux/store";
 import { s } from "../values/Strings";
+import { useCredentialsModeStore } from "../zustand/credentials-mode";
 
 enum ECredState {
     NotValidated = 0,
@@ -21,6 +23,7 @@ enum ECredState {
     ServerUnavailable = 2,
     WrongCredentials = 3,
     OK = 4,
+    Duplication = 5,
 }
 
 const statuses = [
@@ -29,9 +32,25 @@ const statuses = [
     { color: "red", text: s("credsState3") },
     { color: "red", text: s("credsState4") },
     { color: "olive", text: s("credsState5") },
+    { color: "orange", text: s("credsState6") },
 ];
 
+function addAccount(account: IAccount) {
+    store.dispatch(settingsUpdate({ accounts: store.getState().settings.accounts.concat(account) }));
+}
+
+function updateAccount(account: Partial<IAccount> & { id: string }) {
+    const accounts = store.getState().settings.accounts;
+    const index = accounts.findIndex((acc) => acc.id === account.id);
+
+    accounts[index] = { ...accounts[index], ...account };
+
+    store.dispatch(settingsUpdate({ accounts }));
+}
+
 export function CredentialsView() {
+    const accountId = useCredentialsModeStore((s) => s.selectedAccoundId);
+
     const [pathInvalid, setPathInvalid] = useState(false);
     const [tokenInvalid, setTokenInvalid] = useState(false);
     const [credentialsCheckStatus, setCredentialsCheckStatus] = useState(ECredState.NotValidated);
@@ -39,9 +58,19 @@ export function CredentialsView() {
     const settings = useSelector(settingsSelector);
     const { locale } = useSelector(appSelector);
 
-    const dispatch = useDispatch();
+    const _currentAccount = useSelector((state: IStore) => state.settings.accounts.find((x) => x.id === accountId));
+    const [currentAccount, setCurrentAccount] = useState<IAccount>(
+        _currentAccount || {
+            id: Math.random().toString(),
+            displayName: "",
+            token: "",
+            url: "",
+            descriptor: undefined,
+            badge: Account.getNextAvailableBadge(),
+        }
+    );
 
-    const isBackUnavailable = pathInvalid || tokenInvalid || credentialsCheckStatus !== ECredState.OK;
+    const dispatch = useDispatch();
 
     const checkInProgress = credentialsCheckStatus === ECredState.ValidatingInProgress;
 
@@ -50,24 +79,12 @@ export function CredentialsView() {
 
     const statusParams = statuses[credentialsCheckStatus];
 
-    const setCredentialsStatus = useCallback(
-        (status: number) => {
-            const credentialsChecked = status === ECredState.OK ? true : false;
-            setCredentialsCheckStatus(status);
-
-            if (settings.credentialsChecked !== credentialsChecked) {
-                dispatch(settingsUpdate({ credentialsChecked }));
-            }
-        },
-        [dispatch, settings.credentialsChecked]
-    );
-
     const validateTfsPath = useCallback(
         (val: string, ignoreStore?: boolean) => {
-            setCredentialsStatus(ECredState.NotValidated);
+            setCredentialsCheckStatus(ECredState.NotValidated);
             if (!ignoreStore) {
                 const tfsPath = val;
-                if (tfsPath !== settings.tfsPath) dispatch(settingsUpdate({ tfsPath }));
+                setCurrentAccount((ca) => ({ ...ca, url: tfsPath }));
             }
 
             let invalid = false;
@@ -77,70 +94,85 @@ export function CredentialsView() {
             if (val.length < 11) invalid = true;
             setPathInvalid(invalid);
         },
-        [dispatch, setCredentialsStatus, settings.tfsPath]
+        [dispatch, currentAccount.url]
     );
 
     const validateTfsToken = useCallback(
         (token: string, ignoreStore?: boolean) => {
-            setCredentialsStatus(ECredState.NotValidated);
+            setCredentialsCheckStatus(ECredState.NotValidated);
 
             if (!ignoreStore) {
-                if (token !== settings.tfsToken) dispatch(settingsUpdate({ tfsToken: token }));
+                setCurrentAccount((ca) => ({ ...ca, token }));
             }
 
             const invalid = token.length < 45;
 
             setTokenInvalid(invalid);
         },
-        [dispatch, setCredentialsStatus, settings.tfsToken]
+        [dispatch, currentAccount.token]
     );
 
     useEffect(() => {
-        validateTfsPath(settings.tfsPath, true);
-        validateTfsToken(settings.tfsToken, true);
+        validateTfsPath(currentAccount.url, true);
+        validateTfsToken(currentAccount.token, true);
         //eslint-disable-next-line
-    }, [settings.tfsPath, settings.tfsToken]);
+    }, [currentAccount]);
 
-    const onSave = () => {
+    const goToSettings = () => {
         dispatch(appViewSet("settings"));
     };
 
     const onCheck = async () => {
-        setCredentialsStatus(ECredState.ValidatingInProgress);
+        setCredentialsCheckStatus(ECredState.ValidatingInProgress);
 
-        const tfscheck = await Loaders.checkTfsPath();
+        const tfscheck = await Loaders.checkTfsPath(currentAccount.url);
         if (!tfscheck) {
-            setCredentialsStatus(ECredState.ServerUnavailable);
+            setCredentialsCheckStatus(ECredState.ServerUnavailable);
             return;
         }
 
-        const result = await Loaders.checkCredentials();
+        const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
         if (!result) {
-            setCredentialsStatus(ECredState.WrongCredentials);
-        } else {
-            await fillConnectionData();
-            Stats.increment(UsageStat.AccountVerifications);
-            Telemetry.accountVerificationSucceed();
-            setCredentialsStatus(ECredState.OK);
-            onSave();
+            setCredentialsCheckStatus(ECredState.WrongCredentials);
+            return;
         }
+
+        if (
+            settings.accounts.some(
+                (acc) => acc.id !== accountId && acc.url === currentAccount.url && acc.token === currentAccount.token
+            )
+        ) {
+            setCredentialsCheckStatus(ECredState.Duplication);
+            return;
+        }
+
+        const userData =
+            (await Loaders.getUserData(currentAccount.url, currentAccount.token)) ??
+            Account.generateDisplayNameByToken(currentAccount.token);
+
+        const displayName = userData.displayName ?? Account.generateDisplayNameByToken(currentAccount.token);
+        const descriptor = userData.descriptor;
+
+        setCredentialsCheckStatus(ECredState.OK);
+
+        if (accountId) {
+            updateAccount({ ...currentAccount, displayName, descriptor });
+        } else {
+            addAccount({ ...currentAccount, displayName, descriptor });
+        }
+
+        Telemetry.accountVerificationSucceed(currentAccount.id);
+
+        goToSettings();
     };
 
     const debugInputRef = React.createRef();
 
     return (
-        <PageLayout
-            heading={
-                <ViewHeading>
-                    <Button positive disabled={isBackUnavailable} onClick={onSave}>
-                        {s("save")}
-                    </Button>
-                </ViewHeading>
-            }
-        >
+        <PageLayout heading={<ViewHeading />}>
             <Container fluid>
                 <Header as="h3" dividing>
-                    {s("credsHeader")}
+                    {s(accountId ? "credsHeaderEdit" : "credsHeaderAdd")}
                 </Header>
                 <UpdateBanner />
                 <Form loading={checkInProgress}>
@@ -148,7 +180,7 @@ export function CredentialsView() {
                         fluid
                         label={s("tfsPath")}
                         placeholder="http://tfs:8080/tfs/"
-                        value={settings.tfsPath}
+                        value={currentAccount?.url ?? ""}
                         onChange={(e) => validateTfsPath(e.target.value)}
                         error={pathInvalid}
                     />
@@ -179,7 +211,7 @@ export function CredentialsView() {
                                 size="small"
                                 disabled={pathInvalid}
                                 onClick={() => {
-                                    Platform.current.openUrl(settings.tfsPath + "_usersSettings/tokens");
+                                    Platform.current.openUrl(currentAccount?.url + "_usersSettings/tokens");
                                 }}
                             >
                                 {s("credsTokenOpenCreatePage")}
@@ -191,7 +223,7 @@ export function CredentialsView() {
                     <Form.Input
                         fluid
                         label={s("tfsToken")}
-                        value={settings.tfsToken}
+                        value={currentAccount?.token ?? ""}
                         onChange={(e) => validateTfsToken(e.target.value)}
                         error={tokenInvalid}
                     />
@@ -211,6 +243,9 @@ export function CredentialsView() {
                 <br />
                 <Button positive loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
                     {s("validate")}
+                </Button>
+                <Button loading={checkInProgress} onClick={goToSettings}>
+                    {s("cancel")}
                 </Button>
             </Container>
         </PageLayout>

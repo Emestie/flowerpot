@@ -12,7 +12,6 @@ import { ListsView } from "./sections/ListsSection";
 import { ProjectsSection } from "./sections/ProjectsSection";
 import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
-import { StatsSection } from "./sections/StatsSection";
 import { WorkItemsSection } from "./sections/WorkItemsSection";
 import { PageLayout } from "/@/components/PageLayout";
 import { Sections } from "/@/redux/reducers/settingsReducer";
@@ -43,10 +42,6 @@ const sectionsList = [
         captionKey: "sectionQL",
     },
     {
-        id: Sections.Stats,
-        captionKey: "sectionStats",
-    },
-    {
         id: Sections.Credits,
         captionKey: "sectionCredits",
     },
@@ -66,8 +61,6 @@ const getSectionComponent = (sectionId: Sections) => {
             return <QueriesSection />;
         case Sections.QuickLinks:
             return <QuickLinksSections />;
-        case Sections.Stats:
-            return <StatsSection />;
         case Sections.Lists:
             return <ListsView />;
         default:

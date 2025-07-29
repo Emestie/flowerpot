@@ -5,7 +5,6 @@ import { store } from "../redux/store";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
 import Query from "./Query";
-import { Stats, UsageStat } from "./Stats";
 
 interface IShownWI {
     id: number;
@@ -72,8 +71,6 @@ export default class Differences {
 
         this.operateNotifsToShow(news, "new");
         this.operateNotifsToShow(changed, "change");
-
-        if (news.length) Stats.incrementBy(UsageStat.WorkItemsArrived, news.length);
 
         wiStorage[query.queryId] = [...workItems];
         Query.saveWIStorage(wiStorage);

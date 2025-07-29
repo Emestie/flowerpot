@@ -17,7 +17,7 @@ interface IProps {
 }
 
 export function WorkItemsBlock(props: IProps) {
-    const { isLoading, routineStart, errorMessage } = useQueryLoader(props.query);
+    const { isLoading, routineStart, errorMessage, hiddenCount } = useQueryLoader(props.query);
     const settings = useSelector(settingsSelector);
     const { showMineOnly } = useSelector(appSelector);
 
@@ -25,12 +25,12 @@ export function WorkItemsBlock(props: IProps) {
 
     const workItems = useFilteredWorkItems(props.query);
 
-    const isPermawatch = props.query.queryId === "___permawatch";
+    const isPermawatch = props.query.queryId.startsWith("___permawatch");
     const totalItemsCount = workItems.filter(
-        (wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)
+        (wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev)
     ).length;
     const redItemsCount = workItems
-        .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => wi.isRed).length;
 
     const onOpenQueryInBrowser = () => {
@@ -40,7 +40,9 @@ export function WorkItemsBlock(props: IProps) {
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
         Platform.current.openUrl(
-            settings.tfsPath + q.collectionName + "/" + q.teamName + "/_workItems?path=" + encodedPath + "&_a=query"
+            `${
+                settings.accounts.find((x) => x.id === props.query.accountId) + q.collectionName
+            }/${q.teamName}/_workItems?path=${encodedPath}&_a=query`
         );
     };
 
@@ -115,7 +117,7 @@ export function WorkItemsBlock(props: IProps) {
     const workItemsComponents = workItems
         .sort(getSortPattern())
         .filter((wi) => (showMineOnly ? wi._isMine : true))
-        .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
         .map((wi) => (
             <WorkItemRow
                 key={wi.id}
@@ -132,15 +134,20 @@ export function WorkItemsBlock(props: IProps) {
 
     return (
         <CollapsibleBlock
-            id={query.queryId}
+            id={`${query.accountId}-${query.queryId}`}
             caption={query.queryName}
+            accountId={query.accountId}
             subcaption={query.teamName}
             subcaptionTooltip={query.collectionName}
             enableColorCode={!isPermawatch && settings.enableQueryColorCode}
             isCollapseEnabled={!!workItems.length}
             isLoading={isLoading}
             iconComponent={isPermawatch ? <Icon name="eye" /> : null}
-            counters={{ total: { count: totalItemsCount }, red: { count: redItemsCount, color: "red" } }}
+            counters={{
+                total: { count: totalItemsCount },
+                red: { count: redItemsCount, color: "red" },
+                hidden: { count: hiddenCount, basic: true },
+            }}
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             rightBlock={
                 <>

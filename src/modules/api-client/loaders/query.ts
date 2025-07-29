@@ -1,13 +1,14 @@
+import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { buildQuery } from "../models";
 import { IProject, IQuery, IResponseQuery, IValue } from "../types";
 import { createProjectLoaders } from "./project";
 import { s } from "/@/values/Strings";
 
-export function createQueryLoaders(loader: Loader) {
+export function createQueryLoaders(params: IApiClientParams, loader: Loader) {
     return {
         async getAvailable(): Promise<IQuery[]> {
-            const projects = await createProjectLoaders(loader).getAll();
+            const projects = await createProjectLoaders(params, loader).getAll();
 
             const queryCollection = await Promise.all(
                 projects.map((project) =>
@@ -18,7 +19,9 @@ export function createQueryLoaders(loader: Loader) {
             );
 
             const allQueries = queryCollection
-                .flatMap((qc, index) => qc.value.flatMap((v) => pullOutAllQueries(v, projects[index])))
+                .flatMap((qc, index) =>
+                    qc.value.flatMap((v) => pullOutAllQueries(params.getAccountId(), v, projects[index]))
+                )
                 .sort((a, b) => (a.nameInList < b.nameInList ? -1 : 1));
 
             return allQueries;
@@ -34,20 +37,20 @@ export function createQueryLoaders(loader: Loader) {
             if (!queryData) throw new Error(s("queryByUrlError2"));
 
             const projectName = urlToLoad.split("/_apis/").at(0)?.split("/").at(-1);
-            const projects = await createProjectLoaders(loader).getAll();
-            const project = projects.find((p) => p.name === projectName);
+            const projects = await createProjectLoaders(params, loader).getAll();
+            const project = projects.find((p) => p.name === projectName && p.accountId === params.getAccountId());
 
             if (!project) throw new Error(s("queryByUrlError3"));
 
-            return buildQuery(queryData, project);
+            return buildQuery(params.getAccountId(), queryData, project);
         },
     };
 }
 
-function pullOutAllQueries(rq: IResponseQuery, project: IProject): IQuery[] {
+function pullOutAllQueries(accountId: string, rq: IResponseQuery, project: IProject): IQuery[] {
     if (rq.isFolder) {
-        return (rq.children || []).flatMap((crq) => pullOutAllQueries(crq, project));
+        return (rq.children || []).flatMap((crq) => pullOutAllQueries(accountId, crq, project));
     }
 
-    return [buildQuery(rq, project)];
+    return [buildQuery(accountId, rq, project)];
 }

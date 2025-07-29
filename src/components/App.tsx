@@ -1,17 +1,15 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Festival from "../helpers/Festival";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Settings from "../helpers/Settings";
-import { Stats, UsageStat } from "../helpers/Stats";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
 import { appShowWhatsNewSet, appViewSet } from "../redux/actions/appActions";
 import { dataChangesCollectionSet } from "../redux/actions/dataActions";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { store } from "../redux/store";
 import { TView } from "../redux/types";
 import { CredentialsView } from "../views/CredentialsView";
 import { DebugView } from "../views/DebugView";
@@ -29,6 +27,7 @@ export function App() {
     const dispatch = useDispatch();
     const { view } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
+    const [ready, setIsReady] = useState(false);
 
     const setWIChangesCollection = useCallback(() => {
         const ls = localStorage.getItem("WIChangesCollection");
@@ -62,17 +61,6 @@ export function App() {
                 true
             );
 
-            Timers.create(
-                "time-spent-stat",
-                60000,
-                () => {
-                    Stats.increment(UsageStat.MinutesSpentInApp);
-                },
-                false
-            );
-
-            Stats.increment(UsageStat.AppStarts);
-
             Platform.current.checkForUpdates(true);
 
             setTimeout(() => {
@@ -80,16 +68,19 @@ export function App() {
                     dispatch(appViewSet("debug"));
                     //dispatch(appViewSet("main"));
                 } else {
-                    if (store.getState().settings.credentialsChecked) dispatch(appViewSet("main"));
-                    else dispatch(appViewSet("credentials"));
+                    dispatch(appViewSet("main"));
                 }
 
                 setWIChangesCollection();
                 afterUpdateHandler();
+
+                setIsReady(true);
             }, 250);
         })();
         // eslint-disable-next-line
     }, []);
+
+    if (!ready) return <LoadingView />;
 
     function getScene(view: TView) {
         switch (view) {

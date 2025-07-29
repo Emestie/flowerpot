@@ -1,10 +1,10 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
 import Query from "../../helpers/Query";
 import { appViewSet } from "../../redux/actions/appActions";
 import { getQueriesSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { AccountBadge } from "../AccountBadge";
 
 export function QueriesSettingsTable() {
     const dispatch = useDispatch();
@@ -24,7 +24,11 @@ export function QueriesSettingsTable() {
                     }}
                 />
             </Table.Cell>
-            <Table.Cell>{q.collectionName}</Table.Cell>
+            <Table.Cell>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <AccountBadge accountId={q.accountId} display="flex" rightGap={4} size="l" /> {q.collectionName}
+                </div>
+            </Table.Cell>
             <Table.Cell>{q.teamName}</Table.Cell>
             <Table.Cell>{q.queryName}</Table.Cell>
             <Table.Cell collapsing>

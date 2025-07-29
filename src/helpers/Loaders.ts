@@ -1,9 +1,19 @@
-import { api } from "../api/client";
-import { store } from "../redux/store";
+import { createApiClient } from "../modules/api-client";
 
 export default class Loaders {
-    public static async checkCredentials() {
+    public static async checkCredentials(url: string, token: string) {
         try {
+            const api = createApiClient({
+                getAccountId() {
+                    return "";
+                },
+                getAccessToken() {
+                    return token;
+                },
+                getTfsPath() {
+                    return url;
+                },
+            });
             await api.collection.getAll();
             return true;
         } catch (ex: any) {
@@ -11,13 +21,34 @@ export default class Loaders {
         }
     }
 
-    public static async checkTfsPath() {
+    public static async checkTfsPath(url: string) {
         try {
-            let res = await fetch(store.getState().settings.tfsPath);
+            let res = await fetch(url);
             if (res.status !== 401 && res.status !== 200) return false;
             else return true;
         } catch (ex: any) {
             return false;
         }
+    }
+
+    public static async getUserData(url: string, token: string) {
+        const api = createApiClient({
+            getAccountId() {
+                return "";
+            },
+            getAccessToken() {
+                return token;
+            },
+            getTfsPath() {
+                return url;
+            },
+        });
+
+        const conn = await api.connectionData.get();
+
+        return {
+            displayName: conn?.authenticatedUser.providerDisplayName,
+            descriptor: conn?.authenticatedUser.subjectDescriptor,
+        };
     }
 }

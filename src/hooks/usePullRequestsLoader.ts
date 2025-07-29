@@ -1,14 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { api } from "../api/client";
+import { getApi } from "../api/client";
 import { Timers } from "../helpers/Timers";
 import { IProject, IPullRequest } from "../modules/api-client";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 const PR_TIMER_KEY = "pr-block-timer";
-const useFishWIs = !!import.meta.env.VITE_USE_FISH;
+const fishWIs = !!import.meta.env.VITE_USE_FISH;
 
-export function usePullRequestsLoader(projects: IProject[], includeTeams: boolean, includeAcceptedByMePRs: boolean) {
+export function usePullRequestsLoader(
+    accountId: string,
+    projects: IProject[],
+    includeTeams: boolean,
+    includeAcceptedByMePRs: boolean
+) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [allPullRequests, setAllPullRequests] = useState<IPullRequest[]>([]);
@@ -17,7 +22,9 @@ export function usePullRequestsLoader(projects: IProject[], includeTeams: boolea
     const load = useCallback(async () => {
         console.log("updating PRs");
         try {
-            const allPRs = useFishWIs ? [] : await api.pullRequest.getByProjects(projects.filter((p) => p.enabled));
+            const allPRs = fishWIs
+                ? []
+                : await getApi(accountId).pullRequest.getByProjects(projects.filter((p) => p.enabled));
             setAllPullRequests(allPRs);
 
             if (errorMessage) setErrorMessage(null);

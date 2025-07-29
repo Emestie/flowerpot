@@ -4,6 +4,7 @@ import { IPullRequestReviewer } from "/@/modules/api-client";
 import { s } from "/@/values/Strings";
 
 interface P {
+    accountId: string;
     reviewer: IPullRequestReviewer;
 }
 
@@ -15,7 +16,7 @@ const statusIconStyle = {
     borderRadius: "50%",
 };
 
-export function PRReviewer({ reviewer }: P) {
+export function PRReviewer({ reviewer, accountId }: P) {
     const getStatusIcon = (vote: number) => {
         if (vote === 0) return null;
 
@@ -25,7 +26,7 @@ export function PRReviewer({ reviewer }: P) {
         return <Icon style={statusIconStyle} name={iconName} color={color} />;
     };
 
-    const avatar = useAvatar(reviewer.imageUrl);
+    const avatar = useAvatar(accountId, reviewer.imageUrl);
 
     return (
         <span

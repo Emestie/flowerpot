@@ -31,7 +31,7 @@ const en = {
     cbAutostartLabel: "Start with Windows (applies on app restart)",
     settingsCreditsHeader: "Credits",
     versionWord: "Version",
-    accountSettingsHeader: "Account",
+    accountSettingsHeader: "Accounts",
     customListsSettingsHeader: "Custom Lists",
     quickLinksSettingsHeader: "Quick Links",
     //sel queries view
@@ -47,6 +47,8 @@ const en = {
     selqAvailableHeader: "Available queries",
     refresh: "Refresh",
     //main view
+    noAccountsSetup: "No accounts setup",
+    noAccountsSetupText: "Go to settings and add some",
     noQueriesToWatch: "No queries to watch",
     noQueriesToWatchText: "Go to settings and add some",
     settings: "Settings",
@@ -66,9 +68,10 @@ const en = {
     validate: "Validate and save",
     status: "Status: ",
     credsNoteText: "You must validate credentials you entered before leaving this page.",
-    tfsPath: "TFS/Azure DevOps path (must start with 'http://' and end with '/')",
+    tfsPath: "TFS/Azure DevOps path (must start with 'http://' or 'https://' and end with '/')",
     tfsToken: "Personal Access Token",
-    credsHeader: "Credentials",
+    credsHeaderAdd: "Add account",
+    credsHeaderEdit: "Edit account",
     save: "OK",
     tfsHeader: "Account settings",
     credsState1: "Not validated yet",
@@ -76,6 +79,7 @@ const en = {
     credsState3: "Server unavailable or TFS/Azure DevOps path is wrong",
     credsState4: "Personal Access Token is incorrect or expired",
     credsState5: "OK",
+    credsState6: "This account is already added",
     //helpers
     throwNoTeams: "No available team projects found",
     throwQueryLoading: "Error while loading query",
@@ -121,6 +125,7 @@ const en = {
     //context
     copy: "Copy info",
     copyId: "Copy ID",
+    copyUrl: "Copy URL",
     removeFromList: "Remove from ",
     addToP: "Add to permawatch",
     addToF: "Add to favorites",
@@ -225,7 +230,7 @@ const en = {
     projectName: "Project name",
     projectsTableSettingsHeader: "Projects to watch Pull Requests in",
 
-    sectionAccount: "Account and Credentials",
+    sectionAccount: "Accounts",
     sectionQueries: "Queries",
     sectionWI: "Work Items",
     sectionProjects: "Projects and Pull Requests",
@@ -260,7 +265,7 @@ const en = {
     apiClientFetchError: "Loading error: ",
 
     unauthorized:
-        "Your Personal Access Token is expired or incorrect. Please go to Account Settings and provide correct token.",
+        "Your Personal Access Token is expired or incorrect. Please go to Account Settings and provide valid token.",
 
     appFatalError: "Application fatal error",
     reload: "Reload",
@@ -296,6 +301,12 @@ const en = {
     prBannerAction: "Add",
 
     acceptedByMeFilter: "Show accepted by me",
+
+    addAccount: "Add account",
+
+    notFoundOrNoAccess: "Result is not found or you don't have access to requested data",
+    jsonParseError: "Unable to parse response",
+    noAccountWithGivenDomain: "No account with given domain name",
 };
 
 export default en;

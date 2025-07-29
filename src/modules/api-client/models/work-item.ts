@@ -1,6 +1,5 @@
 import { IQuery, IResponseWorkItem, IWorkItem } from "../types";
 import { IWorkItemType } from "../types/work-item-type";
-import { getConnectionData } from "/@/helpers/Connection";
 import { ItemsCommon } from "/@/helpers/ItemsCommon";
 import Lists from "/@/helpers/Lists";
 import { TLists } from "/@/helpers/Settings";
@@ -14,12 +13,13 @@ export function buildWorkItem(
     workItemType: IWorkItemType | undefined
 ): IWorkItem {
     const isMine =
-        resp.fields["System.AssignedTo"]?.descriptor === getConnectionData()?.authenticatedUser.subjectDescriptor;
+        resp.fields["System.AssignedTo"]?.descriptor ===
+        store.getState().settings.accounts.find((x) => x.id === query.accountId)?.descriptor;
 
     const type = resp.fields["System.WorkItemType"] || "";
     const createdByFull = ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "");
     const assignedToFull = ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "");
-    const _list = getListName(resp.id, query.collectionName);
+    const _list = getListName(query.accountId, resp.id, query.collectionName);
 
     const { priority, priorityText } = calculatePriority(resp);
 
@@ -53,11 +53,13 @@ export function buildWorkItem(
         priority,
         priorityText,
         isRed: priority === 1,
-        requestNumber: resp.fields["Custom.RequestNumber"] || undefined
+        requestNumber: resp.fields["Custom.RequestNumber"] || undefined,
     };
 
-    if (query.queryId === "___permawatch") {
-        const itemFromList = store.getState().settings.lists.permawatch.find((x) => x.id === item.id);
+    if (query.queryId.startsWith("___permawatch")) {
+        const itemFromList = store
+            .getState()
+            .settings.lists.permawatch.find((x) => x.id === item.id && x.accountId === query.accountId);
         item._collectionName = itemFromList?.collection || "";
     }
 
@@ -130,13 +132,13 @@ function calcWeight(resp: IResponseWorkItem) {
     return weight;
 }
 
-function getListName(id: number, collectionName: string): TLists | undefined {
-    if (Lists.isIn("deferred", collectionName, id)) return "deferred";
-    if (Lists.isIn("favorites", collectionName, id)) return "favorites";
-    if (Lists.isIn("pinned", collectionName, id)) return "pinned";
-    if (Lists.isIn("hidden", collectionName, id)) return "hidden";
-    if (Lists.isIn("permawatch", collectionName, id)) return "permawatch";
-    if (Lists.isIn("forwarded", collectionName, id)) return "forwarded";
+function getListName(accountId: string, id: number, collectionName: string): TLists | undefined {
+    if (Lists.isIn(accountId, "deferred", collectionName, id)) return "deferred";
+    if (Lists.isIn(accountId, "favorites", collectionName, id)) return "favorites";
+    if (Lists.isIn(accountId, "pinned", collectionName, id)) return "pinned";
+    if (Lists.isIn(accountId, "hidden", collectionName, id)) return "hidden";
+    if (Lists.isIn(accountId, "permawatch", collectionName, id)) return "permawatch";
+    if (Lists.isIn(accountId, "forwarded", collectionName, id)) return "forwarded";
 
     return undefined;
 }

@@ -1,5 +1,4 @@
 import Settings, { ISettings } from "../../helpers/Settings";
-import { UsageStat } from "../../helpers/Stats";
 import { IAction, Reducers } from "../types";
 import { updateState } from "./_common";
 
@@ -23,9 +22,9 @@ export enum Sections {
 export interface ISettingsState extends ISettings {}
 
 const initialState: ISettingsState = {
-    tfsPath: "http://tfs:8080/tfs/",
+    tfsPath: "",
     tfsToken: "",
-    credentialsChecked: false,
+    accounts: [],
     refreshRate: 180,
     sortPattern: "default",
     notificationsMode: "all",
@@ -53,13 +52,14 @@ const initialState: ISettingsState = {
     lastTimeVersionLong: "",
     migrationsDone: [],
     bannersShown: [],
-    stats: {} as Record<UsageStat, number>,
     settingsSection: Sections.Queries,
     includeTeamsPRs: true,
     includeAcceptedByMePRs: true,
     enableIterationColors: true,
     enableQueryColorCode: false,
     collapsedBlocks: [],
+    openByIdLastAccountId: undefined,
+    openByIdLastCollection: undefined,
 };
 
 export function settingsReducer(state = initialState, action: IAction) {

@@ -1,4 +1,5 @@
 import chunk from "lodash/chunk";
+import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { buildWorkItem } from "../models";
 import { IQuery, IQueryResult, IResponseWorkItem, IValue, IWorkItem, IWorkItemShort } from "../types";
@@ -10,27 +11,27 @@ import { getListsSelector } from "/@/redux/selectors/settingsSelectors";
 import { store } from "/@/redux/store";
 
 export function createWorkItemLoaders(
+    params: IApiClientParams,
     loader: Loader,
     workItemTypeLoaders: ReturnType<typeof createWorkItemTypeLoaders>
 ) {
     return {
-        async getByQuery(query: IQuery): Promise<IWorkItem[]> {
-            const queryResult =
-                query.queryId === "___permawatch"
-                    ? null
-                    : await loader<IQueryResult>(
-                          query.collectionName +
-                              "/" +
-                              query.teamId +
-                              "/_apis/wit/wiql/" +
-                              query.queryId +
-                              "?api-version=5.1"
-                      );
+        async getByQuery(query: IQuery): Promise<{ workItems: IWorkItem[]; hiddenCount: number }> {
+            const queryResult = query.queryId.startsWith("___permawatch")
+                ? null
+                : await loader<IQueryResult>(
+                      query.collectionName +
+                          "/" +
+                          query.teamId +
+                          "/_apis/wit/wiql/" +
+                          query.queryId +
+                          "?api-version=5.1"
+                  );
 
             //if query was deleted
             if (queryResult?.errorCode === 600288) {
                 Query.delete(query);
-                return [];
+                return { workItems: [], hiddenCount: 0 };
             }
 
             if (queryResult?.message && queryResult.errorCode !== undefined) {
@@ -45,9 +46,11 @@ export function createWorkItemLoaders(
                 .filter((x) => x !== null)
                 .filter((x) => x?._list !== "hidden") as IWorkItem[];
 
+            const hiddenCount = workItemsAll.filter((x) => x?._list === "hidden").length;
+
             Differences.put(query, workItemsFiltered);
 
-            return workItemsFiltered;
+            return { workItems: workItemsFiltered, hiddenCount };
         },
         async getOne({ id, collection }: IWorkItemShort, query: IQuery): Promise<IWorkItem | null> {
             const workItemResponse = await loader<IResponseWorkItem>(
@@ -55,7 +58,7 @@ export function createWorkItemLoaders(
             );
 
             if (!workItemResponse.id) {
-                Lists.deleteFromList("permawatch", id, collection);
+                Lists.deleteFromList(params.getAccountId(), "permawatch", id, collection);
                 return null;
             }
 
@@ -77,12 +80,12 @@ export function createWorkItemLoaders(
                             {
                                 method: "POST",
                                 body: JSON.stringify({
-                                    ids: ids,
+                                    ids,
                                     $expand: "links",
                                 }),
                             }
                         ).then((resp) => {
-                            if (resp.message) throw new Error(resp.message);
+                            if (resp?.message) throw new Error(resp.message);
                             return resp;
                         });
                     });
@@ -102,11 +105,13 @@ export function createWorkItemLoaders(
 
 function getWorkItemsByQueryType(queryResult: IQueryResult | null, query: IQuery): IWorkItemShort[] {
     if (queryResult === null) {
-        return query.queryId === "___permawatch"
-            ? getListsSelector("permawatch")(store.getState()).map((x) => ({
-                  id: x.id,
-                  collection: x.collection || "",
-              }))
+        return query.queryId.startsWith("___permawatch")
+            ? getListsSelector("permawatch")(store.getState())
+                  .filter((x) => x.accountId === query.accountId)
+                  .map((x) => ({
+                      id: x.id,
+                      collection: x.collection || "",
+                  }))
             : [];
     }
 

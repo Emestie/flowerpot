@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Button, Icon, Checkbox } from "semantic-ui-react";
+import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
 import { Project } from "../../helpers/Project";
 import { appViewSet } from "../../redux/actions/appActions";
 import { getProjectsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { AccountBadge } from "../AccountBadge";
 
 export function ProjectsSettingsTable() {
     const dispatch = useDispatch();
@@ -18,7 +19,12 @@ export function ProjectsSettingsTable() {
             <Table.Cell collapsing>
                 <Checkbox checked={project.enabled} onChange={() => Project.toggleBoolean(project, "enabled")} />
             </Table.Cell>
-            <Table.Cell>{project.collectionName}</Table.Cell>
+            <Table.Cell>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <AccountBadge accountId={project.accountId} display="flex" rightGap={4} size="l" />{" "}
+                    {project.collectionName}
+                </div>
+            </Table.Cell>
             <Table.Cell>{project.name}</Table.Cell>
             <Table.Cell collapsing>
                 <Button size="tiny" negative icon compact onClick={() => Project.delete(project)}>

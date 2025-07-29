@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
-import { api } from "../api/client";
+import { getApi } from "../api/client";
+import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Project } from "../helpers/Project";
@@ -24,14 +25,24 @@ export function SelectProjectsView() {
 
     const loadProjects = useCallback(() => {
         setTimeout(() => {
-            api.project.getAll().then((projects) => {
-                const currentProjectPaths = settings.projects.map((p) => p.path);
-                const projectsToSelect = projects.filter(
-                    (p) => !currentProjectPaths.includes(p.path)
-                ) as ISelectableProject[];
-                projectsToSelect.forEach((p) => (p.checked = false));
+            Promise.all(
+                settings.accounts.map((account) => {
+                    return getApi(account.id)
+                        .project.getAll()
+                        .then((projects) => {
+                            const currentProjectPaths = settings.projects
+                                .filter((x) => x.accountId === account.id)
+                                .map((p) => p.path);
+                            const projectsToSelect = projects.filter(
+                                (p) => !currentProjectPaths.includes(p.path)
+                            ) as ISelectableProject[];
+                            projectsToSelect.forEach((p) => (p.checked = false));
 
-                setAvailableProjects(projectsToSelect);
+                            return projectsToSelect;
+                        });
+                })
+            ).then((projectsToSelect) => {
+                setAvailableProjects(projectsToSelect.flat());
                 setIsLoading(false);
             });
         }, 50);
@@ -66,14 +77,15 @@ export function SelectProjectsView() {
         setAvailableProjects([...all]);
     };
 
-    const queryList = isLoading ? (
+    const projectList = isLoading ? (
         <Message icon>
             <Icon name="circle notched" loading />
             <Message.Content> {s("loading")}</Message.Content>
         </Message>
     ) : availableProjects.length ? (
         availableProjects.map((p) => (
-            <div key={p.path} style={{ marginBottom: 5 }}>
+            <div key={p.path} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+                <AccountBadge accountId={p.accountId} rightGap={8} />
                 <Checkbox
                     label={p.collectionName + " / " + p.name}
                     checked={p.checked}
@@ -105,7 +117,7 @@ export function SelectProjectsView() {
                     </span>
                     {s("selpAvailableHeader")}
                 </Header>
-                {queryList}
+                {projectList}
             </Container>
         </PageLayout>
     );

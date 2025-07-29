@@ -9,7 +9,7 @@ $forwardedColor: #21ba45; // rgb(72, 176, 124);
 $forwardedColorOpaque: #21ba4515; // rgb(72, 176, 124);
 $permawatchColor: #e696ae;
 $keywordColor: #4287f5;
-$keywordColorOpaque: #6280b17e;
+$keywordColorOpaque: #6280b11f;
 $pinnedColor: #eca06e;
 $pinnedColorOpaque: #eca06e15;
 
@@ -101,7 +101,7 @@ tr.workItemPinned {
 }
 
 tr.workItemKeyword {
-    background-color: keywordColorOpaque;
+    background-color: $keywordColorOpaque;
 }
 td.workItemKeyword {
     border-left: 4px solid $keywordColor;

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Icon, Message, Table } from "semantic-ui-react";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
@@ -7,11 +8,19 @@ import { CollapsibleBlock } from "../CollapsibleBlock";
 import { PullRequestRow } from "./PullRequestRow";
 import { settingsUpdate } from "/@/redux/actions/settingsActions";
 
-export function PullRequestsBlock() {
-    const { projects, tableScale, includeTeamsPRs, includeAcceptedByMePRs } = useSelector(settingsSelector);
+export function PullRequestsBlock(props: { accountId: string }) {
+    const {
+        projects: _allProjects,
+        tableScale,
+        includeTeamsPRs,
+        includeAcceptedByMePRs,
+    } = useSelector(settingsSelector);
     const dispatch = useDispatch();
 
+    const projects = useMemo(() => _allProjects.filter((x) => x.accountId === props.accountId), []);
+
     const { isLoading, pullRequests, routineStart, errorMessage, hasTeams, hasAcceptedByMe } = usePullRequestsLoader(
+        props.accountId,
         projects,
         includeTeamsPRs,
         includeAcceptedByMePRs
@@ -30,12 +39,15 @@ export function PullRequestsBlock() {
         return tableScale === 1 ? undefined : tableScale === 2 ? "large" : "small";
     };
 
-    const pullRequestsComponents = pullRequests.map((pr) => <PullRequestRow key={pr.id} pullRequest={pr} />);
+    const pullRequestsComponents = pullRequests.map((pr) => (
+        <PullRequestRow key={pr.id} pullRequest={pr} accountId={props.accountId} />
+    ));
 
     return (
         <CollapsibleBlock
-            id="PR"
+            id={"PR+" + props.accountId}
             caption={s("pullRequestsBlockCaption")}
+            accountId={props.accountId}
             isCollapseEnabled={!!pullRequests.length}
             isLoading={isLoading}
             enableColorCode={false}
@@ -43,7 +55,7 @@ export function PullRequestsBlock() {
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             iconComponent={<Icon name="level up alternate" />}
             rightBlock={
-                <>
+                <div style={{ display: "flex", flexDirection: "row-reverse" }}>
                     <span
                         title={s("refresh")}
                         className="externalLink"
@@ -74,7 +86,7 @@ export function PullRequestsBlock() {
                             />
                         </span>
                     )}
-                </>
+                </div>
             }
         >
             <>
