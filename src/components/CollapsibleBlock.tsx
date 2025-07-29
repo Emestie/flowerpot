@@ -18,7 +18,7 @@ export function CollapsibleBlock(props: {
     subcaption?: string;
     subcaptionTooltip?: string;
     rightBlock?: ReactNode;
-    counters?: { [id: string | number]: { count: number | string; color?: SemanticCOLORS } };
+    counters?: { [id: string | number]: { count: number | string; color?: SemanticCOLORS; basic?: boolean } };
     enableColorCode: boolean;
     status?: "done" | "error";
 }) {
@@ -64,7 +64,7 @@ export function CollapsibleBlock(props: {
               if (!counter.count) return null;
 
               return (
-                  <Label key={id} size="mini" circular color={counter.color}>
+                  <Label key={id} size="mini" circular color={counter.color} basic={counter.basic}>
                       {counter.count}
                   </Label>
               );

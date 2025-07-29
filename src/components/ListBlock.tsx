@@ -162,6 +162,8 @@ export function ListBlock(p: P) {
                     <i>{s("addItemsInListNotice")}</i>
                 </span>
             )}
+            <br />
+            <br />
             {!!items.length && (
                 <Button size="mini" onClick={onClear}>
                     {s("listsClearAll")}
