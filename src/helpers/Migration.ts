@@ -4,7 +4,7 @@ import { Account } from "./Account";
 import Loaders from "./Loaders";
 import { ISettings } from "./Settings";
 
-const V_070 = "v0_7_0d";
+const V_070 = "v0_7_0g";
 
 export default class Migration {
     private static setMigrationAsDone(name: string) {
@@ -43,8 +43,35 @@ export default class Migration {
         const projects = store
             .getState()
             .settings.projects.map((x) => ({ ...x, accountId: x.accountId || account.id }));
+        const notes =
+            store.getState().settings.notes?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const deferred =
+            store.getState().settings.lists.deferred?.map((x) => ({ ...x, accountId: x.accountId || account.id })) ||
+            [];
+        const favorites =
+            store.getState().settings.lists.favorites?.map((x) => ({ ...x, accountId: x.accountId || account.id })) ||
+            [];
+        const forwarded =
+            store.getState().settings.lists.forwarded?.map((x) => ({ ...x, accountId: x.accountId || account.id })) ||
+            [];
+        const hidden =
+            store.getState().settings.lists.hidden?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const keywords =
+            store.getState().settings.lists.keywords?.map((x) => ({ ...x, accountId: x.accountId || "" })) || [];
+        const permawatch =
+            store.getState().settings.lists.permawatch?.map((x) => ({ ...x, accountId: x.accountId || account.id })) ||
+            [];
+        const pinned =
+            store.getState().settings.lists.pinned?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
 
-        store.dispatch(settingsUpdate({ queries, projects }));
+        store.dispatch(
+            settingsUpdate({
+                queries,
+                projects,
+                notes,
+                lists: { deferred, favorites, forwarded, hidden, keywords, permawatch, pinned },
+            })
+        );
 
         this.setMigrationAsDone(V_070);
     }

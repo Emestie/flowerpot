@@ -1,4 +1,5 @@
 import chunk from "lodash/chunk";
+import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { buildWorkItem } from "../models";
 import { IQuery, IQueryResult, IResponseWorkItem, IValue, IWorkItem, IWorkItemShort } from "../types";
@@ -10,6 +11,7 @@ import { getListsSelector } from "/@/redux/selectors/settingsSelectors";
 import { store } from "/@/redux/store";
 
 export function createWorkItemLoaders(
+    params: IApiClientParams,
     loader: Loader,
     workItemTypeLoaders: ReturnType<typeof createWorkItemTypeLoaders>
 ) {
@@ -55,7 +57,7 @@ export function createWorkItemLoaders(
             );
 
             if (!workItemResponse.id) {
-                Lists.deleteFromList("permawatch", id, collection);
+                Lists.deleteFromList(params.getAccountId(), "permawatch", id, collection);
                 return null;
             }
 

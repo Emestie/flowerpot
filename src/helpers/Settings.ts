@@ -23,6 +23,7 @@ export interface IAccount {
 }
 
 export interface IListItem {
+    accountId: string;
     id: number;
     rev: number;
     word?: string;
@@ -30,6 +31,7 @@ export interface IListItem {
 }
 
 interface INoteItem {
+    accountId: string;
     collection: string;
     id: number;
     note: string;
@@ -40,13 +42,8 @@ export interface ISettings {
     /** @deprecated */
     tfsPath: string;
     /** @deprecated */
-    tfsUser?: string;
-    /** @deprecated */
-    tfsPwd?: string;
-    /** @deprecated */
     tfsToken: string;
     accounts: IAccount[];
-    credentialsChecked: boolean;
     refreshRate: number;
     sortPattern: TSortPattern;
     tableScale: TableScale;

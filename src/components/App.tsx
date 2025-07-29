@@ -11,7 +11,6 @@ import { appShowWhatsNewSet, appViewSet } from "../redux/actions/appActions";
 import { dataChangesCollectionSet } from "../redux/actions/dataActions";
 import { appSelector } from "../redux/selectors/appSelectors";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { store } from "../redux/store";
 import { TView } from "../redux/types";
 import { CredentialsView } from "../views/CredentialsView";
 import { DebugView } from "../views/DebugView";
@@ -80,8 +79,7 @@ export function App() {
                     dispatch(appViewSet("debug"));
                     //dispatch(appViewSet("main"));
                 } else {
-                    if (store.getState().settings.credentialsChecked) dispatch(appViewSet("main"));
-                    else dispatch(appViewSet("credentials"));
+                    dispatch(appViewSet("main"));
                 }
 
                 setWIChangesCollection();

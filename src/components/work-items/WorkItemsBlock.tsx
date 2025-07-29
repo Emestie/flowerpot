@@ -27,10 +27,10 @@ export function WorkItemsBlock(props: IProps) {
 
     const isPermawatch = props.query.queryId === "___permawatch";
     const totalItemsCount = workItems.filter(
-        (wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev)
+        (wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev)
     ).length;
     const redItemsCount = workItems
-        .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => wi.isRed).length;
 
     const onOpenQueryInBrowser = () => {
@@ -115,7 +115,7 @@ export function WorkItemsBlock(props: IProps) {
     const workItemsComponents = workItems
         .sort(getSortPattern())
         .filter((wi) => (showMineOnly ? wi._isMine : true))
-        .filter((wi) => !Lists.isIn("hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
         .map((wi) => (
             <WorkItemRow
                 key={wi.id}

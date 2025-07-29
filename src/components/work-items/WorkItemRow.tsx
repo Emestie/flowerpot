@@ -74,12 +74,16 @@ export function WorkItemRow(props: IProps) {
 
     const getClass = () => {
         const item = props.item;
-        if (Lists.isIn("favorites", props.query.collectionName, item.id)) return "workItemFavorite";
-        if (Lists.isIn("forwarded", props.query.collectionName, item.id)) return "workItemForwarded";
-        if (Lists.isIn("pinned", props.query.collectionName, item.id)) return "workItemPinned";
-        if (Lists.isIn("deferred", props.query.collectionName, item.id)) return "workItemDeferred";
-        if (Lists.isIn("permawatch", props.query.collectionName, item.id)) return "workItemPermawatch";
-        if (Lists.isInText("keywords", item.titleFull)) return "workItemKeyword";
+        if (Lists.isIn(props.query.accountId, "favorites", props.query.collectionName, item.id))
+            return "workItemFavorite";
+        if (Lists.isIn(props.query.accountId, "forwarded", props.query.collectionName, item.id))
+            return "workItemForwarded";
+        if (Lists.isIn(props.query.accountId, "pinned", props.query.collectionName, item.id)) return "workItemPinned";
+        if (Lists.isIn(props.query.accountId, "deferred", props.query.collectionName, item.id))
+            return "workItemDeferred";
+        if (Lists.isIn(props.query.accountId, "permawatch", props.query.collectionName, item.id))
+            return "workItemPermawatch";
+        if (Lists.isInText(props.query.accountId, "keywords", item.titleFull)) return "workItemKeyword";
         if (item._isMine) return "workItemIsMine";
         return "workItemHasNoCanges";
     };
@@ -93,47 +97,47 @@ export function WorkItemRow(props: IProps) {
     };
 
     const fullNote = (() => {
-        let note = Lists.getNote(props.item._collectionName, props.item.id);
+        let note = Lists.getNote(props.query.accountId, props.item._collectionName, props.item.id);
         return note;
     })();
 
     const noteColor = (() => {
-        let color = Lists.getNoteColor(props.item._collectionName, props.item.id);
+        let color = Lists.getNoteColor(props.query.accountId, props.item._collectionName, props.item.id);
         return color;
     })();
 
     const getListIndicator = () => {
         let item = props.item;
 
-        if (Lists.isIn("permawatch", props.query.collectionName, item.id))
+        if (Lists.isIn(props.query.accountId, "permawatch", props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorPermawatch">
                     <Icon name="eye" />
                 </span>
             );
 
-        if (Lists.isIn("deferred", props.query.collectionName, item.id))
+        if (Lists.isIn(props.query.accountId, "deferred", props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorDeferred">
                     <Icon name="clock outline" />
                 </span>
             );
 
-        if (Lists.isIn("favorites", props.query.collectionName, item.id))
+        if (Lists.isIn(props.query.accountId, "favorites", props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorFavorite">
                     <Icon name="star" />
                 </span>
             );
 
-        if (Lists.isIn("pinned", props.query.collectionName, item.id))
+        if (Lists.isIn(props.query.accountId, "pinned", props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorPinned">
                     <Icon name="pin" />
                 </span>
             );
 
-        if (Lists.isIn("forwarded", props.query.collectionName, item.id))
+        if (Lists.isIn(props.query.accountId, "forwarded", props.query.collectionName, item.id))
             return (
                 <span className="wiIndicatorForwarded">
                     <Icon name="arrow right" />

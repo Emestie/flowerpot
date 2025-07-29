@@ -6,12 +6,13 @@ import acc4 from "../assets/account-badges/acc4.png";
 import acc5 from "../assets/account-badges/acc5.png";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
+const SIZE_S = 10;
 const SIZE_M = 14;
 const SIZE_L = 20;
 
 export function AccountBadge(props: {
     accountId: string;
-    size?: "m" | "l";
+    size?: "m" | "l" | "s";
     display?: "flex" | "inline";
     rightGap?: number;
 }) {
@@ -21,7 +22,7 @@ export function AccountBadge(props: {
 
     const account = accounts.find((x) => x.id === props.accountId);
     const title = `${account?.url}\n${account?.displayName}`;
-    const size = props.size === "l" ? SIZE_L : SIZE_M;
+    const size = props.size === "l" ? SIZE_L : props.size === "s" ? SIZE_S : SIZE_M;
 
     let image = null;
 

@@ -26,7 +26,6 @@ const initialState: ISettingsState = {
     tfsPath: "",
     tfsToken: "",
     accounts: [],
-    credentialsChecked: false,
     refreshRate: 180,
     sortPattern: "default",
     notificationsMode: "all",

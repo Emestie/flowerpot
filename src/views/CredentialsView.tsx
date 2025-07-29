@@ -80,16 +80,9 @@ export function CredentialsView() {
 
     const statusParams = statuses[credentialsCheckStatus];
 
-    const setCredentialsStatus = useCallback(
-        (status: number) => {
-            setCredentialsCheckStatus(status);
-        },
-        [dispatch, settings.credentialsChecked]
-    );
-
     const validateTfsPath = useCallback(
         (val: string, ignoreStore?: boolean) => {
-            setCredentialsStatus(ECredState.NotValidated);
+            setCredentialsCheckStatus(ECredState.NotValidated);
             if (!ignoreStore) {
                 const tfsPath = val;
                 //  if (tfsPath !== settings.tfsPath) dispatch(settingsUpdate({ tfsPath }));
@@ -103,12 +96,12 @@ export function CredentialsView() {
             if (val.length < 11) invalid = true;
             setPathInvalid(invalid);
         },
-        [dispatch, setCredentialsStatus, currentAccount.url]
+        [dispatch, currentAccount.url]
     );
 
     const validateTfsToken = useCallback(
         (token: string, ignoreStore?: boolean) => {
-            setCredentialsStatus(ECredState.NotValidated);
+            setCredentialsCheckStatus(ECredState.NotValidated);
 
             if (!ignoreStore) {
                 if (token !== settings.tfsToken) dispatch(settingsUpdate({ tfsToken: token }));
@@ -120,7 +113,7 @@ export function CredentialsView() {
 
             setTokenInvalid(invalid);
         },
-        [dispatch, setCredentialsStatus, currentAccount.token]
+        [dispatch, currentAccount.token]
     );
 
     useEffect(() => {
@@ -134,17 +127,17 @@ export function CredentialsView() {
     };
 
     const onCheck = async () => {
-        setCredentialsStatus(ECredState.ValidatingInProgress);
+        setCredentialsCheckStatus(ECredState.ValidatingInProgress);
 
         const tfscheck = await Loaders.checkTfsPath(currentAccount.url);
         if (!tfscheck) {
-            setCredentialsStatus(ECredState.ServerUnavailable);
+            setCredentialsCheckStatus(ECredState.ServerUnavailable);
             return;
         }
 
         const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
         if (!result) {
-            setCredentialsStatus(ECredState.WrongCredentials);
+            setCredentialsCheckStatus(ECredState.WrongCredentials);
             return;
         }
 
@@ -153,7 +146,7 @@ export function CredentialsView() {
                 (acc) => acc.id !== accountId && acc.url === currentAccount.url && acc.token === currentAccount.token
             )
         ) {
-            setCredentialsStatus(ECredState.Duplication);
+            setCredentialsCheckStatus(ECredState.Duplication);
             return;
         }
 
@@ -165,7 +158,7 @@ export function CredentialsView() {
         const descriptor = userData.descriptor;
 
         Stats.increment(UsageStat.AccountVerifications);
-        setCredentialsStatus(ECredState.OK);
+        setCredentialsCheckStatus(ECredState.OK);
 
         if (accountId) {
             updateAccount({ ...currentAccount, displayName, descriptor });

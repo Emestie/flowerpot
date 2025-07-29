@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { TLists } from "../helpers/Settings";
-import { Input, Button, Label, Icon, Form } from "semantic-ui-react";
-import { s } from "../values/Strings";
-import Lists from "../helpers/Lists";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { getListsSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
+import { Button, Form, Icon, Input, Label } from "semantic-ui-react";
+import Lists from "../helpers/Lists";
+import { TLists } from "../helpers/Settings";
+import { getListsSelector } from "../redux/selectors/settingsSelectors";
+import { s } from "../values/Strings";
+import { AccountBadge } from "./AccountBadge";
+import { CollectionSelector } from "./CollectionSelector";
 
 interface P {
     listName: TLists;
@@ -12,27 +14,20 @@ interface P {
 
 export function ListBlock(p: P) {
     const [inputVal, setInputVal] = useState("");
-    const [collection, setCollection] = useState("");
-    const [collections, setCollections] = useState<any[]>([]);
+    const [selectedCollection, setSelectedCollection] = useState<{ accountId: string; collectionName: string }>();
 
-    const settings = useSelector(settingsSelector);
     const list = useSelector(getListsSelector(p.listName));
-
-    useEffect(() => {
-        const collections = settings.queries
-            .map((x) => x.collectionName)
-            .filter((i, v, a) => a.indexOf(i) === v)
-            .map((x, i) => ({ key: i, text: x, value: x }));
-
-        setCollections(collections);
-        setCollection(collections[0] ? collections[0].value : "");
-    }, [settings.queries]);
 
     const inputError = (() => {
         if (p.listName === "permawatch") {
             return (
                 (!+inputVal && inputVal !== "") ||
-                Lists.isIn(p.listName, collection, +inputVal.trim()) ||
+                Lists.isIn(
+                    selectedCollection?.accountId || "",
+                    p.listName,
+                    selectedCollection?.collectionName || "",
+                    +inputVal.trim()
+                ) ||
                 inputVal.indexOf(".") !== -1 ||
                 (inputVal !== "" && +inputVal < 1) ||
                 inputVal.length > 7
@@ -44,13 +39,18 @@ export function ListBlock(p: P) {
         if (p.listName === "permawatch") {
             return (
                 !+inputVal ||
-                Lists.isIn(p.listName, collection, +inputVal.trim()) ||
+                Lists.isIn(
+                    selectedCollection?.accountId || "",
+                    p.listName,
+                    selectedCollection?.collectionName || "",
+                    +inputVal.trim()
+                ) ||
                 inputVal.indexOf(".") !== -1 ||
                 (inputVal !== "" && +inputVal < 1) ||
                 inputVal.length > 7
             );
         } else if (p.listName === "keywords") {
-            return inputVal.trim() === "" || Lists.isIn(p.listName, "", 0, 0, inputVal.trim());
+            return inputVal.trim() === "" || Lists.isIn("", p.listName, "", 0, 0, inputVal.trim());
         } else return undefined;
     })();
 
@@ -77,15 +77,20 @@ export function ListBlock(p: P) {
 
     const onAdd = () => {
         if (p.listName === "permawatch") {
-            Lists.push(p.listName, collection, +inputVal);
+            Lists.push(
+                selectedCollection?.accountId || "",
+                p.listName,
+                selectedCollection?.collectionName || "",
+                +inputVal
+            );
         } else if (p.listName === "keywords") {
-            Lists.pushStrings(p.listName, inputVal);
+            Lists.pushStrings("", p.listName, inputVal);
         }
         setInputVal("");
     };
 
-    const onItemDelete = (id: number, collection: string) => {
-        Lists.deleteFromList(p.listName, id, collection);
+    const onItemDelete = (accountId: string, id: number, collection: string) => {
+        Lists.deleteFromList(accountId, p.listName, id, collection);
     };
 
     const onClear = () => {
@@ -95,6 +100,7 @@ export function ListBlock(p: P) {
     let items = list.map((l) => (
         <span key={l.id} style={{ marginBottom: 3, marginRight: 3, display: "inline-block" }}>
             <Label color={color}>
+                {!!l.accountId && <AccountBadge accountId={l.accountId} size="s" />}
                 {!!l.collection && <Label.Detail>{l.collection + "/"}</Label.Detail>}
                 {p.listName === "keywords" ? l.word : l.id}
                 {p.listName === "hidden" && (
@@ -107,7 +113,7 @@ export function ListBlock(p: P) {
                 <Icon
                     name="delete"
                     onClick={() => {
-                        onItemDelete(l.id, l.collection || "");
+                        onItemDelete(l.accountId, l.id, l.collection || "");
                     }}
                 />
             </Label>
@@ -120,13 +126,10 @@ export function ListBlock(p: P) {
             {p.listName === "permawatch" ? (
                 <Form>
                     <Form.Group inline>
-                        <Form.Select
-                            label=""
-                            options={collections}
-                            value={collection}
-                            onChange={(e, { value }) => {
-                                setCollection(value as string);
-                            }}
+                        <CollectionSelector
+                            onChange={({ accountId, collectionName }) =>
+                                setSelectedCollection({ accountId, collectionName })
+                            }
                         />
                         <Form.Input
                             size="small"
@@ -159,8 +162,6 @@ export function ListBlock(p: P) {
                     <i>{s("addItemsInListNotice")}</i>
                 </span>
             )}
-            <br />
-            <br />
             {!!items.length && (
                 <Button size="mini" onClick={onClear}>
                     {s("listsClearAll")}

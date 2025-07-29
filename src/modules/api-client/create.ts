@@ -26,7 +26,7 @@ export function createApiClient(params: IApiClientParams) {
         collection: createCollectionLoaders(loader),
         project: createProjectLoaders(params, loader),
         query: createQueryLoaders(params, loader),
-        workItem: createWorkItemLoaders(loader, workItemTypeLoaders),
+        workItem: createWorkItemLoaders(params, loader, workItemTypeLoaders),
         workItemType: workItemTypeLoaders,
         connectionData: createConnectionDataLoaders(loader),
     };

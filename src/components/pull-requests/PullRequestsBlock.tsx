@@ -64,7 +64,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                     >
                         <Icon size="small" name="refresh" />
                     </span>
-                    {
+                    {hasTeams && (
                         <span className="group-pr-checkbox">
                             <Checkbox
                                 label={s("groupPrFilter")}
@@ -74,7 +74,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                                 }}
                             />
                         </span>
-                    }
+                    )}
                     {hasAcceptedByMe && (
                         <span className="group-pr-checkbox">
                             <Checkbox

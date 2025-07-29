@@ -32,8 +32,8 @@ export function WorkItemRowContextMenu(props: IProps) {
         const wi = workItem;
 
         if (list) {
-            Lists.push(list, wi._collectionName, wi.id, wi.rev);
-        } else if (wi._list) Lists.deleteFromList(wi._list, wi.id, wi._collectionName);
+            Lists.push(props.query.accountId, list, wi._collectionName, wi.id, wi.rev);
+        } else if (wi._list) Lists.deleteFromList(props.query.accountId, wi._list, wi.id, wi._collectionName);
 
         if (list === "permawatch" || wi._list === "permawatch") {
             dispatch(appViewSet("refreshhelper"));
@@ -58,7 +58,7 @@ export function WorkItemRowContextMenu(props: IProps) {
     };
 
     const onEditNote = (text: string, color?: string) => {
-        Lists.setNote(props.workItem._collectionName, props.workItem.id, text, color);
+        Lists.setNote(props.query.accountId, props.workItem._collectionName, props.workItem.id, text, color);
         setShowNoteDialog(false);
     };
 
@@ -153,8 +153,12 @@ export function WorkItemRowContextMenu(props: IProps) {
                     data={{ action: "note" }}
                     onClick={() => {
                         setShowNoteDialog(true);
-                        setNoteInitialText(Lists.getNote(props.workItem._collectionName, props.workItem.id));
-                        setNoteInitialColor(Lists.getNoteColor(props.workItem._collectionName, props.workItem.id));
+                        setNoteInitialText(
+                            Lists.getNote(props.query.accountId, props.workItem._collectionName, props.workItem.id)
+                        );
+                        setNoteInitialColor(
+                            Lists.getNoteColor(props.query.accountId, props.workItem._collectionName, props.workItem.id)
+                        );
                     }}
                 >
                     <Menu.Item>
