@@ -56,8 +56,10 @@ export function buildWorkItem(
         requestNumber: resp.fields["Custom.RequestNumber"] || undefined,
     };
 
-    if (query.queryId === "___permawatch") {
-        const itemFromList = store.getState().settings.lists.permawatch.find((x) => x.id === item.id);
+    if (query.queryId.startsWith("___permawatch")) {
+        const itemFromList = store
+            .getState()
+            .settings.lists.permawatch.find((x) => x.id === item.id && x.accountId === query.accountId);
         item._collectionName = itemFromList?.collection || "";
     }
 

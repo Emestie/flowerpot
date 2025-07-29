@@ -11,22 +11,6 @@ export interface IWIStorage {
     [queryId: string]: IWorkItem[] | undefined;
 }
 
-//TODO: fix
-const permawatchQueryObject: IQuery = {
-    accountId: "",
-    collectionName: "",
-    enabled: true,
-    ignoreIcon: true,
-    ignoreNotif: false,
-    queryId: "___permawatch",
-    queryName: s("permawatch"),
-    order: 99999,
-    queryPath: "",
-    teamId: "___permawatch",
-    teamName: "",
-    nameInList: "",
-};
-
 export default class Query {
     public static add(query: IQuery) {
         const allQueries = getQueriesSelector(true)(store.getState());
@@ -135,7 +119,22 @@ export default class Query {
         Platform.current.updateTrayIcon(level, hasChanges);
     }
 
-    public static getFakePermawatchQuery(): IQuery {
+    public static getFakePermawatchQuery(accountId: string): IQuery {
+        const permawatchQueryObject: IQuery = {
+            accountId,
+            collectionName: "",
+            enabled: true,
+            ignoreIcon: true,
+            ignoreNotif: false,
+            queryId: `___permawatch_${accountId}`,
+            queryName: s("permawatch"),
+            order: 99999,
+            queryPath: "",
+            teamId: "___permawatch",
+            teamName: "",
+            nameInList: "",
+        };
+
         return permawatchQueryObject;
     }
 }

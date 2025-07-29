@@ -17,17 +17,16 @@ export function createWorkItemLoaders(
 ) {
     return {
         async getByQuery(query: IQuery): Promise<IWorkItem[]> {
-            const queryResult =
-                query.queryId === "___permawatch"
-                    ? null
-                    : await loader<IQueryResult>(
-                          query.collectionName +
-                              "/" +
-                              query.teamId +
-                              "/_apis/wit/wiql/" +
-                              query.queryId +
-                              "?api-version=5.1"
-                      );
+            const queryResult = query.queryId.startsWith("___permawatch")
+                ? null
+                : await loader<IQueryResult>(
+                      query.collectionName +
+                          "/" +
+                          query.teamId +
+                          "/_apis/wit/wiql/" +
+                          query.queryId +
+                          "?api-version=5.1"
+                  );
 
             //if query was deleted
             if (queryResult?.errorCode === 600288) {
@@ -79,13 +78,14 @@ export function createWorkItemLoaders(
                             {
                                 method: "POST",
                                 body: JSON.stringify({
-                                    ids: ids,
+                                    ids,
                                     $expand: "links",
                                 }),
                             }
                         ).then((resp) => {
-                            if (resp.message) throw new Error(resp.message);
-                            return resp;
+                            if (resp?.message) throw new Error(resp.message);
+
+                            return resp || { value: [], count: 0 };
                         });
                     });
                 })
@@ -104,11 +104,13 @@ export function createWorkItemLoaders(
 
 function getWorkItemsByQueryType(queryResult: IQueryResult | null, query: IQuery): IWorkItemShort[] {
     if (queryResult === null) {
-        return query.queryId === "___permawatch"
-            ? getListsSelector("permawatch")(store.getState()).map((x) => ({
-                  id: x.id,
-                  collection: x.collection || "",
-              }))
+        return query.queryId.startsWith("___permawatch")
+            ? getListsSelector("permawatch")(store.getState())
+                  .filter((x) => x.accountId === query.accountId)
+                  .map((x) => ({
+                      id: x.id,
+                      collection: x.collection || "",
+                  }))
             : [];
     }
 
