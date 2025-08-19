@@ -37,13 +37,13 @@ export function WorkItemsBlock(props: IProps) {
         let q = props.query;
         if (!q.queryPath) return;
 
+        const accountUrl = settings.accounts.find((x) => x.id === props.query.accountId)?.url;
+        if (!accountUrl) return;
+
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
-        Platform.current.openUrl(
-            `${
-                settings.accounts.find((x) => x.id === props.query.accountId) + q.collectionName
-            }/${q.teamName}/_workItems?path=${encodedPath}&_a=query`
-        );
+        const qurl = `${accountUrl + q.collectionName}/${q.teamName}/_workItems?path=${encodedPath}&_a=query`;
+        Platform.current.openUrl(qurl);
     };
 
     const getSortPattern = () => {
