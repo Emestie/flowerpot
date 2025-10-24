@@ -53,7 +53,10 @@ export function buildWorkItem(
         priority,
         priorityText,
         isRed: priority === 1,
-        requestNumber: resp.fields["Custom.RequestNumber"] || undefined,
+        requestNumber:
+            resp.fields["Custom.RequestNumber"] ||
+            resp.fields["Custom.f21f0e34-49b2-4aac-b6a3-56ced21e1fcd"] ||
+            undefined,
     };
 
     if (query.queryId.startsWith("___permawatch")) {
@@ -98,38 +101,6 @@ function calculatePriority(resp: IResponseWorkItem): { priority: number | undefi
         rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]);
 
     return { priorityText, priority };
-}
-
-function calcWeight(resp: IResponseWorkItem) {
-    let weight = 100;
-
-    const promptness =
-        extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) ||
-        extractLevel(resp.fields["Microsoft.VSTS.Common.Priority"]) ||
-        0;
-    const importance =
-        extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) ||
-        extractLevel(resp.fields["Microsoft.VSTS.Common.Severity"]) ||
-        0;
-
-    if (promptness) {
-        weight += promptness;
-    } else {
-        if (resp.fields["System.WorkItemType"] === "Issue") weight += 3;
-    }
-
-    if (importance) {
-        weight += importance;
-    }
-
-    if (resp.fields["System.WorkItemType"] === "Task") {
-        if (resp.fields["Microsoft.VSTS.Common.Rank"] === "1") weight += 1;
-        else if (resp.fields["Microsoft.VSTS.Common.Rank"] === "2") weight += 2;
-        else if (!resp.fields["Microsoft.VSTS.Common.Rank"]) weight += 4;
-        else weight += 3;
-    }
-
-    return weight;
 }
 
 function getListName(accountId: string, id: number, collectionName: string): TLists | undefined {
