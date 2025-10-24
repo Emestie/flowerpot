@@ -31,7 +31,7 @@ export interface IWorkItem {
     priority: number | undefined;
     priorityText: string;
     isRed: boolean;
-    requestNumber: string | undefined
+    requestNumber: string | undefined;
 }
 
 export interface IResponseWorkItem {
@@ -55,7 +55,8 @@ export interface IResponseWorkItem {
         "System.State": string;
         "System.History": string;
         "System.Tags": string;
-        "Custom.RequestNumber"?: string 
+        "Custom.RequestNumber"?: string;
+        "Custom.f21f0e34-49b2-4aac-b6a3-56ced21e1fcd"?: string;
     };
     _links: {
         workItemType: { href: string };
