@@ -1,5 +1,18 @@
 [
     {
+        "name": "nopay",
+        "dateFrom": "2025-12-23T00:00",
+        "dateTo": "2026-01-14T00:00",
+        "icon": {
+            "path": "festival-icons/payment.png",
+            "top": 14,
+            "left": 14,
+            "width": 32,
+            "height": 32,
+            "offset": 40
+        }
+    },
+    {
         "name": "christmas",
         "dateFrom": "YEAR-12-20T00:00",
         "dateTo": "YEAR-12-31T23:59",
