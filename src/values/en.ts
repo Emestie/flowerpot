@@ -281,7 +281,7 @@ const en = {
 
     prComments: "Resolved/Total comments",
     prMergeConflicts: "Conflicts",
-    groupPrFilter: "Show assigned to teams",
+    groupPrFilter: "Assigned to teams",
 
     showPublicQueries: "Show shared queries",
 
@@ -300,13 +300,16 @@ const en = {
     prBanner: "To work with Pull Requests add Projects in settings",
     prBannerAction: "Add",
 
-    acceptedByMeFilter: "Show accepted by me",
+    acceptedByMeFilter: "Accepted by me",
 
     addAccount: "Add account",
 
     notFoundOrNoAccess: "Result is not found or you don't have access to requested data",
     jsonParseError: "Unable to parse response",
     noAccountWithGivenDomain: "No account with given domain name",
+    hiddenPrFilter: "Hidden",
+    hidePr: "Hide",
+    unhidePr: "Unhide",
 };
 
 export default en;

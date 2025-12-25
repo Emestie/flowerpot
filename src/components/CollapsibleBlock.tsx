@@ -123,7 +123,7 @@ export function CollapsibleBlock(props: {
                             )}
                         </span>
                     </div>
-                    <div style={{ minWidth: 400, maxWidth: 600 }}>{rightBlock}</div>
+                    <div style={{ minWidth: 450, maxWidth: 600 }}>{rightBlock}</div>
                 </div>
             </Header>
             {(isCollapseEnabled ? !isCollapsed : true) && children}

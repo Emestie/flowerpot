@@ -37,6 +37,12 @@ interface INoteItem {
     color?: string;
 }
 
+interface IHiddenPr {
+    accountId: string;
+    collection: string;
+    id: number;
+}
+
 export interface ISettings {
     /** @deprecated */
     tfsPath: string;
@@ -56,6 +62,7 @@ export interface ISettings {
     };
     notes: INoteItem[];
     links: ILinkItem[];
+    hiddenPrs: IHiddenPr[];
     darkTheme: boolean;
     allowTelemetry: boolean;
     showUnreads: boolean;
@@ -67,6 +74,7 @@ export interface ISettings {
     settingsSection: Sections;
     includeTeamsPRs: boolean;
     includeAcceptedByMePRs: boolean;
+    includeHiddenPRs: boolean;
     enableIterationColors: boolean;
     enableQueryColorCode: boolean;
     collapsedBlocks: string[];

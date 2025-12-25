@@ -282,7 +282,7 @@ const ru: LocalizedStrings = {
 
     prComments: "Выполненные/Все комментарии",
     prMergeConflicts: "Конфликт",
-    groupPrFilter: "Отобр. командные",
+    groupPrFilter: "Командные",
 
     showPublicQueries: "Показывать общие запросы",
 
@@ -301,13 +301,16 @@ const ru: LocalizedStrings = {
     prBanner: "Для работы с Pull Request добавьте проекты в настройках",
     prBannerAction: "Добавить",
 
-    acceptedByMeFilter: "Отобр. принятые мной",
+    acceptedByMeFilter: "Принятые мной",
 
     addAccount: "Добавить учетную запись",
 
     notFoundOrNoAccess: "Результат не найден или отсутствуют права доступа",
     jsonParseError: "Некорректный ответ от сервера",
     noAccountWithGivenDomain: "Отсутсвует аккаунт с указанным доменным именем",
+    hiddenPrFilter: "Скрытые",
+    hidePr: "Скрыть",
+    unhidePr: "Удалить из скрытых",
 };
 
 export default ru;

@@ -14,22 +14,20 @@ export function PullRequestsBlock(props: { accountId: string }) {
         tableScale,
         includeTeamsPRs,
         includeAcceptedByMePRs,
+        includeHiddenPRs,
     } = useSelector(settingsSelector);
     const dispatch = useDispatch();
 
     const projects = useMemo(() => _allProjects.filter((x) => x.accountId === props.accountId), []);
 
-    const { isLoading, pullRequests, routineStart, errorMessage, hasTeams, hasAcceptedByMe } = usePullRequestsLoader(
-        props.accountId,
-        projects,
-        includeTeamsPRs,
-        includeAcceptedByMePRs
-    );
+    const { isLoading, pullRequests, routineStart, errorMessage, hasTeams, hasAcceptedByMe, hasHidden } =
+        usePullRequestsLoader(props.accountId, projects, includeTeamsPRs, includeAcceptedByMePRs, includeHiddenPRs);
 
     if (!projects.filter((p) => p.enabled).length) return null;
 
     const totalItemsCount = pullRequests.length;
     const totalTeamsCount = pullRequests.filter((x) => x.getBelonging() === "team").length;
+    const totalHiddenCount = pullRequests.filter((x) => x.isHidden()).length;
 
     const refreshBlock = () => {
         if (!isLoading) routineStart();
@@ -51,7 +49,11 @@ export function PullRequestsBlock(props: { accountId: string }) {
             isCollapseEnabled={!!pullRequests.length}
             isLoading={isLoading}
             enableColorCode={false}
-            counters={{ total: { count: totalItemsCount }, teams: { count: totalTeamsCount, color: "blue" } }}
+            counters={{
+                total: { count: totalItemsCount },
+                teams: { count: totalTeamsCount, color: "blue" },
+                hidden: { count: totalHiddenCount, color: "grey" },
+            }}
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             iconComponent={<Icon name="level up alternate" />}
             rightBlock={
@@ -64,6 +66,17 @@ export function PullRequestsBlock(props: { accountId: string }) {
                     >
                         <Icon size="small" name="refresh" />
                     </span>
+                    {hasHidden && (
+                        <span className="group-pr-checkbox">
+                            <Checkbox
+                                label={s("hiddenPrFilter")}
+                                checked={includeHiddenPRs}
+                                onChange={() => {
+                                    dispatch(settingsUpdate({ includeHiddenPRs: !includeHiddenPRs }));
+                                }}
+                            />
+                        </span>
+                    )}
                     {hasTeams && (
                         <span className="group-pr-checkbox">
                             <Checkbox

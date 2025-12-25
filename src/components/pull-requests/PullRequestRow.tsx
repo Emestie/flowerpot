@@ -93,7 +93,11 @@ export function PullRequestRow(props: IProps) {
 
     return (
         <Table.Row>
-            <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.id.toString())}>
+            <Table.Cell
+                className={pullRequest.isHidden() ? "cellRelative workItemDeferred" : undefined}
+                collapsing
+                onDoubleClick={() => Platform.current.copyString(pullRequest.id.toString())}
+            >
                 <ContextMenuTrigger id={uid}>
                     <Icon name="level up alternate" /> {pullRequest.id}
                 </ContextMenuTrigger>
@@ -101,6 +105,11 @@ export function PullRequestRow(props: IProps) {
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
+                    {pullRequest.isHidden() && (
+                        <span className="wiIndicatorDeferred">
+                            <Icon name="eye slash" />
+                        </span>
+                    )}
                     {!!pullRequest.isDraft && (
                         <span>
                             <Label

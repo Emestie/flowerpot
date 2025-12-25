@@ -43,6 +43,7 @@ export interface IPullRequestReviewer {
 
 export interface IPullRequest {
     id: number;
+    accountId: string;
     isDraft: boolean;
     authorName: string;
     authorFullName: string;
@@ -66,4 +67,5 @@ export interface IPullRequest {
     getBelonging: () => null | "author" | "reviewer" | "team";
     getAuthorTextName: () => string;
     isAcceptedByMe: () => boolean;
+    isHidden: () => boolean;
 }

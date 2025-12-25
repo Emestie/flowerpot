@@ -12,7 +12,8 @@ export function usePullRequestsLoader(
     accountId: string,
     projects: IProject[],
     includeTeams: boolean,
-    includeAcceptedByMePRs: boolean
+    includeAcceptedByMePRs: boolean,
+    includeHidden: boolean
 ) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -57,6 +58,10 @@ export function usePullRequestsLoader(
 
     const pullRequests = allPullRequests
         .filter((x) => {
+            if (x.isHidden()) return includeHidden;
+            return true;
+        })
+        .filter((x) => {
             const belonging = x.getBelonging();
 
             if (!belonging) return false;
@@ -70,6 +75,7 @@ export function usePullRequestsLoader(
 
     const hasTeams = allPullRequests.some((x) => x.getBelonging() === "team");
     const hasAcceptedByMe = allPullRequests.some((x) => x.isAcceptedByMe());
+    const hasHidden = allPullRequests.some((x) => x.isHidden());
 
     return {
         isLoading,
@@ -78,5 +84,6 @@ export function usePullRequestsLoader(
         errorMessage,
         hasTeams,
         hasAcceptedByMe,
+        hasHidden,
     };
 }

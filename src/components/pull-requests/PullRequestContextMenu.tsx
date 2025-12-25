@@ -1,5 +1,6 @@
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import { Icon, Menu } from "semantic-ui-react";
+import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
 import { IPullRequest } from "/@/modules/api-client";
@@ -11,6 +12,8 @@ interface IProps {
 
 export function PullRequestContextMenu(props: IProps) {
     const { pullRequest, uid } = props;
+
+    const isHidden = pullRequest.isHidden();
 
     const onCopy = (_: any) => {
         const pr = pullRequest;
@@ -24,6 +27,14 @@ export function PullRequestContextMenu(props: IProps) {
 
     const onCopyUrl = (_: any) => {
         Platform.current.copyString(pullRequest.url);
+    };
+
+    const onHide = () => {
+        Lists.setPrAsHidden(pullRequest.accountId, pullRequest.collectionName, pullRequest.id);
+    };
+
+    const onUnhide = () => {
+        Lists.removePrFromHidden(pullRequest.accountId, pullRequest.collectionName, pullRequest.id);
     };
 
     return (
@@ -53,6 +64,26 @@ export function PullRequestContextMenu(props: IProps) {
                         {s("copyId")}
                     </Menu.Item>
                 </MenuItem>
+                {!isHidden && (
+                    <MenuItem data={{ action: "hide" }} onClick={onHide}>
+                        <Menu.Item>
+                            <span>
+                                <Icon name="eye slash outline" />
+                            </span>
+                            {s("hidePr")}
+                        </Menu.Item>
+                    </MenuItem>
+                )}
+                {!!isHidden && (
+                    <MenuItem data={{ action: "unhide" }} onClick={onUnhide}>
+                        <Menu.Item>
+                            <span>
+                                <Icon name="eye" />
+                            </span>
+                            {s("unhidePr")}
+                        </Menu.Item>
+                    </MenuItem>
+                )}
             </Menu>
         </ContextMenu>
     );

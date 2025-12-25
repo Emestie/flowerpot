@@ -1,5 +1,6 @@
 import { IPullRequest, IResponsePullRequest } from "..";
 import { ItemsCommon } from "../../../helpers/ItemsCommon";
+import Lists from "../../../helpers/Lists";
 import { getConnectionData } from "/@/helpers/Connection";
 
 export function buildPullRequest(
@@ -12,6 +13,7 @@ export function buildPullRequest(
 
     return {
         id: resp.pullRequestId,
+        accountId,
         authorFullName: ItemsCommon.parseNameField(resp.createdBy),
         authorName: ItemsCommon.shortName(ItemsCommon.parseNameField(resp.createdBy)),
         authorUid: resp.createdBy.uniqueName,
@@ -68,6 +70,9 @@ export function buildPullRequest(
             return this.reviewers.some(
                 (rev) => connectionData?.authenticatedUser.providerDisplayName === rev.name && rev.vote > 0
             );
+        },
+        isHidden: function () {
+            return Lists.isPrHidden(accountId, collection, this.id);
         },
     };
 }

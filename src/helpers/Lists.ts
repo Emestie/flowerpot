@@ -114,4 +114,25 @@ export default class Lists {
         if (existingNote) return existingNote.color;
         return undefined;
     }
+
+    public static setPrAsHidden(accountId: string, collection: string, prId: number) {
+        const hiddenPrs = store.getState().settings.hiddenPrs || [];
+
+        store.dispatch(settingsUpdate({ hiddenPrs: [...hiddenPrs, { accountId, collection, id: prId }] }));
+    }
+
+    public static removePrFromHidden(accountId: string, collection: string, prId: number) {
+        const hiddenPrs = store.getState().settings.hiddenPrs || [];
+        const updated = hiddenPrs.filter(
+            (pr) => !(pr.id === prId && pr.accountId === accountId && pr.collection === collection)
+        );
+
+        store.dispatch(settingsUpdate({ hiddenPrs: updated }));
+    }
+
+    public static isPrHidden(accountId: string, collection: string, prId: number) {
+        return !!(store.getState().settings.hiddenPrs || []).find(
+            (pr) => pr.id === prId && pr.accountId === accountId && pr.collection === collection
+        );
+    }
 }
