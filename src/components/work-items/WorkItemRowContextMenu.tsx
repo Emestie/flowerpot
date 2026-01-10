@@ -5,16 +5,17 @@ import { Icon, Menu } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { TLists } from "../../helpers/Settings";
+import { Query } from "../../models/query";
+import { WorkItem } from "../../models/work-item";
 import { appViewSet } from "../../redux/actions/appActions";
 import { s } from "../../values/Strings";
 import { SingleInputColorDialog } from "../dialogs/SingleInputColorDialog";
-import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 interface IProps {
     uid: string;
-    workItem: IWorkItem;
-    query: IQuery;
-    onUpdate: (wi: IWorkItem) => void;
+    workItem: WorkItem;
+    query: Query;
+    onUpdate: (wi: WorkItem) => void;
 }
 
 export function WorkItemRowContextMenu(props: IProps) {

@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
+import { WorkItem } from "../../models/work-item";
 import { HighlightenText } from "../HighlightenText";
-import { IWorkItem } from "/@/modules/api-client";
 import { iterationPalette } from "/@/modules/palette";
 import { IStore } from "/@/redux/store";
 
-export function IterationPath({ item }: { item: IWorkItem }) {
+export function IterationPath({ item }: { item: WorkItem }) {
     const [iterationPathA, iterationPathB] = createIterationPathParts(item.iterationPath);
 
     const enableColors = useSelector((s: IStore) => s.settings.enableIterationColors);

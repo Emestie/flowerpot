@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
+import { Query } from "../../models/query";
 import { useHighlights } from "/@/hooks/useHighlights";
-import { IQuery } from "/@/modules/api-client";
 import { getWorkItemsForQuerySelector } from "/@/redux/selectors/dataSelectors";
 
-export function useFilteredWorkItems(query: IQuery) {
+export function useFilteredWorkItems(query: Query) {
     const allItems = useSelector(getWorkItemsForQuerySelector(query));
 
     const highlights = useHighlights();

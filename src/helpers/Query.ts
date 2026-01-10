@@ -1,4 +1,5 @@
-import { IQuery, IWorkItem } from "../modules/api-client";
+import { Query } from "../models/query";
+import { WorkItem } from "../models/work-item";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
@@ -8,11 +9,11 @@ import Platform from "./Platform";
 type TBoolProps = "enabled" | "ignoreNotif" | "ignoreIcon" | "empty";
 
 export interface IWIStorage {
-    [queryId: string]: IWorkItem[] | undefined;
+    [queryId: string]: WorkItem[] | undefined;
 }
 
-export default class Query {
-    public static add(query: IQuery) {
+export default class QueryHelper {
+    public static add(query: Query) {
         const allQueries = getQueriesSelector(true)(store.getState());
         const allOrders = allQueries.map((q) => q.order);
         const maxOrder = allOrders.length ? Math.max(...allOrders) : 0;
@@ -24,12 +25,12 @@ export default class Query {
         this.updateAllInStore(allQueries);
     }
 
-    public static delete(query: IQuery) {
+    public static delete(query: Query) {
         let allQueries = getQueriesSelector(true)(store.getState()).filter((q) => q.queryId !== query.queryId);
         this.updateAllInStore(allQueries);
     }
 
-    public static toggleBoolean(query: IQuery, boolPropName: TBoolProps, forcedValue?: boolean) {
+    public static toggleBoolean(query: Query, boolPropName: TBoolProps, forcedValue?: boolean) {
         if (forcedValue === undefined) {
             query[boolPropName] = !query[boolPropName];
         } else {
@@ -38,7 +39,7 @@ export default class Query {
         this.updateSingleInStore(query);
     }
 
-    public static move(query: IQuery, direction: "up" | "dn") {
+    public static move(query: Query, direction: "up" | "dn") {
         let allQueries = getQueriesSelector(true)(store.getState());
 
         let index = this.findIndex(query);
@@ -51,19 +52,19 @@ export default class Query {
         this.updateAllInStore(allQueries);
     }
 
-    private static findIndex(query: IQuery) {
+    private static findIndex(query: Query) {
         let exactQueryIndex = getQueriesSelector(true)(store.getState()).findIndex((q) => q.queryId === query.queryId);
         return exactQueryIndex;
     }
 
-    private static updateSingleInStore(query: IQuery) {
+    private static updateSingleInStore(query: Query) {
         let allQueries = getQueriesSelector(true)(store.getState());
         let index = this.findIndex(query);
         allQueries[index] = query;
         this.updateAllInStore(allQueries);
     }
 
-    private static updateAllInStore(queries: IQuery[]) {
+    private static updateAllInStore(queries: Query[]) {
         store.dispatch(settingsUpdate({ queries }));
     }
 
@@ -80,21 +81,18 @@ export default class Query {
         localStorage.setItem("WIStorage", JSON.stringify(wis));
     }
 
-    public static calculateIconLevel(query: IQuery, workItems: IWorkItem[]) {
+    public static calculateIconLevel(query: Query, workItems: WorkItem[]) {
         let wiStorage = this.getWIStorage();
         const state = store.getState();
 
         wiStorage[query.queryId] = [...workItems];
 
-        let queries = getQueriesSelector()(state).filter((q) => !q.ignoreIcon);
-        let queriesIds = queries.map((q) => q.queryId);
-
-        let allWIs: IWorkItem[] = [];
+        let allWIs: WorkItem[] = [];
         //clear incative queries in wi
 
         for (let x in wiStorage) {
             //TODO: if (!queriesIds.includes(x) || Loaders.outage) wiStorage[x] = undefined;
-            if (wiStorage[x]) allWIs = [...allWIs, ...(wiStorage[x] as IWorkItem[])];
+            if (wiStorage[x]) allWIs = [...allWIs, ...(wiStorage[x] as WorkItem[])];
         }
 
         let hasChanges = false;
@@ -119,22 +117,23 @@ export default class Query {
         Platform.current.updateTrayIcon(level, hasChanges);
     }
 
-    public static getFakePermawatchQuery(accountId: string): IQuery {
-        const permawatchQueryObject: IQuery = {
+    public static getFakePermawatchQuery(accountId: string): Query {
+        const pwqo = new Query(
             accountId,
-            collectionName: "",
-            enabled: true,
-            ignoreIcon: true,
-            ignoreNotif: false,
-            queryId: `___permawatch_${accountId}`,
-            queryName: s("permawatch"),
-            order: 99999,
-            queryPath: "",
-            teamId: "___permawatch",
-            teamName: "",
-            nameInList: "",
-        };
+            {
+                id: `___permawatch_${accountId}`,
+                isFolder: false,
+                isPublic: false,
+                name: s("permawatch"),
+                path: "",
+            },
+            { collectionName: "", guid: "___permawatch", name: "", accountId, enabled: true, path: "" }
+        );
 
-        return permawatchQueryObject;
+        pwqo.order = 99999;
+        pwqo.ignoreIcon = true;
+        pwqo.nameInList = "";
+
+        return pwqo;
     }
 }

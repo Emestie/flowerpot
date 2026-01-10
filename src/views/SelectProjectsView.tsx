@@ -5,13 +5,13 @@ import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
-import { Project } from "../helpers/Project";
-import { IProject } from "../modules/api-client";
+import { ProjectHelper } from "../helpers/Project";
+import { Project } from "../models/project";
 import { appViewSet } from "../redux/actions/appActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
 
-interface ISelectableProject extends IProject {
+interface ISelectableProject extends Project {
     checked: boolean;
 }
 
@@ -53,7 +53,7 @@ export function SelectProjectsView() {
     }, [loadProjects]);
 
     const onAdd = () => {
-        availableProjects.filter((p) => p.checked).forEach((p) => Project.add(p as any)); //TODO: type
+        availableProjects.filter((p) => p.checked).forEach((p) => ProjectHelper.add(p as any)); //TODO: type
         setIsLoading(true);
         setAvailableProjects([]);
 

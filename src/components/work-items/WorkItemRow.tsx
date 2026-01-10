@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
+import { Query } from "../../models/query";
+import { WorkItem } from "../../models/work-item";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
@@ -12,15 +14,14 @@ import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 import { Id } from "./id";
 import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
-import { IQuery, IWorkItem } from "/@/modules/api-client";
 import { dataSelector } from "/@/redux/selectors/dataSelectors";
 import { settingsSelector } from "/@/redux/selectors/settingsSelectors";
 
 interface IProps {
-    item: IWorkItem;
-    query: IQuery;
+    item: WorkItem;
+    query: Query;
     isPermawatch: boolean;
-    onUpdate: (wi: IWorkItem) => void;
+    onUpdate: (wi: WorkItem) => void;
 }
 
 export function WorkItemRow(props: IProps) {

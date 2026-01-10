@@ -1,13 +1,14 @@
+import { Project } from "../../../models/project";
+import { Query } from "../../../models/query";
 import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
-import { buildQuery } from "../models";
-import { IProject, IQuery, IResponseQuery, IValue } from "../types";
+import { IResponseQuery, IValue } from "../types";
 import { createProjectLoaders } from "./project";
 import { s } from "/@/values/Strings";
 
 export function createQueryLoaders(params: IApiClientParams, loader: Loader) {
     return {
-        async getAvailable(): Promise<IQuery[]> {
+        async getAvailable(): Promise<Query[]> {
             const projects = await createProjectLoaders(params, loader).getAll();
 
             const queryCollection = await Promise.all(
@@ -26,7 +27,7 @@ export function createQueryLoaders(params: IApiClientParams, loader: Loader) {
 
             return allQueries;
         },
-        async getByUrl(urlToQuery: string): Promise<IQuery> {
+        async getByUrl(urlToQuery: string): Promise<Query> {
             if (!urlToQuery.includes("_queries/query")) throw new Error(s("queryByUrlError1"));
 
             let urlToLoad = urlToQuery.replace("_queries/query", "_apis/wit/queries");
@@ -42,15 +43,15 @@ export function createQueryLoaders(params: IApiClientParams, loader: Loader) {
 
             if (!project) throw new Error(s("queryByUrlError3"));
 
-            return buildQuery(params.getAccountId(), queryData, project);
+            return new Query(params.getAccountId(), queryData, project);
         },
     };
 }
 
-function pullOutAllQueries(accountId: string, rq: IResponseQuery, project: IProject): IQuery[] {
+function pullOutAllQueries(accountId: string, rq: IResponseQuery, project: Project): Query[] {
     if (rq.isFolder) {
         return (rq.children || []).flatMap((crq) => pullOutAllQueries(accountId, crq, project));
     }
 
-    return [buildQuery(accountId, rq, project)];
+    return [new Query(accountId, rq, project)];
 }

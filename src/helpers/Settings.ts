@@ -1,4 +1,5 @@
-import { IProject, IQuery } from "../modules/api-client";
+import { Project } from "../models/project";
+import { Query } from "../models/query";
 import { appSet } from "../redux/actions/appActions";
 import { settingsSet } from "../redux/actions/settingsActions";
 import { Sections, TableScale } from "../redux/reducers/settingsReducer";
@@ -55,8 +56,8 @@ export interface ISettings {
     notificationsMode: TNotificationsMode;
     iconChangesOnMyWorkItemsOnly: boolean;
     mineOnTop: boolean;
-    projects: IProject[];
-    queries: IQuery[];
+    projects: Project[];
+    queries: Query[];
     lists: {
         [K in TLists]: IListItem[];
     };

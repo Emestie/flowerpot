@@ -1,6 +1,6 @@
 import { TLists } from "../../helpers/Settings";
 import { IStore } from "../store";
-import Query from "/@/helpers/Query";
+import QueryHelper from "/@/helpers/Query";
 
 export function settingsSelector(store: IStore) {
     return store.settings;
@@ -14,7 +14,7 @@ export function getQueriesSelector(all?: boolean) {
         if (store.settings.lists.permawatch.length && !queries.some((x) => x.queryId.startsWith("___permawatch"))) {
             const pwq = store.settings.accounts
                 .filter((acc) => store.settings.lists.permawatch.some((x) => x.accountId === acc.id))
-                .map((acc) => Query.getFakePermawatchQuery(acc.id));
+                .map((acc) => QueryHelper.getFakePermawatchQuery(acc.id));
             queries = [...queries, ...pwq];
         }
 

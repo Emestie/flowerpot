@@ -1,11 +1,11 @@
 import { Icon, Image, Label } from "semantic-ui-react";
+import { PullRequestReviewer } from "../../models/pull-request-reviewer";
 import { useAvatar } from "/@/hooks/useAvatar";
-import { IPullRequestReviewer } from "/@/modules/api-client";
 import { s } from "/@/values/Strings";
 
 interface P {
     accountId: string;
-    reviewer: IPullRequestReviewer;
+    reviewer: PullRequestReviewer;
 }
 
 const statusIconStyle = {

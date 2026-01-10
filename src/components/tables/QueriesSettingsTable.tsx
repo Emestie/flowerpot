@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
-import Query from "../../helpers/Query";
+import QueryHelper from "../../helpers/Query";
 import { appViewSet } from "../../redux/actions/appActions";
 import { getQueriesSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
@@ -20,7 +20,7 @@ export function QueriesSettingsTable() {
                 <Checkbox
                     checked={q.enabled}
                     onChange={() => {
-                        Query.toggleBoolean(q, "enabled");
+                        QueryHelper.toggleBoolean(q, "enabled");
                     }}
                 />
             </Table.Cell>
@@ -35,7 +35,7 @@ export function QueriesSettingsTable() {
                 <Checkbox
                     checked={q.ignoreIcon}
                     onChange={() => {
-                        Query.toggleBoolean(q, "ignoreIcon");
+                        QueryHelper.toggleBoolean(q, "ignoreIcon");
                     }}
                 />
             </Table.Cell>
@@ -43,18 +43,24 @@ export function QueriesSettingsTable() {
                 <Checkbox
                     checked={q.ignoreNotif}
                     onChange={() => {
-                        Query.toggleBoolean(q, "ignoreNotif");
+                        QueryHelper.toggleBoolean(q, "ignoreNotif");
                     }}
                 />
             </Table.Cell>
             <Table.Cell collapsing>
-                <Button size="tiny" icon compact disabled={v === 0} onClick={() => Query.move(q, "up")}>
+                <Button size="tiny" icon compact disabled={v === 0} onClick={() => QueryHelper.move(q, "up")}>
                     <Icon name="arrow up" />
                 </Button>
-                <Button size="tiny" icon compact disabled={v === a.length - 1} onClick={() => Query.move(q, "dn")}>
+                <Button
+                    size="tiny"
+                    icon
+                    compact
+                    disabled={v === a.length - 1}
+                    onClick={() => QueryHelper.move(q, "dn")}
+                >
                     <Icon name="arrow down" />
                 </Button>
-                <Button size="tiny" negative icon compact onClick={() => Query.delete(q)}>
+                <Button size="tiny" negative icon compact onClick={() => QueryHelper.delete(q)}>
                     <Icon name="delete" />
                 </Button>
             </Table.Cell>

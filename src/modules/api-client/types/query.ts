@@ -9,23 +9,6 @@ export interface IResponseQuery {
     path: string;
 }
 
-export interface IQuery {
-    accountId: string;
-    collectionName: string;
-    queryId: string;
-    queryName: string;
-    queryPath: string;
-    teamId: string;
-    teamName: string;
-    enabled: boolean;
-    order: number;
-    ignoreIcon: boolean;
-    ignoreNotif: boolean;
-    empty?: boolean;
-    isPublic?: boolean;
-    nameInList: string;
-}
-
 interface IQueryResultWorkItem {
     id: number;
     url: string;

@@ -1,12 +1,12 @@
+import { Project } from "../../../models/project";
 import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
-import { buildProject } from "../models";
-import { IProject, IResponseProject } from "../types";
+import { IResponseProject } from "../types";
 import { createCollectionLoaders } from "./collection";
 
 export function createProjectLoaders(params: IApiClientParams, loader: Loader) {
     return {
-        async getAll(): Promise<IProject[]> {
+        async getAll(): Promise<Project[]> {
             const collections = await createCollectionLoaders(loader).getAll();
 
             const projectsCollections = await Promise.all(
@@ -16,7 +16,7 @@ export function createProjectLoaders(params: IApiClientParams, loader: Loader) {
             );
 
             return projectsCollections.flatMap((pc, index) =>
-                pc.projects.map((p) => buildProject(params.getAccountId(), p, collections[index].name))
+                pc.projects.map((p) => new Project(params.getAccountId(), p, collections[index].name))
             );
         },
     };

@@ -1,39 +1,3 @@
-import { TLists } from "/@/helpers/Settings";
-
-//! do not use functions in IWorkItem
-export interface IWorkItem {
-    id: number;
-    rev: number;
-    type: string;
-    typeIconUrl: string | undefined;
-    iterationPath: string;
-    areaPath: string;
-    assignedTo: string;
-    assignedToFull: string;
-    assignedToImg: string;
-    createdDate: string;
-    freshness: string;
-    createdBy: string;
-    createdByFull: string;
-    createdByImg: string;
-    title: string;
-    titleFull: string;
-    url: string;
-    state: string;
-    stateColor: string | undefined;
-    tags: string;
-    _isMine: boolean;
-    _list?: TLists;
-    _queryId: string;
-    _collectionName: string;
-    createdByTextName: string;
-    assignedToTextName: string;
-    priority: number | undefined;
-    priorityText: string;
-    isRed: boolean;
-    requestNumber: string | undefined;
-}
-
 export interface IResponseWorkItem {
     id: number;
     rev: number;

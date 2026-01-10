@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
-import { Project } from "../../helpers/Project";
+import { ProjectHelper } from "../../helpers/Project";
 import { appViewSet } from "../../redux/actions/appActions";
 import { getProjectsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
@@ -17,7 +17,7 @@ export function ProjectsSettingsTable() {
     const rows = projects.map((project) => (
         <Table.Row key={project.path}>
             <Table.Cell collapsing>
-                <Checkbox checked={project.enabled} onChange={() => Project.toggleBoolean(project, "enabled")} />
+                <Checkbox checked={project.enabled} onChange={() => ProjectHelper.toggleBoolean(project, "enabled")} />
             </Table.Cell>
             <Table.Cell>
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -27,7 +27,7 @@ export function ProjectsSettingsTable() {
             </Table.Cell>
             <Table.Cell>{project.name}</Table.Cell>
             <Table.Cell collapsing>
-                <Button size="tiny" negative icon compact onClick={() => Project.delete(project)}>
+                <Button size="tiny" negative icon compact onClick={() => ProjectHelper.delete(project)}>
                     <Icon name="delete" />
                 </Button>
             </Table.Cell>

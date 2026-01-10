@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getApi } from "../api/client";
-import Query from "../helpers/Query";
+import QueryHelper from "../helpers/Query";
 import { Timers } from "../helpers/Timers";
-import { IQuery } from "../modules/api-client";
+import { Query } from "../models/query";
 import { dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
-export function useQueryLoader(query: IQuery) {
+export function useQueryLoader(query: Query) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const dispatch = useDispatch();
@@ -18,9 +18,9 @@ export function useQueryLoader(query: IQuery) {
         console.log("updating query ->", query.accountId, query.queryName, `(${query.queryId})`);
         try {
             const { workItems, hiddenCount } = await getApi(query.accountId).workItem.getByQuery(query);
-            Query.calculateIconLevel(query, workItems);
+            QueryHelper.calculateIconLevel(query, workItems);
             //set query emptiness to sort them
-            Query.toggleBoolean(query, "empty", !workItems.length);
+            QueryHelper.toggleBoolean(query, "empty", !workItems.length);
 
             dispatch(dataWorkItemsForQuerySet(query, workItems));
             setHiddenCount(hiddenCount);

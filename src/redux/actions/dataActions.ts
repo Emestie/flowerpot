@@ -1,16 +1,17 @@
 import Differences from "../../helpers/Differences";
 import Platform from "../../helpers/Platform";
+import { Query } from "../../models/query";
+import { WorkItem } from "../../models/work-item";
 import { Actions } from "../actions-enum";
 import { store } from "../store";
 import { createAction } from "./_common";
-import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 export function dataChangesCollectionSet(changesCollection: any) {
     Platform.current.updateTrayIconDot(Differences.isChangesCollectionHasChanges(changesCollection));
     return createAction(Actions.DataChangesCollectionSet, { changesCollection });
 }
 
-export function dataChangesCollectionItemSet(workItem: IWorkItem, hasChanges: boolean) {
+export function dataChangesCollectionItemSet(workItem: WorkItem, hasChanges: boolean) {
     const { changesCollection } = store.getState().data;
 
     changesCollection[workItem.id] = hasChanges ? true : undefined;
@@ -28,7 +29,7 @@ export function dataChangesCollectionClear() {
     return createAction(Actions.DataChangesCollectionClear, { changesCollection: {} });
 }
 
-export function dataWorkItemsForQuerySet(query: IQuery, items: IWorkItem[]) {
+export function dataWorkItemsForQuerySet(query: Query, items: WorkItem[]) {
     const oldItems = store.getState().data.workItems.filter((wi) => wi._queryId !== query.queryId);
     return createAction(Actions.DataWorkItemsForQuerySet, { workItems: [...oldItems, ...items] });
 }

@@ -1,9 +1,9 @@
+import { WorkItem } from "../../models/work-item";
 import { IAction, Reducers } from "../types";
 import { updateState } from "./_common";
-import { IWorkItem } from "/@/modules/api-client";
 
 export interface IDataState {
-    workItems: IWorkItem[];
+    workItems: WorkItem[];
     changesCollection: any;
 }
 

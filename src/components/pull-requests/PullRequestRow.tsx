@@ -2,20 +2,21 @@ import React, { useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
+import { PullRequest } from "../../models/pull-request";
+import { PullRequestReviewer } from "../../models/pull-request-reviewer";
 import { s } from "../../values/Strings";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
 import { getApi } from "/@/api/client";
-import { IPullRequest, IPullRequestReviewer } from "/@/modules/api-client";
 
 interface IProps {
-    pullRequest: IPullRequest;
+    pullRequest: PullRequest;
     accountId: string;
 }
 
-function createReviewersComponents(revs: IPullRequestReviewer[], accountId: string): React.ReactNode[] {
+function createReviewersComponents(revs: PullRequestReviewer[], accountId: string): React.ReactNode[] {
     const sortedRevs = revs.slice().sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1));
 
     const firstFive = sortedRevs.slice(0, 5);

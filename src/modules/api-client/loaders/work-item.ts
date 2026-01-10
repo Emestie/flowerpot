@@ -1,12 +1,13 @@
 import chunk from "lodash/chunk";
+import { Query } from "../../../models/query";
+import { WorkItem } from "../../../models/work-item";
 import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
-import { buildWorkItem } from "../models";
-import { IQuery, IQueryResult, IResponseWorkItem, IValue, IWorkItem, IWorkItemShort } from "../types";
+import { IQueryResult, IResponseWorkItem, IValue, IWorkItemShort } from "../types";
 import { createWorkItemTypeLoaders } from "./work-item-type";
 import Differences from "/@/helpers/Differences";
 import Lists from "/@/helpers/Lists";
-import Query from "/@/helpers/Query";
+import QueryHelper from "/@/helpers/Query";
 import { getListsSelector } from "/@/redux/selectors/settingsSelectors";
 import { store } from "/@/redux/store";
 
@@ -16,7 +17,7 @@ export function createWorkItemLoaders(
     workItemTypeLoaders: ReturnType<typeof createWorkItemTypeLoaders>
 ) {
     return {
-        async getByQuery(query: IQuery): Promise<{ workItems: IWorkItem[]; hiddenCount: number }> {
+        async getByQuery(query: Query): Promise<{ workItems: WorkItem[]; hiddenCount: number }> {
             const queryResult = query.queryId.startsWith("___permawatch")
                 ? null
                 : await loader<IQueryResult>(
@@ -30,7 +31,7 @@ export function createWorkItemLoaders(
 
             //if query was deleted
             if (queryResult?.errorCode === 600288) {
-                Query.delete(query);
+                QueryHelper.delete(query);
                 return { workItems: [], hiddenCount: 0 };
             }
 
@@ -44,7 +45,7 @@ export function createWorkItemLoaders(
 
             const workItemsFiltered = workItemsAll
                 .filter((x) => x !== null)
-                .filter((x) => x?._list !== "hidden") as IWorkItem[];
+                .filter((x) => x?._list !== "hidden") as WorkItem[];
 
             const hiddenCount = workItemsAll.filter((x) => x?._list === "hidden").length;
 
@@ -52,7 +53,7 @@ export function createWorkItemLoaders(
 
             return { workItems: workItemsFiltered, hiddenCount };
         },
-        async getOne({ id, collection }: IWorkItemShort, query: IQuery): Promise<IWorkItem | null> {
+        async getOne({ id, collection }: IWorkItemShort, query: Query): Promise<WorkItem | null> {
             const workItemResponse = await loader<IResponseWorkItem>(
                 collection + "/_apis/wit/workItems/" + id + "?api-version=5.1"
             );
@@ -64,9 +65,9 @@ export function createWorkItemLoaders(
 
             const workItemType = await workItemTypeLoaders.getTypeInfo(workItemResponse);
 
-            return buildWorkItem(workItemResponse, query, workItemType);
+            return new WorkItem(workItemResponse, query, workItemType);
         },
-        async getList(list: IWorkItemShort[], query: IQuery): Promise<IWorkItem[]> {
+        async getList(list: IWorkItemShort[], query: Query): Promise<WorkItem[]> {
             const collections = list.map((x) => x.collection).filter((i, v, a) => a.indexOf(i) === v);
 
             const workItemResponses = await Promise.all(
@@ -98,12 +99,12 @@ export function createWorkItemLoaders(
 
             return workItemResponses
                 .flatMap((x) => x.value)
-                .map((wir, index) => buildWorkItem(wir, query, workItemTypes[index]));
+                .map((wir, index) => new WorkItem(wir, query, workItemTypes[index]));
         },
     };
 }
 
-function getWorkItemsByQueryType(queryResult: IQueryResult | null, query: IQuery): IWorkItemShort[] {
+function getWorkItemsByQueryType(queryResult: IQueryResult | null, query: Query): IWorkItemShort[] {
     if (queryResult === null) {
         return query.queryId.startsWith("___permawatch")
             ? getListsSelector("permawatch")(store.getState())

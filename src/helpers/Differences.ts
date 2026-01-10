@@ -1,10 +1,11 @@
-import { IQuery, IWorkItem } from "../modules/api-client";
+import { Query } from "../models/query";
+import { WorkItem } from "../models/work-item";
 import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
-import Query from "./Query";
+import QueryHelper from "./Query";
 
 interface IShownWI {
     id: number;
@@ -14,8 +15,8 @@ interface IShownWI {
 export default class Differences {
     private static shownWI: IShownWI[] = [];
 
-    public static put(query: IQuery, workItems: IWorkItem[]) {
-        let wiStorage = Query.getWIStorage();
+    public static put(query: Query, workItems: WorkItem[]) {
+        let wiStorage = QueryHelper.getWIStorage();
 
         //clear unused and ignored queries
         let allQueriesIds = getQueriesSelector()(store.getState())
@@ -35,13 +36,13 @@ export default class Differences {
 
         if (!wiStorage[query.queryId]) {
             wiStorage[query.queryId] = [...workItems];
-            Query.saveWIStorage(wiStorage);
+            QueryHelper.saveWIStorage(wiStorage);
             return;
         }
 
         let storage = wiStorage[query.queryId];
-        let news: IWorkItem[] = [];
-        let changed: IWorkItem[] = [];
+        let news: WorkItem[] = [];
+        let changed: WorkItem[] = [];
 
         workItems.forEach((wi) => {
             if (!storage) return;
@@ -73,11 +74,11 @@ export default class Differences {
         this.operateNotifsToShow(changed, "change");
 
         wiStorage[query.queryId] = [...workItems];
-        Query.saveWIStorage(wiStorage);
+        QueryHelper.saveWIStorage(wiStorage);
     }
 
-    private static operateNotifsToShow(wis: IWorkItem[], type: "new" | "change") {
-        const wisToShow: IWorkItem[] = [];
+    private static operateNotifsToShow(wis: WorkItem[], type: "new" | "change") {
+        const wisToShow: WorkItem[] = [];
         const settings = store.getState().settings;
 
         wis.forEach((n) => {
@@ -94,14 +95,14 @@ export default class Differences {
         }
     }
 
-    private static createTextForWI(wi: IWorkItem) {
+    private static createTextForWI(wi: WorkItem) {
         const text = wi.title;
         const id = wi.id;
         const priorityWarn = wi.priority && wi.priority < 2 ? `(${wi.priorityText}) ` : "";
         return `${priorityWarn}${id}: ${text}`;
     }
 
-    private static getWIById(storage: IWorkItem[], id: number) {
+    private static getWIById(storage: WorkItem[], id: number) {
         return storage.find((wi) => wi.id === id);
     }
 

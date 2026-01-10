@@ -4,12 +4,3 @@ export interface IResponseProject {
         name: string;
     }[];
 }
-
-export interface IProject {
-    accountId: string;
-    guid: string;
-    name: string;
-    collectionName: string;
-    path: string;
-    enabled: boolean;
-}

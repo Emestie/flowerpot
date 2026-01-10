@@ -3,6 +3,8 @@ import { Icon, Message, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
+import { Query } from "../../models/query";
+import { WorkItem } from "../../models/work-item";
 import { dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
 import { appSelector } from "../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
@@ -10,10 +12,9 @@ import { s } from "../../values/Strings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { WorkItemRow } from "./WorkItemRow";
 import { useFilteredWorkItems } from "./use-filtered-work-items";
-import { IQuery, IWorkItem } from "/@/modules/api-client";
 
 interface IProps {
-    query: IQuery;
+    query: Query;
 }
 
 export function WorkItemsBlock(props: IProps) {
@@ -57,7 +58,7 @@ export function WorkItemsBlock(props: IProps) {
         }
     };
 
-    const sortByLists = (a: IWorkItem, b: IWorkItem) => {
+    const sortByLists = (a: WorkItem, b: WorkItem) => {
         if (a._list === "deferred" && b._list !== "deferred") return 1;
         else if (a._list !== "deferred" && b._list === "deferred") return -1;
 
@@ -72,7 +73,7 @@ export function WorkItemsBlock(props: IProps) {
         return undefined;
     };
 
-    const sortPatternDefault = (a: IWorkItem, b: IWorkItem) => {
+    const sortPatternDefault = (a: WorkItem, b: WorkItem) => {
         let listRes = sortByLists(a, b);
         if (listRes) return listRes;
 
@@ -83,7 +84,7 @@ export function WorkItemsBlock(props: IProps) {
         else return 1;
     };
 
-    const sortPatternAssignedTo = (a: IWorkItem, b: IWorkItem) => {
+    const sortPatternAssignedTo = (a: WorkItem, b: WorkItem) => {
         let listRes = sortByLists(a, b);
         if (listRes) return listRes;
 
@@ -94,7 +95,7 @@ export function WorkItemsBlock(props: IProps) {
         else return 1;
     };
 
-    const sortPatternId = (a: IWorkItem, b: IWorkItem) => {
+    const sortPatternId = (a: WorkItem, b: WorkItem) => {
         let listRes = sortByLists(a, b);
         if (listRes) return listRes;
 
@@ -102,7 +103,7 @@ export function WorkItemsBlock(props: IProps) {
         else return 1;
     };
 
-    const updateWorkItems = (wi: IWorkItem) => {
+    const updateWorkItems = (wi: WorkItem) => {
         let newList = workItems.filter((w) => w.id !== wi.id);
         newList.push(wi);
         //store.setWorkItemsForQuery(props.query, newList);

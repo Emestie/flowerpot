@@ -1,13 +1,14 @@
 import { preloadConnectionData } from "../../../helpers/Connection";
+import { Project } from "../../../models/project";
+import { PullRequest } from "../../../models/pull-request";
 import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
-import { buildPullRequest } from "../models";
-import { IProject, IPullRequest, IResponsePullRequest, IValue } from "../types";
+import { IResponsePullRequest, IValue } from "../types";
 import { IPullRequestThread } from "../types/thread";
 
 export function createPullRequestLoaders(params: IApiClientParams, loader: Loader) {
     return {
-        async getByProjects(projects: IProject[]): Promise<IPullRequest[]> {
+        async getByProjects(projects: Project[]): Promise<PullRequest[]> {
             if (!projects.length) return [];
 
             const [responsePullRequestCollections] = await Promise.all([
@@ -29,18 +30,19 @@ export function createPullRequestLoaders(params: IApiClientParams, loader: Loade
 
             return responsePullRequestCollections
                 .flatMap((collection, index) =>
-                    collection.value.map((resp) =>
-                        buildPullRequest(
-                            resp,
-                            params.getTfsPath(),
-                            projects[index].collectionName,
-                            params.getAccountId()
-                        )
+                    collection.value.map(
+                        (resp) =>
+                            new PullRequest(
+                                resp,
+                                params.getTfsPath(),
+                                projects[index].collectionName,
+                                params.getAccountId()
+                            )
                     )
                 )
                 .sort((a, b) => b.id - a.id);
         },
-        async getCommentsCount(pullRequest: IPullRequest): Promise<{ resolved: number; total: number }> {
+        async getCommentsCount(pullRequest: PullRequest): Promise<{ resolved: number; total: number }> {
             const threadsResult = await loader<{ value: IPullRequestThread[] }>(
                 `${pullRequest.collectionName}/${pullRequest.projectName}/_apis/git/repositories/${pullRequest.repoId}/pullRequests/${pullRequest.id}/threads?api-version=7.0`
             );

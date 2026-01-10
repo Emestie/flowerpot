@@ -5,13 +5,13 @@ import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
-import Query from "../helpers/Query";
-import { IQuery } from "../modules/api-client";
+import QueryHelper from "../helpers/Query";
+import { Query } from "../models/query";
 import { appViewSet } from "../redux/actions/appActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
 
-interface ISelectableQuery extends IQuery {
+interface ISelectableQuery extends Query {
     checked: boolean;
 }
 
@@ -58,7 +58,7 @@ export function SelectQueriesView() {
     }, [loadQueries]);
 
     const onAdd = () => {
-        availableQueries.filter((q) => q.checked).forEach((q) => Query.add(q));
+        availableQueries.filter((q) => q.checked).forEach((q) => QueryHelper.add(q));
         setIsLoading(true);
         setAvailableQueries([]);
 
@@ -74,7 +74,7 @@ export function SelectQueriesView() {
 
             const query = await getApi(account.id).query.getByUrl(url);
 
-            Query.add(query);
+            QueryHelper.add(query);
             dispatch(appViewSet("settings"));
         } catch (e: any) {
             setUrlErrorText(e.message);

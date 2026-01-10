@@ -1,9 +1,9 @@
+import { WorkItem } from "../../models/work-item";
 import { HighlightenText } from "../HighlightenText";
-import { IWorkItem } from "/@/modules/api-client";
 import { s } from "/@/values/Strings";
 
 interface Props {
-    workItem: IWorkItem;
+    workItem: WorkItem;
 }
 
 export function Status({ workItem }: Props) {

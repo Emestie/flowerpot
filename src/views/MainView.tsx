@@ -9,7 +9,7 @@ import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock
 import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
 import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
-import { IQuery } from "../modules/api-client";
+import { Query } from "../models/query";
 import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
 import { dataChangesCollectionClear } from "../redux/actions/dataActions";
 import { appSelector } from "../redux/selectors/appSelectors";
@@ -21,7 +21,7 @@ import { useQuickSearchStore } from "../zustand/quick-search";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
 
-export const queriesSorting = (a: IQuery, b: IQuery) => {
+export const queriesSorting = (a: Query, b: Query) => {
     if (a.empty === b.empty) return 0;
     if (!a.empty && b.empty) return -1;
     else return 1;

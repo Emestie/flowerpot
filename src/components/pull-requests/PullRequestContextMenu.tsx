@@ -2,12 +2,12 @@ import { ContextMenu, MenuItem } from "react-contextmenu";
 import { Icon, Menu } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
+import { PullRequest } from "../../models/pull-request";
 import { s } from "../../values/Strings";
-import { IPullRequest } from "/@/modules/api-client";
 
 interface IProps {
     uid: string;
-    pullRequest: IPullRequest;
+    pullRequest: PullRequest;
 }
 
 export function PullRequestContextMenu(props: IProps) {
