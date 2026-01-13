@@ -161,20 +161,20 @@ export function WorkItemRow(props: IProps) {
 
     return (
         <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
-            <Table.Cell
-                collapsing
-                className={"cellRelative " + getClass()}
-                onDoubleClick={() => {
-                    Platform.current.copyString(item.id.toString());
-                }}
-            >
+            <Table.Cell collapsing className={"cellRelative " + getClass()}>
                 <ContextMenuTrigger id={uid}>
-                    <Id item={item} hasChanges={hasChanges} />
+                    <span style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
+                        <span
+                            onDoubleClick={() => {
+                                Platform.current.copyString(item.id.toString());
+                            }}
+                        >
+                            <Id item={item} hasChanges={hasChanges} />
+                        </span>
+                        <span>{promptnessEl}</span>
+                    </span>
                 </ContextMenuTrigger>
                 <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid + ""}>{promptnessEl}</ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
@@ -199,35 +199,31 @@ export function WorkItemRow(props: IProps) {
                     <Status workItem={item} />
                 </ContextMenuTrigger>
             </Table.Cell>
-            <Table.Cell
-                collapsing
-                onDoubleClick={() => {
-                    Platform.current.copyString(item.assignedToTextName);
-                }}
-            >
-                <ContextMenuTrigger id={uid}>
-                    <ProfileWidget
-                        accountId={props.query.accountId}
-                        avatarUrl={item.assignedToImg}
-                        displayName={item.assignedTo}
-                        nameFull={item.assignedToFull}
-                    />
-                </ContextMenuTrigger>
-            </Table.Cell>
-            <Table.Cell
-                collapsing
-                onDoubleClick={() => {
-                    Platform.current.copyString(item.createdByTextName);
-                }}
-            >
-                <ContextMenuTrigger id={uid}>
-                    <ProfileWidget
-                        accountId={props.query.accountId}
-                        avatarUrl={item.createdByImg}
-                        displayName={item.createdBy}
-                        nameFull={item.createdByFull}
-                    />
-                </ContextMenuTrigger>
+            <Table.Cell collapsing>
+                <span className="dual-container">
+                    <span className="dual-part-half">
+                        <ContextMenuTrigger id={uid}>
+                            <ProfileWidget
+                                accountId={props.query.accountId}
+                                avatarUrl={item.assignedToImg}
+                                displayName={item.assignedTo}
+                                nameFull={item.assignedToFull}
+                                copyName={item.assignedToTextName}
+                            />
+                        </ContextMenuTrigger>
+                    </span>
+                    <span className="dual-part-half">
+                        <ContextMenuTrigger id={uid}>
+                            <ProfileWidget
+                                accountId={props.query.accountId}
+                                avatarUrl={item.createdByImg}
+                                displayName={item.createdBy}
+                                nameFull={item.createdByFull}
+                                copyName={item.createdByTextName}
+                            />
+                        </ContextMenuTrigger>
+                    </span>
+                </span>
             </Table.Cell>
             <Table.Cell collapsing>
                 <ContextMenuTrigger id={uid}>

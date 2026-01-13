@@ -74,7 +74,7 @@ export function CollapsibleBlock(props: {
     return (
         <>
             <Header as="h3" style={{ marginBottom: 0 }}>
-                <div style={{ display: "flex", height: 24 }}>
+                <div style={{ display: "flex" }} className="dynamic-flex-wrap">
                     <div style={{ display: "flex", verticalAlign: "middle", width: "100%" }}>
                         {isLoading && (
                             <span>
@@ -123,7 +123,7 @@ export function CollapsibleBlock(props: {
                             )}
                         </span>
                     </div>
-                    <div style={{ minWidth: 450, maxWidth: 600 }}>{rightBlock}</div>
+                    <div style={{ flexShrink: 0 }}>{rightBlock}</div>
                 </div>
             </Header>
             {(isCollapseEnabled ? !isCollapsed : true) && children}

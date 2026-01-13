@@ -275,3 +275,26 @@ img.ui.avatar.image.av-class {
 a.url-link {
     color: #000000de;
 }
+
+.dual-container {
+    display: flex;
+    width: 100%;
+    gap: 4px;
+}
+
+.dual-part-half {
+    flex: 0 0 50%;
+    box-sizing: border-box;
+}
+
+.dynamic-flex-wrap {
+    @media (max-width: 790px) {
+        flex-wrap: wrap;
+    }
+}
+
+.ui.small.secondary.vertical.menu {
+    @media (max-width: 590px) {
+        width: 90px;
+    }
+}

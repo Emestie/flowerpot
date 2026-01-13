@@ -8,7 +8,7 @@ import { ViewHeading } from "../components/heading/ViewHeading";
 import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock";
 import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
 import Differences from "../helpers/Differences";
-import Platform from "../helpers/Platform";
+import Platform, { PlatformType } from "../helpers/Platform";
 import { Query } from "../models/query";
 import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
 import { dataChangesCollectionClear } from "../redux/actions/dataActions";
@@ -95,7 +95,7 @@ export function MainView() {
         Platform.current.updateTrayIcon(4);
     }
 
-    const qlEnabled = settings.showQuickLinks;
+    const qlEnabled = Platform.type === PlatformType.Electron && settings.showQuickLinks;
 
     return (
         <PageLayout
@@ -108,27 +108,31 @@ export function MainView() {
                                 {s("installUpdate")}
                             </Button>
                         )}
-                        <Button icon onClick={onExpandCollapse} hint={s("expandCollapseAll")}>
-                            {expandCollapseOperation === "collapse" ? (
-                                <Icon name="angle double down" />
-                            ) : (
-                                <Icon name="angle double right" />
-                            )}
-                        </Button>
+                        {Platform.type === PlatformType.Electron && (
+                            <Button icon onClick={onExpandCollapse} hint={s("expandCollapseAll")}>
+                                {expandCollapseOperation === "collapse" ? (
+                                    <Icon name="angle double down" />
+                                ) : (
+                                    <Icon name="angle double right" />
+                                )}
+                            </Button>
+                        )}
                         <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
                             <Icon name="user outline" />
                         </Button>
-                        <div style={{ display: "inline-block", marginRight: 3.5 }}>
-                            <Form.Input
-                                size="small"
-                                placeholder={s("quicksearch")}
-                                value={quickSearchValue}
-                                onChange={(e) => {
-                                    if (e.target.value && !e.target.value.trim()) setQuickSearchValue("");
-                                    else setQuickSearchValue(e.target.value);
-                                }}
-                            />
-                        </div>
+                        {Platform.type === PlatformType.Electron && (
+                            <div style={{ display: "inline-block", marginRight: 3.5 }}>
+                                <Form.Input
+                                    size="small"
+                                    placeholder={s("quicksearch")}
+                                    value={quickSearchValue}
+                                    onChange={(e) => {
+                                        if (e.target.value && !e.target.value.trim()) setQuickSearchValue("");
+                                        else setQuickSearchValue(e.target.value);
+                                    }}
+                                />
+                            </div>
+                        )}
                         <Button icon onClick={onOpenById} hint={s("openById")}>
                             <Icon name="external share" />
                         </Button>

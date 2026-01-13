@@ -121,18 +121,23 @@ export function CreditsSection() {
             <Header as="h3" dividing>
                 {s("settingsCreditsHeader")}
             </Header>
-            <Label as="a" image onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}>
+            <Label
+                as="a"
+                image
+                onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}
+                style={{ marginBottom: 8 }}
+            >
                 <img src={avatar} alt="" />
                 <Icon name="github" />
                 Emestie/flowerpot
             </Label>
-            <Label>
+            <Label style={{ marginBottom: 8 }}>
                 {s("versionWord")}
                 <Label.Detail>
                     {getPlatformIcon()} {Version.long}
                 </Label.Detail>
             </Label>
-            <Label as="a" onClick={showChangelog}>
+            <Label as="a" onClick={showChangelog} style={{ marginBottom: 8 }}>
                 {s("releaseNotes")}
             </Label>
             {Platform.type === PlatformType.Web ? null : updateLabel}
