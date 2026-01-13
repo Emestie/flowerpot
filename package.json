@@ -62,6 +62,7 @@
     },
     "scripts": {
         "web": "vite",
+        "deploy-web": "npm run build:renderer && firebase deploy --only hosting",
         "proxy": "cd ./host/web-server-proxy && node ./server.js",
         "dev": "node scripts/watch.js",
         "build": "npm run build:main && npm run build:preload && npm run build:renderer",

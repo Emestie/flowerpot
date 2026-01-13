@@ -36,8 +36,7 @@ export default class WebPlatform implements IPlatformClass {
     }
 
     isDev() {
-        //TODO
-        return true;
+        return window.location.href.includes("localhost");
     }
 
     toggleConsole() {
