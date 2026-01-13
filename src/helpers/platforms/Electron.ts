@@ -2,12 +2,11 @@ import { eapi } from "#preload";
 import { appUpdateStatusSet } from "../../redux/actions/appActions";
 import { store } from "../../redux/store";
 import { TLocale } from "../../redux/types";
-import Platform, { INotificationData, IPlatformExtension } from "../Platform";
-import CommonPlatform from "./_Common";
+import { INotificationData, IPlatformClass, OS } from "../Platform";
 
-export default class ElectronPlatform extends CommonPlatform implements IPlatformExtension {
+export default class ElectronPlatform implements IPlatformClass {
     public get os() {
-        return eapi.platformName;
+        return eapi.platformName as OS;
     }
 
     public async getStoreProp<T = unknown>(prop: string) {
@@ -24,11 +23,11 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
     }
 
     public changeLocale(locale: TLocale) {
-        Platform.current.setStoreProp("locale", locale);
+        this.setStoreProp("locale", locale);
     }
 
     public toggleAutostart(autostart: boolean) {
-        Platform.current.setStoreProp("autostart", autostart);
+        this.setStoreProp("autostart", autostart);
         eapi.ipcSend("toggle-autostart");
     }
 
@@ -61,7 +60,7 @@ export default class ElectronPlatform extends CommonPlatform implements IPlatfor
         // }
     }
 
-    public showNativeNotif(data: INotificationData) {
+    public showNotification(data: INotificationData) {
         eapi.ipcSend("show-notification", data);
     }
 

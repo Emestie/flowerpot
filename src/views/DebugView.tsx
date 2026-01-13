@@ -33,7 +33,7 @@ export function DebugView() {
     };
 
     const showNotifNative = () => {
-        Platform.current.showNativeNotif({ title: "test1", body: "test2" });
+        Platform.current.showNotification({ title: "test1", body: "test2" });
     };
 
     const sendAppUsage = () => {

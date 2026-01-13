@@ -214,8 +214,6 @@ const ru: LocalizedStrings = {
     infoHeader: "Информация",
     fetchingInfoPageContent: "Загрузка содержимого информационной страницы...",
 
-    rocketBanner2: "Попробовать Rocket",
-
     ddTableScale: "Размер шрифта в таблице рабочих элементов: ",
     tableSizeSmall: "Мелкий",
     tableSizeMedium: "Средний",

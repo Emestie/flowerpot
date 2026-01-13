@@ -8,6 +8,7 @@ import { WorkItem } from "../../models/work-item";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
+import { Link } from "../Link";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
@@ -181,14 +182,9 @@ export function WorkItemRow(props: IProps) {
                     <IterationPath item={item} />
                     <span title={item.requestNumber}>{item.requestNumber ? <Icon name="phone volume" /> : <></>}</span>
                     <span>{tags}</span>
-                    <span
-                        className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}
-                        onClick={() => {
-                            Platform.current.openUrl(item.url);
-                        }}
-                    >
+                    <Link className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} href={item.url}>
                         <HighlightenText text={item.titleFull} />
-                    </span>
+                    </Link>
                     {!!fullNote && (
                         <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + fullNote}>
                             <Label basic color={noteColor as any} size="mini" style={{ padding: "3px 4px" }}>

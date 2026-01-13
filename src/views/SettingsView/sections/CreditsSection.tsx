@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Form, Label, Icon, DropdownItemProps } from "semantic-ui-react";
-import Platform from "../../../helpers/Platform";
+import { DropdownItemProps, Form, Header, Icon, Label } from "semantic-ui-react";
+import avatar from "../../../assets/ti.jpg";
+import Platform, { PlatformType } from "../../../helpers/Platform";
 import Version from "../../../helpers/Version";
 import { appDialogSet, appSet, appViewSet } from "../../../redux/actions/appActions";
 import { settingsUpdate } from "../../../redux/actions/settingsActions";
@@ -8,7 +9,6 @@ import { appSelector } from "../../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { TLocale } from "../../../redux/types";
 import { s } from "../../../values/Strings";
-import avatar from "../../../assets/ti.jpg";
 
 const locales: DropdownItemProps[] = [
     { key: 2, text: s("localeEn"), value: "en" },
@@ -28,6 +28,7 @@ export function CreditsSection() {
         const os = Platform.current.os;
         if (os === "win32") return <Icon name="windows" />;
         if (os === "darwin") return <Icon name="apple" />;
+        if (os === "web") return <Icon name="globe" />;
         return os;
     };
 
@@ -109,15 +110,12 @@ export function CreditsSection() {
             </Header>
             <Label
                 as="a"
-                color="yellow"
+                color="green"
                 onClick={() => {
                     dispatch(appDialogSet("feedback", true));
                 }}
             >
                 {s("feedbackSettingsButton")}
-            </Label>
-            <Label as="a" color="purple" onClick={() => Platform.current.openUrl("https://emestie.github.io/rocket")}>
-                {s("rocketBanner2")}
             </Label>
             <br />
             <Header as="h3" dividing>
@@ -137,7 +135,7 @@ export function CreditsSection() {
             <Label as="a" onClick={showChangelog}>
                 {s("releaseNotes")}
             </Label>
-            {updateLabel}
+            {Platform.type === PlatformType.Web ? null : updateLabel}
         </>
     );
 }

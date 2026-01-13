@@ -59,9 +59,7 @@ export class PullRequest {
         );
         this.status = resp.status;
         this.title = resp.title;
-        this.url =
-            tfsPath +
-            `${collection}/${resp.repository.project.name}/_git/${resp.repository.name}/pullrequest/${resp.pullRequestId}`;
+        this.url = resp.url.replace("/_apis/git/repositories/", "/_git/").replace("/pullRequests/", "/pullrequest/");
         this.freshness = ItemsCommon.getTerm(resp.creationDate);
         this.sourceBranch = resp.sourceRefName.replace("refs/heads/", "");
         this.targetBranch = resp.targetRefName.replace("refs/heads/", "");

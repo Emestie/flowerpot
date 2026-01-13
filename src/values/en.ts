@@ -213,8 +213,6 @@ const en = {
     infoHeader: "Information",
     fetchingInfoPageContent: "Fetching info page content...",
 
-    rocketBanner2: "Try Rocket",
-
     ddTableScale: "Work Items table font size: ",
     tableSizeSmall: "Small",
     tableSizeMedium: "Medium",

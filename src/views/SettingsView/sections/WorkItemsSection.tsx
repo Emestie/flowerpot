@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Header } from "semantic-ui-react";
-import Platform from "../../../helpers/Platform";
+import Platform, { PlatformType } from "../../../helpers/Platform";
 import { TNotificationsMode, TSortPattern } from "../../../helpers/Settings";
 import { settingsUpdate } from "../../../redux/actions/settingsActions";
 import { TableScale } from "../../../redux/reducers/settingsReducer";
@@ -114,19 +114,27 @@ export function WorkItemsSection() {
                 onChange={(e, { value }) => onSortSelect(value as TSortPattern)}
             />
             <br />
-            <Form.Select
-                label={s("ddShowNotifLabel")}
-                options={notificationsModes}
-                value={settings.notificationsMode}
-                onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
-            />
-            <br />
-            <Form.Checkbox
-                label={s("cbIconLabel")}
-                checked={settings.iconChangesOnMyWorkItemsOnly}
-                onChange={toggleIconColor}
-            />
-            <br />
+            {Platform.type === PlatformType.Electron && (
+                <>
+                    <Form.Select
+                        label={s("ddShowNotifLabel")}
+                        options={notificationsModes}
+                        value={settings.notificationsMode}
+                        onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
+                    />
+                    <br />
+                </>
+            )}
+            {Platform.type === PlatformType.Electron && (
+                <>
+                    <Form.Checkbox
+                        label={s("cbIconLabel")}
+                        checked={settings.iconChangesOnMyWorkItemsOnly}
+                        onChange={toggleIconColor}
+                    />
+                    <br />
+                </>
+            )}
             <Form.Checkbox label={s("mineOnTop")} checked={settings.mineOnTop} onChange={toggleMineOnTop} />
             <br />
             <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
