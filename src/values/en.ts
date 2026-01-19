@@ -308,6 +308,15 @@ const en = {
     hiddenPrFilter: "Hidden",
     hidePr: "Hide",
     unhidePr: "Unhide",
+
+    exportSettingsWindowCaption:
+        "There is the current application settings. Clicking OK will copy them. Paste them into the Import Settings window to apply them.",
+    importSettingsWindowCaption:
+        "Paste the settings copied from another app into this field. The changes will be applied immediately and the current settings will be deleted.",
+    sectionImport: "Transfer settings",
+    importSettingsDesc: "Here you can export or import application settings",
+    doExportSettings: "Export settings",
+    doImportSettings: "Import settings",
 };
 
 export default en;

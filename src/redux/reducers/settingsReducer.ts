@@ -17,6 +17,7 @@ export enum Sections {
     Stats,
     Credits,
     Lists,
+    Import,
 }
 
 export interface ISettingsState extends ISettings {}

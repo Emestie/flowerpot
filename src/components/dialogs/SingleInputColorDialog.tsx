@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Confirm, TextArea, Form } from "semantic-ui-react";
+import { useEffect, useState } from "react";
+import { Confirm, Form, TextArea } from "semantic-ui-react";
 import ColorPicker from "../ColorPicker";
 
 interface IProps {
@@ -13,6 +13,8 @@ interface IProps {
     showColors?: boolean;
     area?: boolean;
     dropdownValues?: string[];
+    unlimitedLength?: boolean;
+    readonly?: boolean;
 }
 
 export function SingleInputColorDialog(p: IProps) {
@@ -25,7 +27,7 @@ export function SingleInputColorDialog(p: IProps) {
     useEffect(() => {
         setTextValue(p.initialText || "");
         setColorValue(p.initialColor);
-    }, [p.initialColor, p.initialText]);
+    }, [p.initialColor, p.initialText, p.show]);
 
     useEffect(() => {
         if (p.show) {
@@ -63,9 +65,10 @@ export function SingleInputColorDialog(p: IProps) {
                         value={textValue}
                         className="af-input"
                         onChange={(e, data) => {
+                            if (p.readonly) return;
                             setTextValue((data.value || "") as string);
                         }}
-                        maxLength="500"
+                        maxLength={p.unlimitedLength ? undefined : "500"}
                     />
                 ) : (
                     <Form>
