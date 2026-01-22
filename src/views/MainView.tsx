@@ -7,6 +7,7 @@ import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock";
 import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
+import { triggerCollapseAll, triggerExpandAll } from "../events/collapse-expand";
 import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
 import { Query } from "../models/query";
@@ -16,7 +17,6 @@ import { appSelector } from "../redux/selectors/appSelectors";
 import { dataSelector } from "../redux/selectors/dataSelectors";
 import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
-import { useEventStore } from "../zustand/event";
 import { useQuickSearchStore } from "../zustand/quick-search";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
@@ -54,8 +54,8 @@ export function MainView() {
     };
 
     const onExpandCollapse = () => {
-        if (expandCollapseOperation === "collapse") useEventStore.getState().collapseAll();
-        else useEventStore.getState().expandAll();
+        if (expandCollapseOperation === "collapse") triggerCollapseAll();
+        else triggerExpandAll();
     };
 
     const onRefresh = () => {

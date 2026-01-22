@@ -1,10 +1,10 @@
 import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticCOLORS } from "semantic-ui-react";
+import { APP_EVENT_COLLAPSE_ALL, APP_EVENT_EXPAND_ALL } from "../events/collapse-expand";
 import { tagPalette } from "../modules/palette";
 import { settingsCollapseBlock, settingsUpdate } from "../redux/actions/settingsActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { useEventStore } from "../zustand/event";
 import { AccountBadge } from "./AccountBadge";
 
 export function CollapsibleBlock(props: {
@@ -43,16 +43,17 @@ export function CollapsibleBlock(props: {
     const settings = useSelector(settingsSelector);
 
     useEffect(() => {
-        return useEventStore.subscribe((state, prev) => {
-            if (state.collapseCounter !== prev.collapseCounter) {
-                dispatch(settingsCollapseBlock(id, true));
-            }
+        const onCollapse = () => dispatch(settingsCollapseBlock(id, true));
+        const onExpand = () => dispatch(settingsUpdate({ collapsedBlocks: [] }));
 
-            if (state.expandCounter !== prev.expandCounter) {
-                dispatch(settingsUpdate({ collapsedBlocks: [] }));
-            }
-        });
-    }, []);
+        document.addEventListener(APP_EVENT_COLLAPSE_ALL, onCollapse);
+        document.addEventListener(APP_EVENT_EXPAND_ALL, onExpand);
+
+        return () => {
+            document.removeEventListener(APP_EVENT_COLLAPSE_ALL, onCollapse);
+            document.removeEventListener(APP_EVENT_EXPAND_ALL, onExpand);
+        };
+    }, [id, dispatch]);
 
     const isCollapsed = settings.collapsedBlocks.includes(id);
     const toggleCollapse = () => dispatch(settingsCollapseBlock(id, !isCollapsed));
