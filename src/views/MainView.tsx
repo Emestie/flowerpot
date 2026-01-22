@@ -95,7 +95,7 @@ export function MainView() {
         Platform.current.updateTrayIcon(4);
     }
 
-    const qlEnabled = Platform.type === PlatformType.Electron && settings.showQuickLinks;
+    const qlEnabled = settings.showQuickLinks;
 
     return (
         <PageLayout
