@@ -54,7 +54,7 @@ const initialState: ISettingsState = {
     lastTimeVersionLong: "",
     migrationsDone: [],
     bannersShown: [],
-    settingsSection: Sections.Queries,
+    settingsSection: Sections.Account,
     includeTeamsPRs: true,
     includeAcceptedByMePRs: true,
     includeHiddenPRs: false,
