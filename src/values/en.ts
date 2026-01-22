@@ -76,8 +76,7 @@ const en = {
     tfsHeader: "Account settings",
     credsState1: "Not validated yet",
     credsState2: "Validating...",
-    credsState3: "Server unavailable or TFS/Azure DevOps path is wrong",
-    credsState4: "Personal Access Token is incorrect or expired",
+    credsState4: "Server unavailable or the Personal Access Token is incorrect or expired",
     credsState5: "OK",
     credsState6: "This account is already added",
     //helpers

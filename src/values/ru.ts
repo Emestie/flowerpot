@@ -77,8 +77,7 @@ const ru: LocalizedStrings = {
     tfsHeader: "Настройки учетной записи",
     credsState1: "Не проверены",
     credsState2: "Проверка...",
-    credsState3: "Сервер недоступен или путь к TFS/Azure DevOps не верный",
-    credsState4: "Персональный токен доступа некорректен или истек",
+    credsState4: "Сервер недоступен или персональный токен доступа некорректен или истек",
     credsState5: "OK",
     credsState6: "Такой аккаунт уже добавлен",
     //helpers
