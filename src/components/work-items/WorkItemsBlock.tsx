@@ -133,6 +133,10 @@ export function WorkItemsBlock(props: IProps) {
         return settings.tableScale === 1 ? undefined : settings.tableScale === 2 ? "large" : "small";
     };
 
+    if (query.empty && !settings.showEmptyQueries) {
+        return null;
+    }
+
     return (
         <CollapsibleBlock
             id={`${query.accountId}-${query.queryId}`}

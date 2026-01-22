@@ -76,6 +76,11 @@ export function WorkItemsSection() {
         dispatch(settingsUpdate({ enableQueryColorCode }));
     };
 
+    const toggleShowEmptyQueries = () => {
+        const showEmptyQueries = !settings.showEmptyQueries;
+        dispatch(settingsUpdate({ showEmptyQueries }));
+    };
+
     const onTableScaleSelect = (val: TableScale) => {
         const tableScale = val;
         dispatch(settingsUpdate({ tableScale }));
@@ -150,6 +155,12 @@ export function WorkItemsSection() {
                 label={s("enableQueryColorCode")}
                 checked={settings.enableQueryColorCode}
                 onChange={toggleQueryColorCode}
+            />
+            <br />{" "}
+            <Form.Checkbox
+                label={s("showEmptyQueries")}
+                checked={settings.showEmptyQueries}
+                onChange={toggleShowEmptyQueries}
             />
             <br />
             <Form.Select

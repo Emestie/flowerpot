@@ -108,15 +108,18 @@ export function MainView() {
                                 {s("installUpdate")}
                             </Button>
                         )}
-                        {Platform.type === PlatformType.Electron && (
-                            <Button icon onClick={onExpandCollapse} hint={s("expandCollapseAll")}>
-                                {expandCollapseOperation === "collapse" ? (
-                                    <Icon name="angle double down" />
-                                ) : (
-                                    <Icon name="angle double right" />
-                                )}
-                            </Button>
-                        )}
+                        <Button
+                            icon
+                            onClick={onExpandCollapse}
+                            hint={s("expandCollapseAll")}
+                            className="hide-on-mobile"
+                        >
+                            {expandCollapseOperation === "collapse" ? (
+                                <Icon name="angle double down" />
+                            ) : (
+                                <Icon name="angle double right" />
+                            )}
+                        </Button>
                         <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
                             <Icon name="user outline" />
                         </Button>

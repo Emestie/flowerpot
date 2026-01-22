@@ -298,3 +298,9 @@ a.url-link {
         width: 90px;
     }
 }
+
+.hide-on-mobile {
+    @media (max-width: 590px) {
+        display: none !important;
+    }
+}

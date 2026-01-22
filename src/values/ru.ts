@@ -318,6 +318,8 @@ const ru: LocalizedStrings = {
     importSettingsDesc: "На этой странице можно экспортировать или импортировать настройки приложения",
     doExportSettings: "Экспортировать настройки",
     doImportSettings: "Импортировать настройки",
+
+    showEmptyQueries: "Показывать пустые запросы",
 };
 
 export default ru;

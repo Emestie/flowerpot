@@ -81,6 +81,7 @@ export interface ISettings {
     collapsedBlocks: string[];
     openByIdLastCollection: string | undefined;
     openByIdLastAccountId: string | undefined;
+    showEmptyQueries: boolean;
 }
 
 export default class Settings {

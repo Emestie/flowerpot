@@ -15,6 +15,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
         includeTeamsPRs,
         includeAcceptedByMePRs,
         includeHiddenPRs,
+        showEmptyQueries,
     } = useSelector(settingsSelector);
     const dispatch = useDispatch();
 
@@ -40,6 +41,8 @@ export function PullRequestsBlock(props: { accountId: string }) {
     const pullRequestsComponents = pullRequests.map((pr) => (
         <PullRequestRow key={pr.id} pullRequest={pr} accountId={props.accountId} />
     ));
+
+    if (!pullRequests.length && !showEmptyQueries) return null;
 
     return (
         <CollapsibleBlock

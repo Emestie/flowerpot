@@ -317,6 +317,8 @@ const en = {
     importSettingsDesc: "Here you can export or import application settings",
     doExportSettings: "Export settings",
     doImportSettings: "Import settings",
+
+    showEmptyQueries: "Show empty queries",
 };
 
 export default en;

@@ -63,6 +63,7 @@ const initialState: ISettingsState = {
     collapsedBlocks: [],
     openByIdLastAccountId: undefined,
     openByIdLastCollection: undefined,
+    showEmptyQueries: true,
 };
 
 export function settingsReducer(state = initialState, action: IAction) {
