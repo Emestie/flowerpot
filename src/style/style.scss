@@ -287,20 +287,32 @@ a.url-link {
     box-sizing: border-box;
 }
 
-.dynamic-flex-wrap {
-    @media (max-width: 790px) {
+@media (max-width: 790px) {
+    .dynamic-flex-wrap {
         flex-wrap: wrap;
     }
 }
 
-.ui.small.secondary.vertical.menu {
-    @media (max-width: 590px) {
+/* Mobile only */
+@media (max-width: 590px) {
+    .ui.small.secondary.vertical.menu {
         width: 90px;
+    }
+
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    .qs-input {
+        .input {
+            width: 100%;
+        }
     }
 }
 
-.hide-on-mobile {
-    @media (max-width: 590px) {
+/* Desktop only */
+@media (min-width: 591px) {
+    .show-on-mobile {
         display: none !important;
     }
 }

@@ -318,6 +318,7 @@ const en = {
     doImportSettings: "Import settings",
 
     showEmptyQueries: "Show empty queries",
+    showSearch: "Search",
 };
 
 export default en;

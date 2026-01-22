@@ -320,6 +320,7 @@ const ru: LocalizedStrings = {
     doImportSettings: "Импортировать настройки",
 
     showEmptyQueries: "Показывать пустые запросы",
+    showSearch: "Поиск",
 };
 
 export default ru;
