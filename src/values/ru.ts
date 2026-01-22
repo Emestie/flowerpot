@@ -2,6 +2,7 @@ import { LocalizedStrings } from "./Strings";
 
 const ru: LocalizedStrings = {
     //settings view
+    refreshNever: "Никогда",
     refresh3m: "3 минуты",
     refresh5m: "5 минут",
     refresh10m: "10 минут",
@@ -27,7 +28,7 @@ const ru: LocalizedStrings = {
     settingsQueriesHeader: "Отслеживаемые запросы",
     settingsOthersHeader: "Другие",
     ddLocalesLabel: "Язык: ",
-    ddRefreshLabel: "Интервал обновления запросов: ",
+    ddRefreshLabel: "Интервал автоматического обновления запросов: ",
     ddShowNotifLabel: "Показывать уведомления: ",
     cbIconLabel: "Менять иконку приложения только от событий, связанных с моими задачами",
     cbAutostartLabel: "Запускать вместе с Windows (применяется при перезапуске приложения)",

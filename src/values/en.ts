@@ -1,5 +1,6 @@
 const en = {
     //settings view
+    refreshNever: "Never",
     refresh3m: "3 minutes",
     refresh5m: "5 minutes",
     refresh10m: "10 minutes",

@@ -26,7 +26,7 @@ const initialState: ISettingsState = {
     tfsPath: "",
     tfsToken: "",
     accounts: [],
-    refreshRate: 180,
+    refreshRate: 600,
     sortPattern: "default",
     notificationsMode: "all",
     tableScale: TableScale.Small,
