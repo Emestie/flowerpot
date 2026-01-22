@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
+import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
 import { appViewSet } from "../../redux/actions/appActions";
 import { getQueriesSelector } from "../../redux/selectors/settingsSelectors";
@@ -13,6 +14,8 @@ export function QueriesSettingsTable() {
     const openQuerySelector = () => {
         dispatch(appViewSet("selectqueries"));
     };
+
+    const isWeb = Platform.type === PlatformType.Web;
 
     const rows = queries.map((q, v, a) => (
         <Table.Row key={q.queryId}>
@@ -31,22 +34,26 @@ export function QueriesSettingsTable() {
             </Table.Cell>
             <Table.Cell>{q.teamName}</Table.Cell>
             <Table.Cell>{q.queryName}</Table.Cell>
-            <Table.Cell collapsing>
-                <Checkbox
-                    checked={q.ignoreIcon}
-                    onChange={() => {
-                        QueryHelper.toggleBoolean(q, "ignoreIcon");
-                    }}
-                />
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <Checkbox
-                    checked={q.ignoreNotif}
-                    onChange={() => {
-                        QueryHelper.toggleBoolean(q, "ignoreNotif");
-                    }}
-                />
-            </Table.Cell>
+            {!isWeb && (
+                <Table.Cell collapsing>
+                    <Checkbox
+                        checked={q.ignoreIcon}
+                        onChange={() => {
+                            QueryHelper.toggleBoolean(q, "ignoreIcon");
+                        }}
+                    />
+                </Table.Cell>
+            )}
+            {!isWeb && (
+                <Table.Cell collapsing>
+                    <Checkbox
+                        checked={q.ignoreNotif}
+                        onChange={() => {
+                            QueryHelper.toggleBoolean(q, "ignoreNotif");
+                        }}
+                    />
+                </Table.Cell>
+            )}
             <Table.Cell collapsing>
                 <Button size="tiny" icon compact disabled={v === 0} onClick={() => QueryHelper.move(q, "up")}>
                     <Icon name="arrow up" />
@@ -75,8 +82,8 @@ export function QueriesSettingsTable() {
                     <Table.HeaderCell>{s("collection")}</Table.HeaderCell>
                     <Table.HeaderCell>{s("teamProject")}</Table.HeaderCell>
                     <Table.HeaderCell>{s("queryName")}</Table.HeaderCell>
-                    <Table.HeaderCell>{s("ignoreIcon")}</Table.HeaderCell>
-                    <Table.HeaderCell>{s("ignoreNotif")}</Table.HeaderCell>
+                    {!isWeb && <Table.HeaderCell>{s("ignoreIcon")}</Table.HeaderCell>}
+                    {!isWeb && <Table.HeaderCell>{s("ignoreNotif")}</Table.HeaderCell>}
                     <Table.HeaderCell>{s("actions")}</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
