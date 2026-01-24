@@ -39,6 +39,11 @@ export default class QueryHelper {
         this.updateSingleInStore(query);
     }
 
+    public static updateFilteredTypes(query: Query, filteredTypes: string[]) {
+        query.filteredTypes = filteredTypes;
+        this.updateSingleInStore(query);
+    }
+
     public static move(query: Query, direction: "up" | "dn") {
         let allQueries = getQueriesSelector(true)(store.getState());
 
