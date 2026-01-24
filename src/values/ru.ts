@@ -2,6 +2,7 @@ import { LocalizedStrings } from "./Strings";
 
 const ru: LocalizedStrings = {
     //settings view
+    refreshNever: "Никогда",
     refresh3m: "3 минуты",
     refresh5m: "5 минут",
     refresh10m: "10 минут",
@@ -27,7 +28,7 @@ const ru: LocalizedStrings = {
     settingsQueriesHeader: "Отслеживаемые запросы",
     settingsOthersHeader: "Другие",
     ddLocalesLabel: "Язык: ",
-    ddRefreshLabel: "Интервал обновления запросов: ",
+    ddRefreshLabel: "Интервал автоматического обновления запросов: ",
     ddShowNotifLabel: "Показывать уведомления: ",
     cbIconLabel: "Менять иконку приложения только от событий, связанных с моими задачами",
     cbAutostartLabel: "Запускать вместе с Windows (применяется при перезапуске приложения)",
@@ -77,8 +78,7 @@ const ru: LocalizedStrings = {
     tfsHeader: "Настройки учетной записи",
     credsState1: "Не проверены",
     credsState2: "Проверка...",
-    credsState3: "Сервер недоступен или путь к TFS/Azure DevOps не верный",
-    credsState4: "Персональный токен доступа некорректен или истек",
+    credsState4: "Сервер недоступен или персональный токен доступа некорректен или истек",
     credsState5: "OK",
     credsState6: "Такой аккаунт уже добавлен",
     //helpers
@@ -201,7 +201,7 @@ const ru: LocalizedStrings = {
 
     enterID: "Введите ID рабочего элемента, который нужно открыть",
 
-    apploading: "Загрузка приложения и данных с сервера...",
+    apploading: "Загрузка приложения и данных...",
 
     settingsActionsHeader: "Действия",
     hideBanner: "Скрыть",
@@ -213,8 +213,6 @@ const ru: LocalizedStrings = {
 
     infoHeader: "Информация",
     fetchingInfoPageContent: "Загрузка содержимого информационной страницы...",
-
-    rocketBanner2: "Попробовать Rocket",
 
     ddTableScale: "Размер шрифта в таблице рабочих элементов: ",
     tableSizeSmall: "Мелкий",
@@ -311,6 +309,18 @@ const ru: LocalizedStrings = {
     hiddenPrFilter: "Скрытые",
     hidePr: "Скрыть",
     unhidePr: "Удалить из скрытых",
+
+    exportSettingsWindowCaption:
+        "Настройки текущего приложения. При нажатии на ОК они будут скопированы. Вставьте их в окно импорта настроек, чтобы применить.",
+    importSettingsWindowCaption:
+        "Вставьте в это поле настройки, скопированные из другого приложения. Изменения будут применены сразу, текущие настройки будут удалены.",
+    sectionImport: "Перенос настроек",
+    importSettingsDesc: "На этой странице можно экспортировать или импортировать настройки приложения",
+    doExportSettings: "Экспортировать настройки",
+    doImportSettings: "Импортировать настройки",
+
+    showEmptyQueries: "Показывать пустые запросы",
+    showSearch: "Поиск",
 };
 
 export default ru;

@@ -1,43 +1,79 @@
-// import { TLocale } from "../../redux/types";
-// import { INotificationData, IPlatformExtension } from "../Platform";
-// import WebStore from "./web/WebStore";
-// import CommonPlatform from "./_Common";
+import { TLocale } from "../../redux/types";
+import { INotificationData, IPlatformClass } from "../Platform";
+import webStore from "./web/WebStore";
 
-// export default class WebPlatform extends CommonPlatform implements IPlatformExtension {
-//     getStoreProp(prop: string) {
-//         return Promise.resolve("");
-//     }
-//     setStoreProp(prop: string, value: any) {}
-//     copyString(s: string) {}
-//     changeLocale(locale: TLocale) {}
-//     toggleAutostart(autostart: boolean) {}
-//     updateTrayIcon(level: number, hasChanges?: boolean | undefined) {}
-//     updateTrayIconDot(hasChanges: boolean) {}
-//     isDev() {
-//         return true;
-//     }
-//     toggleConsole() {}
-//     updateApp() {}
-//     showNativeNotif(data: INotificationData) {}
-//     reactIsReady() {}
+export default class WebPlatform implements IPlatformClass {
+    get os() {
+        const ua = window.navigator.userAgent;
+        if (/Windows/i.test(ua)) return "win32";
+        if (/Macintosh|Mac OS X/i.test(ua)) return "darwin";
+        if (/Linux/i.test(ua)) return "linux";
+        if (/Android/i.test(ua)) return "android";
+        if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+        return "web";
+    }
 
-//     get os(): string {
-//         return "web";
-//     }
+    getStoreProp<T = unknown>(prop: string) {
+        return webStore.get<T>(prop);
+    }
 
-//     initUpdateListeners() {}
+    setStoreProp<T>(prop: string, value: T) {
+        webStore.set(prop, value);
+    }
 
-//     public isLocal() {
-//         return false;
-//     }
+    copyString(s: string) {
+        navigator.clipboard.writeText(s);
+    }
 
-//     //TODO implement local store
-//     public getSettingsStorage() {
-//         return WebStore;
-//     }
+    changeLocale(locale: TLocale) {
+        this.setStoreProp("locale", locale);
+    }
 
-//     public openUrl(url: string) {}
+    toggleAutostart(autostart: boolean) {
+        // not needed in web platform
+    }
 
-//     public checkForUpdates(cyclic?: boolean) {}
-// }
-export {};
+    updateTrayIcon(level: number, hasChanges?: boolean | undefined) {
+        // not needed in web platform
+    }
+
+    updateTrayIconDot(hasChanges: boolean) {
+        // not needed in web platform
+    }
+
+    isDev() {
+        return window.location.href.includes("localhost");
+    }
+
+    toggleConsole() {
+        // not needed in web platform
+    }
+
+    updateApp() {
+        // not needed in web platform
+    }
+
+    showNotification(data: INotificationData) {
+        //TODO: notif
+    }
+
+    reactIsReady() {
+        // not needed in web platform
+    }
+
+    initUpdateListeners() {
+        // not needed in web platform
+    }
+
+    public isLocal() {
+        return false;
+    }
+
+    public openUrl(url: string) {
+        window.open(url, "_blank");
+    }
+
+    public checkForUpdates(cyclic?: boolean) {
+        // not needed in web platform
+    }
+}

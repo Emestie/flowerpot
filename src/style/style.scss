@@ -271,3 +271,53 @@ img.ui.avatar.image.av-class {
 .ui.table.wiTable td {
     padding: 0.25em 0.6em;
 }
+
+a.url-link {
+    color: #000000de;
+}
+
+.dual-container {
+    display: flex;
+    width: 100%;
+    gap: 4px;
+}
+
+.dual-part-half {
+    flex: 0 0 50%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 790px) {
+    .dynamic-flex-wrap {
+        flex-wrap: wrap;
+    }
+}
+
+/* Mobile only */
+@media (max-width: 590px) {
+    .ui.small.secondary.vertical.menu {
+        width: 90px;
+    }
+
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    .qs-input {
+        .input {
+            width: 100%;
+        }
+    }
+}
+
+/* Desktop only */
+@media (min-width: 591px) {
+    .show-on-mobile {
+        display: none !important;
+    }
+}
+
+.filter-toggle-button {
+    padding: 4px !important;
+    display: inline-block !important;
+}

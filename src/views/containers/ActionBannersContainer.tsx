@@ -1,11 +1,9 @@
+import pull from "../../assets/pull.png";
 import { ActionBanner, IActionBannerProps } from "../../components/banners/ActionBanner";
 import { s } from "../../values/Strings";
-
-//const flowerbotImg = require("../../assets/flowerbot-av-48.png").default as string;
-// const idea = require("../../assets/idea.png").default;
-import pull from "../../assets/pull.png";
 import { appViewSet } from "/@/redux/actions/appActions";
 import { store } from "/@/redux/store";
+// import idea from "../../assets/idea.png";
 
 function getActionBannersList(): IActionBannerProps[] {
     return [
@@ -15,6 +13,9 @@ function getActionBannersList(): IActionBannerProps[] {
         //     actionText: s("feedbackAlertButton"),
         //     action: () => {
         //         store.dispatch(appDialogSet("feedback", true));
+        //     },
+        //     condition() {
+        //         return Platform.type === PlatformType.Web;
         //     },
         //     img: idea,
         //     type: "warning",
@@ -29,7 +30,7 @@ function getActionBannersList(): IActionBannerProps[] {
                 store.dispatch(appViewSet("selectprojects"));
             },
             condition() {
-                return store.getState().settings.projects.length === 0;
+                return store.getState().settings.accounts.length > 0 && store.getState().settings.projects.length === 0;
             },
         },
     ];

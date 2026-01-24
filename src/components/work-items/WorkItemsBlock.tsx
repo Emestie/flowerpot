@@ -1,7 +1,9 @@
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Message, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
+import QueryHelper from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
@@ -10,6 +12,7 @@ import { appSelector } from "../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
+import { FilterToggleButton } from "../FilterToggleButton";
 import { WorkItemRow } from "./WorkItemRow";
 import { useFilteredWorkItems } from "./use-filtered-work-items";
 
@@ -21,16 +24,30 @@ export function WorkItemsBlock(props: IProps) {
     const { isLoading, routineStart, errorMessage, hiddenCount } = useQueryLoader(props.query);
     const settings = useSelector(settingsSelector);
     const { showMineOnly } = useSelector(appSelector);
+    const filteredTypes = props.query.filteredTypes || [];
 
     const dispatch = useDispatch();
 
     const workItems = useFilteredWorkItems(props.query);
 
+    const availableTypes = useMemo(() => {
+        const types = new Map<string, string | undefined>();
+        workItems.forEach((wi) => {
+            if (wi.type && !types.has(wi.type)) {
+                types.set(wi.type, wi.typeIconUrl);
+            }
+        });
+        return Array.from(types.entries())
+            .map(([type, url]) => ({ type, url }))
+            .sort((a, b) => a.type.localeCompare(b.type));
+    }, [workItems]);
+
     const isPermawatch = props.query.queryId.startsWith("___permawatch");
-    const totalItemsCount = workItems.filter(
-        (wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev)
-    ).length;
+    const totalItemsCount = workItems
+        .filter((wi) => !filteredTypes.includes(wi.type))
+        .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev)).length;
     const redItemsCount = workItems
+        .filter((wi) => !filteredTypes.includes(wi.type))
         .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => wi.isRed).length;
 
@@ -119,6 +136,7 @@ export function WorkItemsBlock(props: IProps) {
         .sort(getSortPattern())
         .filter((wi) => (showMineOnly ? wi._isMine : true))
         .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => !filteredTypes.includes(wi.type))
         .map((wi) => (
             <WorkItemRow
                 key={wi.id}
@@ -132,6 +150,10 @@ export function WorkItemsBlock(props: IProps) {
     const getTableSize = () => {
         return settings.tableScale === 1 ? undefined : settings.tableScale === 2 ? "large" : "small";
     };
+
+    if (query.empty && !settings.showEmptyQueries) {
+        return null;
+    }
 
     return (
         <CollapsibleBlock
@@ -151,7 +173,7 @@ export function WorkItemsBlock(props: IProps) {
             }}
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             rightBlock={
-                <>
+                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 6 }}>
                     {!!query.queryPath && (
                         <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
                             <Icon size="small" name="external share" />
@@ -162,7 +184,26 @@ export function WorkItemsBlock(props: IProps) {
                             <Icon size="small" name="refresh" />
                         </span>
                     )}
-                </>
+                    {availableTypes.map((t) => (
+                        <FilterToggleButton
+                            key={t.type}
+                            label={t.type}
+                            checked={!filteredTypes.includes(t.type)}
+                            onChange={() => {
+                                if (filteredTypes.includes(t.type)) {
+                                    QueryHelper.updateFilteredTypes(
+                                        props.query,
+                                        filteredTypes.filter((x) => x !== t.type)
+                                    );
+                                } else {
+                                    QueryHelper.updateFilteredTypes(props.query, [...filteredTypes, t.type]);
+                                }
+                            }}
+                            imgUrl={t.url}
+                            //?.replace(/color=.+&/, settings.darkTheme ? "color=E9E9E9&" : "color=676768&")
+                        />
+                    ))}
+                </div>
             }
         >
             <>

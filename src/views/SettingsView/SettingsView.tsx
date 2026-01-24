@@ -8,6 +8,7 @@ import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { AccountSection } from "./sections/AccountSection";
 import { CreditsSection } from "./sections/CreditsSection";
+import { ImportSection } from "./sections/ImportSection";
 import { ListsView } from "./sections/ListsSection";
 import { ProjectsSection } from "./sections/ProjectsSection";
 import { QueriesSection } from "./sections/QueriesSection";
@@ -42,6 +43,10 @@ const sectionsList = [
         captionKey: "sectionQL",
     },
     {
+        id: Sections.Import,
+        captionKey: "sectionImport",
+    },
+    {
         id: Sections.Credits,
         captionKey: "sectionCredits",
     },
@@ -63,6 +68,8 @@ const getSectionComponent = (sectionId: Sections) => {
             return <QuickLinksSections />;
         case Sections.Lists:
             return <ListsView />;
+        case Sections.Import:
+            return <ImportSection />;
         default:
             return <></>;
     }
@@ -71,7 +78,7 @@ const getSectionComponent = (sectionId: Sections) => {
 export function SettingsView() {
     const dispatch = useDispatch();
 
-    const { settingsSection, darkTheme } = useSelector(settingsSelector);
+    const { settingsSection, darkTheme, accounts } = useSelector(settingsSelector);
 
     const toggleTheme = () => {
         const darkTheme_ = !darkTheme;
@@ -82,16 +89,21 @@ export function SettingsView() {
         dispatch(appViewSet("main"));
     };
 
-    const sectionsMenuItems = sectionsList.map((section, i) => (
-        <Menu.Item
-            key={i}
-            as="a"
-            active={section.id === settingsSection}
-            onClick={() => dispatch(settingsUpdate({ settingsSection: section.id }))}
-        >
-            {s(section.captionKey as any)}
-        </Menu.Item>
-    ));
+    const sectionsMenuItems = sectionsList
+        .filter((section) => {
+            if (!accounts?.length) return section.id === Sections.Account || section.id === Sections.Credits;
+            return true;
+        })
+        .map((section, i) => (
+            <Menu.Item
+                key={i}
+                as="a"
+                active={section.id === settingsSection}
+                onClick={() => dispatch(settingsUpdate({ settingsSection: section.id }))}
+            >
+                {s(section.captionKey as any)}
+            </Menu.Item>
+        ));
 
     const sectionComponent = getSectionComponent(settingsSection);
 

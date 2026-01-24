@@ -20,16 +20,14 @@ import { useCredentialsModeStore } from "../zustand/credentials-mode";
 enum ECredState {
     NotValidated = 0,
     ValidatingInProgress = 1,
-    ServerUnavailable = 2,
-    WrongCredentials = 3,
-    OK = 4,
-    Duplication = 5,
+    WrongCredentials = 2,
+    OK = 3,
+    Duplication = 4,
 }
 
 const statuses = [
     { color: undefined, text: s("credsState1") },
     { color: undefined, text: s("credsState2") },
-    { color: "red", text: s("credsState3") },
     { color: "red", text: s("credsState4") },
     { color: "olive", text: s("credsState5") },
     { color: "orange", text: s("credsState6") },
@@ -124,12 +122,6 @@ export function CredentialsView() {
 
     const onCheck = async () => {
         setCredentialsCheckStatus(ECredState.ValidatingInProgress);
-
-        const tfscheck = await Loaders.checkTfsPath(currentAccount.url);
-        if (!tfscheck) {
-            setCredentialsCheckStatus(ECredState.ServerUnavailable);
-            return;
-        }
 
         const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
         if (!result) {

@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Checkbox, Icon, Message, Table } from "semantic-ui-react";
+import { Icon, Message, Table } from "semantic-ui-react";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
+import { FilterToggleButton } from "../FilterToggleButton";
 import { PullRequestRow } from "./PullRequestRow";
 import { settingsUpdate } from "/@/redux/actions/settingsActions";
 
@@ -15,6 +16,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
         includeTeamsPRs,
         includeAcceptedByMePRs,
         includeHiddenPRs,
+        showEmptyQueries,
     } = useSelector(settingsSelector);
     const dispatch = useDispatch();
 
@@ -41,6 +43,8 @@ export function PullRequestsBlock(props: { accountId: string }) {
         <PullRequestRow key={pr.id} pullRequest={pr} accountId={props.accountId} />
     ));
 
+    if (!pullRequests.length && !showEmptyQueries) return null;
+
     return (
         <CollapsibleBlock
             id={"PR+" + props.accountId}
@@ -57,7 +61,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             iconComponent={<Icon name="level up alternate" />}
             rightBlock={
-                <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 6 }}>
                     <span
                         title={s("refresh")}
                         className="externalLink"
@@ -66,39 +70,33 @@ export function PullRequestsBlock(props: { accountId: string }) {
                     >
                         <Icon size="small" name="refresh" />
                     </span>
-                    {hasHidden && (
-                        <span className="group-pr-checkbox">
-                            <Checkbox
-                                label={s("hiddenPrFilter")}
-                                checked={includeHiddenPRs}
-                                onChange={() => {
-                                    dispatch(settingsUpdate({ includeHiddenPRs: !includeHiddenPRs }));
-                                }}
-                            />
-                        </span>
-                    )}
-                    {hasTeams && (
-                        <span className="group-pr-checkbox">
-                            <Checkbox
-                                label={s("groupPrFilter")}
-                                checked={includeTeamsPRs}
-                                onChange={() => {
-                                    dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
-                                }}
-                            />
-                        </span>
-                    )}
-                    {hasAcceptedByMe && (
-                        <span className="group-pr-checkbox">
-                            <Checkbox
-                                label={s("acceptedByMeFilter")}
-                                checked={includeAcceptedByMePRs}
-                                onChange={() => {
-                                    dispatch(settingsUpdate({ includeAcceptedByMePRs: !includeAcceptedByMePRs }));
-                                }}
-                            />
-                        </span>
-                    )}
+                    <FilterToggleButton
+                        label={s("hiddenPrFilter")}
+                        checked={includeHiddenPRs}
+                        onChange={() => {
+                            dispatch(settingsUpdate({ includeHiddenPRs: !includeHiddenPRs }));
+                        }}
+                        icon="eye slash"
+                        visible={hasHidden}
+                    />
+                    <FilterToggleButton
+                        label={s("groupPrFilter")}
+                        checked={includeTeamsPRs}
+                        onChange={() => {
+                            dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
+                        }}
+                        icon="users"
+                        visible={hasTeams}
+                    />
+                    <FilterToggleButton
+                        label={s("acceptedByMeFilter")}
+                        checked={includeAcceptedByMePRs}
+                        onChange={() => {
+                            dispatch(settingsUpdate({ includeAcceptedByMePRs: !includeAcceptedByMePRs }));
+                        }}
+                        icon="checkmark"
+                        visible={hasAcceptedByMe}
+                    />
                 </div>
             }
         >

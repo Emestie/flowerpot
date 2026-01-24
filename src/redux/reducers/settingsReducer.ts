@@ -17,6 +17,7 @@ export enum Sections {
     Stats,
     Credits,
     Lists,
+    Import,
 }
 
 export interface ISettingsState extends ISettings {}
@@ -25,7 +26,7 @@ const initialState: ISettingsState = {
     tfsPath: "",
     tfsToken: "",
     accounts: [],
-    refreshRate: 180,
+    refreshRate: 600,
     sortPattern: "default",
     notificationsMode: "all",
     tableScale: TableScale.Small,
@@ -53,7 +54,7 @@ const initialState: ISettingsState = {
     lastTimeVersionLong: "",
     migrationsDone: [],
     bannersShown: [],
-    settingsSection: Sections.Queries,
+    settingsSection: Sections.Account,
     includeTeamsPRs: true,
     includeAcceptedByMePRs: true,
     includeHiddenPRs: false,
@@ -62,6 +63,7 @@ const initialState: ISettingsState = {
     collapsedBlocks: [],
     openByIdLastAccountId: undefined,
     openByIdLastCollection: undefined,
+    showEmptyQueries: true,
 };
 
 export function settingsReducer(state = initialState, action: IAction) {

@@ -35,8 +35,8 @@ async function createWindow() {
         windowOpts: windowOptions,
         templateUrl: `${__dirname}/../../../build-resources/splash-screen/splash-screen.html`,
         splashScreenOpts: {
-            width: 260,
-            height: 100,
+            width: 192,
+            height: 192,
         },
     };
 

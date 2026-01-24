@@ -16,6 +16,7 @@ export class Query {
     public readonly isPublic: boolean;
     public nameInList: string;
     public empty: boolean;
+    public filteredTypes: string[];
 
     constructor(accountId: string, resp: IResponseQuery, project: Project) {
         this.accountId = accountId;
@@ -32,5 +33,6 @@ export class Query {
         this.isPublic = resp.isPublic;
         this.nameInList = project.collectionName + " / " + project.name + " / " + resp.path.replaceAll("/", " / ");
         this.empty = false;
+        this.filteredTypes = [];
     }
 }

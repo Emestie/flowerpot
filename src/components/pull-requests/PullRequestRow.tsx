@@ -5,6 +5,7 @@ import Platform from "../../helpers/Platform";
 import { PullRequest } from "../../models/pull-request";
 import { PullRequestReviewer } from "../../models/pull-request-reviewer";
 import { s } from "../../values/Strings";
+import { Link } from "../Link";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
@@ -149,9 +150,9 @@ export function PullRequestRow(props: IProps) {
                         </Label>
                     </span>
                     <span>{tags}</span>
-                    <span className={"WorkItemLink"} onClick={() => Platform.current.openUrl(pullRequest.url)}>
+                    <Link className="WorkItemLink" href={pullRequest.url}>
                         {pullRequest.title}
-                    </span>
+                    </Link>
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>

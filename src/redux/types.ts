@@ -19,7 +19,7 @@ export type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "err
 
 export type TLocale = "en" | "ru";
 
-export type TDialog = "openById" | "feedback" | "addLink";
+export type TDialog = "openById" | "feedback" | "addLink" | "exportSettings" | "importSettings";
 
 export enum Reducers {
     App = "app",

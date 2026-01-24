@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Form, Label, Icon, DropdownItemProps } from "semantic-ui-react";
-import Platform from "../../../helpers/Platform";
+import { DropdownItemProps, Form, Header, Icon, Label } from "semantic-ui-react";
+import avatar from "../../../assets/ti.jpg";
+import Platform, { PlatformType } from "../../../helpers/Platform";
 import Version from "../../../helpers/Version";
 import { appDialogSet, appSet, appViewSet } from "../../../redux/actions/appActions";
 import { settingsUpdate } from "../../../redux/actions/settingsActions";
@@ -8,7 +9,6 @@ import { appSelector } from "../../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { TLocale } from "../../../redux/types";
 import { s } from "../../../values/Strings";
-import avatar from "../../../assets/ti.jpg";
 
 const locales: DropdownItemProps[] = [
     { key: 2, text: s("localeEn"), value: "en" },
@@ -28,6 +28,7 @@ export function CreditsSection() {
         const os = Platform.current.os;
         if (os === "win32") return <Icon name="windows" />;
         if (os === "darwin") return <Icon name="apple" />;
+        if (os === "web") return <Icon name="globe" />;
         return os;
     };
 
@@ -107,37 +108,41 @@ export function CreditsSection() {
             <Header as="h3" dividing>
                 {s("settingsActionsHeader")}
             </Header>
-            <Label
-                as="a"
-                color="yellow"
-                onClick={() => {
-                    dispatch(appDialogSet("feedback", true));
-                }}
-            >
-                {s("feedbackSettingsButton")}
-            </Label>
-            <Label as="a" color="purple" onClick={() => Platform.current.openUrl("https://emestie.github.io/rocket")}>
-                {s("rocketBanner2")}
-            </Label>
+            {settings.accounts.length > 0 && (
+                <Label
+                    as="a"
+                    color="green"
+                    onClick={() => {
+                        dispatch(appDialogSet("feedback", true));
+                    }}
+                >
+                    {s("feedbackSettingsButton")}
+                </Label>
+            )}
             <br />
             <Header as="h3" dividing>
                 {s("settingsCreditsHeader")}
             </Header>
-            <Label as="a" image onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}>
+            <Label
+                as="a"
+                image
+                onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}
+                style={{ marginBottom: 8 }}
+            >
                 <img src={avatar} alt="" />
                 <Icon name="github" />
                 Emestie/flowerpot
             </Label>
-            <Label>
+            <Label style={{ marginBottom: 8 }}>
                 {s("versionWord")}
                 <Label.Detail>
                     {getPlatformIcon()} {Version.long}
                 </Label.Detail>
             </Label>
-            <Label as="a" onClick={showChangelog}>
+            <Label as="a" onClick={showChangelog} style={{ marginBottom: 8 }}>
                 {s("releaseNotes")}
             </Label>
-            {updateLabel}
+            {Platform.type === PlatformType.Web ? null : updateLabel}
         </>
     );
 }

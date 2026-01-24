@@ -8,6 +8,7 @@ import { WorkItem } from "../../models/work-item";
 import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
+import { Link } from "../Link";
 import { ProfileWidget } from "../ProfileWidget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
@@ -160,20 +161,20 @@ export function WorkItemRow(props: IProps) {
 
     return (
         <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
-            <Table.Cell
-                collapsing
-                className={"cellRelative " + getClass()}
-                onDoubleClick={() => {
-                    Platform.current.copyString(item.id.toString());
-                }}
-            >
+            <Table.Cell collapsing className={"cellRelative " + getClass()}>
                 <ContextMenuTrigger id={uid}>
-                    <Id item={item} hasChanges={hasChanges} />
+                    <span style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
+                        <span
+                            onDoubleClick={() => {
+                                Platform.current.copyString(item.id.toString());
+                            }}
+                        >
+                            <Id item={item} hasChanges={hasChanges} />
+                        </span>
+                        <span>{promptnessEl}</span>
+                    </span>
                 </ContextMenuTrigger>
                 <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid + ""}>{promptnessEl}</ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell>
                 <ContextMenuTrigger id={uid}>
@@ -181,14 +182,9 @@ export function WorkItemRow(props: IProps) {
                     <IterationPath item={item} />
                     <span title={item.requestNumber}>{item.requestNumber ? <Icon name="phone volume" /> : <></>}</span>
                     <span>{tags}</span>
-                    <span
-                        className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")}
-                        onClick={() => {
-                            Platform.current.openUrl(item.url);
-                        }}
-                    >
+                    <Link className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} href={item.url}>
                         <HighlightenText text={item.titleFull} />
-                    </span>
+                    </Link>
                     {!!fullNote && (
                         <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + fullNote}>
                             <Label basic color={noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
@@ -203,35 +199,31 @@ export function WorkItemRow(props: IProps) {
                     <Status workItem={item} />
                 </ContextMenuTrigger>
             </Table.Cell>
-            <Table.Cell
-                collapsing
-                onDoubleClick={() => {
-                    Platform.current.copyString(item.assignedToTextName);
-                }}
-            >
-                <ContextMenuTrigger id={uid}>
-                    <ProfileWidget
-                        accountId={props.query.accountId}
-                        avatarUrl={item.assignedToImg}
-                        displayName={item.assignedTo}
-                        nameFull={item.assignedToFull}
-                    />
-                </ContextMenuTrigger>
-            </Table.Cell>
-            <Table.Cell
-                collapsing
-                onDoubleClick={() => {
-                    Platform.current.copyString(item.createdByTextName);
-                }}
-            >
-                <ContextMenuTrigger id={uid}>
-                    <ProfileWidget
-                        accountId={props.query.accountId}
-                        avatarUrl={item.createdByImg}
-                        displayName={item.createdBy}
-                        nameFull={item.createdByFull}
-                    />
-                </ContextMenuTrigger>
+            <Table.Cell collapsing>
+                <span className="dual-container">
+                    <span className="dual-part-half">
+                        <ContextMenuTrigger id={uid}>
+                            <ProfileWidget
+                                accountId={props.query.accountId}
+                                avatarUrl={item.assignedToImg}
+                                displayName={item.assignedTo}
+                                nameFull={item.assignedToFull}
+                                copyName={item.assignedToTextName}
+                            />
+                        </ContextMenuTrigger>
+                    </span>
+                    <span className="dual-part-half">
+                        <ContextMenuTrigger id={uid}>
+                            <ProfileWidget
+                                accountId={props.query.accountId}
+                                avatarUrl={item.createdByImg}
+                                displayName={item.createdBy}
+                                nameFull={item.createdByFull}
+                                copyName={item.createdByTextName}
+                            />
+                        </ContextMenuTrigger>
+                    </span>
+                </span>
             </Table.Cell>
             <Table.Cell collapsing>
                 <ContextMenuTrigger id={uid}>

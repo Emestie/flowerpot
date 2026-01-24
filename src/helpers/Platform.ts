@@ -1,13 +1,14 @@
 import { eapi } from "#preload";
 import { TLocale } from "../redux/types";
 import ElectronPlatform from "./platforms/Electron";
+import WebPlatform from "./platforms/Web";
 
 export interface INotificationData {
     title: string;
     body?: string;
 }
 
-export interface IPlatformExtension {
+export interface IPlatformClass {
     isLocal: () => boolean;
     getStoreProp: <T = unknown>(prop: string) => Promise<T>;
     setStoreProp: (prop: string, value: any) => void;
@@ -20,10 +21,10 @@ export interface IPlatformExtension {
     isDev: () => boolean;
     toggleConsole: () => void;
     updateApp: () => void;
-    showNativeNotif: (data: INotificationData) => void;
+    showNotification: (data: INotificationData) => void;
     checkForUpdates: (cyclic?: boolean) => void;
     reactIsReady: () => void;
-    get os(): string;
+    get os(): OS;
     initUpdateListeners: () => void;
 }
 
@@ -32,10 +33,10 @@ export enum PlatformType {
     Web,
 }
 
-export type TOS = "win32" | "darwin";
+export type OS = "win32" | "darwin" | "web" | "linux" | "android" | "ios";
 
 export default class Platform {
-    private static _current: IPlatformExtension;
+    private static _current: IPlatformClass;
     private static _type: PlatformType;
 
     public static get type() {
@@ -55,11 +56,11 @@ export default class Platform {
             case PlatformType.Electron:
                 this._current = new ElectronPlatform();
                 break;
-            // case PlatformType.Web:
-            //     this._current = new WebPlatform();
-            //     break;
+            case PlatformType.Web:
+                this._current = new WebPlatform();
+                break;
             default:
-                throw new Error("Unknown Platform.current.");
+                throw new Error("Unknown platform type: " + this.type);
         }
     }
 

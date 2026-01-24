@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Header } from "semantic-ui-react";
-import Platform from "../../../helpers/Platform";
+import Platform, { PlatformType } from "../../../helpers/Platform";
 import { TNotificationsMode, TSortPattern } from "../../../helpers/Settings";
 import { settingsUpdate } from "../../../redux/actions/settingsActions";
 import { TableScale } from "../../../redux/reducers/settingsReducer";
@@ -26,6 +26,7 @@ const getTableScales: () => DropdownItemProps[] = () => [
 ];
 
 const getRefreshRates: () => DropdownItemProps[] = () => [
+    { key: 1, text: s("refreshNever"), value: 999999999 },
     { key: 2, text: s("refresh3m"), value: 180 },
     { key: 3, text: s("refresh5m"), value: 300 },
     { key: 4, text: s("refresh10m"), value: 600 },
@@ -42,7 +43,7 @@ export function WorkItemsSection() {
     const sortPatterns = getSortPatterns();
 
     if (Platform.current.isDev()) {
-        if (refreshRates.length !== 5)
+        if (refreshRates.length !== 6)
             refreshRates.push({
                 key: Math.random(),
                 text: s("refreshdebug"),
@@ -73,6 +74,11 @@ export function WorkItemsSection() {
     const toggleQueryColorCode = () => {
         const enableQueryColorCode = !settings.enableQueryColorCode;
         dispatch(settingsUpdate({ enableQueryColorCode }));
+    };
+
+    const toggleShowEmptyQueries = () => {
+        const showEmptyQueries = !settings.showEmptyQueries;
+        dispatch(settingsUpdate({ showEmptyQueries }));
     };
 
     const onTableScaleSelect = (val: TableScale) => {
@@ -114,19 +120,27 @@ export function WorkItemsSection() {
                 onChange={(e, { value }) => onSortSelect(value as TSortPattern)}
             />
             <br />
-            <Form.Select
-                label={s("ddShowNotifLabel")}
-                options={notificationsModes}
-                value={settings.notificationsMode}
-                onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
-            />
-            <br />
-            <Form.Checkbox
-                label={s("cbIconLabel")}
-                checked={settings.iconChangesOnMyWorkItemsOnly}
-                onChange={toggleIconColor}
-            />
-            <br />
+            {Platform.type === PlatformType.Electron && (
+                <>
+                    <Form.Select
+                        label={s("ddShowNotifLabel")}
+                        options={notificationsModes}
+                        value={settings.notificationsMode}
+                        onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
+                    />
+                    <br />
+                </>
+            )}
+            {Platform.type === PlatformType.Electron && (
+                <>
+                    <Form.Checkbox
+                        label={s("cbIconLabel")}
+                        checked={settings.iconChangesOnMyWorkItemsOnly}
+                        onChange={toggleIconColor}
+                    />
+                    <br />
+                </>
+            )}
             <Form.Checkbox label={s("mineOnTop")} checked={settings.mineOnTop} onChange={toggleMineOnTop} />
             <br />
             <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
@@ -141,6 +155,12 @@ export function WorkItemsSection() {
                 label={s("enableQueryColorCode")}
                 checked={settings.enableQueryColorCode}
                 onChange={toggleQueryColorCode}
+            />
+            <br />{" "}
+            <Form.Checkbox
+                label={s("showEmptyQueries")}
+                checked={settings.showEmptyQueries}
+                onChange={toggleShowEmptyQueries}
             />
             <br />
             <Form.Select

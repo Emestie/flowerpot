@@ -10,7 +10,8 @@ export function createLoader(params: IApiClientParams) {
     ): Promise<T> {
         try {
             const _tfsPath = params.getTfsPath();
-            const _url = url.replace(_tfsPath, "");
+            //second replace to support proxy mode
+            const _url = url.replace(_tfsPath, "").replace(/^.*?\/tfs\//, "");
 
             const result = await fetch(_tfsPath + _url, {
                 method: options?.method || "GET",

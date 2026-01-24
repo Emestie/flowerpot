@@ -7,6 +7,7 @@ import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { PullRequestsBlock } from "../components/pull-requests/PullRequestsBlock";
 import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
+import { triggerCollapseAll, triggerExpandAll } from "../events/collapse-expand";
 import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
 import { Query } from "../models/query";
@@ -16,7 +17,6 @@ import { appSelector } from "../redux/selectors/appSelectors";
 import { dataSelector } from "../redux/selectors/dataSelectors";
 import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
-import { useEventStore } from "../zustand/event";
 import { useQuickSearchStore } from "../zustand/quick-search";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
@@ -33,11 +33,9 @@ export function MainView() {
     const settings = useSelector(settingsSelector);
     const { changesCollection } = useSelector(dataSelector);
     const storedQueries = useSelector(getQueriesSelector());
-
-    const quickSearchValue = useQuickSearchStore((s) => s.value);
     const setQuickSearchValue = useQuickSearchStore((s) => s.setValue);
-
     const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
+    const [isMobileSearchShown, setIsMobileSearchShown] = useState(false);
 
     const expandCollapseOperation = settings.collapsedBlocks.length ? "expand" : "collapse";
 
@@ -45,13 +43,19 @@ export function MainView() {
         setTimeout(() => setIsRefreshAvailable(true), 5000);
     }, []);
 
+    useEffect(() => {
+        if (!isMobileSearchShown) {
+            setQuickSearchValue("");
+        }
+    }, [isMobileSearchShown]);
+
     const onShowMineOnly = () => {
         dispatch(appShowMineOnlySet(!showMineOnly));
     };
 
     const onExpandCollapse = () => {
-        if (expandCollapseOperation === "collapse") useEventStore.getState().collapseAll();
-        else useEventStore.getState().expandAll();
+        if (expandCollapseOperation === "collapse") triggerCollapseAll();
+        else triggerExpandAll();
     };
 
     const onRefresh = () => {
@@ -64,6 +68,10 @@ export function MainView() {
 
     const onOpenById = () => {
         dispatch(appDialogSet("openById", true));
+    };
+
+    const showSearchBar = () => {
+        setIsMobileSearchShown((s) => !s);
     };
 
     const updateApp = () => Platform.current.updateApp();
@@ -108,7 +116,12 @@ export function MainView() {
                                 {s("installUpdate")}
                             </Button>
                         )}
-                        <Button icon onClick={onExpandCollapse} hint={s("expandCollapseAll")}>
+                        <Button
+                            icon
+                            onClick={onExpandCollapse}
+                            hint={s("expandCollapseAll")}
+                            className="hide-on-mobile"
+                        >
                             {expandCollapseOperation === "collapse" ? (
                                 <Icon name="angle double down" />
                             ) : (
@@ -118,17 +131,18 @@ export function MainView() {
                         <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
                             <Icon name="user outline" />
                         </Button>
-                        <div style={{ display: "inline-block", marginRight: 3.5 }}>
-                            <Form.Input
-                                size="small"
-                                placeholder={s("quicksearch")}
-                                value={quickSearchValue}
-                                onChange={(e) => {
-                                    if (e.target.value && !e.target.value.trim()) setQuickSearchValue("");
-                                    else setQuickSearchValue(e.target.value);
-                                }}
-                            />
+                        <div className="hide-on-mobile" style={{ display: "inline-block", marginRight: 3.5 }}>
+                            <SearchBar />
                         </div>
+                        <Button
+                            className="show-on-mobile"
+                            icon
+                            onClick={showSearchBar}
+                            hint={s("showSearch")}
+                            primary={isMobileSearchShown}
+                        >
+                            <Icon name="search" />
+                        </Button>
                         <Button icon onClick={onOpenById} hint={s("openById")}>
                             <Icon name="external share" />
                         </Button>
@@ -148,6 +162,11 @@ export function MainView() {
             }
         >
             <Container fluid>
+                {isMobileSearchShown && (
+                    <div className="show-on-mobile">
+                        <SearchBar />
+                    </div>
+                )}
                 <WhatsNewBanner />
                 <ActionBannersContainer />
                 {settings.accounts.map((account) => (
@@ -156,5 +175,23 @@ export function MainView() {
                 {queriesBlocks}
             </Container>
         </PageLayout>
+    );
+}
+
+function SearchBar() {
+    const quickSearchValue = useQuickSearchStore((s) => s.value);
+    const setQuickSearchValue = useQuickSearchStore((s) => s.setValue);
+
+    return (
+        <Form.Input
+            className="qs-input"
+            size="small"
+            placeholder={s("quicksearch")}
+            value={quickSearchValue}
+            onChange={(e) => {
+                if (e.target.value && !e.target.value.trim()) setQuickSearchValue("");
+                else setQuickSearchValue(e.target.value);
+            }}
+        />
     );
 }

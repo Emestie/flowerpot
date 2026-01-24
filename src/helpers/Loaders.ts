@@ -21,16 +21,6 @@ export default class Loaders {
         }
     }
 
-    public static async checkTfsPath(url: string) {
-        try {
-            let res = await fetch(url);
-            if (res.status !== 401 && res.status !== 200) return false;
-            else return true;
-        } catch (ex: any) {
-            return false;
-        }
-    }
-
     public static async getUserData(url: string, token: string) {
         const api = createApiClient({
             getAccountId() {
