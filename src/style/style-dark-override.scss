@@ -149,6 +149,10 @@ $rowItemHover: lighten($bg, 10%);
             background-color: $bg4;
         }
     }
+    .filter-toggle-button.ui.basic.button:hover,
+    .filter-toggle-button.ui.basic.button:focus {
+        background-color: $bg !important;
+    }
 
     .ui.checkbox label,
     .ui.checkbox + label,
