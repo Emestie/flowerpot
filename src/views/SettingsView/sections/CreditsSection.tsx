@@ -108,15 +108,17 @@ export function CreditsSection() {
             <Header as="h3" dividing>
                 {s("settingsActionsHeader")}
             </Header>
-            <Label
-                as="a"
-                color="green"
-                onClick={() => {
-                    dispatch(appDialogSet("feedback", true));
-                }}
-            >
-                {s("feedbackSettingsButton")}
-            </Label>
+            {settings.accounts.length > 0 && (
+                <Label
+                    as="a"
+                    color="green"
+                    onClick={() => {
+                        dispatch(appDialogSet("feedback", true));
+                    }}
+                >
+                    {s("feedbackSettingsButton")}
+                </Label>
+            )}
             <br />
             <Header as="h3" dividing>
                 {s("settingsCreditsHeader")}
