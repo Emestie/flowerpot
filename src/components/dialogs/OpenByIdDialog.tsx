@@ -5,6 +5,7 @@ import Platform from "../../helpers/Platform";
 import { appDialogSet } from "../../redux/actions/appActions";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { store } from "../../redux/store";
 import { s } from "../../values/Strings";
 import { CollectionSelector } from "../CollectionSelector";
 
@@ -39,7 +40,9 @@ export function OpenByIdDialog(p: IProps) {
 
         if (!account || !collectionName || !id) return;
 
-        Platform.current.openUrl(account.url + collectionName + "/_workitems/edit/" + id);
+        const calculatedUrl = store.getState().data.workItems.at(0)?.url.split("/tfs/").at(0) + "/tfs/";
+
+        Platform.current.openUrl((calculatedUrl || account.url) + collectionName + "/_workitems/edit/" + id);
 
         onCancel();
     };
