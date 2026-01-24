@@ -70,36 +70,33 @@ export function PullRequestsBlock(props: { accountId: string }) {
                     >
                         <Icon size="small" name="refresh" />
                     </span>
-                    {hasHidden && (
-                        <FilterToggleButton
-                            label={s("hiddenPrFilter")}
-                            checked={includeHiddenPRs}
-                            onChange={() => {
-                                dispatch(settingsUpdate({ includeHiddenPRs: !includeHiddenPRs }));
-                            }}
-                            icon="eye slash"
-                        />
-                    )}
-                    {hasTeams && (
-                        <FilterToggleButton
-                            label={s("groupPrFilter")}
-                            checked={includeTeamsPRs}
-                            onChange={() => {
-                                dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
-                            }}
-                            icon="users"
-                        />
-                    )}
-                    {hasAcceptedByMe && (
-                        <FilterToggleButton
-                            label={s("acceptedByMeFilter")}
-                            checked={includeAcceptedByMePRs}
-                            onChange={() => {
-                                dispatch(settingsUpdate({ includeAcceptedByMePRs: !includeAcceptedByMePRs }));
-                            }}
-                            icon="checkmark"
-                        />
-                    )}
+                    <FilterToggleButton
+                        label={s("hiddenPrFilter")}
+                        checked={includeHiddenPRs}
+                        onChange={() => {
+                            dispatch(settingsUpdate({ includeHiddenPRs: !includeHiddenPRs }));
+                        }}
+                        icon="eye slash"
+                        visible={hasHidden}
+                    />
+                    <FilterToggleButton
+                        label={s("groupPrFilter")}
+                        checked={includeTeamsPRs}
+                        onChange={() => {
+                            dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
+                        }}
+                        icon="users"
+                        visible={hasTeams}
+                    />
+                    <FilterToggleButton
+                        label={s("acceptedByMeFilter")}
+                        checked={includeAcceptedByMePRs}
+                        onChange={() => {
+                            dispatch(settingsUpdate({ includeAcceptedByMePRs: !includeAcceptedByMePRs }));
+                        }}
+                        icon="checkmark"
+                        visible={hasAcceptedByMe}
+                    />
                 </div>
             }
         >

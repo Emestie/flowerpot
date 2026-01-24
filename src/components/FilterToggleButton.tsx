@@ -6,20 +6,29 @@ interface FilterToggleButtonProps {
     onChange: () => void;
     icon: SemanticICONS;
     label: string;
+    visible?: boolean;
 }
 
-export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({ checked, onChange, icon, label }) => {
+export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({
+    checked,
+    onChange,
+    icon,
+    label,
+    visible = true,
+}) => {
+    if (!visible) return null;
     return (
         <Button
             basic={!checked}
-            active={checked} 
+            active={checked}
             onClick={onChange}
             title={label}
             className="filter-toggle-button"
             compact
             size="tiny"
-            style={{ position: 'relative', overflow: 'hidden' }}
-            toggle icon
+            style={{ position: "relative", overflow: "hidden" }}
+            toggle
+            icon
         >
             <Icon name={icon} />
             {!checked && (
