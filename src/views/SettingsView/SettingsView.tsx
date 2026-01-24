@@ -91,7 +91,10 @@ export function SettingsView() {
 
     const sectionsMenuItems = sectionsList
         .filter((section) => {
-            if (!accounts?.length) return section.id === Sections.Account || section.id === Sections.Credits;
+            if (!accounts?.length)
+                return (
+                    section.id === Sections.Account || section.id === Sections.Credits || section.id === Sections.Import
+                );
             return true;
         })
         .map((section, i) => (

@@ -14,7 +14,8 @@ export function preloadConnectionData(accountId: string) {
                 singletonPromise[accountId] = null;
 
                 return resp;
-            });
+            })
+            .catch(() => undefined);
     }
 
     return singletonPromise[accountId];

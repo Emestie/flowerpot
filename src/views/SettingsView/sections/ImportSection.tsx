@@ -1,10 +1,12 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Header } from "semantic-ui-react";
 import { appDialogSet } from "../../../redux/actions/appActions";
+import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { s } from "../../../values/Strings";
 
 export function ImportSection() {
     const dispatch = useDispatch();
+    const settings = useSelector(settingsSelector);
 
     return (
         <>
@@ -14,13 +16,15 @@ export function ImportSection() {
             {s("importSettingsDesc")}
             <br />
             <br />
-            <Button
-                onClick={() => {
-                    dispatch(appDialogSet("exportSettings", true));
-                }}
-            >
-                {s("doExportSettings")}
-            </Button>
+            {settings.accounts.length > 0 && (
+                <Button
+                    onClick={() => {
+                        dispatch(appDialogSet("exportSettings", true));
+                    }}
+                >
+                    {s("doExportSettings")}
+                </Button>
+            )}
             <br />
             <br />
             <Button

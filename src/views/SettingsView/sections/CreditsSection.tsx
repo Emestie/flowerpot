@@ -27,8 +27,10 @@ export function CreditsSection() {
     const getPlatformIcon = () => {
         const os = Platform.current.os;
         if (os === "win32") return <Icon name="windows" />;
-        if (os === "darwin") return <Icon name="apple" />;
+        if (os === "darwin" || os === "ios") return <Icon name="apple" />;
         if (os === "web") return <Icon name="globe" />;
+        if (os === "linux") return <Icon name="linux" />;
+        if (os === "android") return <Icon name="android" />;
         return os;
     };
 

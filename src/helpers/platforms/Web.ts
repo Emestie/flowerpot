@@ -5,11 +5,11 @@ import webStore from "./web/WebStore";
 export default class WebPlatform implements IPlatformClass {
     get os() {
         const ua = window.navigator.userAgent;
+        if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+        if (/Android/i.test(ua)) return "android";
         if (/Windows/i.test(ua)) return "win32";
         if (/Macintosh|Mac OS X/i.test(ua)) return "darwin";
         if (/Linux/i.test(ua)) return "linux";
-        if (/Android/i.test(ua)) return "android";
-        if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
         return "web";
     }
 
