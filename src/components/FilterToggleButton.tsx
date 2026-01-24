@@ -1,5 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Button, Icon, SemanticICONS } from "semantic-ui-react";
+import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 interface FilterToggleButtonProps {
     checked: boolean;
@@ -18,7 +20,10 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({
     label,
     visible = true,
 }) => {
+    const settings = useSelector(settingsSelector);
+
     if (!visible || (!icon && !imgUrl)) return null;
+
     return (
         <Button
             basic={!checked}
@@ -31,7 +36,7 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({
             icon
         >
             {icon ? (
-                <Icon name={icon} />
+                <Icon name={icon} style={settings.darkTheme ? { color: "white" } : undefined} />
             ) : (
                 <img
                     src={imgUrl}
@@ -46,7 +51,7 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({
                         top: "50%",
                         left: "50%",
                         width: "150%",
-                        height: "3px",
+                        height: "2px",
                         backgroundColor: "red",
                         transform: "translate(-50%, -50%) rotate(45deg)",
                         pointerEvents: "none",
