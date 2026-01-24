@@ -33,7 +33,7 @@ export enum PlatformType {
     Web,
 }
 
-export type OS = "win32" | "darwin" | "web";
+export type OS = "win32" | "darwin" | "web" | "linux" | "android" | "ios";
 
 export default class Platform {
     private static _current: IPlatformClass;

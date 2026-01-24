@@ -1,10 +1,16 @@
 import { TLocale } from "../../redux/types";
-import { INotificationData, IPlatformClass, OS } from "../Platform";
+import { INotificationData, IPlatformClass } from "../Platform";
 import webStore from "./web/WebStore";
 
 export default class WebPlatform implements IPlatformClass {
     get os() {
-        return "web" as OS;
+        const ua = window.navigator.userAgent;
+        if (/Windows/i.test(ua)) return "win32";
+        if (/Macintosh|Mac OS X/i.test(ua)) return "darwin";
+        if (/Linux/i.test(ua)) return "linux";
+        if (/Android/i.test(ua)) return "android";
+        if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+        return "web";
     }
 
     getStoreProp<T = unknown>(prop: string) {
