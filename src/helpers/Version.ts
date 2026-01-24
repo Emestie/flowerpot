@@ -34,7 +34,7 @@ export default class Version {
         store.dispatch(settingsUpdate({ lastTimeVersion, lastTimeVersionLong }));
 
         setTimeout(() => {
-            Telemetry.versionUsageInfo();
+            if (store.getState().settings.accounts.length > 0) Telemetry.versionUsageInfo();
         }, 5000);
     }
 }
