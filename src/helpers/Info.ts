@@ -1,5 +1,6 @@
 import { appViewSet } from "../redux/actions/appActions";
 import { store } from "../redux/store";
+import Platform from "./Platform";
 
 export class Info {
     private static listenerDictionary: Record<string, () => void> = {
@@ -14,6 +15,19 @@ export class Info {
             document.getElementById("testbutton1")?.addEventListener("click", () => {
                 console.log("cd2");
                 store.dispatch(appViewSet("info", { contentFileName: "test1.md" }));
+            });
+        },
+        "changelog.md": () => {
+            document.getElementById("flowerpot-pwa-button")?.addEventListener("click", () => {
+                Platform.current.openUrl("https://flowerpot-pwa.web.app");
+            });
+            document.getElementById("go-to-old-changelog")?.addEventListener("click", () => {
+                store.dispatch(appViewSet("info", { contentFileName: "changelog-old.md" }));
+            });
+        },
+        "changelog-old.md": () => {
+            document.getElementById("go-to-new-changelog")?.addEventListener("click", () => {
+                store.dispatch(appViewSet("info", { contentFileName: "changelog.md" }));
             });
         },
     };
