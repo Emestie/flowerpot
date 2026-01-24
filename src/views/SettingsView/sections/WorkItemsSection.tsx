@@ -26,7 +26,7 @@ const getTableScales: () => DropdownItemProps[] = () => [
 ];
 
 const getRefreshRates: () => DropdownItemProps[] = () => [
-    { key: 1, text: s("refreshNever"), value: 999999999 },
+    { key: 1, text: s("refreshNever"), value: 999999 },
     { key: 2, text: s("refresh3m"), value: 180 },
     { key: 3, text: s("refresh5m"), value: 300 },
     { key: 4, text: s("refresh10m"), value: 600 },
