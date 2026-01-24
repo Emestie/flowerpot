@@ -4,7 +4,8 @@ import { Button, Icon, SemanticICONS } from "semantic-ui-react";
 interface FilterToggleButtonProps {
     checked: boolean;
     onChange: () => void;
-    icon: SemanticICONS;
+    icon?: SemanticICONS;
+    imgUrl?: string;
     label: string;
     visible?: boolean;
 }
@@ -13,24 +14,31 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({
     checked,
     onChange,
     icon,
+    imgUrl,
     label,
     visible = true,
 }) => {
-    if (!visible) return null;
+    if (!visible || (!icon && !imgUrl)) return null;
     return (
         <Button
             basic={!checked}
-            active={checked}
             onClick={onChange}
             title={label}
             className="filter-toggle-button"
             compact
             size="tiny"
             style={{ position: "relative", overflow: "hidden" }}
-            toggle
             icon
         >
-            <Icon name={icon} />
+            {icon ? (
+                <Icon name={icon} />
+            ) : (
+                <img
+                    src={imgUrl}
+                    alt={label}
+                    style={{ height: "11px", width: "14px", display: "inline-block", margin: "0 auto" }}
+                />
+            )}
             {!checked && (
                 <div
                     style={{
