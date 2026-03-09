@@ -1,13 +1,14 @@
-import { clipboard, ipcRenderer, shell } from "electron";
+import { ipcRenderer } from "electron";
 
 const isDev = import.meta.env.DEV;
 
 const platformName = process.platform;
 
 export const eapi = {
-    shell,
+    shellOpenExternal: (url: string) => ipcRenderer.send("shell-open-external", url),
     isDev,
-    clipboard,
+    clipboardWriteText: (text: string) => ipcRenderer.send("clipboard-write-text", text),
+    clipboardReadText: () => ipcRenderer.invoke("clipboard-read-text"),
     platformName,
     ipcInvoke: async <RT = any>(channel: string, ...args: any) => {
         return (await ipcRenderer.invoke(channel, ...args)) as RT;
