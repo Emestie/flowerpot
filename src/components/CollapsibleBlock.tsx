@@ -76,7 +76,7 @@ export function CollapsibleBlock(props: {
         <>
             <Header as="h3" style={{ marginBottom: 0 }}>
                 <div style={{ display: "flex" }} className="dynamic-flex-wrap">
-                    <div style={{ display: "flex", verticalAlign: "middle", width: "100%", alignItems: "baseline" }}>
+                    <div style={{ display: "flex", width: "100%", alignItems: "center" }}>
                         {isLoading && (
                             <span>
                                 <Icon name="circle notched" loading />
