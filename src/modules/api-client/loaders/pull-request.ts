@@ -15,7 +15,7 @@ export function createPullRequestLoaders(params: IApiClientParams, loader: Loade
                 await Promise.all(
                     projects.map((p) =>
                         loader<IValue<IResponsePullRequest[]>>(
-                            `${p.collectionName}/${p.name}/_apis/git/pullrequests?api-version=5`
+                            `${p.collectionName}/${p.name}/_apis/git/pullrequests?$top=10000&api-version=7.1`
                         ).then((resp) => {
                             if (resp?.message && resp.errorCode !== undefined) {
                                 throw new Error(resp.message);
