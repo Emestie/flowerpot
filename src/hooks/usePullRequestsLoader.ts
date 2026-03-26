@@ -86,5 +86,6 @@ export function usePullRequestsLoader(
         hasTeams,
         hasAcceptedByMe,
         hasHidden,
+        allPullRequests,
     };
 }

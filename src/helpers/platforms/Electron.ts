@@ -19,7 +19,7 @@ export default class ElectronPlatform implements IPlatformClass {
     }
 
     public copyString(s: string) {
-        eapi.clipboard.writeText(s);
+        eapi.clipboardWriteText(s);
     }
 
     public changeLocale(locale: TLocale) {
@@ -74,7 +74,7 @@ export default class ElectronPlatform implements IPlatformClass {
     }
 
     public openUrl(url: string) {
-        eapi.shell.openExternal(url);
+        eapi.shellOpenExternal(url);
     }
 
     public checkForUpdates(cyclic?: boolean) {

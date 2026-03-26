@@ -74,7 +74,7 @@ app.on("web-contents-created", (_, contents) => {
     contents.session.setPermissionRequestHandler((webContents, permission, callback) => {
         const { origin } = new URL(webContents.getURL());
 
-        const permissionGranted = !!ALLOWED_ORIGINS_AND_PERMISSIONS.get(origin)?.has(permission);
+        const permissionGranted = !!ALLOWED_ORIGINS_AND_PERMISSIONS.get(origin)?.has(permission as any);
         callback(permissionGranted);
 
         if (!permissionGranted && import.meta.env.DEV) {

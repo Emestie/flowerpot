@@ -96,11 +96,16 @@ export function PullRequestRow(props: IProps) {
     return (
         <Table.Row>
             <Table.Cell
-                className={pullRequest.isHidden() ? "cellRelative workItemDeferred" : undefined}
+                className={pullRequest.isHidden() ? "cellRelative workItemDeferred " : "cellRelative "}
                 collapsing
                 onDoubleClick={() => Platform.current.copyString(pullRequest.id.toString())}
             >
                 <ContextMenuTrigger id={uid}>
+                    {pullRequest.newThreadsCount > 0 && (
+                        <span className="PrUnreadDot" title={s("unreadPrHint")}>
+                            {pullRequest.newThreadsCount > 99 ? "99" : pullRequest.newThreadsCount}
+                        </span>
+                    )}
                     <Icon name="level up alternate" /> {pullRequest.id}
                 </ContextMenuTrigger>
                 <PullRequestContextMenu uid={uid} pullRequest={pullRequest} />

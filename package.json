@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "description": "TFS/Azure DevOps work items tracking tool",
     "author": {
         "name": "Valery Murashko",
@@ -41,7 +41,7 @@
         "@types/redux-logger": "^3.0.10",
         "@vitejs/plugin-react": "^4.3.1",
         "cross-env": "^7.0.3",
-        "electron": "^19.1.9",
+        "electron": "^40.8.0",
         "electron-builder": "^24.13.3",
         "express": "^5.2.1",
         "prettier": "^3.3.3",

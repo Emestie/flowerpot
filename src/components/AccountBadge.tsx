@@ -52,6 +52,7 @@ export function AccountBadge(props: {
                 display: props.display === "flex" ? "flex" : "inline-block",
                 justifyContent: "center",
                 alignItems: "center",
+                verticalAlign: "middle",
                 marginRight: props.rightGap,
             }}
         >

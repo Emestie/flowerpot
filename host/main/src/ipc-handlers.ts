@@ -1,4 +1,4 @@
-import { app, ipcMain } from "electron";
+import { app, clipboard, ipcMain, shell } from "electron";
 import { autoUpdater } from "electron-updater";
 import { iconUpdateTask, registerAutostart, showNotification, tray } from "./functions";
 import { getAppWindow } from "./main-window";
@@ -67,3 +67,7 @@ ipcMain.on("save-settings-prop", (_, data) => {
 });
 
 ipcMain.on("toggle-dev-tools", (_) => getAppWindow()?.webContents.openDevTools());
+
+ipcMain.on("clipboard-write-text", (_, text) => clipboard.writeText(text));
+ipcMain.handle("clipboard-read-text", () => clipboard.readText());
+ipcMain.on("shell-open-external", (_, url) => shell.openExternal(url));

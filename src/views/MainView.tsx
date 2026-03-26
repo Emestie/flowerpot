@@ -84,20 +84,21 @@ export function MainView() {
 
     const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
-    const queriesBlocks =
-        settings.accounts.length === 0 ? (
-            <Message info>
-                <Message.Header>{s("noAccountsSetup")}</Message.Header>
-                <p>{s("noAccountsSetupText")}</p>
-            </Message>
-        ) : queries.length ? (
-            queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
-        ) : (
-            <Message info>
-                <Message.Header>{s("noQueriesToWatch")}</Message.Header>
-                <p>{s("noQueriesToWatchText")}</p>
-            </Message>
-        );
+    const noAccounts = settings.accounts.length === 0;
+
+    const queriesBlocks = noAccounts ? (
+        <Message info>
+            <Message.Header>{s("noAccountsSetup")}</Message.Header>
+            <p>{s("noAccountsSetupText")}</p>
+        </Message>
+    ) : queries.length ? (
+        queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
+    ) : (
+        <Message info>
+            <Message.Header>{s("noQueriesToWatch")}</Message.Header>
+            <p>{s("noQueriesToWatchText")}</p>
+        </Message>
+    );
 
     if (!queries.length) {
         Platform.current.updateTrayIcon(4);
@@ -116,44 +117,56 @@ export function MainView() {
                                 {s("installUpdate")}
                             </Button>
                         )}
-                        <Button
-                            icon
-                            onClick={onExpandCollapse}
-                            hint={s("expandCollapseAll")}
-                            className="hide-on-mobile"
-                        >
-                            {expandCollapseOperation === "collapse" ? (
-                                <Icon name="angle double down" />
-                            ) : (
-                                <Icon name="angle double right" />
-                            )}
-                        </Button>
-                        <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
-                            <Icon name="user outline" />
-                        </Button>
-                        <div className="hide-on-mobile" style={{ display: "inline-block", marginRight: 3.5 }}>
-                            <SearchBar />
-                        </div>
-                        <Button
-                            className="show-on-mobile"
-                            icon
-                            onClick={showSearchBar}
-                            hint={s("showSearch")}
-                            primary={isMobileSearchShown}
-                        >
-                            <Icon name="search" />
-                        </Button>
-                        <Button icon onClick={onOpenById} hint={s("openById")}>
-                            <Icon name="external share" />
-                        </Button>
-                        {!!settings.showUnreads && isChangesCollectionHasItems && (
+                        {!noAccounts && (
+                            <Button
+                                icon
+                                onClick={onExpandCollapse}
+                                hint={s("expandCollapseAll")}
+                                className="hide-on-mobile"
+                            >
+                                {expandCollapseOperation === "collapse" ? (
+                                    <Icon name="angle double down" />
+                                ) : (
+                                    <Icon name="angle double right" />
+                                )}
+                            </Button>
+                        )}
+                        {!noAccounts && (
+                            <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
+                                <Icon name="user outline" />
+                            </Button>
+                        )}
+                        {!noAccounts && (
+                            <div className="hide-on-mobile" style={{ display: "inline-block", marginRight: 3.5 }}>
+                                <SearchBar />
+                            </div>
+                        )}
+                        {!noAccounts && (
+                            <Button
+                                className="show-on-mobile"
+                                icon
+                                onClick={showSearchBar}
+                                hint={s("showSearch")}
+                                primary={isMobileSearchShown}
+                            >
+                                <Icon name="search" />
+                            </Button>
+                        )}
+                        {!noAccounts && (
+                            <Button icon onClick={onOpenById} hint={s("openById")}>
+                                <Icon name="external share" />
+                            </Button>
+                        )}
+                        {!!settings.showUnreads && isChangesCollectionHasItems && !noAccounts && (
                             <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
                                 <Icon name="check circle outline" />
                             </Button>
                         )}
-                        <Button icon onClick={onRefresh} disabled={!isRefreshAvailable} hint={s("refresh")}>
-                            <Icon name="refresh" />
-                        </Button>
+                        {!noAccounts && (
+                            <Button icon onClick={onRefresh} disabled={!isRefreshAvailable} hint={s("refresh")}>
+                                <Icon name="refresh" />
+                            </Button>
+                        )}
                         <Button icon onClick={onSettings} hint={s("settings")}>
                             <Icon name="setting" />
                         </Button>
@@ -168,7 +181,7 @@ export function MainView() {
                     </div>
                 )}
                 <WhatsNewBanner />
-                <ActionBannersContainer />
+                {!noAccounts && <ActionBannersContainer />}
                 {settings.accounts.map((account) => (
                     <PullRequestsBlock key={account.id} accountId={account.id} />
                 ))}
