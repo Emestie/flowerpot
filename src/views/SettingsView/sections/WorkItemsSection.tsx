@@ -156,7 +156,7 @@ export function WorkItemsSection() {
                 checked={settings.enableQueryColorCode}
                 onChange={toggleQueryColorCode}
             />
-            <br />{" "}
+            <br />
             <Form.Checkbox
                 label={s("showEmptyQueries")}
                 checked={settings.showEmptyQueries}

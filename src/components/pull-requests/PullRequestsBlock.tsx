@@ -22,8 +22,16 @@ export function PullRequestsBlock(props: { accountId: string }) {
 
     const projects = useMemo(() => _allProjects.filter((x) => x.accountId === props.accountId), []);
 
-    const { isLoading, pullRequests, routineStart, errorMessage, hasTeams, hasAcceptedByMe, hasHidden } =
-        usePullRequestsLoader(props.accountId, projects, includeTeamsPRs, includeAcceptedByMePRs, includeHiddenPRs);
+    const {
+        isLoading,
+        pullRequests,
+        routineStart,
+        errorMessage,
+        hasTeams,
+        hasAcceptedByMe,
+        hasHidden,
+        allPullRequests,
+    } = usePullRequestsLoader(props.accountId, projects, includeTeamsPRs, includeAcceptedByMePRs, includeHiddenPRs);
 
     if (!projects.filter((p) => p.enabled).length) return null;
 
@@ -43,7 +51,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
         <PullRequestRow key={pr.id} pullRequest={pr} accountId={props.accountId} />
     ));
 
-    if (!pullRequests.length && !showEmptyQueries) return null;
+    if (!pullRequests.length && !showEmptyQueries && !allPullRequests.length) return null;
 
     return (
         <CollapsibleBlock
