@@ -12,6 +12,7 @@ export interface IResponsePullRequest {
         id: string;
         name: string;
         project: {
+            id: string;
             name: string;
         };
     };
@@ -30,4 +31,21 @@ export interface IResponsePullRequest {
     sourceRefName: string;
     labels: { name: string }[];
     mergeStatus: "conflicts" | "succeeded";
+}
+
+export interface IPullRequestStats {
+    pullRequestArtifactId: string;
+    lastUpdatedDate: string;
+    commentsCount: number;
+    threadsExist: boolean;
+    newThreadsCount: Record<string, number> | null;
+}
+
+export interface IHierarchyQueryResponse {
+    dataProviders: {
+        "ms.vss-code-web.pullrequests-artifact-stats-data-provider"?: {
+            "TFS.VersionControl.PullRequestListArtifactStatsProvider.artifactStats": IPullRequestStats[];
+        };
+        [key: string]: any;
+    };
 }

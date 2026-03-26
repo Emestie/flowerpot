@@ -48,6 +48,21 @@ body,
     margin-right: 4px;
 }
 
+.PrUnreadDot {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: orange;
+    border-radius: 50%;
+    margin-right: 6px;
+    font-size: 10px;
+    font-weight: bold;
+    color: black;
+    vertical-align: middle;
+}
+
 .cellRelative {
     position: relative;
 }
@@ -379,4 +394,3 @@ a.url-link {
         font-size: 16px !important;
     }
 }
-

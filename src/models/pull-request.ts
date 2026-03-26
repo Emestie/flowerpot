@@ -18,6 +18,7 @@ export class PullRequest {
     projectName: string;
     repoName: string;
     repoId: string;
+    projectId: string;
     title: string;
     url: string;
     status: string;
@@ -27,10 +28,11 @@ export class PullRequest {
     targetBranch: string;
     labels: { name: string }[];
     mergeStatus: "conflicts" | "succeeded";
+    newThreadsCount: number;
 
     private connectionData: ReturnType<typeof getConnectionData>;
 
-    constructor(resp: IResponsePullRequest, tfsPath: string, collection: string, accountId: string) {
+    constructor(resp: IResponsePullRequest, collection: string, accountId: string, newThreadsCount: number) {
         this.connectionData = getConnectionData(accountId);
 
         this.id = resp.pullRequestId;
@@ -46,6 +48,7 @@ export class PullRequest {
         this.projectName = resp.repository.project.name;
         this.repoName = resp.repository.name;
         this.repoId = resp.repository.id;
+        this.projectId = resp.repository.project.id;
         this.reviewers = resp.reviewers.map(
             (rev) =>
                 new PullRequestReviewer(
@@ -65,6 +68,7 @@ export class PullRequest {
         this.targetBranch = resp.targetRefName.replace("refs/heads/", "");
         this.labels = resp.labels || [];
         this.mergeStatus = resp.mergeStatus;
+        this.newThreadsCount = newThreadsCount;
     }
 
     getBelonging(): null | "author" | "reviewer" | "team" {
@@ -96,6 +100,10 @@ export class PullRequest {
         return this.reviewers.some(
             (rev) => this.connectionData?.authenticatedUser.providerDisplayName === rev.name && rev.vote > 0
         );
+    }
+
+    isUnread(): boolean {
+        return this.newThreadsCount > 0;
     }
 
     isHidden(): boolean {

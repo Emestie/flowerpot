@@ -218,6 +218,7 @@ const en = {
     tableSizeLarge: "Large",
 
     newItem: "New or updated Work Item",
+    unreadPrHint: "New or updated Pull Request",
 
     selpAvailableHeader: "Available projects",
     noProjectsAvailable: "No projects available",

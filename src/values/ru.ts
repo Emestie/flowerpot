@@ -220,6 +220,7 @@ const ru: LocalizedStrings = {
     tableSizeLarge: "Крупный",
 
     newItem: "Новый или обновленный рабочий элемент",
+    unreadPrHint: "Новый или обновленный запрос на вытягивание",
 
     selpAvailableHeader: "Доступные проекты",
     noProjectsAvailable: "Нет доступных проектов",
