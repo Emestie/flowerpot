@@ -321,3 +321,13 @@ a.url-link {
     padding: 4px !important;
     display: inline-block !important;
 }
+
+/* Prevent automatic zoom on mobile devices when focusing inputs/textareas */
+@media screen and (max-width: 767px) {
+    input,
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+}
+
