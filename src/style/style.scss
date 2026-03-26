@@ -322,6 +322,11 @@ a.url-link {
     display: inline-block !important;
 }
 
+.filter-toggle-button-img {
+    padding: 2px !important;
+    display: inline-block !important;
+}
+
 /* Prevent automatic zoom on mobile devices when focusing inputs/textareas */
 @media screen and (max-width: 767px) {
     input,

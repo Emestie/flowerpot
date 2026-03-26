@@ -29,7 +29,7 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({
             basic={!checked}
             onClick={onChange}
             title={label}
-            className="filter-toggle-button"
+            className={icon ? "filter-toggle-button" : "filter-toggle-button-img"}
             compact
             size="tiny"
             style={{ position: "relative", overflow: "hidden" }}
@@ -41,7 +41,7 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({
                 <img
                     src={imgUrl}
                     alt={label}
-                    style={{ height: "11px", width: "14px", display: "inline-block", margin: "0 auto" }}
+                    style={{ height: "14px", width: "18px", display: "inline-block", margin: "0 auto" }}
                 />
             )}
             {!checked && (
