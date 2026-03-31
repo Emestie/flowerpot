@@ -9,10 +9,10 @@ export function HighlightenText({ text }: Props) {
 
     if (!highlights.length) return <span>{text}</span>;
 
-    const replaced = text.replace(
-        new RegExp(`(${highlights.join("|")})`, "gi"),
-        (replacee) => `<span class="marked">${replacee}</span>`
-    );
+    const escapedHighlights = highlights.map((h) => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    const regex = new RegExp(`(${escapedHighlights.join("|")})`, "gi");
+
+    const replaced = text.replace(regex, (replacee) => `<span class="marked">${replacee}</span>`);
 
     return <span dangerouslySetInnerHTML={{ __html: replaced }}></span>;
 }
