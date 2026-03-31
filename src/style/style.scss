@@ -394,3 +394,10 @@ a.url-link {
         font-size: 16px !important;
     }
 }
+
+/* Desktop only */
+@media (min-width: 591px) {
+    .show-on-mobile {
+        display: none !important;
+    }
+}
