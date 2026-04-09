@@ -1,0 +1,80 @@
+diff --git a/node_modules/@fluentui/react-component-ref/dist/commonjs/RefFindNode.js b/node_modules/@fluentui/react-component-ref/dist/commonjs/RefFindNode.js
+index 067d372..0da21be 100644
+--- a/node_modules/@fluentui/react-component-ref/dist/commonjs/RefFindNode.js
++++ b/node_modules/@fluentui/react-component-ref/dist/commonjs/RefFindNode.js
+@@ -9,14 +9,17 @@ var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inh
+ 
+ var React = _interopRequireWildcard(require("react"));
+ 
+-var ReactDOM = _interopRequireWildcard(require("react-dom"));
+-
+ var _utils = require("./utils");
+ 
+ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+ 
+ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+ 
++function __findDOMNodePolyfill(component) {
++  var node = component?.ref?.current ?? component;
++  return node instanceof HTMLElement ? node : null;
++}
++
+ /**
+  * Detects if a passed element is a Fiber object instead of an element. Is needed as `ReactDOM.findDOMNode()` returns
+  * a Fiber in `react-test-renderer` that can cause issues with tests. Is used only in non-production env.
+@@ -54,7 +57,7 @@ var RefFindNode = /*#__PURE__*/function (_React$Component) {
+   var _proto = RefFindNode.prototype;
+ 
+   _proto.componentDidMount = function componentDidMount() {
+-    var currentNode = ReactDOM.findDOMNode(this);
++    var currentNode = __findDOMNodePolyfill(this);
+ 
+     if (process.env.NODE_ENV !== 'production') {
+       if (isFiberRef(currentNode)) {
+@@ -67,7 +70,7 @@ var RefFindNode = /*#__PURE__*/function (_React$Component) {
+   };
+ 
+   _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+-    var currentNode = ReactDOM.findDOMNode(this);
++    var currentNode = __findDOMNodePolyfill(this);
+ 
+     if (process.env.NODE_ENV !== 'production') {
+       if (isFiberRef(currentNode)) {
+diff --git a/node_modules/@fluentui/react-component-ref/dist/es/RefFindNode.js b/node_modules/@fluentui/react-component-ref/dist/es/RefFindNode.js
+index e2b395d..6d2027a 100644
+--- a/node_modules/@fluentui/react-component-ref/dist/es/RefFindNode.js
++++ b/node_modules/@fluentui/react-component-ref/dist/es/RefFindNode.js
+@@ -1,7 +1,13 @@
+ import _inheritsLoose from "@babel/runtime/helpers/esm/inheritsLoose";
+ import * as React from 'react';
+-import * as ReactDOM from 'react-dom';
+-import { handleRef } from './utils'; // ========================================================
++import { handleRef } from './utils';
++
++function __findDOMNodePolyfill(component) {
++  var node = component?.ref?.current ?? component;
++  return node instanceof HTMLElement ? node : null;
++}
++
++// ========================================================
+ // react/packages/react-reconciler/src/ReactFiber.js
+ // ========================================================
+ 
+@@ -42,7 +48,7 @@ export var RefFindNode = /*#__PURE__*/function (_React$Component) {
+   var _proto = RefFindNode.prototype;
+ 
+   _proto.componentDidMount = function componentDidMount() {
+-    var currentNode = ReactDOM.findDOMNode(this);
++    var currentNode = __findDOMNodePolyfill(this);
+ 
+     if (process.env.NODE_ENV !== 'production') {
+       if (isFiberRef(currentNode)) {
+@@ -55,7 +61,7 @@ export var RefFindNode = /*#__PURE__*/function (_React$Component) {
+   };
+ 
+   _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+-    var currentNode = ReactDOM.findDOMNode(this);
++    var currentNode = __findDOMNodePolyfill(this);
+ 
+     if (process.env.NODE_ENV !== 'production') {
+       if (isFiberRef(currentNode)) {

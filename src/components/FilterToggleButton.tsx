@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { useSelector } from "react-redux";
 import { Button, Icon, SemanticICONS } from "semantic-ui-react";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
@@ -12,7 +12,7 @@ interface FilterToggleButtonProps {
     visible?: boolean;
 }
 
-export const FilterToggleButton: React.FC<FilterToggleButtonProps> = ({
+export const FilterToggleButton: FC<FilterToggleButtonProps> = ({
     checked,
     onChange,
     icon,

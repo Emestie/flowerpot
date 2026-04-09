@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { createRef, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Form, Header, Label, Message } from "semantic-ui-react";
 import { PageLayout } from "../components/PageLayout";
@@ -158,7 +158,7 @@ export function CredentialsView() {
         goToSettings();
     };
 
-    const debugInputRef = React.createRef();
+    const debugInputRef = createRef();
 
     return (
         <PageLayout heading={<ViewHeading />}>

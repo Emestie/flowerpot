@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
@@ -17,7 +17,7 @@ interface IProps {
     accountId: string;
 }
 
-function createReviewersComponents(revs: PullRequestReviewer[], accountId: string): React.ReactNode[] {
+function createReviewersComponents(revs: PullRequestReviewer[], accountId: string): ReactNode[] {
     const sortedRevs = revs.slice().sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1));
 
     const firstFive = sortedRevs.slice(0, 5);
@@ -32,7 +32,7 @@ function createReviewersComponents(revs: PullRequestReviewer[], accountId: strin
                 +{others.length}
             </span>
         ) : (
-            <React.Fragment key="othplchdr"></React.Fragment>
+            <></>
         );
 
     return firstFive

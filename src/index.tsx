@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import "semantic-ui-css/semantic.min.css";
 import { App } from "./components/App";
@@ -8,11 +8,10 @@ import { store } from "./redux/store";
 import "./style/style-dark-override.scss";
 import "./style/style.scss";
 
-ReactDOM.render(
+createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
         <ErrorBoundary>
             <App />
         </ErrorBoundary>
-    </Provider>,
-    document.getElementById("root")
+    </Provider>
 );
