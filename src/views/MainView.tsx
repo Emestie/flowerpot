@@ -36,6 +36,7 @@ export function MainView() {
     const setQuickSearchValue = useQuickSearchStore((s) => s.setValue);
     const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
     const [isMobileSearchShown, setIsMobileSearchShown] = useState(false);
+    const [isInstallingUpdate, setIsInstallingUpdate] = useState(false);
 
     const expandCollapseOperation = settings.collapsedBlocks.length ? "expand" : "collapse";
 
@@ -74,7 +75,10 @@ export function MainView() {
         setIsMobileSearchShown((s) => !s);
     };
 
-    const updateApp = () => Platform.current.updateApp();
+    const updateApp = () => {
+        setIsInstallingUpdate(true);
+        Platform.current.updateApp();
+    };
 
     const markAllAsRead = () => {
         dispatch(dataChangesCollectionClear());
@@ -113,7 +117,13 @@ export function MainView() {
                     <div>
                         <LocalVersionBanner />
                         {updateStatus === "ready" && (
-                            <Button icon positive onClick={updateApp} title={s("updateArrived")}>
+                            <Button
+                                icon
+                                positive
+                                onClick={updateApp}
+                                title={s("updateArrived")}
+                                disabled={isInstallingUpdate}
+                            >
                                 {s("installUpdate")}
                             </Button>
                         )}
