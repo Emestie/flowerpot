@@ -183,6 +183,8 @@ const en = {
     feedbackAlertButton: "Suggest an idea",
     feedbackSettingsButton: "Feedback and suggestions",
     feedbackWindowCaption: "Describe your idea, suggestion or feedback and press OK",
+    feedbackSent: "Feedback sent successfully!",
+    feedbackFailed: "Failed to send feedback",
 
     //quicklinks
     addLink: "Add quick link",
