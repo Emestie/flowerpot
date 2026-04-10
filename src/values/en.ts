@@ -322,6 +322,8 @@ const en = {
 
     showEmptyQueries: "Show empty queries",
     showSearch: "Search",
+
+    openWebVersion: "Open web version of Flowerpot",
 };
 
 export default en;

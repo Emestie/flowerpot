@@ -324,6 +324,8 @@ const ru: LocalizedStrings = {
 
     showEmptyQueries: "Показывать пустые запросы",
     showSearch: "Поиск",
+
+    openWebVersion: "Открыть веб-версию Flowerpot",
 };
 
 export default ru;

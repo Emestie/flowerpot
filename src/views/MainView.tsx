@@ -132,6 +132,7 @@ export function MainView() {
                                 icon
                                 onClick={onExpandCollapse}
                                 hint={s("expandCollapseAll")}
+                                title={s("expandCollapseAll")}
                                 className="hide-on-mobile"
                             >
                                 {expandCollapseOperation === "collapse" ? (
@@ -142,7 +143,13 @@ export function MainView() {
                             </Button>
                         )}
                         {!noAccounts && (
-                            <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
+                            <Button
+                                icon
+                                onClick={onShowMineOnly}
+                                primary={showMineOnly}
+                                hint={s("showMineOnly")}
+                                title={s("showMineOnly")}
+                            >
                                 <Icon name="user outline" />
                             </Button>
                         )}
@@ -157,13 +164,14 @@ export function MainView() {
                                 icon
                                 onClick={showSearchBar}
                                 hint={s("showSearch")}
+                                title={s("showSearch")}
                                 primary={isMobileSearchShown}
                             >
                                 <Icon name="search" />
                             </Button>
                         )}
                         {!noAccounts && (
-                            <Button icon onClick={onOpenById} hint={s("openById")}>
+                            <Button icon onClick={onOpenById} hint={s("openById")} title={s("openById")}>
                                 <Icon name="external share" />
                             </Button>
                         )}
@@ -173,11 +181,17 @@ export function MainView() {
                             </Button>
                         )}
                         {!noAccounts && (
-                            <Button icon onClick={onRefresh} disabled={!isRefreshAvailable} hint={s("refresh")}>
+                            <Button
+                                icon
+                                onClick={onRefresh}
+                                disabled={!isRefreshAvailable}
+                                hint={s("refresh")}
+                                title={s("refresh")}
+                            >
                                 <Icon name="refresh" />
                             </Button>
                         )}
-                        <Button icon onClick={onSettings} hint={s("settings")}>
+                        <Button icon onClick={onSettings} hint={s("settings")} title={s("settings")}>
                             <Icon name="setting" />
                         </Button>
                     </div>
