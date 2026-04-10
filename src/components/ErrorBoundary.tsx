@@ -4,6 +4,7 @@ import { s } from "../values/Strings";
 
 interface Props {
     children?: ReactNode;
+    onRemount?: () => void;
 }
 
 interface State {
@@ -35,7 +36,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                     <Message color="red">{this.state.errorText}</Message>
                     <Button
                         onClick={() => {
-                            window.location.reload();
+                            this.props.onRemount?.();
                         }}
                         positive
                     >
