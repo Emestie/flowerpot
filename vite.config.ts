@@ -49,7 +49,4 @@ export default defineConfig({
             typescript: true,
         }),
     ],
-    define: {
-        "process.env": {},
-    },
 });

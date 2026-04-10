@@ -23,21 +23,22 @@ function createReviewersComponents(revs: PullRequestReviewer[], accountId: strin
     const firstFive = sortedRevs.slice(0, 5);
     const others = sortedRevs.slice(5);
 
-    const othersComponent =
-        others.length > 0 ? (
+    const result: ReactNode[] = firstFive.map((rev) => (
+        <PRReviewer key={rev.uid} accountId={accountId} reviewer={rev} />
+    ));
+
+    if (others.length > 0) {
+        result.push(
             <span
                 key="othcmp"
                 title={others.map((o) => o.name + (o.isRequired ? ` (${s("requiredReviewer")})` : "")).join("\n")}
             >
                 +{others.length}
             </span>
-        ) : (
-            <></>
         );
+    }
 
-    return firstFive
-        .map((rev) => <PRReviewer key={rev.uid} accountId={accountId} reviewer={rev} />)
-        .concat(othersComponent);
+    return result;
 }
 
 export function PullRequestRow(props: IProps) {
