@@ -28,8 +28,7 @@ export function usePullRequestsLoader(
                 ? []
                 : await getApi(accountId).pullRequest.getByProjects(projects.filter((p) => p.enabled));
             setAllPullRequests(allPRs);
-
-            if (errorMessage) setErrorMessage(null);
+            setErrorMessage(null);
         } catch (e: any) {
             setErrorMessage(e.message);
         } finally {

@@ -25,7 +25,7 @@ export function useQueryLoader(query: Query) {
             dispatch(dataWorkItemsForQuerySet(query, workItems));
             setHiddenCount(hiddenCount);
 
-            if (errorMessage) setErrorMessage(null);
+            setErrorMessage(null);
         } catch (e: any) {
             setErrorMessage(e.message);
         } finally {
