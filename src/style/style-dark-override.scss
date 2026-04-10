@@ -6,7 +6,7 @@ $bg1a: #404041;
 $bg2: #454546;
 $bg3: #555556;
 $bg4: #656566;
-$rowItemHover: lighten($bg, 10%);
+$rowItemHover: color-mix(in srgb, $bg, white 10%);
 
 .FlowerpotDarkTheme {
     min-height: 100%;
@@ -174,7 +174,7 @@ $rowItemHover: lighten($bg, 10%);
     }
 
     .ui.table tr:hover {
-        background-color: lighten($bg, 10%);
+        background-color: color-mix(in srgb, $bg, white 10%);
         box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.05);
     }
 

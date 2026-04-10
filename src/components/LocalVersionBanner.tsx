@@ -1,4 +1,3 @@
-import React from "react";
 import { s } from "../values/Strings";
 import Platform from "../helpers/Platform";
 

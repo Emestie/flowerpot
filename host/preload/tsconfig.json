@@ -3,16 +3,14 @@
         "module": "esnext",
         "target": "esnext",
         "sourceMap": false,
-        "moduleResolution": "Node",
+        "moduleResolution": "bundler",
         "skipLibCheck": true,
         "strict": true,
         "isolatedModules": true,
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
         "noEmit": true,
-        "types": ["node"],
-
-        "baseUrl": "."
+        "types": ["node"]
     },
     "include": ["src/**/*.ts", "../../types/**/*.d.ts"],
     "exclude": ["**/*.spec.ts", "**/*.test.ts"]

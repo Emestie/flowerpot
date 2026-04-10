@@ -48,8 +48,13 @@ export default class Telemetry {
         this.basicMessage(accountId, "Account verified");
     }
 
-    public static sendFeedback(text: string) {
-        const transliterated = cyrillicToTranslit.transform(text);
-        this.basicMessage(null, "Feedback", "TRNSL:" + transliterated, true);
+    public static async sendFeedback(text: string): Promise<boolean> {
+        try {
+            const transliterated = cyrillicToTranslit.transform(text);
+            await this.basicMessage(null, "Feedback", "TRNSL:" + transliterated, true);
+            return true;
+        } catch {
+            return false;
+        }
     }
 }

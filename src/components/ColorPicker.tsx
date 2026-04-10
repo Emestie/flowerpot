@@ -1,4 +1,3 @@
-import React from "react";
 import { Radio, Label } from "semantic-ui-react";
 
 const colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "brown", "grey", undefined];

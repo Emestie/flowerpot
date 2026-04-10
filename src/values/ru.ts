@@ -186,6 +186,8 @@ const ru: LocalizedStrings = {
     feedbackAlertButton: "Предложить идею",
     feedbackSettingsButton: "Обратная связь и пожелания",
     feedbackWindowCaption: "Опишите вашу идею, предложение или отзыв и нажмите ОК",
+    feedbackSent: "Отзыв успешно отправлен!",
+    feedbackFailed: "Не удалось отправить отзыв",
 
     //quicklinks
     addLink: "Добавить быструю ссылку",
@@ -322,6 +324,8 @@ const ru: LocalizedStrings = {
 
     showEmptyQueries: "Показывать пустые запросы",
     showSearch: "Поиск",
+
+    openWebVersion: "Открыть веб-версию Flowerpot",
 };
 
 export default ru;

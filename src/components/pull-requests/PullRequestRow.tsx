@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
@@ -17,27 +17,28 @@ interface IProps {
     accountId: string;
 }
 
-function createReviewersComponents(revs: PullRequestReviewer[], accountId: string): React.ReactNode[] {
+function createReviewersComponents(revs: PullRequestReviewer[], accountId: string): ReactNode[] {
     const sortedRevs = revs.slice().sort((a, b) => (a.isRequired && !b.isRequired ? -1 : 1));
 
     const firstFive = sortedRevs.slice(0, 5);
     const others = sortedRevs.slice(5);
 
-    const othersComponent =
-        others.length > 0 ? (
+    const result: ReactNode[] = firstFive.map((rev) => (
+        <PRReviewer key={rev.uid} accountId={accountId} reviewer={rev} />
+    ));
+
+    if (others.length > 0) {
+        result.push(
             <span
                 key="othcmp"
                 title={others.map((o) => o.name + (o.isRequired ? ` (${s("requiredReviewer")})` : "")).join("\n")}
             >
                 +{others.length}
             </span>
-        ) : (
-            <React.Fragment key="othplchdr"></React.Fragment>
         );
+    }
 
-    return firstFive
-        .map((rev) => <PRReviewer key={rev.uid} accountId={accountId} reviewer={rev} />)
-        .concat(othersComponent);
+    return result;
 }
 
 export function PullRequestRow(props: IProps) {

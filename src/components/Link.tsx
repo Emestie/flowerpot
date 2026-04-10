@@ -7,8 +7,16 @@ export function Link(props: { className?: string; href: string; children?: React
             className={"url-link " + (props.className || "")}
             href={Platform.type === PlatformType.Web ? props.href : undefined}
             onClick={(e) => {
-                e.preventDefault();
-                Platform.current.openUrl(props.href);
+                if (e.button === 0) {
+                    e.preventDefault();
+                    Platform.current.openUrl(props.href);
+                }
+            }}
+            onAuxClick={(e) => {
+                if (e.button === 1) {
+                    e.preventDefault();
+                    Platform.current.openUrl(props.href);
+                }
             }}
         >
             {props.children}

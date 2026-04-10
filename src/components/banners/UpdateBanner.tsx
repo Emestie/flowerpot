@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { s } from "../../values/Strings";
 import Platform from "../../helpers/Platform";
 import { Message, Button } from "semantic-ui-react";

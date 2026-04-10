@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Header } from "semantic-ui-react";
 import { appSelector } from "../../redux/selectors/appSelectors";
@@ -7,8 +7,8 @@ import { s } from "../../values/Strings";
 import { FestivalBanner, defaultFestivalIcon } from "./FestivalBanner";
 
 interface P {
-    children?: React.ReactNode;
-    underCaption?: React.ReactNode;
+    children?: ReactNode;
+    underCaption?: ReactNode;
     viewCaption?: string;
 }
 

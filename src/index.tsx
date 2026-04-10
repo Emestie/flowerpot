@@ -1,4 +1,5 @@
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
 import { Provider } from "react-redux";
 import "semantic-ui-css/semantic.min.css";
 import { App } from "./components/App";
@@ -8,11 +9,22 @@ import { store } from "./redux/store";
 import "./style/style-dark-override.scss";
 import "./style/style.scss";
 
-ReactDOM.render(
-    <Provider store={store}>
-        <ErrorBoundary>
-            <App />
-        </ErrorBoundary>
-    </Provider>,
-    document.getElementById("root")
-);
+let remountKey = 0;
+const render = () => {
+    createRoot(document.getElementById("root")!).render(
+        <StrictMode>
+            <Provider store={store}>
+                <ErrorBoundary
+                    onRemount={() => {
+                        remountKey++;
+                        render();
+                    }}
+                >
+                    <App key={remountKey} />
+                </ErrorBoundary>
+            </Provider>
+        </StrictMode>
+    );
+};
+
+render();

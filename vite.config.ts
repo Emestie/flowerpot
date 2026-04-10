@@ -29,7 +29,6 @@ export default defineConfig({
         fs: {
             strict: true,
         },
-        // allowedHosts: ["0898d6cc35df8f.lhr.life"],
     },
     build: {
         outDir: "./build",
@@ -50,7 +49,4 @@ export default defineConfig({
             typescript: true,
         }),
     ],
-    define: {
-        "process.env": {},
-    },
 });

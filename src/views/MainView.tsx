@@ -36,6 +36,7 @@ export function MainView() {
     const setQuickSearchValue = useQuickSearchStore((s) => s.setValue);
     const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
     const [isMobileSearchShown, setIsMobileSearchShown] = useState(false);
+    const [isInstallingUpdate, setIsInstallingUpdate] = useState(false);
 
     const expandCollapseOperation = settings.collapsedBlocks.length ? "expand" : "collapse";
 
@@ -74,7 +75,10 @@ export function MainView() {
         setIsMobileSearchShown((s) => !s);
     };
 
-    const updateApp = () => Platform.current.updateApp();
+    const updateApp = () => {
+        setIsInstallingUpdate(true);
+        Platform.current.updateApp();
+    };
 
     const markAllAsRead = () => {
         dispatch(dataChangesCollectionClear());
@@ -113,7 +117,13 @@ export function MainView() {
                     <div>
                         <LocalVersionBanner />
                         {updateStatus === "ready" && (
-                            <Button icon positive onClick={updateApp} title={s("updateArrived")}>
+                            <Button
+                                icon
+                                positive
+                                onClick={updateApp}
+                                title={s("updateArrived")}
+                                disabled={isInstallingUpdate}
+                            >
                                 {s("installUpdate")}
                             </Button>
                         )}
@@ -122,6 +132,7 @@ export function MainView() {
                                 icon
                                 onClick={onExpandCollapse}
                                 hint={s("expandCollapseAll")}
+                                title={s("expandCollapseAll")}
                                 className="hide-on-mobile"
                             >
                                 {expandCollapseOperation === "collapse" ? (
@@ -132,7 +143,13 @@ export function MainView() {
                             </Button>
                         )}
                         {!noAccounts && (
-                            <Button icon onClick={onShowMineOnly} primary={showMineOnly} hint={s("showMineOnly")}>
+                            <Button
+                                icon
+                                onClick={onShowMineOnly}
+                                primary={showMineOnly}
+                                hint={s("showMineOnly")}
+                                title={s("showMineOnly")}
+                            >
                                 <Icon name="user outline" />
                             </Button>
                         )}
@@ -147,13 +164,14 @@ export function MainView() {
                                 icon
                                 onClick={showSearchBar}
                                 hint={s("showSearch")}
+                                title={s("showSearch")}
                                 primary={isMobileSearchShown}
                             >
                                 <Icon name="search" />
                             </Button>
                         )}
                         {!noAccounts && (
-                            <Button icon onClick={onOpenById} hint={s("openById")}>
+                            <Button icon onClick={onOpenById} hint={s("openById")} title={s("openById")}>
                                 <Icon name="external share" />
                             </Button>
                         )}
@@ -163,11 +181,17 @@ export function MainView() {
                             </Button>
                         )}
                         {!noAccounts && (
-                            <Button icon onClick={onRefresh} disabled={!isRefreshAvailable} hint={s("refresh")}>
+                            <Button
+                                icon
+                                onClick={onRefresh}
+                                disabled={!isRefreshAvailable}
+                                hint={s("refresh")}
+                                title={s("refresh")}
+                            >
                                 <Icon name="refresh" />
                             </Button>
                         )}
-                        <Button icon onClick={onSettings} hint={s("settings")}>
+                        <Button icon onClick={onSettings} hint={s("settings")} title={s("settings")}>
                             <Icon name="setting" />
                         </Button>
                     </div>

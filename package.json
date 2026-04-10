@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.8.2",
+    "version": "0.8.3",
     "description": "TFS/Azure DevOps work items tracking tool",
     "author": {
         "name": "Valery Murashko",
@@ -12,7 +12,7 @@
     },
     "license": "MIT",
     "engines": {
-        "node": ">=v16.13",
+        "node": ">=18.12",
         "npm": ">=8.1"
     },
     "main": "host/main/dist/index.cjs",
@@ -25,7 +25,7 @@
         "@trodi/electron-splashscreen": "^1.0.2",
         "cyrillic-to-translit-js": "3.1.0",
         "electron-updater": "^6.1.4",
-        "lodash": "^4.17.21",
+        "lodash": "^4.18.1",
         "markdown-to-jsx": "^7.4.7",
         "moment": "^2.30.1",
         "zustand": "^4.5.4",
@@ -36,8 +36,8 @@
         "@types/jest": "^29.5.12",
         "@types/lodash": "^4.17.7",
         "@types/node": "^18.18.4",
-        "@types/react": "^17.0.52",
-        "@types/react-dom": "^17.0.18",
+        "@types/react": "^18.3.0",
+        "@types/react-dom": "^18.3.0",
         "@types/redux-logger": "^3.0.10",
         "@vitejs/plugin-react": "^4.3.1",
         "cross-env": "^7.0.3",
@@ -45,9 +45,9 @@
         "electron-builder": "^24.13.3",
         "express": "^5.2.1",
         "prettier": "^3.3.3",
-        "react": "^17.0.2",
+        "react": "^18.3.0",
         "react-contextmenu": "^2.14.0",
-        "react-dom": "^17.0.2",
+        "react-dom": "^18.3.0",
         "react-redux": "^8.1.3",
         "redux": "^4.2.1",
         "redux-logger": "^3.0.6",
@@ -55,9 +55,9 @@
         "sass": "^1.77.8",
         "semantic-ui-css": "^2.5.0",
         "semantic-ui-react": "^2.1.5",
-        "typescript": "^5.5.4",
+        "typescript": "^6.0.2",
         "unplugin-auto-expose": "0.0.2",
-        "vite": "^4.5.3",
+        "vite": "^5.4.0",
         "vite-plugin-checker": "^0.6.4"
     },
     "scripts": {
@@ -71,7 +71,7 @@
         "build:renderer": "tsc && vite build",
         "compile": "cross-env MODE=production npm run build && electron-builder build -mw --publish never --config .electron-builder.config.js",
         "deploy": "cross-env MODE=production npm run build && electron-builder -mw --publish always --config .electron-builder.config.js",
-        "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 npx --no-install electron ./scripts/update-electron-vendors.js ",
+        "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 npx --no-install electron ./scripts/update-electron-vendors.js",
         "prettify": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\""
     },
     "eslintConfig": {

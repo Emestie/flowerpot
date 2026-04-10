@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Message } from "semantic-ui-react";
 import { LinkAddingDialog } from "../../components/dialogs/LinkAddingDialog";
 import { OpenByIdDialog } from "../../components/dialogs/OpenByIdDialog";
 import { SingleInputColorDialog } from "../../components/dialogs/SingleInputColorDialog";
@@ -16,8 +18,22 @@ export function DialogsContainer() {
     const { dialogs } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
 
-    const feedbackSend = (text: string) => {
-        if (text) Telemetry.sendFeedback(text);
+    const [feedbackStatus, setFeedbackStatus] = useState<{ success: boolean; reason?: string } | null>(null);
+
+    useEffect(() => {
+        if (feedbackStatus) {
+            const timer = setTimeout(() => setFeedbackStatus(null), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [feedbackStatus]);
+
+    const feedbackSend = async (text: string) => {
+        if (text) {
+            const success = await Telemetry.sendFeedback(text);
+            setFeedbackStatus({ success, reason: success ? undefined : "Network error" });
+        } else {
+            setFeedbackStatus({ success: false, reason: "Empty feedback" });
+        }
 
         dispatch(appDialogSet("feedback", false));
     };
@@ -34,6 +50,18 @@ export function DialogsContainer() {
                 caption={s("feedbackWindowCaption")}
                 area
             />
+            {feedbackStatus && (
+                <Message
+                    positive={feedbackStatus.success}
+                    error={!feedbackStatus.success}
+                    style={{ position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)", zIndex: 9999 }}
+                >
+                    {feedbackStatus.success ? s("feedbackSent") : s("feedbackFailed")}
+                    {feedbackStatus.reason && (
+                        <div style={{ fontSize: "0.8em", marginTop: 5 }}>{feedbackStatus.reason}</div>
+                    )}
+                </Message>
+            )}
             <SingleInputColorDialog
                 show={dialogs.exportSettings}
                 onClose={() => {
