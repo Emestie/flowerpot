@@ -1,6 +1,8 @@
-export interface IAction<T = any> {
-    type: string;
+import { Action } from "redux";
+
+export interface IAction<T = any> extends Action<string> {
     payload?: T;
+    [key: string]: unknown;
 }
 
 export type TView =
