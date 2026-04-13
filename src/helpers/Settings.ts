@@ -11,6 +11,7 @@ import Platform from "./Platform";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
+export type TTheme = "light" | "dark" | "system";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned" | "forwarded";
 
 export interface IAccount {
@@ -64,7 +65,9 @@ export interface ISettings {
     notes: INoteItem[];
     links: ILinkItem[];
     hiddenPrs: IHiddenPr[];
-    darkTheme: boolean;
+    theme: TTheme;
+    /** @deprecated Use `theme` instead */
+    darkTheme: boolean | undefined;
     allowTelemetry: boolean;
     showUnreads: boolean;
     showQuickLinks: boolean;

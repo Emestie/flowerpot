@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Icon, Menu } from "semantic-ui-react";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
+import { isDarkTheme } from "../../helpers/Theme";
+import { TTheme } from "../../helpers/Settings";
 import { appViewSet } from "../../redux/actions/appActions";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
@@ -78,11 +80,35 @@ const getSectionComponent = (sectionId: Sections) => {
 export function SettingsView() {
     const dispatch = useDispatch();
 
-    const { settingsSection, darkTheme, accounts } = useSelector(settingsSelector);
+    const { settingsSection, theme, accounts } = useSelector(settingsSelector);
 
     const toggleTheme = () => {
-        const darkTheme_ = !darkTheme;
-        dispatch(settingsUpdate({ darkTheme: darkTheme_ }));
+        const themes: TTheme[] = ["light", "dark", "system"];
+        const currentIndex = themes.indexOf(theme);
+        const nextIndex = (currentIndex + 1) % themes.length;
+        dispatch(settingsUpdate({ theme: themes[nextIndex] }));
+    };
+
+    const getThemeIcon = () => {
+        switch (theme) {
+            case "light":
+                return <Icon name="sun" />;
+            case "dark":
+                return <Icon name="moon" />;
+            case "system":
+                return <Icon name="desktop" />;
+        }
+    };
+
+    const getThemeTitle = () => {
+        switch (theme) {
+            case "light":
+                return s("themeLight");
+            case "dark":
+                return s("themeDark");
+            case "system":
+                return s("themeSystem");
+        }
     };
 
     const onSave = () => {
@@ -115,8 +141,8 @@ export function SettingsView() {
             heading={
                 <ViewHeading>
                     <LocalVersionBanner />
-                    <Button icon onClick={toggleTheme}>
-                        {darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
+                    <Button icon onClick={toggleTheme} title={getThemeTitle()}>
+                        {getThemeIcon()}
                     </Button>
                     <Button positive onClick={onSave}>
                         {s("settingsBackButton")}
@@ -124,7 +150,7 @@ export function SettingsView() {
                 </ViewHeading>
             }
             sidebar={
-                <Menu inverted={darkTheme} vertical size="small" secondary>
+                <Menu inverted={isDarkTheme(theme)} vertical size="small" secondary>
                     {sectionsMenuItems}
                 </Menu>
             }

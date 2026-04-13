@@ -2,6 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticCOLORS } from "semantic-ui-react";
 import { APP_EVENT_COLLAPSE_ALL, APP_EVENT_EXPAND_ALL } from "../events/collapse-expand";
+import { isDarkTheme } from "../helpers/Theme";
 import { tagPalette } from "../modules/palette";
 import { settingsCollapseBlock, settingsUpdate } from "../redux/actions/settingsActions";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
@@ -95,7 +96,7 @@ export function CollapsibleBlock(props: {
                                     : {
                                           backgroundColor: tagPalette
                                               .getColor(caption)
-                                              .hexWithTransparency(settings.darkTheme ? 0.3 : 0.2),
+                                              .hexWithTransparency(isDarkTheme(settings.theme) ? 0.3 : 0.2),
                                           padding: "0 8px",
                                           borderRadius: 4,
                                       }

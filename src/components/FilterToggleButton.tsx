@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import { Button, Icon, SemanticICONS } from "semantic-ui-react";
+import { isDarkTheme } from "../helpers/Theme";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 interface FilterToggleButtonProps {
@@ -36,7 +37,7 @@ export const FilterToggleButton: FC<FilterToggleButtonProps> = ({
             icon
         >
             {icon ? (
-                <Icon name={icon} style={settings.darkTheme ? { color: "white" } : undefined} />
+                <Icon name={icon} style={isDarkTheme(settings.theme) ? { color: "white" } : undefined} />
             ) : (
                 <img
                     src={imgUrl}

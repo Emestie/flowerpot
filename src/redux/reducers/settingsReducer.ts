@@ -1,4 +1,4 @@
-import Settings, { ISettings } from "../../helpers/Settings";
+import Settings, { ISettings, TTheme } from "../../helpers/Settings";
 import { IAction, Reducers } from "../types";
 import { updateState } from "./_common";
 
@@ -46,7 +46,8 @@ const initialState: ISettingsState = {
     notes: [],
     links: [],
     hiddenPrs: [],
-    darkTheme: false,
+    theme: "system" as TTheme,
+    darkTheme: undefined,
     allowTelemetry: true,
     showUnreads: true,
     showQuickLinks: true,

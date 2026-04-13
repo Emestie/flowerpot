@@ -326,6 +326,10 @@ const ru: LocalizedStrings = {
     showSearch: "Поиск",
 
     openWebVersion: "Открыть веб-версию Flowerpot",
+
+    themeLight: "Светлая тема",
+    themeDark: "Тёмная тема",
+    themeSystem: "Системная тема (по настройкам ОС)",
 };
 
 export default ru;

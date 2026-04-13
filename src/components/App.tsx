@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Festival from "../helpers/Festival";
+import { isDarkTheme, getSystemThemeListener } from "../helpers/Theme";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Settings from "../helpers/Settings";
@@ -28,6 +29,19 @@ export function App() {
     const { view } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
     const [ready, setIsReady] = useState(false);
+    const [isDark, setIsDark] = useState(() => isDarkTheme(settings.theme));
+
+    useEffect(() => {
+        setIsDark(isDarkTheme(settings.theme));
+    }, [settings.theme]);
+
+    useEffect(() => {
+        return getSystemThemeListener((dark) => {
+            if (settings.theme === "system") {
+                setIsDark(dark);
+            }
+        });
+    }, [settings.theme]);
 
     const setWIChangesCollection = useCallback(() => {
         const ls = localStorage.getItem("WIChangesCollection");
@@ -112,7 +126,7 @@ export function App() {
     const scene = getScene(view);
 
     return (
-        <div className={settings.darkTheme ? "FlowerpotDarkTheme" : ""}>
+        <div className={isDark ? "FlowerpotDarkTheme" : ""}>
             <DialogsContainer />
             {scene}
         </div>

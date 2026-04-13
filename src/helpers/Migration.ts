@@ -5,6 +5,7 @@ import Loaders from "./Loaders";
 import { ISettings } from "./Settings";
 
 const V_070 = "v0_7_0h";
+const V_085_THEME = "v0_8_5_themes";
 
 export default class Migration {
     private static setMigrationAsDone(name: string) {
@@ -15,6 +16,7 @@ export default class Migration {
         const migrations = store.getState().settings.migrationsDone || [];
 
         if (!migrations.includes(V_070)) await this.v0_7_0();
+        if (!migrations.includes(V_085_THEME)) await this.v0_8_5();
     }
 
     private static async v0_7_0() {
@@ -79,5 +81,21 @@ export default class Migration {
         );
 
         this.setMigrationAsDone(V_070);
+    }
+
+    private static async v0_8_5() {
+        console.log("Migration " + V_085_THEME);
+
+        const settings = store.getState().settings;
+
+        if (settings.theme !== undefined) {
+            return this.setMigrationAsDone(V_085_THEME);
+        }
+
+        const theme: "light" | "dark" = settings.darkTheme ? "dark" : "light";
+
+        store.dispatch(settingsUpdate({ theme, darkTheme: undefined }));
+
+        this.setMigrationAsDone(V_085_THEME);
     }
 }
