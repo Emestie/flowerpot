@@ -6,17 +6,15 @@ export function Link(props: { className?: string; href: string; children?: React
         <a
             className={"url-link " + (props.className || "")}
             href={Platform.type === PlatformType.Web ? props.href : undefined}
-            onClick={(e) => {
-                if (e.button === 0) {
+            onMouseDown={(e) => {
+                if (e.button === 1 && Platform.type === PlatformType.Electron) {
                     e.preventDefault();
                     Platform.current.openUrl(props.href);
                 }
             }}
-            onAuxClick={(e) => {
-                if (e.button === 1) {
-                    e.preventDefault();
-                    Platform.current.openUrl(props.href);
-                }
+            onClick={(e) => {
+                e.preventDefault();
+                Platform.current.openUrl(props.href);
             }}
         >
             {props.children}

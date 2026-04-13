@@ -121,15 +121,17 @@ export function CreditsSection() {
                     {s("feedbackSettingsButton")}
                 </Label>
             )}
-            <Label
-                as="a"
-                color="orange"
-                onClick={() => {
-                    Platform.current.openUrl("https://flowerpot-pwa.web.app");
-                }}
-            >
-                {s("openWebVersion")}
-            </Label>
+            {Platform.type === PlatformType.Electron && (
+                <Label
+                    as="a"
+                    color="orange"
+                    onClick={() => {
+                        Platform.current.openUrl("https://flowerpot-pwa.web.app");
+                    }}
+                >
+                    {s("openWebVersion")}
+                </Label>
+            )}
             <br />
             <Header as="h3" dividing>
                 {s("settingsCreditsHeader")}
