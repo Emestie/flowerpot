@@ -12,10 +12,9 @@ import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
 import { Query } from "../models/query";
 import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
-import { dataChangesCollectionClear } from "../redux/actions/dataActions";
 import { appSelector } from "../redux/selectors/appSelectors";
-import { dataSelector } from "../redux/selectors/dataSelectors";
 import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useDataStore } from "../zustand/data";
 import { s } from "../values/Strings";
 import { useQuickSearchStore } from "../zustand/quick-search";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
@@ -31,9 +30,10 @@ export function MainView() {
     const dispatch = useDispatch();
     const { updateStatus, showMineOnly } = useSelector(appSelector);
     const settings = useSelector(settingsSelector);
-    const { changesCollection } = useSelector(dataSelector);
+    const changesCollection = useDataStore((state) => state.changesCollection);
     const storedQueries = useSelector(getQueriesSelector());
     const setQuickSearchValue = useQuickSearchStore((s) => s.setValue);
+    const clearChangesCollection = useDataStore((state) => state.clearChangesCollection);
     const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
     const [isMobileSearchShown, setIsMobileSearchShown] = useState(false);
     const [isInstallingUpdate, setIsInstallingUpdate] = useState(false);
@@ -81,7 +81,7 @@ export function MainView() {
     };
 
     const markAllAsRead = () => {
-        dispatch(dataChangesCollectionClear());
+        clearChangesCollection();
     };
 
     const queries = storedQueries.sort(queriesSorting);

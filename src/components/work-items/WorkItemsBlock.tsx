@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Icon, Message, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
@@ -7,9 +7,9 @@ import QueryHelper from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
-import { dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
 import { appSelector } from "../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { useDataStore } from "../../zustand/data";
 import { s } from "../../values/Strings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
@@ -26,7 +26,7 @@ export function WorkItemsBlock(props: IProps) {
     const { showMineOnly } = useSelector(appSelector);
     const filteredTypes = props.query.filteredTypes || [];
 
-    const dispatch = useDispatch();
+    const setWorkItemsForQuery = useDataStore((state) => state.setWorkItemsForQuery);
 
     const workItems = useFilteredWorkItems(props.query);
 
@@ -123,8 +123,7 @@ export function WorkItemsBlock(props: IProps) {
     const updateWorkItems = (wi: WorkItem) => {
         let newList = workItems.filter((w) => w.id !== wi.id);
         newList.push(wi);
-        //store.setWorkItemsForQuery(props.query, newList);
-        dispatch(dataWorkItemsForQuerySet(props.query, newList));
+        setWorkItemsForQuery(props.query, newList);
     };
 
     const refreshBlock = () => {

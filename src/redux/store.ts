@@ -1,14 +1,13 @@
 import { applyMiddleware, combineReducers, compose, legacy_createStore as createStore, Store } from "redux";
 import logger from "redux-logger";
 import { thunk } from "redux-thunk";
-import { IAppState, appReducer } from "./reducers/appReducer";
-import { IDataState, dataReducer } from "./reducers/dataReducer";
+import { useDataStore } from "../zustand/data";
+import { appReducer, IAppState } from "./reducers/appReducer";
 import { ISettingsState, settingsReducer } from "./reducers/settingsReducer";
 import { IAction } from "./types";
 
 const combinedReducers = combineReducers<IStore>({
     app: appReducer as any,
-    data: dataReducer as any,
     settings: settingsReducer as any,
 });
 
@@ -25,6 +24,14 @@ export const store: Store<IStore, IAction> = createStore(combinedReducers, compo
 
 export interface IStore {
     app: IAppState;
-    data: IDataState;
     settings: ISettingsState;
 }
+
+export const dataStore = {
+    get workItems() {
+        return useDataStore.getState().workItems;
+    },
+    get changesCollection() {
+        return useDataStore.getState().changesCollection;
+    },
+};

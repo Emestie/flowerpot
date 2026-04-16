@@ -1,6 +1,6 @@
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
-import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
+import { useDataStore } from "../zustand/data";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
 import { store } from "../redux/store";
 import { s } from "../values/Strings";
@@ -48,14 +48,12 @@ export default class Differences {
             if (!storage) return;
             let stored = this.getWIById(storage, wi.id);
             if (!stored) {
-                store.dispatch(dataChangesCollectionItemSet(wi, true));
-                //store.setWIHasChanges(wi, true);
+                useDataStore.getState().setChangesCollectionItem(wi, true);
                 news.push(wi);
                 return;
             }
             if (stored.rev !== wi.rev) {
-                store.dispatch(dataChangesCollectionItemSet(wi, true));
-                //store.setWIHasChanges(wi, true);
+                useDataStore.getState().setChangesCollectionItem(wi, true);
                 changed.push(wi);
             }
         });

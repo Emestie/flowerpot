@@ -5,9 +5,9 @@ import Platform from "../../helpers/Platform";
 import { appDialogSet } from "../../redux/actions/appActions";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
-import { store } from "../../redux/store";
 import { s } from "../../values/Strings";
 import { CollectionSelector } from "../CollectionSelector";
+import { useDataStore } from "../../zustand/data";
 
 interface IProps {
     show: boolean;
@@ -40,7 +40,8 @@ export function OpenByIdDialog(p: IProps) {
 
         if (!account || !collectionName || !id) return;
 
-        const calculatedUrl = store.getState().data.workItems.at(0)?.url.split("/tfs/").at(0) + "/tfs/";
+        const workItems = useDataStore.getState().workItems;
+        const calculatedUrl = workItems.at(0)?.url.split("/tfs/").at(0) + "/tfs/";
 
         Platform.current.openUrl((calculatedUrl || account.url) + collectionName + "/_workitems/edit/" + id);
 

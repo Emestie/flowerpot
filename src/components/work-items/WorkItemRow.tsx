@@ -1,11 +1,10 @@
 import { ContextMenuTrigger } from "react-contextmenu";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
-import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
 import { Link } from "../Link";
@@ -15,7 +14,7 @@ import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 import { Id } from "./id";
 import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
-import { dataSelector } from "/@/redux/selectors/dataSelectors";
+import { useDataStore } from "/@/zustand/data";
 import { settingsSelector } from "/@/redux/selectors/settingsSelectors";
 
 interface IProps {
@@ -26,9 +25,9 @@ interface IProps {
 }
 
 export function WorkItemRow(props: IProps) {
-    const dispatch = useDispatch();
     const settings = useSelector(settingsSelector);
-    const { changesCollection } = useSelector(dataSelector);
+    const changesCollection = useDataStore((state) => state.changesCollection);
+    const setChangesCollectionItem = useDataStore((state) => state.setChangesCollectionItem);
 
     const isRed = props.item.isRed;
 
@@ -70,7 +69,7 @@ export function WorkItemRow(props: IProps) {
     })();
 
     const dropChanges = () => {
-        dispatch(dataChangesCollectionItemSet(props.item, false));
+        setChangesCollectionItem(props.item, false);
     };
 
     const getClass = () => {

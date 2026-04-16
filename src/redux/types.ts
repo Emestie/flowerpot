@@ -25,6 +25,5 @@ export type TDialog = "openById" | "feedback" | "addLink" | "exportSettings" | "
 
 export enum Reducers {
     App = "app",
-    Data = "data",
     Settings = "settings",
 }

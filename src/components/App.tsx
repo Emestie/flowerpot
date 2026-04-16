@@ -8,8 +8,8 @@ import Settings from "../helpers/Settings";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
 import { appShowWhatsNewSet, appViewSet } from "../redux/actions/appActions";
-import { dataChangesCollectionSet } from "../redux/actions/dataActions";
 import { appSelector } from "../redux/selectors/appSelectors";
+import { useDataStore } from "../zustand/data";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { TView } from "../redux/types";
 import { CredentialsView } from "../views/CredentialsView";
@@ -43,12 +43,14 @@ export function App() {
         });
     }, [settings.theme]);
 
+    const setChangesCollection = useDataStore((state) => state.setChangesCollection);
+
     const setWIChangesCollection = useCallback(() => {
         const ls = localStorage.getItem("WIChangesCollection");
         if (!ls) return;
 
-        dispatch(dataChangesCollectionSet(JSON.parse(ls)));
-    }, [dispatch]);
+        setChangesCollection(JSON.parse(ls));
+    }, [setChangesCollection]);
 
     const afterUpdateHandler = useCallback(() => {
         if (!Platform.current.isDev() && !Platform.current.isLocal() && Version.isChangedLong()) {

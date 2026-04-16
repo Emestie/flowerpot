@@ -2,7 +2,7 @@ import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
 import { settingsUpdate } from "../redux/actions/settingsActions";
 import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
-import { store } from "../redux/store";
+import { store, dataStore } from "../redux/store";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
 
@@ -88,7 +88,6 @@ export default class QueryHelper {
 
     public static calculateIconLevel(query: Query, workItems: WorkItem[]) {
         let wiStorage = this.getWIStorage();
-        const state = store.getState();
 
         wiStorage[query.queryId] = [...workItems];
 
@@ -102,14 +101,14 @@ export default class QueryHelper {
 
         let hasChanges = false;
         for (let x in allWIs) {
-            let wiChanges = !!state.data.changesCollection[allWIs[x].id];
+            let wiChanges = !!dataStore.changesCollection[allWIs[x].id];
             if (wiChanges) {
                 hasChanges = true;
                 break;
             }
         }
 
-        if (state.settings.iconChangesOnMyWorkItemsOnly) {
+        if (store.getState().settings.iconChangesOnMyWorkItemsOnly) {
             allWIs = allWIs.filter((wi) => wi._isMine);
         }
 
