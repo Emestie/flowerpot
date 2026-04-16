@@ -2,17 +2,17 @@ import { Button, Icon, Table } from "semantic-ui-react";
 import { s } from "../../values/Strings";
 import Links, { LINKS_COUNT_LIMIT } from "../../helpers/Links";
 import ColorPicker from "../ColorPicker";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
-import { appDialogSet } from "../../redux/actions/appActions";
+import { useAppStore } from "../../zustand/app";
 
 export function LinksSettingsTable() {
-    const dispatch = useDispatch();
     const settings = useSelector(settingsSelector);
     const links = settings.links.sort((a, b) => (a.order || 0) - (b.order || 0));
+    const setDialog = useAppStore((state) => state.setDialog);
 
     const addLink = () => {
-        dispatch(appDialogSet("addLink", true));
+        setDialog("addLink", true);
     };
 
     const rows = links.map((link, v, a) => (

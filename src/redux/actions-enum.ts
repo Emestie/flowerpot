@@ -1,13 +1,4 @@
 export enum Actions {
-    AppViewSet = "app/view-set",
-    AppErrorSet = "app/error-set",
-    AppShowWhatsNewSet = "app/show-whatsnew-set",
-    AppSettingsSet = "app/settings-set",
-    AppCurrentFestivalSet = "app/current-fest-set",
-    AppUpdateStatusSet = "app/update-status-set",
-    AppDialogSet = "app/dialog-set",
-    AppLoadingInProgressListSet = "app/loading-in-progress-list-set",
-    AppShowMineOnlySet = "app/show-mine-only-set",
     SettingsSet = "settings/set",
     SettingsUpdate = "settings/update",
     SettingsMigrationsDonePush = "settings/migrations-done-push",

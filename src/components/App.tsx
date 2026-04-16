@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Festival from "../helpers/Festival";
 import { isDarkTheme, getSystemThemeListener } from "../helpers/Theme";
 import Migration from "../helpers/Migration";
@@ -7,9 +7,8 @@ import Platform from "../helpers/Platform";
 import Settings from "../helpers/Settings";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
-import { appShowWhatsNewSet, appViewSet } from "../redux/actions/appActions";
-import { appSelector } from "../redux/selectors/appSelectors";
 import { useDataStore } from "../zustand/data";
+import { useAppStore } from "../zustand/app";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { TView } from "../redux/types";
 import { CredentialsView } from "../views/CredentialsView";
@@ -25,8 +24,9 @@ import { SettingsView } from "../views/SettingsView/SettingsView";
 import { DialogsContainer } from "../views/containers/DialogsContainer";
 
 export function App() {
-    const dispatch = useDispatch();
-    const { view } = useSelector(appSelector);
+    const view = useAppStore((state) => state.view);
+    const setView = useAppStore((state) => state.setView);
+    const setShowWhatsNew = useAppStore((state) => state.setShowWhatsNew);
     const settings = useSelector(settingsSelector);
     const [ready, setIsReady] = useState(false);
     const [isDark, setIsDark] = useState(() => isDarkTheme(settings.theme));
@@ -54,11 +54,11 @@ export function App() {
 
     const afterUpdateHandler = useCallback(() => {
         if (!Platform.current.isDev() && !Platform.current.isLocal() && Version.isChangedLong()) {
-            if (Version.isChangedShort()) dispatch(appShowWhatsNewSet(true));
+            if (Version.isChangedShort()) setShowWhatsNew(true);
             Version.storeInSettings();
         }
         // eslint-disable-next-line
-    }, [dispatch]);
+    }, [setShowWhatsNew]);
 
     useEffect(() => {
         (async function () {
@@ -81,10 +81,9 @@ export function App() {
 
             setTimeout(() => {
                 if (Platform.current.isDev()) {
-                    dispatch(appViewSet("debug"));
-                    //dispatch(appViewSet("main"));
+                    setView("debug");
                 } else {
-                    dispatch(appViewSet("main"));
+                    setView("main");
                 }
 
                 setWIChangesCollection();

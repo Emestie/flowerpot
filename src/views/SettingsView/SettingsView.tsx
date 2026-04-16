@@ -4,10 +4,10 @@ import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
 import { isDarkTheme } from "../../helpers/Theme";
 import { TTheme } from "../../helpers/Settings";
-import { appViewSet } from "../../redux/actions/appActions";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
 import { AccountSection } from "./sections/AccountSection";
 import { CreditsSection } from "./sections/CreditsSection";
 import { ImportSection } from "./sections/ImportSection";
@@ -79,8 +79,8 @@ const getSectionComponent = (sectionId: Sections) => {
 
 export function SettingsView() {
     const dispatch = useDispatch();
-
     const { settingsSection, theme, accounts } = useSelector(settingsSelector);
+    const setView = useAppStore((state) => state.setView);
 
     const toggleTheme = () => {
         const themes: TTheme[] = ["light", "dark", "system"];
@@ -112,7 +112,7 @@ export function SettingsView() {
     };
 
     const onSave = () => {
-        dispatch(appViewSet("main"));
+        setView("main");
     };
 
     const sectionsMenuItems = sectionsList

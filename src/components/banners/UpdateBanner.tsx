@@ -2,11 +2,10 @@ import { useState } from "react";
 import { s } from "../../values/Strings";
 import Platform from "../../helpers/Platform";
 import { Message, Button } from "semantic-ui-react";
-import { useSelector } from "react-redux";
-import { appSelector } from "../../redux/selectors/appSelectors";
+import { useAppStore } from "../../zustand/app";
 
 export function UpdateBanner() {
-    const { updateStatus } = useSelector(appSelector);
+    const updateStatus = useAppStore((state) => state.updateStatus);
     const [updateInstallInProgress, setUpdateInstallInProgress] = useState(false);
 
     const onUpdate = () => {

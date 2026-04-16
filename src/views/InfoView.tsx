@@ -1,14 +1,11 @@
 import Markdown from "markdown-to-jsx";
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Icon, Message } from "semantic-ui-react";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Info } from "../helpers/Info";
-import { appViewSet } from "../redux/actions/appActions";
-import { IAppState } from "../redux/reducers/appReducer";
-import { appSelector } from "../redux/selectors/appSelectors";
 import { s } from "../values/Strings";
+import { useAppStore } from "../zustand/app";
 
 interface IInfoViewParams extends Record<string, any> {
     contentFileName: string;
@@ -16,8 +13,7 @@ interface IInfoViewParams extends Record<string, any> {
 }
 
 export function InfoView() {
-    const { viewParams } = useSelector(appSelector) as IAppState<IInfoViewParams>;
-    const dispatch = useDispatch();
+    const viewParams = useAppStore((state) => state.viewParams) as IInfoViewParams;
     const [contentText, setContentText] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
@@ -35,8 +31,8 @@ export function InfoView() {
     }, [viewParams]);
 
     const onSave = useCallback(() => {
-        dispatch(appViewSet("main"));
-    }, [dispatch]);
+        useAppStore.getState().setView("main");
+    }, []);
 
     const content = useCallback(() => {
         if (isLoading) {

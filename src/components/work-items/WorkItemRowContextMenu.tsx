@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
-import { useDispatch } from "react-redux";
 import { Icon, Menu } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { TLists } from "../../helpers/Settings";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
-import { appViewSet } from "../../redux/actions/appActions";
+import { useAppStore } from "../../zustand/app";
 import { s } from "../../values/Strings";
 import { SingleInputColorDialog } from "../dialogs/SingleInputColorDialog";
 
@@ -25,7 +24,7 @@ export function WorkItemRowContextMenu(props: IProps) {
     const [noteInitialText, setNoteInitialText] = useState<string | undefined>(undefined);
     const [noteInitialColor, setNoteInitialColor] = useState<string | undefined>(undefined);
 
-    const dispatch = useDispatch();
+    const setView = useAppStore((s) => s.setView);
 
     const onListChange = (e: any, data: any) => {
         const list = data.list as TLists | undefined;
@@ -36,7 +35,7 @@ export function WorkItemRowContextMenu(props: IProps) {
         } else if (wi._list) Lists.deleteFromList(props.query.accountId, wi._list, wi.id, wi._collectionName);
 
         if (list === "permawatch" || wi._list === "permawatch") {
-            dispatch(appViewSet("refreshhelper"));
+            setView("refreshhelper");
         }
 
         wi._list = list;

@@ -1,7 +1,7 @@
 import pull from "../../assets/pull.png";
 import { ActionBanner, IActionBannerProps } from "../../components/banners/ActionBanner";
 import { s } from "../../values/Strings";
-import { appViewSet } from "/@/redux/actions/appActions";
+import { useAppStore } from "../../zustand/app";
 import { store } from "/@/redux/store";
 // import idea from "../../assets/idea.png";
 
@@ -27,7 +27,7 @@ function getActionBannersList(): IActionBannerProps[] {
             img: pull,
             type: "info",
             action() {
-                store.dispatch(appViewSet("selectprojects"));
+                useAppStore.getState().setView("selectprojects");
             },
             condition() {
                 return store.getState().settings.accounts.length > 0 && store.getState().settings.projects.length === 0;

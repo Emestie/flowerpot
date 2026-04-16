@@ -1,20 +1,20 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
+import { Project } from "../../models/project";
 import { ProjectHelper } from "../../helpers/Project";
-import { appViewSet } from "../../redux/actions/appActions";
-import { getProjectsSelector } from "../../redux/selectors/settingsSelectors";
+import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { useAppStore } from "../../zustand/app";
 import { s } from "../../values/Strings";
 import { AccountBadge } from "../AccountBadge";
 
 export function ProjectsSettingsTable() {
-    const dispatch = useDispatch();
-    const projects = useSelector(getProjectsSelector(true));
+    const { projects } = useSelector(settingsSelector);
 
     const openProjectSelector = () => {
-        dispatch(appViewSet("selectprojects"));
+        useAppStore.getState().setView("selectprojects");
     };
 
-    const rows = projects.map((project) => (
+    const rows = projects.map((project: Project) => (
         <Table.Row key={project.path}>
             <Table.Cell collapsing>
                 <Checkbox checked={project.enabled} onChange={() => ProjectHelper.toggleBoolean(project, "enabled")} />

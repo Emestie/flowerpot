@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Container, Header } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { PageLayout } from "../components/PageLayout";
@@ -9,11 +9,11 @@ import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Telemetry from "../helpers/Telemetry";
 import Version from "../helpers/Version";
-import { appViewSet } from "../redux/actions/appActions";
+import { useAppStore } from "../zustand/app";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 
 export function DebugView() {
-    const dispatch = useDispatch();
+    const setView = useAppStore((s) => s.setView);
     const settings = useSelector(settingsSelector);
 
     const api = settings.accounts[0] ? getApi(settings.accounts[0]?.id) : undefined;
@@ -65,17 +65,15 @@ export function DebugView() {
                 <Header as="h3" dividing>
                     Views
                 </Header>
-                <Button onClick={() => dispatch(appViewSet("main"))}>main</Button>
-                <Button onClick={() => dispatch(appViewSet("error"))}>error</Button>
-                <Button onClick={() => dispatch(appViewSet("loading"))}>loading</Button>
-                <Button onClick={() => dispatch(appViewSet("settings"))}>settings</Button>
-                <Button onClick={() => dispatch(appViewSet("credentials"))}>credentials</Button>
-                <Button onClick={() => dispatch(appViewSet("selectqueries"))}>selectqueries</Button>
-                <Button onClick={() => dispatch(appViewSet("selectprojects"))}>selectprojects</Button>
-                <Button onClick={() => dispatch(appViewSet("info", { contentFileName: "test1.md" }))}>info</Button>
-                <Button
-                    onClick={() => dispatch(appViewSet("info", { viewCaption: "cap", contentFileName: "test2.md" }))}
-                >
+                <Button onClick={() => setView("main")}>main</Button>
+                <Button onClick={() => setView("error")}>error</Button>
+                <Button onClick={() => setView("loading")}>loading</Button>
+                <Button onClick={() => setView("settings")}>settings</Button>
+                <Button onClick={() => setView("credentials")}>credentials</Button>
+                <Button onClick={() => setView("selectqueries")}>selectqueries</Button>
+                <Button onClick={() => setView("selectprojects")}>selectprojects</Button>
+                <Button onClick={() => setView("info", { contentFileName: "test1.md" })}>info</Button>
+                <Button onClick={() => setView("info", { viewCaption: "cap", contentFileName: "test2.md" })}>
                     info2
                 </Button>
                 <Header as="h3" dividing>

@@ -2,11 +2,11 @@ import { useSelector } from "react-redux";
 import { Button, ButtonGroup, Card, CardGroup, Header, Icon } from "semantic-ui-react";
 import { AccountBadge } from "../../../components/AccountBadge";
 import { IAccount } from "../../../helpers/Settings";
-import { appViewSet } from "../../../redux/actions/appActions";
 import { settingsUpdate } from "../../../redux/actions/settingsActions";
 import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { store } from "../../../redux/store";
 import { s } from "../../../values/Strings";
+import { useAppStore } from "../../../zustand/app";
 import { useCredentialsModeStore } from "../../../zustand/credentials-mode";
 
 export function AccountSection() {
@@ -30,7 +30,7 @@ export function AccountSection() {
                     primary
                     onClick={() => {
                         useCredentialsModeStore.getState().setSelectedAccountId(null);
-                        store.dispatch(appViewSet("credentials"));
+                        useAppStore.getState().setView("credentials");
                     }}
                 >
                     <Icon name="plus" />
@@ -54,7 +54,7 @@ function AccountCard(props: { account: IAccount; deleteable: boolean }) {
                         <Button
                             onClick={() => {
                                 useCredentialsModeStore.getState().setSelectedAccountId(props.account.id);
-                                store.dispatch(appViewSet("credentials"));
+                                useAppStore.getState().setView("credentials");
                             }}
                         >
                             <Icon name="edit" />

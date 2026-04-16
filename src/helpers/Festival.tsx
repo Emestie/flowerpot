@@ -1,6 +1,5 @@
 import moment from "moment";
-import { appCurrentFestivalSet } from "../redux/actions/appActions";
-import { store } from "../redux/store";
+import { useAppStore } from "../zustand/app";
 import { DynamicContent } from "./DynamicContent";
 
 export interface IFestivalDescriptor {
@@ -24,6 +23,6 @@ export default class Festival {
 
         const currentFestival = festivals.find((f) => moment().isBetween(f.dateFrom, f.dateTo, "minutes", "[]"));
 
-        store.dispatch(appCurrentFestivalSet(currentFestival));
+        useAppStore.getState().setCurrentFestival(currentFestival);
     }
 }

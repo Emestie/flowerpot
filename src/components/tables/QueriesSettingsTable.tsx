@@ -1,18 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
-import { appViewSet } from "../../redux/actions/appActions";
+import { useAppStore } from "../../zustand/app";
 import { getQueriesSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { AccountBadge } from "../AccountBadge";
 
 export function QueriesSettingsTable() {
-    const dispatch = useDispatch();
+    const setView = useAppStore((s) => s.setView);
     const queries = useSelector(getQueriesSelector(true));
 
     const openQuerySelector = () => {
-        dispatch(appViewSet("selectqueries"));
+        setView("selectqueries");
     };
 
     const isWeb = Platform.type === PlatformType.Web;

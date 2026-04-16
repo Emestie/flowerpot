@@ -1,7 +1,6 @@
-import { useSelector } from "react-redux";
 import flowerpotLogo from "../../assets/flower4.png";
 import { IFestivalDescriptor } from "/@/helpers/Festival";
-import { appSelector } from "/@/redux/selectors/appSelectors";
+import { useAppStore } from "/@/zustand/app";
 
 export const defaultFestivalIcon: IFestivalDescriptor = {
     icon: { width: 28, height: 28, left: 16, top: 16, offset: 40, path: flowerpotLogo },
@@ -11,7 +10,7 @@ export const defaultFestivalIcon: IFestivalDescriptor = {
 };
 
 export function FestivalBanner() {
-    const { currentFestival } = useSelector(appSelector);
+    const currentFestival = useAppStore((state) => state.currentFestival);
 
     const _currentFestival = currentFestival ?? defaultFestivalIcon;
 

@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Confirm, Form } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import { appDialogSet } from "../../redux/actions/appActions";
 import { settingsUpdate } from "../../redux/actions/settingsActions";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { CollectionSelector } from "../CollectionSelector";
 import { useDataStore } from "../../zustand/data";
+import { useAppStore } from "../../zustand/app";
 
 interface IProps {
     show: boolean;
 }
 
 export function OpenByIdDialog(p: IProps) {
-    const dispatch = useDispatch();
+    const setDialog = useAppStore((state) => state.setDialog);
     const settings = useSelector(settingsSelector);
 
     const [id, setId] = useState("");
@@ -32,7 +32,7 @@ export function OpenByIdDialog(p: IProps) {
 
     useEffect(() => {
         if (accountId && collectionName)
-            dispatch(settingsUpdate({ openByIdLastAccountId: accountId, openByIdLastCollection: collectionName }));
+            settingsUpdate({ openByIdLastAccountId: accountId, openByIdLastCollection: collectionName });
     }, [accountId, collectionName]);
 
     const onConfirm = () => {
@@ -49,7 +49,7 @@ export function OpenByIdDialog(p: IProps) {
     };
 
     const onCancel = () => {
-        dispatch(appDialogSet("openById", false));
+        setDialog("openById", false);
         setId("");
     };
 

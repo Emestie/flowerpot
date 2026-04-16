@@ -1,23 +1,18 @@
 import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Message } from "semantic-ui-react";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import Platform from "../helpers/Platform";
 import { Timers } from "../helpers/Timers";
-import { appViewSet } from "../redux/actions/appActions";
-import { IAppState } from "../redux/reducers/appReducer";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { store } from "../redux/store";
 import { s } from "../values/Strings";
+import { useAppStore } from "../zustand/app";
 
 export interface IErrorViewParams extends Record<string, any> {
     errorMessage: string;
 }
 
 export function ErrorView() {
-    const { viewParams } = useSelector(appSelector) as IAppState<IErrorViewParams>;
-    const dispatch = useDispatch();
+    const viewParams = useAppStore((state) => state.viewParams) as IErrorViewParams;
 
     const errorMessage = viewParams.errorMessage;
 
@@ -27,19 +22,19 @@ export function ErrorView() {
 
     const onRefreshClick = useCallback(() => {
         routineStop();
-        dispatch(appViewSet("main"));
-    }, [dispatch, routineStop]);
+        useAppStore.getState().setView("main");
+    }, [routineStop]);
 
     const routineStart = useCallback(() => {
         Timers.delete("error-interval");
         Timers.create("error-interval", 60000, () => {
-            if (store.getState().app.view === "error") onRefreshClick();
+            if (useAppStore.getState().view === "error") onRefreshClick();
         });
     }, [onRefreshClick]);
 
     const onSettingsClick = () => {
         routineStop();
-        dispatch(appViewSet("credentials"));
+        useAppStore.getState().setView("credentials");
     };
 
     useEffect(() => {

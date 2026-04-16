@@ -7,7 +7,6 @@ import QueryHelper from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
-import { appSelector } from "../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { useDataStore } from "../../zustand/data";
 import { s } from "../../values/Strings";
@@ -15,6 +14,7 @@ import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { WorkItemRow } from "./WorkItemRow";
 import { useFilteredWorkItems } from "./use-filtered-work-items";
+import { useAppStore } from "../../zustand/app";
 
 interface IProps {
     query: Query;
@@ -23,7 +23,7 @@ interface IProps {
 export function WorkItemsBlock(props: IProps) {
     const { isLoading, routineStart, errorMessage, hiddenCount } = useQueryLoader(props.query);
     const settings = useSelector(settingsSelector);
-    const { showMineOnly } = useSelector(appSelector);
+    const showMineOnly = useAppStore((state) => state.showMineOnly);
     const filteredTypes = props.query.filteredTypes || [];
 
     const setWorkItemsForQuery = useDataStore((state) => state.setWorkItemsForQuery);

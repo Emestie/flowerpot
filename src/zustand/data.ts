@@ -1,7 +1,7 @@
 import { create } from "zustand";
+import Platform from "../helpers/Platform";
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
-import Platform from "../helpers/Platform";
 import { createLogger } from "./logger";
 
 export interface DataStore {

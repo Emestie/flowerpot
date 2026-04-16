@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Container, Form, Icon, Message } from "semantic-ui-react";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import { PageLayout } from "../components/PageLayout";
@@ -11,12 +11,11 @@ import { triggerCollapseAll, triggerExpandAll } from "../events/collapse-expand"
 import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
 import { Query } from "../models/query";
-import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
-import { appSelector } from "../redux/selectors/appSelectors";
 import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { useDataStore } from "../zustand/data";
 import { s } from "../values/Strings";
 import { useQuickSearchStore } from "../zustand/quick-search";
+import { useAppStore } from "../zustand/app";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
 
@@ -27,8 +26,11 @@ export const queriesSorting = (a: Query, b: Query) => {
 };
 
 export function MainView() {
-    const dispatch = useDispatch();
-    const { updateStatus, showMineOnly } = useSelector(appSelector);
+    const updateStatus = useAppStore((state) => state.updateStatus);
+    const showMineOnly = useAppStore((state) => state.showMineOnly);
+    const setView = useAppStore((state) => state.setView);
+    const setDialog = useAppStore((state) => state.setDialog);
+    const setShowMineOnly = useAppStore((state) => state.setShowMineOnly);
     const settings = useSelector(settingsSelector);
     const changesCollection = useDataStore((state) => state.changesCollection);
     const storedQueries = useSelector(getQueriesSelector());
@@ -51,7 +53,7 @@ export function MainView() {
     }, [isMobileSearchShown]);
 
     const onShowMineOnly = () => {
-        dispatch(appShowMineOnlySet(!showMineOnly));
+        setShowMineOnly(!showMineOnly);
     };
 
     const onExpandCollapse = () => {
@@ -60,15 +62,15 @@ export function MainView() {
     };
 
     const onRefresh = () => {
-        dispatch(appViewSet("refreshhelper"));
+        setView("refreshhelper");
     };
 
     const onSettings = () => {
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onOpenById = () => {
-        dispatch(appDialogSet("openById", true));
+        setDialog("openById", true);
     };
 
     const showSearchBar = () => {

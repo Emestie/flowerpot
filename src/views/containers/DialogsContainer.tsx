@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Message } from "semantic-ui-react";
 import { LinkAddingDialog } from "../../components/dialogs/LinkAddingDialog";
 import { OpenByIdDialog } from "../../components/dialogs/OpenByIdDialog";
@@ -7,15 +7,14 @@ import { SingleInputColorDialog } from "../../components/dialogs/SingleInputColo
 import Platform from "../../helpers/Platform";
 import Telemetry from "../../helpers/Telemetry";
 import { b64Decode, b64Encode } from "../../modules/b64encoding/encoding";
-import { appDialogSet } from "../../redux/actions/appActions";
 import { settingsSet } from "../../redux/actions/settingsActions";
-import { appSelector } from "../../redux/selectors/appSelectors";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
 
 export function DialogsContainer() {
-    const dispatch = useDispatch();
-    const { dialogs } = useSelector(appSelector);
+    const dialogs = useAppStore((state) => state.dialogs);
+    const setDialog = useAppStore((state) => state.setDialog);
     const settings = useSelector(settingsSelector);
 
     const [feedbackStatus, setFeedbackStatus] = useState<{ success: boolean; reason?: string } | null>(null);
@@ -35,7 +34,7 @@ export function DialogsContainer() {
             setFeedbackStatus({ success: false, reason: "Empty feedback" });
         }
 
-        dispatch(appDialogSet("feedback", false));
+        setDialog("feedback", false);
     };
 
     return (
@@ -44,7 +43,7 @@ export function DialogsContainer() {
             <SingleInputColorDialog
                 show={dialogs.feedback}
                 onClose={() => {
-                    dispatch(appDialogSet("feedback", false));
+                    setDialog("feedback", false);
                 }}
                 onOk={feedbackSend}
                 caption={s("feedbackWindowCaption")}
@@ -65,11 +64,11 @@ export function DialogsContainer() {
             <SingleInputColorDialog
                 show={dialogs.exportSettings}
                 onClose={() => {
-                    dispatch(appDialogSet("exportSettings", false));
+                    setDialog("exportSettings", false);
                 }}
                 onOk={(text) => {
                     Platform.current.copyString(text);
-                    dispatch(appDialogSet("exportSettings", false));
+                    setDialog("exportSettings", false);
                 }}
                 caption={s("exportSettingsWindowCaption")}
                 area
@@ -80,17 +79,17 @@ export function DialogsContainer() {
             <SingleInputColorDialog
                 show={dialogs.importSettings}
                 onClose={() => {
-                    dispatch(appDialogSet("importSettings", false));
+                    setDialog("importSettings", false);
                 }}
                 onOk={(text) => {
                     try {
-                        const settings = JSON.parse(b64Decode(text));
-                        if (typeof settings !== "object") throw new Error("Not an object");
-                        if (!settings.accounts && !Array.isArray(settings.accounts))
+                        const parsedSettings = JSON.parse(b64Decode(text));
+                        if (typeof parsedSettings !== "object") throw new Error("Not an object");
+                        if (!parsedSettings.accounts && !Array.isArray(parsedSettings.accounts))
                             throw new Error("Invalid settings object");
 
-                        dispatch(appDialogSet("importSettings", false));
-                        dispatch(settingsSet(settings));
+                        setDialog("importSettings", false);
+                        settingsSet(parsedSettings);
                     } catch (e: any) {
                         alert("Settings import error: " + e.message);
                     }
@@ -102,7 +101,7 @@ export function DialogsContainer() {
             <LinkAddingDialog
                 show={dialogs.addLink}
                 onClose={() => {
-                    dispatch(appDialogSet("addLink", false));
+                    setDialog("addLink", false);
                 }}
             />
             <div id="messagePoint"></div>

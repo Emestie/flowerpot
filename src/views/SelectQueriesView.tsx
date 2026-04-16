@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Checkbox, Container, Form, Header, Icon, Label, Message } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
@@ -7,7 +7,7 @@ import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import QueryHelper from "../helpers/Query";
 import { Query } from "../models/query";
-import { appViewSet } from "../redux/actions/appActions";
+import { useAppStore } from "../zustand/app";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
 
@@ -16,7 +16,7 @@ interface ISelectableQuery extends Query {
 }
 
 export function SelectQueriesView() {
-    const dispatch = useDispatch();
+    const setView = useAppStore((s) => s.setView);
     const settings = useSelector(settingsSelector);
     const [isLoading, setIsLoading] = useState(true);
     const [availableQueries, setAvailableQueries] = useState<ISelectableQuery[]>([]);
@@ -62,7 +62,7 @@ export function SelectQueriesView() {
         setIsLoading(true);
         setAvailableQueries([]);
 
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onUrlCheck = async () => {
@@ -75,7 +75,7 @@ export function SelectQueriesView() {
             const query = await getApi(account.id).query.getByUrl(url);
 
             QueryHelper.add(query);
-            dispatch(appViewSet("settings"));
+            setView("settings");
         } catch (e: any) {
             setUrlErrorText(e.message);
         } finally {
@@ -85,7 +85,7 @@ export function SelectQueriesView() {
 
     const onCancel = () => {
         setAvailableQueries([]);
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onRefresh = () => {

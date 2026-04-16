@@ -1,6 +1,5 @@
 import { Project } from "../models/project";
 import { Query } from "../models/query";
-import { appSet } from "../redux/actions/appActions";
 import { settingsSet } from "../redux/actions/settingsActions";
 import { Sections, TableScale } from "../redux/reducers/settingsReducer";
 import { store } from "../redux/store";
@@ -8,6 +7,7 @@ import { TLocale } from "../redux/types";
 import { AccountBadge } from "./Account";
 import { ILinkItem } from "./Links";
 import Platform from "./Platform";
+import { useAppStore } from "../zustand/app";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -101,7 +101,7 @@ export default class Settings {
         const autostart = await Platform.current.getStoreProp<boolean>("autostart");
         const locale = await Platform.current.getStoreProp<TLocale>("locale");
 
-        store.dispatch(appSet({ autostart, locale }));
+        useAppStore.getState().setSettings({ autostart, locale });
     }
 
     public static save(settings: ISettings) {

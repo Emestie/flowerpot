@@ -4,11 +4,13 @@ export const createLogger = <T>(name: string, initializer: (set: any, get: () =>
     return (set: any, get: any, api: any) => {
         const loggedSet = (partial: any, replace?: boolean) => {
             const prevState = get();
-            const nextState = typeof partial === "function" ? partial(prevState) : partial;
+            const change = typeof partial === "function" ? partial(prevState) : partial;
 
-            console.log(`${PREFIX} ${name}:`, { prev: prevState, next: nextState, change: partial });
+            set(partial, replace);
 
-            return set(partial, replace);
+            const nextState = get();
+
+            console.log(`${PREFIX} ${name}:`, { prev: prevState, change: change, next: nextState });
         };
 
         return initializer(loggedSet, get, api);

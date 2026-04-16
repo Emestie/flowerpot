@@ -24,6 +24,5 @@ export type TLocale = "en" | "ru";
 export type TDialog = "openById" | "feedback" | "addLink" | "exportSettings" | "importSettings";
 
 export enum Reducers {
-    App = "app",
     Settings = "settings",
 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
@@ -7,7 +7,7 @@ import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { ProjectHelper } from "../helpers/Project";
 import { Project } from "../models/project";
-import { appViewSet } from "../redux/actions/appActions";
+import { useAppStore } from "../zustand/app";
 import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
 
@@ -16,7 +16,7 @@ interface ISelectableProject extends Project {
 }
 
 export function SelectProjectsView() {
-    const dispatch = useDispatch();
+    const setView = useAppStore((s) => s.setView);
     const settings = useSelector(settingsSelector);
     const [isLoading, setIsLoading] = useState(true);
     const [availableProjects, setAvailableProjects] = useState<ISelectableProject[]>([]);
@@ -57,12 +57,12 @@ export function SelectProjectsView() {
         setIsLoading(true);
         setAvailableProjects([]);
 
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onCancel = () => {
         setAvailableProjects([]);
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onRefresh = () => {

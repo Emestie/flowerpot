@@ -1,8 +1,7 @@
 import { eapi } from "#preload";
-import { appUpdateStatusSet } from "../../redux/actions/appActions";
-import { store } from "../../redux/store";
 import { TLocale } from "../../redux/types";
 import { INotificationData, IPlatformClass, OS } from "../Platform";
+import { useAppStore } from "../../zustand/app";
 
 export default class ElectronPlatform implements IPlatformClass {
     public get os() {
@@ -104,19 +103,19 @@ export default class ElectronPlatform implements IPlatformClass {
 
     public initUpdateListeners() {
         eapi.ipcOn("checking_for_update", () => {
-            store.dispatch(appUpdateStatusSet("checking"));
+            useAppStore.getState().setUpdateStatus("checking");
         });
         eapi.ipcOn("update_not_available", () => {
-            store.dispatch(appUpdateStatusSet("none"));
+            useAppStore.getState().setUpdateStatus("none");
         });
         eapi.ipcOn("update_available", () => {
-            store.dispatch(appUpdateStatusSet("downloading"));
+            useAppStore.getState().setUpdateStatus("downloading");
         });
         eapi.ipcOn("update_downloaded", () => {
-            store.dispatch(appUpdateStatusSet("ready"));
+            useAppStore.getState().setUpdateStatus("ready");
         });
         eapi.ipcOn("update_error", () => {
-            store.dispatch(appUpdateStatusSet("error"));
+            useAppStore.getState().setUpdateStatus("error");
         });
     }
 }
