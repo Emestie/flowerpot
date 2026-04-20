@@ -43,6 +43,14 @@ export function App() {
         });
     }, [settings.theme]);
 
+    useEffect(() => {
+        if (isDark) {
+            document.documentElement.classList.add("FlowerpotDarkTheme");
+        } else {
+            document.documentElement.classList.remove("FlowerpotDarkTheme");
+        }
+    }, [isDark]);
+
     const setChangesCollection = useDataStore((state) => state.setChangesCollection);
 
     const setWIChangesCollection = useCallback(() => {
