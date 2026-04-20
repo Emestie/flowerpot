@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { getApi } from "../api/client";
 import QueryHelper from "../helpers/Query";
 import { Timers } from "../helpers/Timers";
 import { Query } from "../models/query";
 import { useDataStore } from "../zustand/data";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../zustand/settings";
 
 export function useQueryLoader(query: Query) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const { refreshRate } = useSelector(settingsSelector);
+    const refreshRate = useSettingsStore((state) => state.refreshRate);
     const setWorkItemsForQuery = useDataStore((state) => state.setWorkItemsForQuery);
     const [hiddenCount, setHiddenCount] = useState(0);
 

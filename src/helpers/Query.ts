@@ -1,10 +1,9 @@
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
-import { store, dataStore } from "../redux/store";
+import { dataStore } from "../zustand/data";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
+import { useSettingsStore } from "../zustand/settings";
 
 type TBoolProps = "enabled" | "ignoreNotif" | "ignoreIcon" | "empty";
 
@@ -14,7 +13,7 @@ export interface IWIStorage {
 
 export default class QueryHelper {
     public static add(query: Query) {
-        const allQueries = getQueriesSelector(true)(store.getState());
+        const allQueries = useSettingsStore.getState().queries;
         const allOrders = allQueries.map((q) => q.order);
         const maxOrder = allOrders.length ? Math.max(...allOrders) : 0;
         query.order = maxOrder + 1;
@@ -26,7 +25,7 @@ export default class QueryHelper {
     }
 
     public static delete(query: Query) {
-        let allQueries = getQueriesSelector(true)(store.getState()).filter((q) => q.queryId !== query.queryId);
+        let allQueries = useSettingsStore.getState().queries.filter((q) => q.queryId !== query.queryId);
         this.updateAllInStore(allQueries);
     }
 
@@ -50,7 +49,7 @@ export default class QueryHelper {
     }
 
     public static move(query: Query, direction: "up" | "dn") {
-        let allQueries = getQueriesSelector(true)(store.getState());
+        let allQueries = useSettingsStore.getState().queries;
 
         let index = this.findIndex(query);
         let indexToSwapWith = direction === "up" ? index - 1 : index + 1;
@@ -63,19 +62,19 @@ export default class QueryHelper {
     }
 
     private static findIndex(query: Query) {
-        let exactQueryIndex = getQueriesSelector(true)(store.getState()).findIndex((q) => q.queryId === query.queryId);
+        let exactQueryIndex = useSettingsStore.getState().queries.findIndex((q) => q.queryId === query.queryId);
         return exactQueryIndex;
     }
 
     private static updateSingleInStore(query: Query) {
-        let allQueries = getQueriesSelector(true)(store.getState());
+        let allQueries = useSettingsStore.getState().queries;
         let index = this.findIndex(query);
         allQueries[index] = query;
         this.updateAllInStore(allQueries);
     }
 
     private static updateAllInStore(queries: Query[]) {
-        store.dispatch(settingsUpdate({ queries }));
+        useSettingsStore.getState().setQueries(queries);
     }
 
     public static getWIStorage() {
@@ -113,7 +112,7 @@ export default class QueryHelper {
             }
         }
 
-        if (store.getState().settings.iconChangesOnMyWorkItemsOnly) {
+        if (useSettingsStore.getState().iconChangesOnMyWorkItemsOnly) {
             allWIs = allWIs.filter((wi) => wi._isMine);
         }
 

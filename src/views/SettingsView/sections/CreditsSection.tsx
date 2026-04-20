@@ -1,13 +1,11 @@
-import { useSelector } from "react-redux";
 import { DropdownItemProps, Form, Header, Icon, Label } from "semantic-ui-react";
 import avatar from "../../../assets/ti.jpg";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import Version from "../../../helpers/Version";
-import { settingsUpdate } from "../../../redux/actions/settingsActions";
-import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
-import { TLocale } from "../../../redux/types";
+import { TLocale } from "../../../types";
 import { s } from "../../../values/Strings";
 import { useAppStore } from "../../../zustand/app";
+import { useSettingsStore } from "../../../zustand/settings";
 
 const locales: DropdownItemProps[] = [
     { key: 2, text: s("localeEn"), value: "en" },
@@ -21,7 +19,8 @@ export function CreditsSection() {
     const setView = useAppStore((state) => state.setView);
     const setSettings = useAppStore((state) => state.setSettings);
     const setDialog = useAppStore((state) => state.setDialog);
-    const settings = useSelector(settingsSelector);
+    const allowTelemetry = useSettingsStore((state) => state.allowTelemetry);
+    const accounts = useSettingsStore((state) => state.accounts);
 
     const showChangelog = () => {
         setView("info", { viewCaption: s("releaseNotes"), contentFileName: "changelog.md" });
@@ -38,8 +37,8 @@ export function CreditsSection() {
     };
 
     const toggleTelemetry = () => {
-        const allowTelemetry = !settings.allowTelemetry;
-        settingsUpdate({ allowTelemetry });
+        const newValue = !allowTelemetry;
+        useSettingsStore.getState().setAllowTelemetry(newValue);
     };
 
     const onLocaleSelect = (val: TLocale) => {
@@ -107,12 +106,12 @@ export function CreditsSection() {
                     <br />
                 </>
             )}
-            <Form.Checkbox label={s("cbTelemetry")} checked={settings.allowTelemetry} onChange={toggleTelemetry} />
+            <Form.Checkbox label={s("cbTelemetry")} checked={allowTelemetry} onChange={toggleTelemetry} />
             <br />
             <Header as="h3" dividing>
                 {s("settingsActionsHeader")}
             </Header>
-            {settings.accounts.length > 0 && (
+            {accounts.length > 0 && (
                 <Label
                     as="a"
                     color="green"

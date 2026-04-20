@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { IFestivalDescriptor } from "../helpers/Festival";
-import { TDialog, TLocale, TUpdateStatus, TView } from "../redux/types";
+import { TDialog, TLocale, TUpdateStatus, TView } from "../types";
 import { createLogger } from "./logger";
 
 export interface AppState<IVP = Record<string, any>> {

@@ -1,13 +1,11 @@
 import { Project } from "../models/project";
 import { Query } from "../models/query";
-import { settingsSet } from "../redux/actions/settingsActions";
-import { Sections, TableScale } from "../redux/reducers/settingsReducer";
-import { store } from "../redux/store";
-import { TLocale } from "../redux/types";
+import { TLocale } from "../types";
+import { useAppStore } from "../zustand/app";
+import { Sections, TableScale, useSettingsStore } from "../zustand/settings";
 import { AccountBadge } from "./Account";
 import { ILinkItem } from "./Links";
 import Platform from "./Platform";
-import { useAppStore } from "../zustand/app";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
@@ -93,8 +91,7 @@ export default class Settings {
         if (settings) {
             try {
                 const parsedSettings = JSON.parse(settings);
-                //store.setSettings(parsedSettings);
-                store.dispatch(settingsSet(parsedSettings));
+                useSettingsStore.getState().setSettings(parsedSettings);
             } catch (e: any) {}
         }
 

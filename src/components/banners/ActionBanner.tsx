@@ -1,9 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Message } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import { settingsUpdate } from "../../redux/actions/settingsActions";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { useSettingsStore } from "../../zustand/settings";
 
 export interface IActionBannerProps {
     id: number;
@@ -17,13 +15,10 @@ export interface IActionBannerProps {
 }
 
 export function ActionBanner(p: IActionBannerProps) {
-    const settings = useSelector(settingsSelector);
-    const dispatch = useDispatch();
+    const bannersShown = useSettingsStore((state) => state.bannersShown);
 
     const hideMessage = () => {
-        const allBanners = settings.bannersShown;
-        const bannersShown = [...allBanners, p.id];
-        dispatch(settingsUpdate({ bannersShown }));
+        useSettingsStore.getState().setSettings({ bannersShown: [...bannersShown, p.id] });
     };
 
     const doActionAndHideBanner = () => {
@@ -33,7 +28,6 @@ export function ActionBanner(p: IActionBannerProps) {
         hideMessage();
     };
 
-    const bannersShown = settings.bannersShown;
     const isBannerShown = bannersShown.indexOf(p.id) !== -1;
     const cantShow = p.condition?.() === false;
 

@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Confirm, Form } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import { settingsUpdate } from "../../redux/actions/settingsActions";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { CollectionSelector } from "../CollectionSelector";
 import { useDataStore } from "../../zustand/data";
 import { useAppStore } from "../../zustand/app";
+import { useSettingsStore } from "../../zustand/settings";
 
 interface IProps {
     show: boolean;
@@ -15,11 +13,13 @@ interface IProps {
 
 export function OpenByIdDialog(p: IProps) {
     const setDialog = useAppStore((state) => state.setDialog);
-    const settings = useSelector(settingsSelector);
+    const openByIdLastAccountId = useSettingsStore((state) => state.openByIdLastAccountId);
+    const openByIdLastCollection = useSettingsStore((state) => state.openByIdLastCollection);
+    const accounts = useSettingsStore((state) => state.accounts);
 
     const [id, setId] = useState("");
-    const [accountId, setAccountId] = useState<string | undefined>(settings.openByIdLastAccountId);
-    const [collectionName, setCollectionName] = useState<string | undefined>(settings.openByIdLastCollection);
+    const [accountId, setAccountId] = useState<string | undefined>(openByIdLastAccountId);
+    const [collectionName, setCollectionName] = useState<string | undefined>(openByIdLastCollection);
 
     useEffect(() => {
         if (p.show) {
@@ -32,11 +32,11 @@ export function OpenByIdDialog(p: IProps) {
 
     useEffect(() => {
         if (accountId && collectionName)
-            settingsUpdate({ openByIdLastAccountId: accountId, openByIdLastCollection: collectionName });
+            useSettingsStore.getState().setSettings({ openByIdLastAccountId: accountId, openByIdLastCollection: collectionName });
     }, [accountId, collectionName]);
 
     const onConfirm = () => {
-        const account = settings.accounts.find((x) => x.id === accountId);
+        const account = accounts.find((x) => x.id === accountId);
 
         if (!account || !collectionName || !id) return;
 

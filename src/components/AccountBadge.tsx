@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
 import acc1 from "../assets/account-badges/acc1.png";
 import acc2 from "../assets/account-badges/acc2.png";
 import acc3 from "../assets/account-badges/acc3.png";
 import acc4 from "../assets/account-badges/acc4.png";
 import acc5 from "../assets/account-badges/acc5.png";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../zustand/settings";
 
 const SIZE_S = 10;
 const SIZE_M = 14;
@@ -16,7 +15,7 @@ export function AccountBadge(props: {
     display?: "flex" | "inline";
     rightGap?: number;
 }) {
-    const { accounts } = useSelector(settingsSelector);
+    const accounts = useSettingsStore((state) => state.accounts);
 
     if (accounts.length < 2) return null;
 

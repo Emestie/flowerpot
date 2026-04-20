@@ -1,7 +1,6 @@
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { store } from "../redux/store";
 import Platform from "./Platform";
 import Telemetry from "./Telemetry";
+import { useSettingsStore } from "../zustand/settings";
 
 export default class Version {
     public static get long() {
@@ -18,12 +17,12 @@ export default class Version {
     }
 
     public static isChangedLong() {
-        const { lastTimeVersionLong } = store.getState().settings;
+        const { lastTimeVersionLong } = useSettingsStore.getState();
         return lastTimeVersionLong !== Version.long;
     }
 
     public static isChangedShort() {
-        const { lastTimeVersion } = store.getState().settings;
+        const { lastTimeVersion } = useSettingsStore.getState();
         return lastTimeVersion !== Version.short;
     }
 
@@ -31,10 +30,11 @@ export default class Version {
         const lastTimeVersion = Version.short;
         const lastTimeVersionLong = Version.long;
 
-        store.dispatch(settingsUpdate({ lastTimeVersion, lastTimeVersionLong }));
+        useSettingsStore.getState().setLastVersion(lastTimeVersion);
+        useSettingsStore.getState().setLastVersionLong(lastTimeVersionLong);
 
         setTimeout(() => {
-            if (store.getState().settings.accounts.length > 0) Telemetry.versionUsageInfo();
+            if (useSettingsStore.getState().accounts.length > 0) Telemetry.versionUsageInfo();
         }, 5000);
     }
 }

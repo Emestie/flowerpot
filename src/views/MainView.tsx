@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Button, Container, Form, Icon, Message } from "semantic-ui-react";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import { PageLayout } from "../components/PageLayout";
@@ -11,11 +10,11 @@ import { triggerCollapseAll, triggerExpandAll } from "../events/collapse-expand"
 import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
 import { Query } from "../models/query";
-import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
 import { useDataStore } from "../zustand/data";
 import { s } from "../values/Strings";
 import { useQuickSearchStore } from "../zustand/quick-search";
 import { useAppStore } from "../zustand/app";
+import { useSettingsStore } from "../zustand/settings";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
 
@@ -31,16 +30,19 @@ export function MainView() {
     const setView = useAppStore((state) => state.setView);
     const setDialog = useAppStore((state) => state.setDialog);
     const setShowMineOnly = useAppStore((state) => state.setShowMineOnly);
-    const settings = useSelector(settingsSelector);
+    const queries = useSettingsStore((state) => state.queries);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const collapsedBlocks = useSettingsStore((state) => state.collapsedBlocks);
+    const showQuickLinks = useSettingsStore((state) => state.showQuickLinks);
+    const showUnreads = useSettingsStore((state) => state.showUnreads);
     const changesCollection = useDataStore((state) => state.changesCollection);
-    const storedQueries = useSelector(getQueriesSelector());
     const setQuickSearchValue = useQuickSearchStore((s) => s.setValue);
     const clearChangesCollection = useDataStore((state) => state.clearChangesCollection);
     const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
     const [isMobileSearchShown, setIsMobileSearchShown] = useState(false);
     const [isInstallingUpdate, setIsInstallingUpdate] = useState(false);
 
-    const expandCollapseOperation = settings.collapsedBlocks.length ? "expand" : "collapse";
+    const expandCollapseOperation = collapsedBlocks.length ? "expand" : "collapse";
 
     useEffect(() => {
         setTimeout(() => setIsRefreshAvailable(true), 5000);
@@ -86,19 +88,19 @@ export function MainView() {
         clearChangesCollection();
     };
 
-    const queries = storedQueries.sort(queriesSorting);
+    const queriesSorted = [...queries].sort(queriesSorting);
 
     const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
-    const noAccounts = settings.accounts.length === 0;
+    const noAccounts = accounts.length === 0;
 
     const queriesBlocks = noAccounts ? (
         <Message info>
             <Message.Header>{s("noAccountsSetup")}</Message.Header>
             <p>{s("noAccountsSetupText")}</p>
         </Message>
-    ) : queries.length ? (
-        queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
+    ) : queriesSorted.length ? (
+        queriesSorted.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
     ) : (
         <Message info>
             <Message.Header>{s("noQueriesToWatch")}</Message.Header>
@@ -106,11 +108,11 @@ export function MainView() {
         </Message>
     );
 
-    if (!queries.length) {
+    if (!queriesSorted.length) {
         Platform.current.updateTrayIcon(4);
     }
 
-    const qlEnabled = settings.showQuickLinks;
+    const qlEnabled = showQuickLinks;
 
     return (
         <PageLayout
@@ -177,7 +179,7 @@ export function MainView() {
                                 <Icon name="external share" />
                             </Button>
                         )}
-                        {!!settings.showUnreads && isChangesCollectionHasItems && !noAccounts && (
+                        {!!showUnreads && isChangesCollectionHasItems && !noAccounts && (
                             <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
                                 <Icon name="check circle outline" />
                             </Button>
@@ -208,7 +210,7 @@ export function MainView() {
                 )}
                 <WhatsNewBanner />
                 {!noAccounts && <ActionBannersContainer />}
-                {settings.accounts.map((account) => (
+                {accounts.map((account) => (
                     <PullRequestsBlock key={account.id} accountId={account.id} />
                 ))}
                 {queriesBlocks}

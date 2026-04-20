@@ -1,5 +1,4 @@
 import { createRef, useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Button, Container, Form, Header, Label, Message } from "semantic-ui-react";
 import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
@@ -9,12 +8,10 @@ import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
 import { IAccount } from "../helpers/Settings";
 import Telemetry from "../helpers/Telemetry";
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { store } from "../redux/store";
 import { s } from "../values/Strings";
 import { useAppStore } from "../zustand/app";
 import { useCredentialsModeStore } from "../zustand/credentials-mode";
+import { useSettingsStore } from "../zustand/settings";
 
 enum ECredState {
     NotValidated = 0,
@@ -33,16 +30,16 @@ const statuses = [
 ];
 
 function addAccount(account: IAccount) {
-    settingsUpdate({ accounts: store.getState().settings.accounts.concat(account) });
+    useSettingsStore.getState().setAccounts(useSettingsStore.getState().accounts.concat(account));
 }
 
 function updateAccount(account: Partial<IAccount> & { id: string }) {
-    const accounts = store.getState().settings.accounts;
+    const accounts = [...useSettingsStore.getState().accounts];
     const index = accounts.findIndex((acc) => acc.id === account.id);
 
     accounts[index] = { ...accounts[index], ...account };
 
-    settingsUpdate({ accounts });
+    useSettingsStore.getState().setAccounts(accounts);
 }
 
 export function CredentialsView() {
@@ -54,9 +51,9 @@ export function CredentialsView() {
     const [tokenInvalid, setTokenInvalid] = useState(false);
     const [credentialsCheckStatus, setCredentialsCheckStatus] = useState(ECredState.NotValidated);
 
-    const settings = useSelector(settingsSelector);
+    const accounts = useSettingsStore((state) => state.accounts);
 
-    const _currentAccount = settings.accounts.find((x) => x.id === accountId);
+    const _currentAccount = accounts.find((x) => x.id === accountId);
     const [currentAccount, setCurrentAccount] = useState<IAccount>(
         _currentAccount || {
             id: Math.random().toString(),
@@ -128,7 +125,7 @@ export function CredentialsView() {
         }
 
         if (
-            settings.accounts.some(
+            accounts.some(
                 (acc) => acc.id !== accountId && acc.url === currentAccount.url && acc.token === currentAccount.token
             )
         ) {

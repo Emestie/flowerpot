@@ -8,8 +8,7 @@ import { createWorkItemTypeLoaders } from "./work-item-type";
 import Differences from "/@/helpers/Differences";
 import Lists from "/@/helpers/Lists";
 import QueryHelper from "/@/helpers/Query";
-import { getListsSelector } from "/@/redux/selectors/settingsSelectors";
-import { store } from "/@/redux/store";
+import { useSettingsStore } from "/@/zustand/settings";
 
 export function createWorkItemLoaders(
     params: IApiClientParams,
@@ -107,7 +106,7 @@ export function createWorkItemLoaders(
 function getWorkItemsByQueryType(queryResult: IQueryResult | null, query: Query): IWorkItemShort[] {
     if (queryResult === null) {
         return query.queryId.startsWith("___permawatch")
-            ? getListsSelector("permawatch")(store.getState())
+            ? useSettingsStore.getState().lists.permawatch
                   .filter((x) => x.accountId === query.accountId)
                   .map((x) => ({
                       id: x.id,

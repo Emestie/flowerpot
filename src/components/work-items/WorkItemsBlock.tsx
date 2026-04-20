@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { Icon, Message, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
@@ -7,10 +6,10 @@ import QueryHelper from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
 import { useDataStore } from "../../zustand/data";
+import { useSettingsStore } from "../../zustand/settings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { WorkItemRow } from "./WorkItemRow";
@@ -22,7 +21,12 @@ interface IProps {
 
 export function WorkItemsBlock(props: IProps) {
     const { isLoading, routineStart, errorMessage, hiddenCount } = useQueryLoader(props.query);
-    const settings = useSelector(settingsSelector);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const sortPattern = useSettingsStore((state) => state.sortPattern);
+    const tableScale = useSettingsStore((state) => state.tableScale);
+    const showEmptyQueries = useSettingsStore((state) => state.showEmptyQueries);
+    const enableQueryColorCode = useSettingsStore((state) => state.enableQueryColorCode);
+    const mineOnTop = useSettingsStore((state) => state.mineOnTop);
     const showMineOnly = useAppStore((state) => state.showMineOnly);
     const filteredTypes = props.query.filteredTypes || [];
     const filteredStatuses = props.query.filteredStatuses || [];
@@ -70,7 +74,7 @@ export function WorkItemsBlock(props: IProps) {
         let q = props.query;
         if (!q.queryPath) return;
 
-        const accountUrl = settings.accounts.find((x) => x.id === props.query.accountId)?.url;
+        const accountUrl = accounts.find((x) => x.id === props.query.accountId)?.url;
         if (!accountUrl) return;
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
@@ -80,7 +84,7 @@ export function WorkItemsBlock(props: IProps) {
     };
 
     const getSortPattern = () => {
-        switch (settings.sortPattern) {
+        switch (sortPattern) {
             case "assignedto":
                 return sortPatternAssignedTo;
             case "id":
@@ -97,7 +101,7 @@ export function WorkItemsBlock(props: IProps) {
         if (a._list === "pinned" && b._list !== "pinned") return -1;
         else if (a._list !== "pinned" && b._list === "pinned") return 1;
 
-        if (settings.mineOnTop) {
+        if (mineOnTop) {
             if (a._isMine && !b._isMine) return -1;
             else if (!a._isMine && b._isMine) return 1;
         }
@@ -163,10 +167,10 @@ export function WorkItemsBlock(props: IProps) {
         ));
 
     const getTableSize = () => {
-        return settings.tableScale === 1 ? undefined : settings.tableScale === 2 ? "large" : "small";
+        return tableScale === 1 ? undefined : tableScale === 2 ? "large" : "small";
     };
 
-    if (query.empty && !settings.showEmptyQueries) {
+    if (query.empty && !showEmptyQueries) {
         return null;
     }
 
@@ -177,7 +181,7 @@ export function WorkItemsBlock(props: IProps) {
             accountId={query.accountId}
             subcaption={query.teamName}
             subcaptionTooltip={query.collectionName}
-            enableColorCode={!isPermawatch && settings.enableQueryColorCode}
+            enableColorCode={!isPermawatch && enableQueryColorCode}
             isCollapseEnabled={!!workItems.length}
             isLoading={isLoading}
             iconComponent={isPermawatch ? <Icon name="eye" /> : null}

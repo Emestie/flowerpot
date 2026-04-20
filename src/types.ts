@@ -1,10 +1,3 @@
-import { Action } from "redux";
-
-export interface IAction<T = any> extends Action<string> {
-    payload?: T;
-    [key: string]: unknown;
-}
-
 export type TView =
     | "loading"
     | "error"
@@ -22,7 +15,3 @@ export type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "err
 export type TLocale = "en" | "ru";
 
 export type TDialog = "openById" | "feedback" | "addLink" | "exportSettings" | "importSettings";
-
-export enum Reducers {
-    Settings = "settings",
-}

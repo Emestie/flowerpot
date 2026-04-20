@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import Festival from "../helpers/Festival";
-import { isDarkTheme, getSystemThemeListener } from "../helpers/Theme";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Settings from "../helpers/Settings";
+import { getSystemThemeListener, isDarkTheme } from "../helpers/Theme";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
-import { useDataStore } from "../zustand/data";
-import { useAppStore } from "../zustand/app";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { TView } from "../redux/types";
+import { TView } from "../types";
 import { CredentialsView } from "../views/CredentialsView";
 import { DebugView } from "../views/DebugView";
 import { ErrorView } from "../views/ErrorView";
@@ -22,26 +18,29 @@ import { SelectProjectsView } from "../views/SelectProjectsView";
 import { SelectQueriesView } from "../views/SelectQueriesView";
 import { SettingsView } from "../views/SettingsView/SettingsView";
 import { DialogsContainer } from "../views/containers/DialogsContainer";
+import { useAppStore } from "../zustand/app";
+import { useDataStore } from "../zustand/data";
+import { useSettingsStore } from "../zustand/settings";
 
 export function App() {
     const view = useAppStore((state) => state.view);
     const setView = useAppStore((state) => state.setView);
     const setShowWhatsNew = useAppStore((state) => state.setShowWhatsNew);
-    const settings = useSelector(settingsSelector);
+    const theme = useSettingsStore((state) => state.theme);
     const [ready, setIsReady] = useState(false);
-    const [isDark, setIsDark] = useState(() => isDarkTheme(settings.theme));
+    const [isDark, setIsDark] = useState(() => isDarkTheme(theme));
 
     useEffect(() => {
-        setIsDark(isDarkTheme(settings.theme));
-    }, [settings.theme]);
+        setIsDark(isDarkTheme(theme));
+    }, [theme]);
 
     useEffect(() => {
         return getSystemThemeListener((dark) => {
-            if (settings.theme === "system") {
+            if (theme === "system") {
                 setIsDark(dark);
             }
         });
-    }, [settings.theme]);
+    }, [theme]);
 
     useEffect(() => {
         if (isDark) {

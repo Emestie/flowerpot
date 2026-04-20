@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { Button, Container, Header } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { PageLayout } from "../components/PageLayout";
@@ -10,13 +9,15 @@ import Platform from "../helpers/Platform";
 import Telemetry from "../helpers/Telemetry";
 import Version from "../helpers/Version";
 import { useAppStore } from "../zustand/app";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../zustand/settings";
 
 export function DebugView() {
     const setView = useAppStore((s) => s.setView);
-    const settings = useSelector(settingsSelector);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const projects = useSettingsStore((state) => state.projects);
+    const queries = useSettingsStore((state) => state.queries);
 
-    const api = settings.accounts[0] ? getApi(settings.accounts[0]?.id) : undefined;
+    const api = accounts[0] ? getApi(accounts[0]?.id) : undefined;
 
     const [throwErrorState, setThrowErrorState] = useState(false);
 
@@ -95,11 +96,11 @@ export function DebugView() {
                 <Header as="h3" dividing>
                     New API
                 </Header>
-                <Button onClick={() => console.log(api?.pullRequest.getByProjects(settings.projects))}>load PR</Button>
+                <Button onClick={() => console.log(api?.pullRequest.getByProjects(projects))}>load PR</Button>
                 <Button onClick={() => console.log(api?.collection.getAll())}>load collections</Button>
                 <Button onClick={() => console.log(api?.project.getAll())}>load projects</Button>
                 <Button onClick={() => console.log(api?.query.getAvailable())}>load av queries</Button>
-                <Button onClick={() => console.log(api?.workItem.getByQuery(settings.queries[0]))}>
+                <Button onClick={() => console.log(api?.workItem.getByQuery(queries[0]))}>
                     load wi by query
                 </Button>
                 <Button onClick={() => console.log(api?.connectionData.get())}>conn data</Button>

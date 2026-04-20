@@ -2,13 +2,11 @@ import { Button, Icon, Table } from "semantic-ui-react";
 import { s } from "../../values/Strings";
 import Links, { LINKS_COUNT_LIMIT } from "../../helpers/Links";
 import ColorPicker from "../ColorPicker";
-import { useSelector } from "react-redux";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../../zustand/settings";
 import { useAppStore } from "../../zustand/app";
 
 export function LinksSettingsTable() {
-    const settings = useSelector(settingsSelector);
-    const links = settings.links.sort((a, b) => (a.order || 0) - (b.order || 0));
+    const links = useSettingsStore((state) => state.links).sort((a, b) => (a.order || 0) - (b.order || 0));
     const setDialog = useAppStore((state) => state.setDialog);
 
     const addLink = () => {

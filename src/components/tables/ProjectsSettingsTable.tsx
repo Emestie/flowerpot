@@ -1,14 +1,13 @@
-import { useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
 import { Project } from "../../models/project";
 import { ProjectHelper } from "../../helpers/Project";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../../zustand/settings";
 import { useAppStore } from "../../zustand/app";
 import { s } from "../../values/Strings";
 import { AccountBadge } from "../AccountBadge";
 
 export function ProjectsSettingsTable() {
-    const { projects } = useSelector(settingsSelector);
+    const projects = useSettingsStore((state) => state.projects);
 
     const openProjectSelector = () => {
         useAppStore.getState().setView("selectprojects");

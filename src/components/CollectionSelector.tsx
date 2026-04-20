@@ -1,18 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import { Form } from "semantic-ui-react";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { AccountBadge } from "./AccountBadge";
+import { useSettingsStore } from "../zustand/settings";
 
 export function CollectionSelector(props: {
     onChange: (value: { accountId: string; collectionName: string }) => void;
     value?: { accountId: string; collectionName: string };
 }) {
-    const settings = useSelector(settingsSelector);
+    const queries = useSettingsStore((state) => state.queries);
 
     const options = useMemo(
         () =>
-            settings.queries
+            queries
                 .filter(
                     (i, v, a) =>
                         a
@@ -31,7 +30,7 @@ export function CollectionSelector(props: {
                     collectionName: x.collectionName,
                     accountId: x.accountId,
                 })),
-        [settings]
+        [queries]
     );
 
     const [collectionIndex, setCollectionIndex] = useState(

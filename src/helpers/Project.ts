@@ -1,19 +1,17 @@
 import { Project } from "../models/project";
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { getProjectsSelector } from "../redux/selectors/settingsSelectors";
-import { store } from "../redux/store";
+import { useSettingsStore } from "../zustand/settings";
 
 type TBoolProps = "enabled";
 
 export class ProjectHelper {
     public static add(project: Project) {
-        const allProjects = getProjectsSelector(true)(store.getState());
+        const allProjects = useSettingsStore.getState().projects;
         allProjects.push(project);
         this.updateAllInStore(allProjects);
     }
 
     public static delete(project: Project) {
-        const allProjects = getProjectsSelector(true)(store.getState()).filter((p) => p.path !== project.path);
+        const allProjects = useSettingsStore.getState().projects.filter((p) => p.path !== project.path);
         this.updateAllInStore(allProjects);
     }
 
@@ -27,18 +25,18 @@ export class ProjectHelper {
     }
 
     private static findIndex(project: Project) {
-        let exactQueryIndex = getProjectsSelector(true)(store.getState()).findIndex((p) => p.path === project.path);
+        let exactQueryIndex = useSettingsStore.getState().projects.findIndex((p) => p.path === project.path);
         return exactQueryIndex;
     }
 
     private static updateSingleInStore(project: Project) {
-        const allQueries = getProjectsSelector(true)(store.getState());
+        const allQueries = useSettingsStore.getState().projects;
         const index = this.findIndex(project);
         allQueries[index] = project;
         this.updateAllInStore(allQueries);
     }
 
     private static updateAllInStore(projects: Project[]) {
-        store.dispatch(settingsUpdate({ projects }));
+        useSettingsStore.getState().setProjects(projects);
     }
 }

@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import { Header } from "semantic-ui-react";
-import { TView } from "../../redux/types";
+import { TView } from "../../types";
 import { s } from "../../values/Strings";
-import { FestivalBanner, defaultFestivalIcon } from "./FestivalBanner";
 import { useAppStore } from "../../zustand/app";
+import { FestivalBanner, defaultFestivalIcon } from "./FestivalBanner";
 
 interface P {
     children?: ReactNode;

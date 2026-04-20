@@ -1,13 +1,12 @@
-import { useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
 import { LINKS_COUNT_LIMIT } from "../../helpers/Links";
 import Platform from "../../helpers/Platform";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
+import { useSettingsStore } from "../../zustand/settings";
 
 export function QuickLinksContainer() {
-    const { links } = useSelector(settingsSelector);
+    const links = useSettingsStore((state) => state.links);
     const sortedLinks = [...links].sort((a, b) => (a.order || 0) - (b.order || 0));
 
     const openLink = (url: string) => {

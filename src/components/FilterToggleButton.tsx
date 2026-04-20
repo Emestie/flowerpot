@@ -1,8 +1,7 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
 import { Button, Icon, SemanticICONS } from "semantic-ui-react";
 import { isDarkTheme } from "../helpers/Theme";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../zustand/settings";
 
 interface FilterToggleButtonProps {
     checked: boolean;
@@ -68,8 +67,8 @@ export const FilterToggleButton: FC<FilterToggleButtonProps> = ({
     colorDot,
     hintPrefix = "",
 }) => {
-    const settings = useSelector(settingsSelector);
-    const isDark = isDarkTheme(settings.theme);
+    const theme = useSettingsStore((state) => state.theme);
+    const isDark = isDarkTheme(theme);
 
     if (!visible || (!icon && !imgUrl && !colorDot)) return null;
 

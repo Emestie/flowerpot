@@ -1,12 +1,11 @@
-import { useSelector } from "react-redux";
 import { Button, Header } from "semantic-ui-react";
 import { useAppStore } from "../../../zustand/app";
-import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../../../zustand/settings";
 import { s } from "../../../values/Strings";
 
 export function ImportSection() {
     const setDialog = useAppStore((s) => s.setDialog);
-    const settings = useSelector(settingsSelector);
+    const accounts = useSettingsStore((state) => state.accounts);
 
     return (
         <>
@@ -16,7 +15,7 @@ export function ImportSection() {
             {s("importSettingsDesc")}
             <br />
             <br />
-            {settings.accounts.length > 0 && (
+            {accounts.length > 0 && (
                 <Button
                     onClick={() => {
                         setDialog("exportSettings", true);

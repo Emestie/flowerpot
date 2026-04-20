@@ -1,5 +1,5 @@
 import { eapi } from "#preload";
-import { TLocale } from "../../redux/types";
+import { TLocale } from "../../types";
 import { INotificationData, IPlatformClass, OS } from "../Platform";
 import { useAppStore } from "../../zustand/app";
 

@@ -1,13 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Icon, Menu } from "semantic-ui-react";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
 import { isDarkTheme } from "../../helpers/Theme";
 import { TTheme } from "../../helpers/Settings";
-import { settingsUpdate } from "../../redux/actions/settingsActions";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
+import { useSettingsStore } from "../../zustand/settings";
 import { AccountSection } from "./sections/AccountSection";
 import { CreditsSection } from "./sections/CreditsSection";
 import { ImportSection } from "./sections/ImportSection";
@@ -17,7 +15,7 @@ import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
 import { WorkItemsSection } from "./sections/WorkItemsSection";
 import { PageLayout } from "/@/components/PageLayout";
-import { Sections } from "/@/redux/reducers/settingsReducer";
+import { Sections } from "../../zustand/settings";
 
 const sectionsList = [
     {
@@ -78,15 +76,16 @@ const getSectionComponent = (sectionId: Sections) => {
 };
 
 export function SettingsView() {
-    const dispatch = useDispatch();
-    const { settingsSection, theme, accounts } = useSelector(settingsSelector);
+    const settingsSection = useSettingsStore((state) => state.settingsSection);
+    const theme = useSettingsStore((state) => state.theme);
+    const accounts = useSettingsStore((state) => state.accounts);
     const setView = useAppStore((state) => state.setView);
 
     const toggleTheme = () => {
         const themes: TTheme[] = ["light", "dark", "system"];
         const currentIndex = themes.indexOf(theme);
         const nextIndex = (currentIndex + 1) % themes.length;
-        dispatch(settingsUpdate({ theme: themes[nextIndex] }));
+        useSettingsStore.getState().setTheme(themes[nextIndex]);
     };
 
     const getThemeIcon = () => {
@@ -128,7 +127,7 @@ export function SettingsView() {
                 key={i}
                 as="a"
                 active={section.id === settingsSection}
-                onClick={() => dispatch(settingsUpdate({ settingsSection: section.id }))}
+                onClick={() => useSettingsStore.getState().setSettingsSection(section.id)}
             >
                 {s(section.captionKey as any)}
             </Menu.Item>

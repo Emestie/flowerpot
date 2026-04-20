@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Button, Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
@@ -8,7 +7,7 @@ import { ViewHeading } from "../components/heading/ViewHeading";
 import { ProjectHelper } from "../helpers/Project";
 import { Project } from "../models/project";
 import { useAppStore } from "../zustand/app";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../zustand/settings";
 import { s } from "../values/Strings";
 
 interface ISelectableProject extends Project {
@@ -17,7 +16,8 @@ interface ISelectableProject extends Project {
 
 export function SelectProjectsView() {
     const setView = useAppStore((s) => s.setView);
-    const settings = useSelector(settingsSelector);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const projects = useSettingsStore((state) => state.projects);
     const [isLoading, setIsLoading] = useState(true);
     const [availableProjects, setAvailableProjects] = useState<ISelectableProject[]>([]);
 
@@ -26,11 +26,11 @@ export function SelectProjectsView() {
     const loadProjects = useCallback(() => {
         setTimeout(() => {
             Promise.all(
-                settings.accounts.map((account) => {
+                accounts.map((account) => {
                     return getApi(account.id)
                         .project.getAll()
                         .then((projects) => {
-                            const currentProjectPaths = settings.projects
+                            const currentProjectPaths = projects
                                 .filter((x) => x.accountId === account.id)
                                 .map((p) => p.path);
                             const projectsToSelect = projects.filter(
@@ -46,7 +46,7 @@ export function SelectProjectsView() {
                 setIsLoading(false);
             });
         }, 50);
-    }, [settings.projects]);
+    }, [projects]);
 
     useEffect(() => {
         loadProjects();

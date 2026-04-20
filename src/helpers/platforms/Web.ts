@@ -1,4 +1,4 @@
-import { TLocale } from "../../redux/types";
+import { TLocale } from "../../types";
 import { INotificationData, IPlatformClass } from "../Platform";
 import webStore from "./web/WebStore";
 

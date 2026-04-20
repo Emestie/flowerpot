@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Message } from "semantic-ui-react";
 import { LinkAddingDialog } from "../../components/dialogs/LinkAddingDialog";
 import { OpenByIdDialog } from "../../components/dialogs/OpenByIdDialog";
@@ -7,15 +6,13 @@ import { SingleInputColorDialog } from "../../components/dialogs/SingleInputColo
 import Platform from "../../helpers/Platform";
 import Telemetry from "../../helpers/Telemetry";
 import { b64Decode, b64Encode } from "../../modules/b64encoding/encoding";
-import { settingsSet } from "../../redux/actions/settingsActions";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
+import { useSettingsStore } from "../../zustand/settings";
 
 export function DialogsContainer() {
     const dialogs = useAppStore((state) => state.dialogs);
     const setDialog = useAppStore((state) => state.setDialog);
-    const settings = useSelector(settingsSelector);
 
     const [feedbackStatus, setFeedbackStatus] = useState<{ success: boolean; reason?: string } | null>(null);
 
@@ -72,7 +69,7 @@ export function DialogsContainer() {
                 }}
                 caption={s("exportSettingsWindowCaption")}
                 area
-                initialText={b64Encode(JSON.stringify(settings))}
+                initialText={b64Encode(JSON.stringify(useSettingsStore.getState()))}
                 unlimitedLength
                 readonly
             />
@@ -89,7 +86,7 @@ export function DialogsContainer() {
                             throw new Error("Invalid settings object");
 
                         setDialog("importSettings", false);
-                        settingsSet(parsedSettings);
+                        useSettingsStore.getState().setSettings(parsedSettings);
                     } catch (e: any) {
                         alert("Settings import error: " + e.message);
                     }

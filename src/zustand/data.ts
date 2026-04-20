@@ -50,3 +50,12 @@ export const useDataStore = create<DataStore>()(
         };
     })
 );
+
+export const dataStore = {
+    get workItems() {
+        return useDataStore.getState().workItems;
+    },
+    get changesCollection() {
+        return useDataStore.getState().changesCollection;
+    },
+};

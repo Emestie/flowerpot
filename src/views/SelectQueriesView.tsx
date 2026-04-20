@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Button, Checkbox, Container, Form, Header, Icon, Label, Message } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
@@ -8,7 +7,7 @@ import { ViewHeading } from "../components/heading/ViewHeading";
 import QueryHelper from "../helpers/Query";
 import { Query } from "../models/query";
 import { useAppStore } from "../zustand/app";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../zustand/settings";
 import { s } from "../values/Strings";
 
 interface ISelectableQuery extends Query {
@@ -17,7 +16,8 @@ interface ISelectableQuery extends Query {
 
 export function SelectQueriesView() {
     const setView = useAppStore((s) => s.setView);
-    const settings = useSelector(settingsSelector);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const queries = useSettingsStore((state) => state.queries);
     const [isLoading, setIsLoading] = useState(true);
     const [availableQueries, setAvailableQueries] = useState<ISelectableQuery[]>([]);
     const [showPublic, setShowPublic] = useState(false);
@@ -31,11 +31,11 @@ export function SelectQueriesView() {
     const loadQueries = useCallback(() => {
         setTimeout(() => {
             Promise.all(
-                settings.accounts.map((account) =>
+                accounts.map((account) =>
                     getApi(account.id)
                         .query.getAvailable()
                         .then((queries) => {
-                            const currentQueriesIds = settings.queries
+                            const currentQueriesIds = queries
                                 .filter((x) => x.accountId === account.id)
                                 .map((q) => q.queryId);
                             const queriesToSelect = queries.filter(
@@ -51,7 +51,7 @@ export function SelectQueriesView() {
                 setIsLoading(false);
             });
         }, 50);
-    }, [settings.queries]);
+    }, [queries]);
 
     useEffect(() => {
         loadQueries();
@@ -68,7 +68,7 @@ export function SelectQueriesView() {
     const onUrlCheck = async () => {
         setUrlCheckInProgress(true);
         try {
-            const account = settings.accounts.find((x) => url.startsWith(x.url));
+            const account = accounts.find((x) => url.startsWith(x.url));
 
             if (!account) throw new Error(s("noAccountWithGivenDomain"));
 

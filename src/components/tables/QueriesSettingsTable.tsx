@@ -1,15 +1,14 @@
-import { useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
 import { useAppStore } from "../../zustand/app";
-import { getQueriesSelector } from "../../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../../zustand/settings";
 import { s } from "../../values/Strings";
 import { AccountBadge } from "../AccountBadge";
 
 export function QueriesSettingsTable() {
     const setView = useAppStore((s) => s.setView);
-    const queries = useSelector(getQueriesSelector(true));
+    const queries = useSettingsStore((state) => state.queries);
 
     const openQuerySelector = () => {
         setView("selectqueries");

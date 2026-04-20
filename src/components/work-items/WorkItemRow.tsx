@@ -1,5 +1,4 @@
 import { ContextMenuTrigger } from "react-contextmenu";
-import { useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
@@ -15,7 +14,7 @@ import { Id } from "./id";
 import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
 import { useDataStore } from "/@/zustand/data";
-import { settingsSelector } from "/@/redux/selectors/settingsSelectors";
+import { useSettingsStore } from "/@/zustand/settings";
 
 interface IProps {
     item: WorkItem;
@@ -25,7 +24,7 @@ interface IProps {
 }
 
 export function WorkItemRow(props: IProps) {
-    const settings = useSelector(settingsSelector);
+    const showUnreads = useSettingsStore((state) => state.showUnreads);
     const changesCollection = useDataStore((state) => state.changesCollection);
     const setChangesCollectionItem = useDataStore((state) => state.setChangesCollectionItem);
 
@@ -148,7 +147,7 @@ export function WorkItemRow(props: IProps) {
     };
 
     const item = props.item;
-    const hasChanges = settings.showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
+    const hasChanges = showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
     const uid = props.item.id + Math.random() + "";
 
     const tags = item.tags

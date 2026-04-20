@@ -2,7 +2,7 @@ import pull from "../../assets/pull.png";
 import { ActionBanner, IActionBannerProps } from "../../components/banners/ActionBanner";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
-import { store } from "/@/redux/store";
+import { useSettingsStore } from "../../zustand/settings";
 // import idea from "../../assets/idea.png";
 
 function getActionBannersList(): IActionBannerProps[] {
@@ -12,7 +12,7 @@ function getActionBannersList(): IActionBannerProps[] {
         //     text: s("feedbackAlert"),
         //     actionText: s("feedbackAlertButton"),
         //     action: () => {
-        //         store.dispatch(appDialogSet("feedback", true));
+        //         useAppStore.getState().setDialog("feedback", true);
         //     },
         //     condition() {
         //         return Platform.type === PlatformType.Web;
@@ -30,7 +30,8 @@ function getActionBannersList(): IActionBannerProps[] {
                 useAppStore.getState().setView("selectprojects");
             },
             condition() {
-                return store.getState().settings.accounts.length > 0 && store.getState().settings.projects.length === 0;
+                const state = useSettingsStore.getState();
+                return state.accounts.length > 0 && state.projects.length === 0;
             },
         },
     ];

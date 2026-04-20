@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { Button, Form, Icon, Input, Label } from "semantic-ui-react";
 import Lists from "../helpers/Lists";
 import { TLists } from "../helpers/Settings";
-import { getListsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
 import { AccountBadge } from "./AccountBadge";
 import { CollectionSelector } from "./CollectionSelector";
+import { useSettingsStore } from "../zustand/settings";
 
 interface P {
     listName: TLists;
@@ -16,7 +15,7 @@ export function ListBlock(p: P) {
     const [inputVal, setInputVal] = useState("");
     const [selectedCollection, setSelectedCollection] = useState<{ accountId: string; collectionName: string }>();
 
-    const list = useSelector(getListsSelector(p.listName));
+    const list = useSettingsStore((state) => state.lists[p.listName]);
 
     const inputError = (() => {
         if (p.listName === "permawatch") {

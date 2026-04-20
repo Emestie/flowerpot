@@ -1,5 +1,5 @@
 import { useAppStore } from "../zustand/app";
-import { TLocale } from "../redux/types";
+import { TLocale } from "../types";
 import en from "./en";
 import ru from "./ru";
 

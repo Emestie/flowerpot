@@ -4,7 +4,7 @@ import { Query } from "./query";
 import { ItemsCommon } from "/@/helpers/ItemsCommon";
 import Lists from "/@/helpers/Lists";
 import { TLists } from "/@/helpers/Settings";
-import { store } from "/@/redux/store";
+import { useSettingsStore } from "/@/zustand/settings";
 import { s } from "/@/values/Strings";
 
 //! do not use functions in WorkItem
@@ -43,7 +43,7 @@ export class WorkItem {
     constructor(resp: IResponseWorkItem, query: Query, workItemType: IWorkItemType | undefined) {
         const isMine =
             resp.fields["System.AssignedTo"]?.descriptor ===
-            store.getState().settings.accounts.find((x) => x.id === query.accountId)?.descriptor;
+            useSettingsStore.getState().accounts.find((x) => x.id === query.accountId)?.descriptor;
 
         const type = resp.fields["System.WorkItemType"] || "";
         const createdByFull = ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "");
@@ -87,9 +87,9 @@ export class WorkItem {
             undefined;
 
         if (query.queryId.startsWith("___permawatch")) {
-            const itemFromList = store
+            const itemFromList = useSettingsStore
                 .getState()
-                .settings.lists.permawatch.find((x) => x.id === this.id && x.accountId === query.accountId);
+                .lists.permawatch.find((x) => x.id === this.id && x.accountId === query.accountId);
             this._collectionName = itemFromList?.collection || "";
         }
     }

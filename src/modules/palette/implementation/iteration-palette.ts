@@ -1,7 +1,7 @@
 import { Color } from "../model/color";
 import { Palette } from "../model/palette";
 import { isDarkTheme } from "/@/helpers/Theme";
-import { store } from "/@/redux/store";
+import { useSettingsStore } from "/@/zustand/settings";
 
 const iterationPalette = new Palette({
     colors: [
@@ -21,7 +21,7 @@ const iterationPalette = new Palette({
         { default: new Color("#84b710"), dark: new Color("#c4f750") },
     ],
     getKind() {
-        return isDarkTheme(store.getState().settings.theme) ? "dark" : "default";
+        return isDarkTheme(useSettingsStore.getState().theme) ? "dark" : "default";
     },
 });
 
