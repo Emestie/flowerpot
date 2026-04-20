@@ -17,6 +17,7 @@ export class Query {
     public nameInList: string;
     public empty: boolean;
     public filteredTypes: string[];
+    public filteredStatuses: string[];
 
     constructor(accountId: string, resp: IResponseQuery, project: Project) {
         this.accountId = accountId;
@@ -34,5 +35,6 @@ export class Query {
         this.nameInList = project.collectionName + " / " + project.name + " / " + resp.path.replaceAll("/", " / ");
         this.empty = false;
         this.filteredTypes = [];
+        this.filteredStatuses = [];
     }
 }

@@ -1,17 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Form, Header } from "semantic-ui-react";
 import { LinksSettingsTable } from "../../../components/tables/LinksSettingsTable";
-import { settingsUpdate } from "../../../redux/actions/settingsActions";
-import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
 import { s } from "../../../values/Strings";
+import { useSettingsStore } from "../../../zustand/settings";
 
 export function QuickLinksSections() {
-    const dispatch = useDispatch();
-    const settings = useSelector(settingsSelector);
+    const showQuickLinks = useSettingsStore((state) => state.showQuickLinks);
 
     const toggleQuickLinks = () => {
-        const showQuickLinks = !settings.showQuickLinks;
-        dispatch(settingsUpdate({ showQuickLinks }));
+        const newValue = !showQuickLinks;
+        useSettingsStore.getState().setShowQuickLinks(newValue);
     };
 
     return (
@@ -21,7 +18,7 @@ export function QuickLinksSections() {
             </Header>
             <Form.Checkbox
                 label={s("cbQuickLinksLabel")}
-                checked={settings.showQuickLinks}
+                checked={showQuickLinks}
                 onChange={toggleQuickLinks}
             />
             <LinksSettingsTable />

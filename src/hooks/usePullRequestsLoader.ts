@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { getApi } from "../api/client";
 import { Timers } from "../helpers/Timers";
 import { Project } from "../models/project";
 import { PullRequest } from "../models/pull-request";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../zustand/settings";
 
 const PR_TIMER_KEY = "pr-block-timer";
 const fishWIs = !!import.meta.env.VITE_USE_FISH;
@@ -19,7 +18,7 @@ export function usePullRequestsLoader(
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [allPullRequests, setAllPullRequests] = useState<PullRequest[]>([]);
-    const { refreshRate } = useSelector(settingsSelector);
+    const refreshRate = useSettingsStore((state) => state.refreshRate);
 
     const load = useCallback(async () => {
         console.log("updating PRs");

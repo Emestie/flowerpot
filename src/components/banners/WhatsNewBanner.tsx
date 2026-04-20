@@ -1,23 +1,19 @@
 import { Message, Button } from "semantic-ui-react";
 import { s } from "../../values/Strings";
 import Version from "../../helpers/Version";
-import { useDispatch, useSelector } from "react-redux";
-import { appSelector } from "../../redux/selectors/appSelectors";
-import { appSet, appViewSet } from "../../redux/actions/appActions";
+import { useAppStore } from "../../zustand/app";
 
 export function WhatsNewBanner() {
-    const { showWhatsNew } = useSelector(appSelector);
-    const dispatch = useDispatch();
+    const showWhatsNew = useAppStore((state) => state.showWhatsNew);
 
     if (!showWhatsNew) return null;
 
     const hideMessage = () => {
-        const showWhatsNew = false;
-        dispatch(appSet({ showWhatsNew }));
+        useAppStore.getState().setShowWhatsNew(false);
     };
 
     const showNotes = () => {
-        dispatch(appViewSet("info", { viewCaption: s("releaseNotes"), contentFileName: "changelog.md" }));
+        useAppStore.getState().setView("info", { viewCaption: s("releaseNotes"), contentFileName: "changelog.md" });
         hideMessage();
     };
 

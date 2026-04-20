@@ -1,44 +1,34 @@
 import { Project } from "../models/project";
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { getProjectsSelector } from "../redux/selectors/settingsSelectors";
-import { store } from "../redux/store";
+import { useSettingsStore } from "../zustand/settings";
 
 type TBoolProps = "enabled";
 
 export class ProjectHelper {
     public static add(project: Project) {
-        const allProjects = getProjectsSelector(true)(store.getState());
-        allProjects.push(project);
-        this.updateAllInStore(allProjects);
+        const allProjects = useSettingsStore.getState().projects;
+        this.updateAllInStore([...allProjects, project]);
     }
 
     public static delete(project: Project) {
-        const allProjects = getProjectsSelector(true)(store.getState()).filter((p) => p.path !== project.path);
+        const allProjects = useSettingsStore.getState().projects.filter((p) => p.path !== project.path);
         this.updateAllInStore(allProjects);
     }
 
     public static toggleBoolean(project: Project, boolPropName: TBoolProps, forcedValue?: boolean) {
-        if (forcedValue === undefined) {
-            project[boolPropName] = !project[boolPropName];
-        } else {
-            project[boolPropName] = forcedValue;
-        }
-        this.updateSingleInStore(project);
+        const newBool = forcedValue !== undefined ? forcedValue : !project[boolPropName];
+        const updatedProject = { ...project, [boolPropName]: newBool };
+        const allProjects = useSettingsStore.getState().projects;
+        const index = allProjects.findIndex((p) => p.path === project.path);
+        const updatedProjects = [...allProjects];
+        updatedProjects[index] = updatedProject;
+        this.updateAllInStore(updatedProjects);
     }
 
     private static findIndex(project: Project) {
-        let exactQueryIndex = getProjectsSelector(true)(store.getState()).findIndex((p) => p.path === project.path);
-        return exactQueryIndex;
-    }
-
-    private static updateSingleInStore(project: Project) {
-        const allQueries = getProjectsSelector(true)(store.getState());
-        const index = this.findIndex(project);
-        allQueries[index] = project;
-        this.updateAllInStore(allQueries);
+        return useSettingsStore.getState().projects.findIndex((p) => p.path === project.path);
     }
 
     private static updateAllInStore(projects: Project[]) {
-        store.dispatch(settingsUpdate({ projects }));
+        useSettingsStore.getState().setProjects(projects);
     }
 }

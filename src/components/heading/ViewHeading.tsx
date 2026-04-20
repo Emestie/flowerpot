@@ -1,9 +1,8 @@
 import { ReactNode } from "react";
-import { useSelector } from "react-redux";
 import { Header } from "semantic-ui-react";
-import { appSelector } from "../../redux/selectors/appSelectors";
-import { TView } from "../../redux/types";
+import { TView } from "../../types";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
 import { FestivalBanner, defaultFestivalIcon } from "./FestivalBanner";
 
 interface P {
@@ -36,7 +35,8 @@ const getHeaderTextByViewName = (viewName: TView) => {
 };
 
 export function ViewHeading(p: P) {
-    const { view, currentFestival } = useSelector(appSelector);
+    const view = useAppStore((state) => state.view);
+    const currentFestival = useAppStore((state) => state.currentFestival);
 
     const viewCaption = p.viewCaption || getHeaderTextByViewName(view);
 

@@ -1,11 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Icon, Menu } from "semantic-ui-react";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
-import { appViewSet } from "../../redux/actions/appActions";
-import { settingsUpdate } from "../../redux/actions/settingsActions";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
+import { isDarkTheme } from "../../helpers/Theme";
+import { TTheme } from "../../helpers/Settings";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
+import { useSettingsStore } from "../../zustand/settings";
 import { AccountSection } from "./sections/AccountSection";
 import { CreditsSection } from "./sections/CreditsSection";
 import { ImportSection } from "./sections/ImportSection";
@@ -15,7 +15,7 @@ import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
 import { WorkItemsSection } from "./sections/WorkItemsSection";
 import { PageLayout } from "/@/components/PageLayout";
-import { Sections } from "/@/redux/reducers/settingsReducer";
+import { Sections } from "../../zustand/settings";
 
 const sectionsList = [
     {
@@ -76,17 +76,42 @@ const getSectionComponent = (sectionId: Sections) => {
 };
 
 export function SettingsView() {
-    const dispatch = useDispatch();
-
-    const { settingsSection, darkTheme, accounts } = useSelector(settingsSelector);
+    const settingsSection = useSettingsStore((state) => state.settingsSection);
+    const theme = useSettingsStore((state) => state.theme);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const setView = useAppStore((state) => state.setView);
 
     const toggleTheme = () => {
-        const darkTheme_ = !darkTheme;
-        dispatch(settingsUpdate({ darkTheme: darkTheme_ }));
+        const themes: TTheme[] = ["light", "dark", "system"];
+        const currentIndex = themes.indexOf(theme);
+        const nextIndex = (currentIndex + 1) % themes.length;
+        useSettingsStore.getState().setTheme(themes[nextIndex]);
+    };
+
+    const getThemeIcon = () => {
+        switch (theme) {
+            case "light":
+                return <Icon name="sun" />;
+            case "dark":
+                return <Icon name="moon" />;
+            case "system":
+                return <Icon name="desktop" />;
+        }
+    };
+
+    const getThemeTitle = () => {
+        switch (theme) {
+            case "light":
+                return s("themeLight");
+            case "dark":
+                return s("themeDark");
+            case "system":
+                return s("themeSystem");
+        }
     };
 
     const onSave = () => {
-        dispatch(appViewSet("main"));
+        setView("main");
     };
 
     const sectionsMenuItems = sectionsList
@@ -102,7 +127,7 @@ export function SettingsView() {
                 key={i}
                 as="a"
                 active={section.id === settingsSection}
-                onClick={() => dispatch(settingsUpdate({ settingsSection: section.id }))}
+                onClick={() => useSettingsStore.getState().setSettingsSection(section.id)}
             >
                 {s(section.captionKey as any)}
             </Menu.Item>
@@ -115,8 +140,8 @@ export function SettingsView() {
             heading={
                 <ViewHeading>
                     <LocalVersionBanner />
-                    <Button icon onClick={toggleTheme}>
-                        {darkTheme ? <Icon name="sun" /> : <Icon name="moon" />}
+                    <Button icon onClick={toggleTheme} title={getThemeTitle()}>
+                        {getThemeIcon()}
                     </Button>
                     <Button positive onClick={onSave}>
                         {s("settingsBackButton")}
@@ -124,7 +149,7 @@ export function SettingsView() {
                 </ViewHeading>
             }
             sidebar={
-                <Menu inverted={darkTheme} vertical size="small" secondary>
+                <Menu inverted={isDarkTheme(theme)} vertical size="small" secondary>
                     {sectionsMenuItems}
                 </Menu>
             }

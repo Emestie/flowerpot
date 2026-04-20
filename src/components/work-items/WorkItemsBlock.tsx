@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Icon, Message, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
@@ -7,10 +6,10 @@ import QueryHelper from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
-import { dataWorkItemsForQuerySet } from "../../redux/actions/dataActions";
-import { appSelector } from "../../redux/selectors/appSelectors";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
+import { useDataStore } from "../../zustand/data";
+import { useSettingsStore } from "../../zustand/settings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { WorkItemRow } from "./WorkItemRow";
@@ -20,15 +19,21 @@ interface IProps {
     query: Query;
 }
 
-export function WorkItemsBlock(props: IProps) {
-    const { isLoading, routineStart, errorMessage, hiddenCount } = useQueryLoader(props.query);
-    const settings = useSelector(settingsSelector);
-    const { showMineOnly } = useSelector(appSelector);
-    const filteredTypes = props.query.filteredTypes || [];
+export function WorkItemsBlock({ query }: IProps) {
+    const { isLoading, routineStart, errorMessage, hiddenCount } = useQueryLoader(query);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const sortPattern = useSettingsStore((state) => state.sortPattern);
+    const tableScale = useSettingsStore((state) => state.tableScale);
+    const showEmptyQueries = useSettingsStore((state) => state.showEmptyQueries);
+    const enableQueryColorCode = useSettingsStore((state) => state.enableQueryColorCode);
+    const mineOnTop = useSettingsStore((state) => state.mineOnTop);
+    const showMineOnly = useAppStore((state) => state.showMineOnly);
+    const filteredTypes = query.filteredTypes || [];
+    const filteredStatuses = query.filteredStatuses || [];
 
-    const dispatch = useDispatch();
+    const setWorkItemsForQuery = useDataStore((state) => state.setWorkItemsForQuery);
 
-    const workItems = useFilteredWorkItems(props.query);
+    const workItems = useFilteredWorkItems(query);
 
     const availableTypes = useMemo(() => {
         const types = new Map<string, string | undefined>();
@@ -42,20 +47,34 @@ export function WorkItemsBlock(props: IProps) {
             .sort((a, b) => a.type.localeCompare(b.type));
     }, [workItems]);
 
-    const isPermawatch = props.query.queryId.startsWith("___permawatch");
+    const availableStatuses = useMemo(() => {
+        const statuses = new Map<string, string | undefined>();
+        workItems.forEach((wi) => {
+            if (wi.state && !statuses.has(wi.state)) {
+                statuses.set(wi.state, wi.stateColor);
+            }
+        });
+        return Array.from(statuses.entries())
+            .map(([state, color]) => ({ state, color }))
+            .sort((a, b) => a.state.localeCompare(b.state));
+    }, [workItems]);
+
+    const isPermawatch = query.queryId.startsWith("___permawatch");
     const totalItemsCount = workItems
         .filter((wi) => !filteredTypes.includes(wi.type))
-        .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev)).length;
+        .filter((wi) => !filteredStatuses.includes(wi.state))
+        .filter((wi) => !Lists.isIn(query.accountId, "hidden", query.collectionName, wi.id, wi.rev)).length;
     const redItemsCount = workItems
         .filter((wi) => !filteredTypes.includes(wi.type))
-        .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => !filteredStatuses.includes(wi.state))
+        .filter((wi) => !Lists.isIn(query.accountId, "hidden", query.collectionName, wi.id, wi.rev))
         .filter((wi) => wi.isRed).length;
 
     const onOpenQueryInBrowser = () => {
-        let q = props.query;
+        let q = query;
         if (!q.queryPath) return;
 
-        const accountUrl = settings.accounts.find((x) => x.id === props.query.accountId)?.url;
+        const accountUrl = accounts.find((x) => x.id === query.accountId)?.url;
         if (!accountUrl) return;
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
@@ -65,7 +84,7 @@ export function WorkItemsBlock(props: IProps) {
     };
 
     const getSortPattern = () => {
-        switch (settings.sortPattern) {
+        switch (sortPattern) {
             case "assignedto":
                 return sortPatternAssignedTo;
             case "id":
@@ -82,7 +101,7 @@ export function WorkItemsBlock(props: IProps) {
         if (a._list === "pinned" && b._list !== "pinned") return -1;
         else if (a._list !== "pinned" && b._list === "pinned") return 1;
 
-        if (settings.mineOnTop) {
+        if (mineOnTop) {
             if (a._isMine && !b._isMine) return -1;
             else if (!a._isMine && b._isMine) return 1;
         }
@@ -123,35 +142,28 @@ export function WorkItemsBlock(props: IProps) {
     const updateWorkItems = (wi: WorkItem) => {
         let newList = workItems.filter((w) => w.id !== wi.id);
         newList.push(wi);
-        //store.setWorkItemsForQuery(props.query, newList);
-        dispatch(dataWorkItemsForQuerySet(props.query, newList));
+        setWorkItemsForQuery(query, newList);
     };
 
     const refreshBlock = () => {
         routineStart();
     };
 
-    const query = props.query;
     const workItemsComponents = workItems
         .sort(getSortPattern())
         .filter((wi) => (showMineOnly ? wi._isMine : true))
-        .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
+        .filter((wi) => !Lists.isIn(query.accountId, "hidden", query.collectionName, wi.id, wi.rev))
         .filter((wi) => !filteredTypes.includes(wi.type))
+        .filter((wi) => !filteredStatuses.includes(wi.state))
         .map((wi) => (
-            <WorkItemRow
-                key={wi.id}
-                query={props.query}
-                item={wi}
-                isPermawatch={isPermawatch}
-                onUpdate={updateWorkItems}
-            />
+            <WorkItemRow key={wi.id} query={query} item={wi} isPermawatch={isPermawatch} onUpdate={updateWorkItems} />
         ));
 
     const getTableSize = () => {
-        return settings.tableScale === 1 ? undefined : settings.tableScale === 2 ? "large" : "small";
+        return tableScale === 1 ? undefined : tableScale === 2 ? "large" : "small";
     };
 
-    if (query.empty && !settings.showEmptyQueries) {
+    if (query.empty && !showEmptyQueries) {
         return null;
     }
 
@@ -162,7 +174,7 @@ export function WorkItemsBlock(props: IProps) {
             accountId={query.accountId}
             subcaption={query.teamName}
             subcaptionTooltip={query.collectionName}
-            enableColorCode={!isPermawatch && settings.enableQueryColorCode}
+            enableColorCode={!isPermawatch && enableQueryColorCode}
             isCollapseEnabled={!!workItems.length}
             isLoading={isLoading}
             iconComponent={isPermawatch ? <Icon name="eye" /> : null}
@@ -173,7 +185,7 @@ export function WorkItemsBlock(props: IProps) {
             }}
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             rightBlock={
-                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 6 }}>
+                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "flex-end", gap: 6 }}>
                     {!!query.queryPath && (
                         <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
                             <Icon size="small" name="external share" />
@@ -188,19 +200,38 @@ export function WorkItemsBlock(props: IProps) {
                         <FilterToggleButton
                             key={t.type}
                             label={t.type}
+                            hintPrefix={s("filterTypePrefix")}
                             checked={!filteredTypes.includes(t.type)}
                             onChange={() => {
                                 if (filteredTypes.includes(t.type)) {
                                     QueryHelper.updateFilteredTypes(
-                                        props.query,
+                                        query,
                                         filteredTypes.filter((x) => x !== t.type)
                                     );
                                 } else {
-                                    QueryHelper.updateFilteredTypes(props.query, [...filteredTypes, t.type]);
+                                    QueryHelper.updateFilteredTypes(query, [...filteredTypes, t.type]);
                                 }
                             }}
                             imgUrl={t.url}
-                            //?.replace(/color=.+&/, settings.darkTheme ? "color=E9E9E9&" : "color=676768&")
+                        />
+                    ))}
+                    {availableStatuses.map((st) => (
+                        <FilterToggleButton
+                            key={st.state}
+                            label={st.state}
+                            hintPrefix={s("filterStatusPrefix")}
+                            checked={!filteredStatuses.includes(st.state)}
+                            onChange={() => {
+                                if (filteredStatuses.includes(st.state)) {
+                                    QueryHelper.updateFilteredStatuses(
+                                        query,
+                                        filteredStatuses.filter((x) => x !== st.state)
+                                    );
+                                } else {
+                                    QueryHelper.updateFilteredStatuses(query, [...filteredStatuses, st.state]);
+                                }
+                            }}
+                            colorDot={st.color ? "#" + st.color : undefined}
                         />
                     ))}
                 </div>

@@ -1,26 +1,27 @@
-import { settingsMigrationsDonePush, settingsUpdate } from "../redux/actions/settingsActions";
-import { store } from "../redux/store";
 import { Account } from "./Account";
 import Loaders from "./Loaders";
 import { ISettings } from "./Settings";
+import { useSettingsStore } from "../zustand/settings";
 
 const V_070 = "v0_7_0h";
+const V_085_THEME = "v0_8_5_themes";
 
 export default class Migration {
     private static setMigrationAsDone(name: string) {
-        store.dispatch(settingsMigrationsDonePush(name));
+        useSettingsStore.getState().addMigration(name);
     }
 
     public static async perform() {
-        const migrations = store.getState().settings.migrationsDone || [];
+        const migrations = useSettingsStore.getState().migrationsDone || [];
 
         if (!migrations.includes(V_070)) await this.v0_7_0();
+        if (!migrations.includes(V_085_THEME)) await this.v0_8_5();
     }
 
     private static async v0_7_0() {
         console.log("Migration " + V_070);
 
-        const settings = store.getState().settings;
+        const settings = useSettingsStore.getState();
 
         if (!settings.tfsToken) return this.setMigrationAsDone(V_070);
 
@@ -40,44 +41,48 @@ export default class Migration {
             badge: 1,
         };
 
-        if (!store.getState().settings.accounts?.length) {
-            store.dispatch(settingsUpdate({ accounts: [account] }));
+        if (!settings.accounts?.length) {
+            useSettingsStore.getState().setAccounts([account]);
         }
 
-        const queries = store.getState().settings.queries.map((x) => ({ ...x, accountId: x.accountId || account.id }));
-        const projects = store
-            .getState()
-            .settings.projects.map((x) => ({ ...x, accountId: x.accountId || account.id }));
-        const notes =
-            store.getState().settings.notes?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const queries = settings.queries.map((x) => ({ ...x, accountId: x.accountId || account.id }));
+        const projects = settings.projects.map((x) => ({ ...x, accountId: x.accountId || account.id }));
+        const notes = settings.notes?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
         const deferred =
-            store.getState().settings.lists.deferred?.map((x) => ({ ...x, accountId: x.accountId || account.id })) ||
-            [];
+            settings.lists.deferred?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
         const favorites =
-            store.getState().settings.lists.favorites?.map((x) => ({ ...x, accountId: x.accountId || account.id })) ||
-            [];
+            settings.lists.favorites?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
         const forwarded =
-            store.getState().settings.lists.forwarded?.map((x) => ({ ...x, accountId: x.accountId || account.id })) ||
-            [];
-        const hidden =
-            store.getState().settings.lists.hidden?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
-        const keywords =
-            store.getState().settings.lists.keywords?.map((x) => ({ ...x, accountId: x.accountId || "" })) || [];
+            settings.lists.forwarded?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const hidden = settings.lists.hidden?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const keywords = settings.lists.keywords?.map((x) => ({ ...x, accountId: x.accountId || "" })) || [];
         const permawatch =
-            store.getState().settings.lists.permawatch?.map((x) => ({ ...x, accountId: x.accountId || account.id })) ||
-            [];
-        const pinned =
-            store.getState().settings.lists.pinned?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+            settings.lists.permawatch?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const pinned = settings.lists.pinned?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
 
-        store.dispatch(
-            settingsUpdate({
-                queries,
-                projects,
-                notes,
-                lists: { deferred, favorites, forwarded, hidden, keywords, permawatch, pinned },
-            })
-        );
+        useSettingsStore.getState().setSettings({
+            queries,
+            projects,
+            notes,
+            lists: { deferred, favorites, forwarded, hidden, keywords, permawatch, pinned },
+        });
 
         this.setMigrationAsDone(V_070);
+    }
+
+    private static async v0_8_5() {
+        console.log("Migration " + V_085_THEME);
+
+        const settings = useSettingsStore.getState();
+
+        if (settings.theme !== undefined) {
+            return this.setMigrationAsDone(V_085_THEME);
+        }
+
+        const theme: "light" | "dark" = settings.darkTheme ? "dark" : "light";
+
+        useSettingsStore.getState().setTheme(theme);
+
+        this.setMigrationAsDone(V_085_THEME);
     }
 }

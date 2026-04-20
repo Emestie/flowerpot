@@ -1,28 +1,26 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getApi } from "../api/client";
 import QueryHelper from "../helpers/Query";
 import { Timers } from "../helpers/Timers";
 import { Query } from "../models/query";
-import { dataWorkItemsForQuerySet } from "../redux/actions/dataActions";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useDataStore } from "../zustand/data";
+import { useSettingsStore } from "../zustand/settings";
 
 export function useQueryLoader(query: Query) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const dispatch = useDispatch();
-    const { refreshRate } = useSelector(settingsSelector);
+    const refreshRate = useSettingsStore((state) => state.refreshRate);
+    const setWorkItemsForQuery = useDataStore((state) => state.setWorkItemsForQuery);
     const [hiddenCount, setHiddenCount] = useState(0);
 
     const loadWorkItemsForThisQuery = useCallback(async () => {
-        console.log("updating query ->", query.accountId, query.queryName, `(${query.queryId})`);
+        console.log("updating query ->", query.queryName, `(${query.queryId})`);
         try {
             const { workItems, hiddenCount } = await getApi(query.accountId).workItem.getByQuery(query);
             QueryHelper.calculateIconLevel(query, workItems);
-            //set query emptiness to sort them
             QueryHelper.toggleBoolean(query, "empty", !workItems.length);
 
-            dispatch(dataWorkItemsForQuerySet(query, workItems));
+            setWorkItemsForQuery(query, workItems);
             setHiddenCount(hiddenCount);
 
             setErrorMessage(null);
@@ -31,7 +29,7 @@ export function useQueryLoader(query: Query) {
         } finally {
             setIsLoading(false);
         }
-    }, [dispatch, query.queryId, query.accountId]);
+    }, [setWorkItemsForQuery, query.queryId, query.accountId]);
 
     const routineStart = useCallback(async () => {
         setIsLoading(true);
@@ -43,7 +41,7 @@ export function useQueryLoader(query: Query) {
             setIsLoading(true);
             loadWorkItemsForThisQuery();
         });
-    }, [dispatch, loadWorkItemsForThisQuery, refreshRate, query.queryId]);
+    }, [loadWorkItemsForThisQuery, refreshRate, query.queryId]);
 
     useEffect(() => {
         routineStart();

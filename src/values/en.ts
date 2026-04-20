@@ -324,6 +324,13 @@ const en = {
     showSearch: "Search",
 
     openWebVersion: "Open web version of Flowerpot",
+
+    themeLight: "Light theme",
+    themeDark: "Dark theme",
+    themeSystem: "System theme (follows OS setting)",
+
+    filterStatusPrefix: "Status: ",
+    filterTypePrefix: "Type: ",
 };
 
 export default en;

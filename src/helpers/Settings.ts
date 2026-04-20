@@ -1,16 +1,15 @@
 import { Project } from "../models/project";
 import { Query } from "../models/query";
-import { appSet } from "../redux/actions/appActions";
-import { settingsSet } from "../redux/actions/settingsActions";
-import { Sections, TableScale } from "../redux/reducers/settingsReducer";
-import { store } from "../redux/store";
-import { TLocale } from "../redux/types";
+import { TLocale } from "../types";
+import { useAppStore } from "../zustand/app";
+import { Sections, TableScale, useSettingsStore } from "../zustand/settings";
 import { AccountBadge } from "./Account";
 import { ILinkItem } from "./Links";
 import Platform from "./Platform";
 
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
+export type TTheme = "light" | "dark" | "system";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned" | "forwarded";
 
 export interface IAccount {
@@ -64,7 +63,9 @@ export interface ISettings {
     notes: INoteItem[];
     links: ILinkItem[];
     hiddenPrs: IHiddenPr[];
-    darkTheme: boolean;
+    theme: TTheme;
+    /** @deprecated Use `theme` instead */
+    darkTheme: boolean | undefined;
     allowTelemetry: boolean;
     showUnreads: boolean;
     showQuickLinks: boolean;
@@ -90,18 +91,17 @@ export default class Settings {
         if (settings) {
             try {
                 const parsedSettings = JSON.parse(settings);
-                //store.setSettings(parsedSettings);
-                store.dispatch(settingsSet(parsedSettings));
+                useSettingsStore.getState().setSettings(parsedSettings);
             } catch (e: any) {}
         }
 
         const autostart = await Platform.current.getStoreProp<boolean>("autostart");
         const locale = await Platform.current.getStoreProp<TLocale>("locale");
 
-        store.dispatch(appSet({ autostart, locale }));
+        useAppStore.getState().setSettings({ autostart, locale });
     }
 
-    public static save(settings: ISettings) {
+    public static async save(settings: ISettings) {
         try {
             const settingsToStore = JSON.stringify(settings);
             Platform.current.setStoreProp("flowerpot", settingsToStore);

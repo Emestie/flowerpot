@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
@@ -7,8 +6,8 @@ import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { ProjectHelper } from "../helpers/Project";
 import { Project } from "../models/project";
-import { appViewSet } from "../redux/actions/appActions";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useAppStore } from "../zustand/app";
+import { useSettingsStore } from "../zustand/settings";
 import { s } from "../values/Strings";
 
 interface ISelectableProject extends Project {
@@ -16,8 +15,9 @@ interface ISelectableProject extends Project {
 }
 
 export function SelectProjectsView() {
-    const dispatch = useDispatch();
-    const settings = useSelector(settingsSelector);
+    const setView = useAppStore((s) => s.setView);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const projects = useSettingsStore((state) => state.projects) || [];
     const [isLoading, setIsLoading] = useState(true);
     const [availableProjects, setAvailableProjects] = useState<ISelectableProject[]>([]);
 
@@ -26,11 +26,11 @@ export function SelectProjectsView() {
     const loadProjects = useCallback(() => {
         setTimeout(() => {
             Promise.all(
-                settings.accounts.map((account) => {
+                accounts.map((account) => {
                     return getApi(account.id)
                         .project.getAll()
                         .then((projects) => {
-                            const currentProjectPaths = settings.projects
+                            const currentProjectPaths = projects
                                 .filter((x) => x.accountId === account.id)
                                 .map((p) => p.path);
                             const projectsToSelect = projects.filter(
@@ -46,7 +46,7 @@ export function SelectProjectsView() {
                 setIsLoading(false);
             });
         }, 50);
-    }, [settings.projects]);
+    }, [projects]);
 
     useEffect(() => {
         loadProjects();
@@ -57,12 +57,12 @@ export function SelectProjectsView() {
         setIsLoading(true);
         setAvailableProjects([]);
 
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onCancel = () => {
         setAvailableProjects([]);
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onRefresh = () => {

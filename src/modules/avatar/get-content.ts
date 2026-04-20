@@ -1,5 +1,5 @@
 import { getFromCache, putToCache } from "./cache";
-import { store } from "/@/redux/store";
+import { useSettingsStore } from "/@/zustand/settings";
 
 const singletonPromises: Record<string, Promise<string | null>> = {};
 
@@ -9,7 +9,7 @@ export async function getAvatarContent(accountId: string, url: string): Promise<
     const cached = getFromCache(url);
     if (cached !== undefined) return cached;
 
-    const token = store.getState().settings.accounts.find((x) => x.id === accountId)?.token;
+    const token = useSettingsStore.getState().accounts.find((x) => x.id === accountId)?.token;
 
     if (!singletonPromises[url]) singletonPromises[url] = loadAvatar(url, token || "");
     return singletonPromises[url];

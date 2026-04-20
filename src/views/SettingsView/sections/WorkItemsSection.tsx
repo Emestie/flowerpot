@@ -1,11 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Header } from "semantic-ui-react";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import { TNotificationsMode, TSortPattern } from "../../../helpers/Settings";
-import { settingsUpdate } from "../../../redux/actions/settingsActions";
-import { TableScale } from "../../../redux/reducers/settingsReducer";
-import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
+import { TableScale } from "../../../zustand/settings";
 import { s } from "../../../values/Strings";
+import { useSettingsStore } from "../../../zustand/settings";
 
 const getSortPatterns: () => DropdownItemProps[] = () => [
     { key: 1, text: s("sortPatternWeight"), value: "default" },
@@ -34,8 +32,26 @@ const getRefreshRates: () => DropdownItemProps[] = () => [
 ];
 
 export function WorkItemsSection() {
-    const dispatch = useDispatch();
-    const settings = useSelector(settingsSelector);
+    const showUnreads = useSettingsStore((state) => state.showUnreads);
+    const iconChangesOnMyWorkItemsOnly = useSettingsStore((state) => state.iconChangesOnMyWorkItemsOnly);
+    const mineOnTop = useSettingsStore((state) => state.mineOnTop);
+    const enableIterationColors = useSettingsStore((state) => state.enableIterationColors);
+    const enableQueryColorCode = useSettingsStore((state) => state.enableQueryColorCode);
+    const showEmptyQueries = useSettingsStore((state) => state.showEmptyQueries);
+    const refreshRate = useSettingsStore((state) => state.refreshRate);
+    const sortPattern = useSettingsStore((state) => state.sortPattern);
+    const notificationsMode = useSettingsStore((state) => state.notificationsMode);
+    const tableScale = useSettingsStore((state) => state.tableScale);
+    const setShowUnreads = useSettingsStore((state) => state.setShowUnreads);
+    const setIconChangesOnMyWorkItemsOnly = useSettingsStore((state) => state.setIconChangesOnMyWorkItemsOnly);
+    const setMineOnTop = useSettingsStore((state) => state.setMineOnTop);
+    const setEnableIterationColors = useSettingsStore((state) => state.setEnableIterationColors);
+    const setEnableQueryColorCode = useSettingsStore((state) => state.setEnableQueryColorCode);
+    const setShowEmptyQueries = useSettingsStore((state) => state.setShowEmptyQueries);
+    const setTableScale = useSettingsStore((state) => state.setTableScale);
+    const setRefreshRate = useSettingsStore((state) => state.setRefreshRate);
+    const setSortPattern = useSettingsStore((state) => state.setSortPattern);
+    const setNotificationsMode = useSettingsStore((state) => state.setNotificationsMode);
 
     const refreshRates = getRefreshRates();
     const tableScales = getTableScales();
@@ -52,53 +68,43 @@ export function WorkItemsSection() {
     }
 
     const toggleShowUnreads = () => {
-        const showUnreads = !settings.showUnreads;
-        dispatch(settingsUpdate({ showUnreads }));
+        setShowUnreads(!showUnreads);
     };
 
     const toggleIconColor = () => {
-        const iconChangesOnMyWorkItemsOnly = !settings.iconChangesOnMyWorkItemsOnly;
-        dispatch(settingsUpdate({ iconChangesOnMyWorkItemsOnly }));
+        setIconChangesOnMyWorkItemsOnly(!iconChangesOnMyWorkItemsOnly);
     };
 
     const toggleMineOnTop = () => {
-        const mineOnTop = !settings.mineOnTop;
-        dispatch(settingsUpdate({ mineOnTop }));
+        setMineOnTop(!mineOnTop);
     };
 
     const toggleIterationColors = () => {
-        const enableIterationColors = !settings.enableIterationColors;
-        dispatch(settingsUpdate({ enableIterationColors }));
+        setEnableIterationColors(!enableIterationColors);
     };
 
     const toggleQueryColorCode = () => {
-        const enableQueryColorCode = !settings.enableQueryColorCode;
-        dispatch(settingsUpdate({ enableQueryColorCode }));
+        setEnableQueryColorCode(!enableQueryColorCode);
     };
 
     const toggleShowEmptyQueries = () => {
-        const showEmptyQueries = !settings.showEmptyQueries;
-        dispatch(settingsUpdate({ showEmptyQueries }));
+        setShowEmptyQueries(!showEmptyQueries);
     };
 
     const onTableScaleSelect = (val: TableScale) => {
-        const tableScale = val;
-        dispatch(settingsUpdate({ tableScale }));
+        setTableScale(val);
     };
 
     const onRateSelect = (val: number) => {
-        const refreshRate = val;
-        dispatch(settingsUpdate({ refreshRate }));
+        setRefreshRate(val);
     };
 
     const onSortSelect = (val: TSortPattern) => {
-        const sortPattern = val;
-        dispatch(settingsUpdate({ sortPattern }));
+        setSortPattern(val);
     };
 
     const onNotifModeSelect = (val: TNotificationsMode) => {
-        const notificationsMode = val;
-        dispatch(settingsUpdate({ notificationsMode }));
+        setNotificationsMode(val);
     };
 
     return (
@@ -109,14 +115,14 @@ export function WorkItemsSection() {
             <Form.Select
                 label={s("ddRefreshLabel")}
                 options={refreshRates}
-                value={settings.refreshRate}
+                value={refreshRate}
                 onChange={(e, { value }) => onRateSelect(value as number)}
             />
             <br />
             <Form.Select
                 label={s("sortPattern")}
                 options={sortPatterns}
-                value={settings.sortPattern}
+                value={sortPattern}
                 onChange={(e, { value }) => onSortSelect(value as TSortPattern)}
             />
             <br />
@@ -125,7 +131,7 @@ export function WorkItemsSection() {
                     <Form.Select
                         label={s("ddShowNotifLabel")}
                         options={notificationsModes}
-                        value={settings.notificationsMode}
+                        value={notificationsMode}
                         onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
                     />
                     <br />
@@ -135,38 +141,38 @@ export function WorkItemsSection() {
                 <>
                     <Form.Checkbox
                         label={s("cbIconLabel")}
-                        checked={settings.iconChangesOnMyWorkItemsOnly}
+                        checked={iconChangesOnMyWorkItemsOnly}
                         onChange={toggleIconColor}
                     />
                     <br />
                 </>
             )}
-            <Form.Checkbox label={s("mineOnTop")} checked={settings.mineOnTop} onChange={toggleMineOnTop} />
+            <Form.Checkbox label={s("mineOnTop")} checked={mineOnTop} onChange={toggleMineOnTop} />
             <br />
-            <Form.Checkbox label={s("showUnreads")} checked={settings.showUnreads} onChange={toggleShowUnreads} />
+            <Form.Checkbox label={s("showUnreads")} checked={showUnreads} onChange={toggleShowUnreads} />
             <br />
             <Form.Checkbox
                 label={s("enableIterationColors")}
-                checked={settings.enableIterationColors}
+                checked={enableIterationColors}
                 onChange={toggleIterationColors}
             />
             <br />
             <Form.Checkbox
                 label={s("enableQueryColorCode")}
-                checked={settings.enableQueryColorCode}
+                checked={enableQueryColorCode}
                 onChange={toggleQueryColorCode}
             />
             <br />
             <Form.Checkbox
                 label={s("showEmptyQueries")}
-                checked={settings.showEmptyQueries}
+                checked={showEmptyQueries}
                 onChange={toggleShowEmptyQueries}
             />
             <br />
             <Form.Select
                 label={s("ddTableScale")}
                 options={tableScales}
-                value={settings.tableScale}
+                value={tableScale}
                 onChange={(e, { value }) => onTableScaleSelect(value as TableScale)}
             />
             <br />

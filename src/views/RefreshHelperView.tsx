@@ -1,13 +1,12 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { appViewSet } from "../redux/actions/appActions";
+import { useAppStore } from "../zustand/app";
 
 export function RefreshHelperView() {
-    const dispatch = useDispatch();
+    const setView = useAppStore((state) => state.setView);
 
     useEffect(() => {
-        dispatch(appViewSet("main"));
-    }, [dispatch]);
+        setView("main");
+    }, [setView]);
 
     return <div></div>;
 }

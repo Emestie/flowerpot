@@ -1,26 +1,23 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
 import { LINKS_COUNT_LIMIT } from "../../helpers/Links";
 import Platform from "../../helpers/Platform";
-import { appDialogSet } from "../../redux/actions/appActions";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
+import { useSettingsStore } from "../../zustand/settings";
 
 export function QuickLinksContainer() {
-    const settings = useSelector(settingsSelector);
-    const dispatch = useDispatch();
-
-    const links = settings.links.sort((a, b) => (a.order || 0) - (b.order || 0));
+    const links = useSettingsStore((state) => state.links) || [];
+    const sortedLinks = [...links].sort((a, b) => (a.order || 0) - (b.order || 0));
 
     const openLink = (url: string) => {
         Platform.current.openUrl(url);
     };
 
     const addNew = () => {
-        dispatch(appDialogSet("addLink", true));
+        useAppStore.getState().setDialog("addLink", true);
     };
 
-    const items = links.map((x) => (
+    const items = sortedLinks.map((x) => (
         <Label
             key={x.url}
             color={x.color as any}

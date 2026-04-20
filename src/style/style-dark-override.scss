@@ -8,6 +8,7 @@ $bg3: #555556;
 $bg4: #656566;
 $rowItemHover: color-mix(in srgb, $bg, white 10%);
 
+html.FlowerpotDarkTheme,
 .FlowerpotDarkTheme {
     min-height: 100%;
     background-color: $bg;
@@ -15,6 +16,52 @@ $rowItemHover: color-mix(in srgb, $bg, white 10%);
 
     .PageLayout {
         background-color: $bg;
+    }
+
+    .ui.modal {
+        background-color: $bg1;
+        color: $textNoDim;
+        border: 1px solid $bg3;
+
+        > .header,
+        > .content,
+        > .actions {
+            background-color: $bg1;
+            color: $textNoDim;
+            border-color: $bg2;
+        }
+
+        > .header {
+            border-bottom: 1px solid $bg2;
+        }
+
+        > .actions {
+            border-top: 1px solid $bg2;
+        }
+
+        .ui.input > input {
+            background-color: $bg2;
+            color: $textNoDim;
+            border-color: $bg3;
+        }
+
+        .ui.form input:not([type]),
+        .ui.form input[type="text"],
+        .ui.form input[type="password"],
+        .ui.form textarea {
+            background-color: $bg2;
+            color: $textNoDim;
+            border-color: $bg3;
+        }
+
+        .ui.form .field > label {
+            color: $textNoDim;
+        }
+
+        textarea {
+            background-color: $bg2;
+            color: $textNoDim;
+        }
     }
 
     .ui.header {
@@ -150,8 +197,10 @@ $rowItemHover: color-mix(in srgb, $bg, white 10%);
         }
     }
     .filter-toggle-button.ui.basic.button:hover,
-    .filter-toggle-button.ui.basic.button:focus {
-        background-color: $bg !important;
+    .filter-toggle-button.ui.basic.button:focus,
+    .filter-toggle-button-img.ui.basic.button:hover,
+    .filter-toggle-button-img.ui.basic.button:focus {
+        background-color: transparent !important;
     }
 
     .ui.checkbox label,
@@ -205,7 +254,12 @@ $rowItemHover: color-mix(in srgb, $bg, white 10%);
 
     .ui.info.message {
         background-color: #405a5ac4;
-        color: #dfe4e6;
+        color: white !important;
+
+        .header,
+        p {
+            color: white !important;
+        }
     }
 
     .ui.error.message {

@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Confirm, Form } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
-import { appDialogSet } from "../../redux/actions/appActions";
-import { settingsUpdate } from "../../redux/actions/settingsActions";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
-import { store } from "../../redux/store";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
+import { useDataStore } from "../../zustand/data";
+import { useSettingsStore } from "../../zustand/settings";
 import { CollectionSelector } from "../CollectionSelector";
 
 interface IProps {
@@ -14,12 +12,14 @@ interface IProps {
 }
 
 export function OpenByIdDialog(p: IProps) {
-    const dispatch = useDispatch();
-    const settings = useSelector(settingsSelector);
+    const setDialog = useAppStore((state) => state.setDialog);
+    const openByIdLastAccountId = useSettingsStore((state) => state.openByIdLastAccountId);
+    const openByIdLastCollection = useSettingsStore((state) => state.openByIdLastCollection);
+    const accounts = useSettingsStore((state) => state.accounts);
 
     const [id, setId] = useState("");
-    const [accountId, setAccountId] = useState<string | undefined>(settings.openByIdLastAccountId);
-    const [collectionName, setCollectionName] = useState<string | undefined>(settings.openByIdLastCollection);
+    const [accountId, setAccountId] = useState<string | undefined>(openByIdLastAccountId);
+    const [collectionName, setCollectionName] = useState<string | undefined>(openByIdLastCollection);
 
     useEffect(() => {
         if (p.show) {
@@ -32,15 +32,18 @@ export function OpenByIdDialog(p: IProps) {
 
     useEffect(() => {
         if (accountId && collectionName)
-            dispatch(settingsUpdate({ openByIdLastAccountId: accountId, openByIdLastCollection: collectionName }));
+            useSettingsStore
+                .getState()
+                .setSettings({ openByIdLastAccountId: accountId, openByIdLastCollection: collectionName });
     }, [accountId, collectionName]);
 
     const onConfirm = () => {
-        const account = settings.accounts.find((x) => x.id === accountId);
+        const account = accounts.find((x) => x.id === accountId);
 
         if (!account || !collectionName || !id) return;
 
-        const calculatedUrl = store.getState().data.workItems.at(0)?.url.split("/tfs/").at(0) + "/tfs/";
+        const workItems = useDataStore.getState().workItems;
+        const calculatedUrl = workItems.at(0)?.url.split("/tfs/").at(0) + "/tfs/";
 
         Platform.current.openUrl((calculatedUrl || account.url) + collectionName + "/_workitems/edit/" + id);
 
@@ -48,7 +51,7 @@ export function OpenByIdDialog(p: IProps) {
     };
 
     const onCancel = () => {
-        dispatch(appDialogSet("openById", false));
+        setDialog("openById", false);
         setId("");
     };
 

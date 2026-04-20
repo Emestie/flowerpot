@@ -1,5 +1,4 @@
-import { appViewSet } from "../redux/actions/appActions";
-import { store } from "../redux/store";
+import { useAppStore } from "../zustand/app";
 import Platform from "./Platform";
 
 export class Info {
@@ -8,13 +7,13 @@ export class Info {
             document.getElementById("testbutton")?.addEventListener("click", () => console.log("asdasd"));
             document.getElementById("testbutton2")?.addEventListener("click", () => {
                 console.log("cd1");
-                store.dispatch(appViewSet("info", { contentFileName: "test2.md" }));
+                useAppStore.getState().setView("info", { contentFileName: "test2.md" });
             });
         },
         "test2.md": () => {
             document.getElementById("testbutton1")?.addEventListener("click", () => {
                 console.log("cd2");
-                store.dispatch(appViewSet("info", { contentFileName: "test1.md" }));
+                useAppStore.getState().setView("info", { contentFileName: "test1.md" });
             });
         },
         "changelog.md": () => {
@@ -22,12 +21,12 @@ export class Info {
                 Platform.current.openUrl("https://flowerpot-pwa.web.app");
             });
             document.getElementById("go-to-old-changelog")?.addEventListener("click", () => {
-                store.dispatch(appViewSet("info", { contentFileName: "changelog-old.md" }));
+                useAppStore.getState().setView("info", { contentFileName: "changelog-old.md" });
             });
         },
         "changelog-old.md": () => {
             document.getElementById("go-to-new-changelog")?.addEventListener("click", () => {
-                store.dispatch(appViewSet("info", { contentFileName: "changelog.md" }));
+                useAppStore.getState().setView("info", { contentFileName: "changelog.md" });
             });
         },
     };

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Form, Header, Icon, Label, Message } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
@@ -7,17 +6,18 @@ import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import QueryHelper from "../helpers/Query";
 import { Query } from "../models/query";
-import { appViewSet } from "../redux/actions/appActions";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
 import { s } from "../values/Strings";
+import { useAppStore } from "../zustand/app";
+import { useSettingsStore } from "../zustand/settings";
 
 interface ISelectableQuery extends Query {
     checked: boolean;
 }
 
 export function SelectQueriesView() {
-    const dispatch = useDispatch();
-    const settings = useSelector(settingsSelector);
+    const setView = useAppStore((s) => s.setView);
+    const accounts = useSettingsStore((state) => state.accounts);
+    const queriesInSettings = useSettingsStore((state) => state.queries);
     const [isLoading, setIsLoading] = useState(true);
     const [availableQueries, setAvailableQueries] = useState<ISelectableQuery[]>([]);
     const [showPublic, setShowPublic] = useState(false);
@@ -31,18 +31,17 @@ export function SelectQueriesView() {
     const loadQueries = useCallback(() => {
         setTimeout(() => {
             Promise.all(
-                settings.accounts.map((account) =>
+                accounts.map((account) =>
                     getApi(account.id)
                         .query.getAvailable()
                         .then((queries) => {
-                            const currentQueriesIds = settings.queries
+                            const currentQueriesIds = queriesInSettings
                                 .filter((x) => x.accountId === account.id)
                                 .map((q) => q.queryId);
                             const queriesToSelect = queries.filter(
                                 (q) => !currentQueriesIds.includes(q.queryId)
                             ) as ISelectableQuery[];
                             queriesToSelect.forEach((q) => (q.checked = false));
-
                             return queriesToSelect;
                         })
                 )
@@ -51,7 +50,7 @@ export function SelectQueriesView() {
                 setIsLoading(false);
             });
         }, 50);
-    }, [settings.queries]);
+    }, [accounts]);
 
     useEffect(() => {
         loadQueries();
@@ -62,20 +61,20 @@ export function SelectQueriesView() {
         setIsLoading(true);
         setAvailableQueries([]);
 
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onUrlCheck = async () => {
         setUrlCheckInProgress(true);
         try {
-            const account = settings.accounts.find((x) => url.startsWith(x.url));
+            const account = accounts.find((x) => url.startsWith(x.url));
 
             if (!account) throw new Error(s("noAccountWithGivenDomain"));
 
             const query = await getApi(account.id).query.getByUrl(url);
 
             QueryHelper.add(query);
-            dispatch(appViewSet("settings"));
+            setView("settings");
         } catch (e: any) {
             setUrlErrorText(e.message);
         } finally {
@@ -85,7 +84,7 @@ export function SelectQueriesView() {
 
     const onCancel = () => {
         setAvailableQueries([]);
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onRefresh = () => {

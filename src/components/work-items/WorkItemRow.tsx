@@ -1,11 +1,9 @@
 import { ContextMenuTrigger } from "react-contextmenu";
-import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
-import { dataChangesCollectionItemSet } from "../../redux/actions/dataActions";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
 import { Link } from "../Link";
@@ -15,8 +13,8 @@ import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 import { Id } from "./id";
 import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
-import { dataSelector } from "/@/redux/selectors/dataSelectors";
-import { settingsSelector } from "/@/redux/selectors/settingsSelectors";
+import { useDataStore } from "/@/zustand/data";
+import { useSettingsStore } from "/@/zustand/settings";
 
 interface IProps {
     item: WorkItem;
@@ -26,9 +24,9 @@ interface IProps {
 }
 
 export function WorkItemRow(props: IProps) {
-    const dispatch = useDispatch();
-    const settings = useSelector(settingsSelector);
-    const { changesCollection } = useSelector(dataSelector);
+    const showUnreads = useSettingsStore((state) => state.showUnreads);
+    const changesCollection = useDataStore((state) => state.changesCollection);
+    const setChangesCollectionItem = useDataStore((state) => state.setChangesCollectionItem);
 
     const isRed = props.item.isRed;
 
@@ -70,7 +68,7 @@ export function WorkItemRow(props: IProps) {
     })();
 
     const dropChanges = () => {
-        dispatch(dataChangesCollectionItemSet(props.item, false));
+        setChangesCollectionItem(props.item, false);
     };
 
     const getClass = () => {
@@ -149,7 +147,7 @@ export function WorkItemRow(props: IProps) {
     };
 
     const item = props.item;
-    const hasChanges = settings.showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
+    const hasChanges = showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
     const uid = props.item.id + Math.random() + "";
 
     const tags = item.tags

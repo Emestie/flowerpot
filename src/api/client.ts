@@ -1,8 +1,8 @@
 import { createApiClient } from "../modules/api-client";
-import { store } from "../redux/store";
+import { useSettingsStore } from "../zustand/settings";
 
 export function getApi(accountId: string) {
-    const account = store.getState().settings.accounts.find((x) => x.id === accountId);
+    const account = useSettingsStore.getState().accounts.find((x) => x.id === accountId);
 
     if (!account) throw new Error(`No account with ID '${accountId}'`);
 

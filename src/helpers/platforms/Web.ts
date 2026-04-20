@@ -1,4 +1,4 @@
-import { TLocale } from "../../redux/types";
+import { TLocale } from "../../types";
 import { INotificationData, IPlatformClass } from "../Platform";
 import webStore from "./web/WebStore";
 
@@ -54,7 +54,19 @@ export default class WebPlatform implements IPlatformClass {
     }
 
     showNotification(data: INotificationData) {
-        //TODO: notif
+        if (!("Notification" in window)) {
+            return;
+        }
+
+        if (Notification.permission === "granted") {
+            new Notification(data.title, { body: data.body });
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    new Notification(data.title, { body: data.body });
+                }
+            });
+        }
     }
 
     reactIsReady() {

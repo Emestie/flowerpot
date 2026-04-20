@@ -1,13 +1,11 @@
 import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Icon, Message, Table } from "semantic-ui-react";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
-import { settingsSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { PullRequestRow } from "./PullRequestRow";
-import { settingsUpdate } from "/@/redux/actions/settingsActions";
+import { useSettingsStore } from "../../zustand/settings";
 
 export function PullRequestsBlock(props: { accountId: string }) {
     const {
@@ -17,8 +15,10 @@ export function PullRequestsBlock(props: { accountId: string }) {
         includeAcceptedByMePRs,
         includeHiddenPRs,
         showEmptyQueries,
-    } = useSelector(settingsSelector);
-    const dispatch = useDispatch();
+    } = useSettingsStore();
+    const setIncludeHiddenPRs = useSettingsStore((state) => state.setIncludeHiddenPRs);
+    const setIncludeTeamsPRs = useSettingsStore((state) => state.setIncludeTeamsPRs);
+    const setIncludeAcceptedByMePRs = useSettingsStore((state) => state.setIncludeAcceptedByMePRs);
 
     const projects = useMemo(() => _allProjects.filter((x) => x.accountId === props.accountId), []);
 
@@ -82,7 +82,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                         label={s("hiddenPrFilter")}
                         checked={includeHiddenPRs}
                         onChange={() => {
-                            dispatch(settingsUpdate({ includeHiddenPRs: !includeHiddenPRs }));
+                            setIncludeHiddenPRs(!includeHiddenPRs);
                         }}
                         icon="eye slash"
                         visible={hasHidden}
@@ -91,7 +91,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                         label={s("groupPrFilter")}
                         checked={includeTeamsPRs}
                         onChange={() => {
-                            dispatch(settingsUpdate({ includeTeamsPRs: !includeTeamsPRs }));
+                            setIncludeTeamsPRs(!includeTeamsPRs);
                         }}
                         icon="users"
                         visible={hasTeams}
@@ -100,7 +100,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                         label={s("acceptedByMeFilter")}
                         checked={includeAcceptedByMePRs}
                         onChange={() => {
-                            dispatch(settingsUpdate({ includeAcceptedByMePRs: !includeAcceptedByMePRs }));
+                            setIncludeAcceptedByMePRs(!includeAcceptedByMePRs);
                         }}
                         icon="checkmark"
                         visible={hasAcceptedByMe}

@@ -1,23 +1,22 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
-import { appViewSet } from "../../redux/actions/appActions";
-import { getQueriesSelector } from "../../redux/selectors/settingsSelectors";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
+import { useSettingsStore } from "../../zustand/settings";
 import { AccountBadge } from "../AccountBadge";
 
 export function QueriesSettingsTable() {
-    const dispatch = useDispatch();
-    const queries = useSelector(getQueriesSelector(true));
+    const setView = useAppStore((s) => s.setView);
+    const queries = useSettingsStore((state) => state.queries.sort((a, b) => a.order - b.order)) || [];
 
     const openQuerySelector = () => {
-        dispatch(appViewSet("selectqueries"));
+        setView("selectqueries");
     };
 
     const isWeb = Platform.type === PlatformType.Web;
 
-    const rows = queries.map((q, v, a) => (
+    const rows = queries.map((q: any, idx: number) => (
         <Table.Row key={q.queryId}>
             <Table.Cell collapsing>
                 <Checkbox
@@ -55,14 +54,14 @@ export function QueriesSettingsTable() {
                 </Table.Cell>
             )}
             <Table.Cell collapsing>
-                <Button size="tiny" icon compact disabled={v === 0} onClick={() => QueryHelper.move(q, "up")}>
+                <Button size="tiny" icon compact disabled={idx === 0} onClick={() => QueryHelper.move(q, "up")}>
                     <Icon name="arrow up" />
                 </Button>
                 <Button
                     size="tiny"
                     icon
                     compact
-                    disabled={v === a.length - 1}
+                    disabled={idx === queries.length - 1}
                     onClick={() => QueryHelper.move(q, "dn")}
                 >
                     <Icon name="arrow down" />

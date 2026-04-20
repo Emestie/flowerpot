@@ -1,8 +1,7 @@
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
-import { dataChangesCollectionItemSet } from "../redux/actions/dataActions";
-import { getQueriesSelector } from "../redux/selectors/settingsSelectors";
-import { store } from "../redux/store";
+import { useDataStore } from "../zustand/data";
+import { useSettingsStore } from "../zustand/settings";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
 import QueryHelper from "./Query";
@@ -19,7 +18,7 @@ export default class Differences {
         let wiStorage = QueryHelper.getWIStorage();
 
         //clear unused and ignored queries
-        let allQueriesIds = getQueriesSelector()(store.getState())
+        let allQueriesIds = (useSettingsStore.getState().queries || [])
             .filter((q) => !q.ignoreNotif)
             .map((q) => q.queryId);
 
@@ -48,14 +47,12 @@ export default class Differences {
             if (!storage) return;
             let stored = this.getWIById(storage, wi.id);
             if (!stored) {
-                store.dispatch(dataChangesCollectionItemSet(wi, true));
-                //store.setWIHasChanges(wi, true);
+                useDataStore.getState().setChangesCollectionItem(wi, true);
                 news.push(wi);
                 return;
             }
             if (stored.rev !== wi.rev) {
-                store.dispatch(dataChangesCollectionItemSet(wi, true));
-                //store.setWIHasChanges(wi, true);
+                useDataStore.getState().setChangesCollectionItem(wi, true);
                 changed.push(wi);
             }
         });
@@ -79,7 +76,7 @@ export default class Differences {
 
     private static operateNotifsToShow(wis: WorkItem[], type: "new" | "change") {
         const wisToShow: WorkItem[] = [];
-        const settings = store.getState().settings;
+        const settings = useSettingsStore.getState();
 
         wis.forEach((n) => {
             if (settings.notificationsMode === "all" || (settings.notificationsMode === "mine" && n._isMine)) {

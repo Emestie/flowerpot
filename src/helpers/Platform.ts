@@ -1,5 +1,5 @@
 import { eapi } from "#preload";
-import { TLocale } from "../redux/types";
+import { TLocale } from "../types";
 import ElectronPlatform from "./platforms/Electron";
 import WebPlatform from "./platforms/Web";
 

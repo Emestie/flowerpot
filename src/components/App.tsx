@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Festival from "../helpers/Festival";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Settings from "../helpers/Settings";
+import { getSystemThemeListener, isDarkTheme } from "../helpers/Theme";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
-import { appShowWhatsNewSet, appViewSet } from "../redux/actions/appActions";
-import { dataChangesCollectionSet } from "../redux/actions/dataActions";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { TView } from "../redux/types";
+import { TView } from "../types";
 import { CredentialsView } from "../views/CredentialsView";
 import { DebugView } from "../views/DebugView";
 import { ErrorView } from "../views/ErrorView";
@@ -22,27 +18,54 @@ import { SelectProjectsView } from "../views/SelectProjectsView";
 import { SelectQueriesView } from "../views/SelectQueriesView";
 import { SettingsView } from "../views/SettingsView/SettingsView";
 import { DialogsContainer } from "../views/containers/DialogsContainer";
+import { useAppStore } from "../zustand/app";
+import { useDataStore } from "../zustand/data";
+import { useSettingsStore } from "../zustand/settings";
 
 export function App() {
-    const dispatch = useDispatch();
-    const { view } = useSelector(appSelector);
-    const settings = useSelector(settingsSelector);
+    const view = useAppStore((state) => state.view);
+    const setView = useAppStore((state) => state.setView);
+    const setShowWhatsNew = useAppStore((state) => state.setShowWhatsNew);
+    const theme = useSettingsStore((state) => state.theme);
     const [ready, setIsReady] = useState(false);
+    const [isDark, setIsDark] = useState(() => isDarkTheme(theme));
+
+    useEffect(() => {
+        setIsDark(isDarkTheme(theme));
+    }, [theme]);
+
+    useEffect(() => {
+        return getSystemThemeListener((dark) => {
+            if (theme === "system") {
+                setIsDark(dark);
+            }
+        });
+    }, [theme]);
+
+    useEffect(() => {
+        if (isDark) {
+            document.documentElement.classList.add("FlowerpotDarkTheme");
+        } else {
+            document.documentElement.classList.remove("FlowerpotDarkTheme");
+        }
+    }, [isDark]);
+
+    const setChangesCollection = useDataStore((state) => state.setChangesCollection);
 
     const setWIChangesCollection = useCallback(() => {
         const ls = localStorage.getItem("WIChangesCollection");
         if (!ls) return;
 
-        dispatch(dataChangesCollectionSet(JSON.parse(ls)));
-    }, [dispatch]);
+        setChangesCollection(JSON.parse(ls));
+    }, [setChangesCollection]);
 
     const afterUpdateHandler = useCallback(() => {
         if (!Platform.current.isDev() && !Platform.current.isLocal() && Version.isChangedLong()) {
-            if (Version.isChangedShort()) dispatch(appShowWhatsNewSet(true));
+            if (Version.isChangedShort()) setShowWhatsNew(true);
             Version.storeInSettings();
         }
         // eslint-disable-next-line
-    }, [dispatch]);
+    }, [setShowWhatsNew]);
 
     useEffect(() => {
         (async function () {
@@ -65,10 +88,9 @@ export function App() {
 
             setTimeout(() => {
                 if (Platform.current.isDev()) {
-                    dispatch(appViewSet("debug"));
-                    //dispatch(appViewSet("main"));
+                    setView("debug");
                 } else {
-                    dispatch(appViewSet("main"));
+                    setView("main");
                 }
 
                 setWIChangesCollection();
@@ -112,7 +134,7 @@ export function App() {
     const scene = getScene(view);
 
     return (
-        <div className={settings.darkTheme ? "FlowerpotDarkTheme" : ""}>
+        <div className={isDark ? "FlowerpotDarkTheme" : ""}>
             <DialogsContainer />
             {scene}
         </div>

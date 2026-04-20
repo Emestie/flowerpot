@@ -1,5 +1,4 @@
 import { createRef, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Form, Header, Label, Message } from "semantic-ui-react";
 import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
@@ -9,13 +8,10 @@ import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
 import { IAccount } from "../helpers/Settings";
 import Telemetry from "../helpers/Telemetry";
-import { appViewSet } from "../redux/actions/appActions";
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
-import { IStore, store } from "../redux/store";
 import { s } from "../values/Strings";
+import { useAppStore } from "../zustand/app";
 import { useCredentialsModeStore } from "../zustand/credentials-mode";
+import { useSettingsStore } from "../zustand/settings";
 
 enum ECredState {
     NotValidated = 0,
@@ -34,29 +30,30 @@ const statuses = [
 ];
 
 function addAccount(account: IAccount) {
-    store.dispatch(settingsUpdate({ accounts: store.getState().settings.accounts.concat(account) }));
+    useSettingsStore.getState().setAccounts(useSettingsStore.getState().accounts.concat(account));
 }
 
 function updateAccount(account: Partial<IAccount> & { id: string }) {
-    const accounts = store.getState().settings.accounts;
+    const accounts = [...useSettingsStore.getState().accounts];
     const index = accounts.findIndex((acc) => acc.id === account.id);
 
     accounts[index] = { ...accounts[index], ...account };
 
-    store.dispatch(settingsUpdate({ accounts }));
+    useSettingsStore.getState().setAccounts(accounts);
 }
 
 export function CredentialsView() {
     const accountId = useCredentialsModeStore((s) => s.selectedAccoundId);
+    const locale = useAppStore((state) => state.locale);
+    const setView = useAppStore((state) => state.setView);
 
     const [pathInvalid, setPathInvalid] = useState(false);
     const [tokenInvalid, setTokenInvalid] = useState(false);
     const [credentialsCheckStatus, setCredentialsCheckStatus] = useState(ECredState.NotValidated);
 
-    const settings = useSelector(settingsSelector);
-    const { locale } = useSelector(appSelector);
+    const accounts = useSettingsStore((state) => state.accounts);
 
-    const _currentAccount = useSelector((state: IStore) => state.settings.accounts.find((x) => x.id === accountId));
+    const _currentAccount = accounts.find((x) => x.id === accountId);
     const [currentAccount, setCurrentAccount] = useState<IAccount>(
         _currentAccount || {
             id: Math.random().toString(),
@@ -67,8 +64,6 @@ export function CredentialsView() {
             badge: Account.getNextAvailableBadge(),
         }
     );
-
-    const dispatch = useDispatch();
 
     const checkInProgress = credentialsCheckStatus === ECredState.ValidatingInProgress;
 
@@ -92,7 +87,7 @@ export function CredentialsView() {
             if (val.length < 11) invalid = true;
             setPathInvalid(invalid);
         },
-        [dispatch, currentAccount.url]
+        [currentAccount.url]
     );
 
     const validateTfsToken = useCallback(
@@ -107,7 +102,7 @@ export function CredentialsView() {
 
             setTokenInvalid(invalid);
         },
-        [dispatch, currentAccount.token]
+        [currentAccount.token]
     );
 
     useEffect(() => {
@@ -117,7 +112,7 @@ export function CredentialsView() {
     }, [currentAccount]);
 
     const goToSettings = () => {
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onCheck = async () => {
@@ -130,7 +125,7 @@ export function CredentialsView() {
         }
 
         if (
-            settings.accounts.some(
+            accounts.some(
                 (acc) => acc.id !== accountId && acc.url === currentAccount.url && acc.token === currentAccount.token
             )
         ) {

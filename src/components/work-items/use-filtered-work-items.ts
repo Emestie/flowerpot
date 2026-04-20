@@ -1,10 +1,12 @@
-import { useSelector } from "react-redux";
+import { useMemo } from "react";
 import { Query } from "../../models/query";
 import { useHighlights } from "/@/hooks/useHighlights";
-import { getWorkItemsForQuerySelector } from "/@/redux/selectors/dataSelectors";
+import { useDataStore } from "/@/zustand/data";
 
 export function useFilteredWorkItems(query: Query) {
-    const allItems = useSelector(getWorkItemsForQuerySelector(query));
+    const workItems = useDataStore((state) => state.workItems);
+
+    const allItems = useMemo(() => workItems.filter((wi) => wi._queryId === query.queryId), [workItems, query.queryId]);
 
     const highlights = useHighlights();
 

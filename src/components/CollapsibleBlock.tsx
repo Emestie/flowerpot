@@ -1,10 +1,9 @@
 import { ReactNode, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticCOLORS } from "semantic-ui-react";
 import { APP_EVENT_COLLAPSE_ALL, APP_EVENT_EXPAND_ALL } from "../events/collapse-expand";
+import { isDarkTheme } from "../helpers/Theme";
 import { tagPalette } from "../modules/palette";
-import { settingsCollapseBlock, settingsUpdate } from "../redux/actions/settingsActions";
-import { settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useSettingsStore } from "../zustand/settings";
 import { AccountBadge } from "./AccountBadge";
 
 export function CollapsibleBlock(props: {
@@ -38,13 +37,13 @@ export function CollapsibleBlock(props: {
         accountId,
     } = props;
 
-    const dispatch = useDispatch();
-
-    const settings = useSelector(settingsSelector);
+    const theme = useSettingsStore((state) => state.theme);
+    const collapsedBlocks = useSettingsStore((state) => state.collapsedBlocks);
+    const accounts = useSettingsStore((state) => state.accounts);
 
     useEffect(() => {
-        const onCollapse = () => dispatch(settingsCollapseBlock(id, true));
-        const onExpand = () => dispatch(settingsUpdate({ collapsedBlocks: [] }));
+        const onCollapse = () => useSettingsStore.getState().toggleCollapsedBlock(id);
+        const onExpand = () => useSettingsStore.getState().setCollapsedBlocks([]);
 
         document.addEventListener(APP_EVENT_COLLAPSE_ALL, onCollapse);
         document.addEventListener(APP_EVENT_EXPAND_ALL, onExpand);
@@ -53,10 +52,10 @@ export function CollapsibleBlock(props: {
             document.removeEventListener(APP_EVENT_COLLAPSE_ALL, onCollapse);
             document.removeEventListener(APP_EVENT_EXPAND_ALL, onExpand);
         };
-    }, [id, dispatch]);
+    }, [id]);
 
-    const isCollapsed = settings.collapsedBlocks.includes(id);
-    const toggleCollapse = () => dispatch(settingsCollapseBlock(id, !isCollapsed));
+    const isCollapsed = collapsedBlocks.includes(id);
+    const toggleCollapse = () => useSettingsStore.getState().toggleCollapsedBlock(id);
 
     const iconCollapse = isCollapsed ? <Icon name="angle right" /> : <Icon name="angle down" />;
 
@@ -83,7 +82,7 @@ export function CollapsibleBlock(props: {
                             </span>
                         )}
                         {!isLoading && isCollapseEnabled && <span onClick={toggleCollapse}>{iconCollapse}</span>}
-                        {settings.accounts.length > 1 && (
+                        {accounts.length > 1 && (
                             <AccountBadge accountId={accountId} size="l" display="flex" rightGap={6} />
                         )}
                         {iconComponent && <span>{iconComponent}</span>}
@@ -95,7 +94,7 @@ export function CollapsibleBlock(props: {
                                     : {
                                           backgroundColor: tagPalette
                                               .getColor(caption)
-                                              .hexWithTransparency(settings.darkTheme ? 0.3 : 0.2),
+                                              .hexWithTransparency(isDarkTheme(theme) ? 0.3 : 0.2),
                                           padding: "0 8px",
                                           borderRadius: 4,
                                       }

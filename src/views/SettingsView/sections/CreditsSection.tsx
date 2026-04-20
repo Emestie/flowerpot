@@ -1,14 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Header, Icon, Label } from "semantic-ui-react";
 import avatar from "../../../assets/ti.jpg";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import Version from "../../../helpers/Version";
-import { appDialogSet, appSet, appViewSet } from "../../../redux/actions/appActions";
-import { settingsUpdate } from "../../../redux/actions/settingsActions";
-import { appSelector } from "../../../redux/selectors/appSelectors";
-import { settingsSelector } from "../../../redux/selectors/settingsSelectors";
-import { TLocale } from "../../../redux/types";
+import { TLocale } from "../../../types";
 import { s } from "../../../values/Strings";
+import { useAppStore } from "../../../zustand/app";
+import { useSettingsStore } from "../../../zustand/settings";
 
 const locales: DropdownItemProps[] = [
     { key: 2, text: s("localeEn"), value: "en" },
@@ -16,12 +13,17 @@ const locales: DropdownItemProps[] = [
 ];
 
 export function CreditsSection() {
-    const dispatch = useDispatch();
-    const { autostart, locale, updateStatus } = useSelector(appSelector);
-    const settings = useSelector(settingsSelector);
+    const autostart = useAppStore((state) => state.autostart);
+    const locale = useAppStore((state) => state.locale);
+    const updateStatus = useAppStore((state) => state.updateStatus);
+    const setView = useAppStore((state) => state.setView);
+    const setSettings = useAppStore((state) => state.setSettings);
+    const setDialog = useAppStore((state) => state.setDialog);
+    const allowTelemetry = useSettingsStore((state) => state.allowTelemetry);
+    const accounts = useSettingsStore((state) => state.accounts);
 
     const showChangelog = () => {
-        dispatch(appViewSet("info", { viewCaption: s("releaseNotes"), contentFileName: "changelog.md" }));
+        setView("info", { viewCaption: s("releaseNotes"), contentFileName: "changelog.md" });
     };
 
     const getPlatformIcon = () => {
@@ -35,19 +37,18 @@ export function CreditsSection() {
     };
 
     const toggleTelemetry = () => {
-        const allowTelemetry = !settings.allowTelemetry;
-        dispatch(settingsUpdate({ allowTelemetry }));
+        const newValue = !allowTelemetry;
+        useSettingsStore.getState().setAllowTelemetry(newValue);
     };
 
     const onLocaleSelect = (val: TLocale) => {
-        const locale_ = val;
-        dispatch(appSet({ locale: locale_ }));
-        Platform.current.changeLocale(locale_);
+        setSettings({ locale: val });
+        Platform.current.changeLocale(val);
     };
 
     const toggleAutostart = () => {
         const autostart_ = !autostart;
-        dispatch(appSet({ autostart: autostart_ }));
+        setSettings({ autostart: autostart_ });
         Platform.current.toggleAutostart(autostart_);
     };
 
@@ -105,17 +106,17 @@ export function CreditsSection() {
                     <br />
                 </>
             )}
-            <Form.Checkbox label={s("cbTelemetry")} checked={settings.allowTelemetry} onChange={toggleTelemetry} />
+            <Form.Checkbox label={s("cbTelemetry")} checked={allowTelemetry} onChange={toggleTelemetry} />
             <br />
             <Header as="h3" dividing>
                 {s("settingsActionsHeader")}
             </Header>
-            {settings.accounts.length > 0 && (
+            {accounts.length > 0 && (
                 <Label
                     as="a"
                     color="green"
                     onClick={() => {
-                        dispatch(appDialogSet("feedback", true));
+                        setDialog("feedback", true);
                     }}
                 >
                     {s("feedbackSettingsButton")}

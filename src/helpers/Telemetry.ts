@@ -1,8 +1,8 @@
 import CyrillicToTranslit from "cyrillic-to-translit-js";
-import { store } from "../redux/store";
 import { preloadConnectionData } from "./Connection";
 import Platform from "./Platform";
 import Version from "./Version";
+import { useSettingsStore } from "../zustand/settings";
 
 const cyrillicToTranslit = new CyrillicToTranslit();
 
@@ -13,7 +13,7 @@ export default class Telemetry {
         extraInfo?: string,
         ignoreTelemetryDisability?: boolean
     ) {
-        const { allowTelemetry, accounts } = store.getState().settings;
+        const { allowTelemetry, accounts } = useSettingsStore.getState();
         if (!allowTelemetry && !ignoreTelemetryDisability) return;
 
         const account0 = accounts.at(0);

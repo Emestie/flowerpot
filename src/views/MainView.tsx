@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Form, Icon, Message } from "semantic-ui-react";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import { PageLayout } from "../components/PageLayout";
@@ -10,35 +9,34 @@ import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
 import { triggerCollapseAll, triggerExpandAll } from "../events/collapse-expand";
 import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
-import { Query } from "../models/query";
-import { appDialogSet, appShowMineOnlySet, appViewSet } from "../redux/actions/appActions";
-import { dataChangesCollectionClear } from "../redux/actions/dataActions";
-import { appSelector } from "../redux/selectors/appSelectors";
-import { dataSelector } from "../redux/selectors/dataSelectors";
-import { getQueriesSelector, settingsSelector } from "../redux/selectors/settingsSelectors";
+import { useQueriesForBlocks } from "../hooks/useQueriesForBlocks";
 import { s } from "../values/Strings";
+import { useAppStore } from "../zustand/app";
+import { useDataStore } from "../zustand/data";
 import { useQuickSearchStore } from "../zustand/quick-search";
+import { useSettingsStore } from "../zustand/settings";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
 
-export const queriesSorting = (a: Query, b: Query) => {
-    if (a.empty === b.empty) return 0;
-    if (!a.empty && b.empty) return -1;
-    else return 1;
-};
-
 export function MainView() {
-    const dispatch = useDispatch();
-    const { updateStatus, showMineOnly } = useSelector(appSelector);
-    const settings = useSelector(settingsSelector);
-    const { changesCollection } = useSelector(dataSelector);
-    const storedQueries = useSelector(getQueriesSelector());
+    const updateStatus = useAppStore((state) => state.updateStatus);
+    const showMineOnly = useAppStore((state) => state.showMineOnly);
+    const setView = useAppStore((state) => state.setView);
+    const setDialog = useAppStore((state) => state.setDialog);
+    const setShowMineOnly = useAppStore((state) => state.setShowMineOnly);
+    const queries = useQueriesForBlocks();
+    const accounts = useSettingsStore((state) => state.accounts);
+    const collapsedBlocks = useSettingsStore((state) => state.collapsedBlocks);
+    const showQuickLinks = useSettingsStore((state) => state.showQuickLinks);
+    const showUnreads = useSettingsStore((state) => state.showUnreads);
+    const changesCollection = useDataStore((state) => state.changesCollection);
     const setQuickSearchValue = useQuickSearchStore((s) => s.setValue);
+    const clearChangesCollection = useDataStore((state) => state.clearChangesCollection);
     const [isRefreshAvailable, setIsRefreshAvailable] = useState(false);
     const [isMobileSearchShown, setIsMobileSearchShown] = useState(false);
     const [isInstallingUpdate, setIsInstallingUpdate] = useState(false);
 
-    const expandCollapseOperation = settings.collapsedBlocks.length ? "expand" : "collapse";
+    const expandCollapseOperation = collapsedBlocks.length ? "expand" : "collapse";
 
     useEffect(() => {
         setTimeout(() => setIsRefreshAvailable(true), 5000);
@@ -51,7 +49,7 @@ export function MainView() {
     }, [isMobileSearchShown]);
 
     const onShowMineOnly = () => {
-        dispatch(appShowMineOnlySet(!showMineOnly));
+        setShowMineOnly(!showMineOnly);
     };
 
     const onExpandCollapse = () => {
@@ -60,15 +58,15 @@ export function MainView() {
     };
 
     const onRefresh = () => {
-        dispatch(appViewSet("refreshhelper"));
+        setView("refreshhelper");
     };
 
     const onSettings = () => {
-        dispatch(appViewSet("settings"));
+        setView("settings");
     };
 
     const onOpenById = () => {
-        dispatch(appDialogSet("openById", true));
+        setDialog("openById", true);
     };
 
     const showSearchBar = () => {
@@ -81,14 +79,12 @@ export function MainView() {
     };
 
     const markAllAsRead = () => {
-        dispatch(dataChangesCollectionClear());
+        clearChangesCollection();
     };
-
-    const queries = storedQueries.sort(queriesSorting);
 
     const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
-    const noAccounts = settings.accounts.length === 0;
+    const noAccounts = accounts.length === 0;
 
     const queriesBlocks = noAccounts ? (
         <Message info>
@@ -108,7 +104,7 @@ export function MainView() {
         Platform.current.updateTrayIcon(4);
     }
 
-    const qlEnabled = settings.showQuickLinks;
+    const qlEnabled = showQuickLinks;
 
     return (
         <PageLayout
@@ -175,7 +171,7 @@ export function MainView() {
                                 <Icon name="external share" />
                             </Button>
                         )}
-                        {!!settings.showUnreads && isChangesCollectionHasItems && !noAccounts && (
+                        {!!showUnreads && isChangesCollectionHasItems && !noAccounts && (
                             <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
                                 <Icon name="check circle outline" />
                             </Button>
@@ -206,7 +202,7 @@ export function MainView() {
                 )}
                 <WhatsNewBanner />
                 {!noAccounts && <ActionBannersContainer />}
-                {settings.accounts.map((account) => (
+                {accounts.map((account) => (
                     <PullRequestsBlock key={account.id} accountId={account.id} />
                 ))}
                 {queriesBlocks}

@@ -1,5 +1,4 @@
-import { settingsUpdate } from "../redux/actions/settingsActions";
-import { store } from "../redux/store";
+import { useSettingsStore } from "../zustand/settings";
 
 export interface ILinkItem {
     name: string;
@@ -12,7 +11,7 @@ export const LINKS_COUNT_LIMIT = 20;
 
 export default class Links {
     public static add(link: ILinkItem) {
-        const allLinks = store.getState().settings.links || [];
+        const allLinks = useSettingsStore.getState().links || [];
         const maxOrder = Math.max(...allLinks.map((x) => x.order || 0), 0);
         link.order = maxOrder + 1;
 
@@ -20,14 +19,14 @@ export default class Links {
     }
 
     public static delete(link: ILinkItem) {
-        const allLinks = store.getState().settings.links || [];
+        const allLinks = useSettingsStore.getState().links || [];
         const newLinks = allLinks.filter((x) => x !== link);
 
         this.updateStore([...newLinks]);
     }
 
     public static move(link: ILinkItem, direction: "up" | "dn") {
-        const allLinks = (store.getState().settings.links || []).sort((a, b) => (a.order || 0) - (b.order || 0));
+        const allLinks = (useSettingsStore.getState().links || []).sort((a, b) => (a.order || 0) - (b.order || 0));
 
         allLinks.forEach((x, i) => (x.order = i * 2));
 
@@ -39,13 +38,13 @@ export default class Links {
     }
 
     public static updateColor(link: ILinkItem, color: string | undefined) {
-        const allLinks = store.getState().settings.links || [];
+        const allLinks = useSettingsStore.getState().links || [];
         link.color = color;
 
         this.updateStore([...allLinks]);
     }
 
     private static updateStore(links: ILinkItem[]) {
-        store.dispatch(settingsUpdate({ links }));
+        useSettingsStore.getState().setSettings({ links });
     }
 }
