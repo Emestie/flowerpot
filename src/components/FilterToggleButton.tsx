@@ -18,15 +18,21 @@ const IconRenderer: FC<{ icon: SemanticICONS; isDark: boolean }> = ({ icon, isDa
     <Icon name={icon} style={isDark ? { color: "white" } : undefined} />
 );
 
-const ColorDot: FC<{ colorDot: string; label: string }> = ({ colorDot, label }) => (
+const ColorDot: FC<{ colorDot: string; label: string; isDark: boolean }> = ({ colorDot, label, isDark }) => (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 2, height: "15.5px", padding: "2px 1px" }}>
         <span style={{ width: "9px", height: "9px", borderRadius: "50%", backgroundColor: colorDot }} />
-        <span style={{ fontSize: "9px", lineHeight: 1 }}>{label.charAt(0).toUpperCase()}</span>
+        <span style={{ fontSize: "9px", lineHeight: 1, color: isDark ? "white" : undefined }}>
+            {label.charAt(0).toUpperCase()}
+        </span>
     </span>
 );
 
 const ImageRenderer: FC<{ imgUrl: string; label: string }> = ({ imgUrl, label }) => (
-    <img src={imgUrl} alt={label} style={{ height: "14px", width: "18px", display: "inline-block", margin: "0 auto" }} />
+    <img
+        src={imgUrl}
+        alt={label}
+        style={{ height: "14px", width: "18px", display: "inline-block", margin: "0 auto" }}
+    />
 );
 
 const CrossedOutOverlay: FC = () => (
@@ -44,15 +50,15 @@ const CrossedOutOverlay: FC = () => (
     />
 );
 
-const ContentRenderer: FC<{ icon?: SemanticICONS; imgUrl?: string; colorDot?: string; label: string; isDark: boolean }> = ({
-    icon,
-    imgUrl,
-    colorDot,
-    label,
-    isDark,
-}) => {
+const ContentRenderer: FC<{
+    icon?: SemanticICONS;
+    imgUrl?: string;
+    colorDot?: string;
+    label: string;
+    isDark: boolean;
+}> = ({ icon, imgUrl, colorDot, label, isDark }) => {
     if (icon) return <IconRenderer icon={icon} isDark={isDark} />;
-    if (colorDot) return <ColorDot colorDot={colorDot} label={label} />;
+    if (colorDot) return <ColorDot colorDot={colorDot} label={label} isDark={isDark} />;
     if (imgUrl) return <ImageRenderer imgUrl={imgUrl} label={label} />;
     return null;
 };

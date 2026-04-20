@@ -4,7 +4,6 @@ _Release notes are not available in English for now_
 
 KNOWN ISSUES: 
 5. permawatch not working
-6. dark theme letters on status filter
 
 - добавлена возможность привязки темы приложения к теме операционной системы (в селекторе тем появилось значение "Системная")
 
