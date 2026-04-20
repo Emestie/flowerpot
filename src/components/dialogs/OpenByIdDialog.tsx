@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Confirm, Form } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
-import { CollectionSelector } from "../CollectionSelector";
-import { useDataStore } from "../../zustand/data";
 import { useAppStore } from "../../zustand/app";
+import { useDataStore } from "../../zustand/data";
 import { useSettingsStore } from "../../zustand/settings";
+import { CollectionSelector } from "../CollectionSelector";
 
 interface IProps {
     show: boolean;
@@ -32,7 +32,9 @@ export function OpenByIdDialog(p: IProps) {
 
     useEffect(() => {
         if (accountId && collectionName)
-            useSettingsStore.getState().setSettings({ openByIdLastAccountId: accountId, openByIdLastCollection: collectionName });
+            useSettingsStore
+                .getState()
+                .setSettings({ openByIdLastAccountId: accountId, openByIdLastCollection: collectionName });
     }, [accountId, collectionName]);
 
     const onConfirm = () => {
