@@ -1,7 +1,7 @@
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
 import { s } from "../values/Strings";
-import { dataStore } from "../zustand/data";
+import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
 import Platform from "./Platform";
 
@@ -30,7 +30,10 @@ export default class QueryHelper {
 
     public static toggleBoolean(query: Query, boolPropName: TBoolProps, forcedValue?: boolean) {
         const newBool = forcedValue !== undefined ? forcedValue : !query[boolPropName];
-        const updatedQuery = { ...query, [boolPropName]: newBool };
+        const updatedQuery = {
+            ...useSettingsStore.getState().queries.find((q) => q.queryId === query.queryId)!,
+            [boolPropName]: newBool,
+        };
         this.updateSingleInStore(updatedQuery);
     }
 
@@ -102,7 +105,7 @@ export default class QueryHelper {
 
         let hasChanges = false;
         for (let x in allWIs) {
-            let wiChanges = !!dataStore.changesCollection[allWIs[x].id];
+            let wiChanges = !!useDataStore.getState().changesCollection[allWIs[x].id];
             if (wiChanges) {
                 hasChanges = true;
                 break;

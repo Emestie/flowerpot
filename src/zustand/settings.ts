@@ -127,11 +127,7 @@ export const useSettingsStore = create<SettingsState>()(
         },
 
         setQueries(queries) {
-            const target = queries.find((q: any) => q.queryId === "13d942aa-093c-4794-b3c9-f6e19d0683e6");
             set({ queries });
-            const afterSet = useSettingsStore
-                .getState()
-                .queries.find((q: any) => q.queryId === "13d942aa-093c-4794-b3c9-f6e19d0683e6");
             saveSettings({ ...get(), queries });
         },
 

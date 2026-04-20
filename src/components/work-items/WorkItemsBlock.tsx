@@ -19,9 +19,7 @@ interface IProps {
     query: Query;
 }
 
-export function WorkItemsBlock(props: IProps) {
-    const queries = useSettingsStore((state) => state.queries);
-    const query = queries.find((q) => q.queryId === props.query.queryId) || props.query;
+export function WorkItemsBlock({ query }: IProps) {
     const { isLoading, routineStart, errorMessage, hiddenCount } = useQueryLoader(query);
     const accounts = useSettingsStore((state) => state.accounts);
     const sortPattern = useSettingsStore((state) => state.sortPattern);
