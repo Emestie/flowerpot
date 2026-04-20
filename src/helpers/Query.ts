@@ -69,12 +69,11 @@ export default class QueryHelper {
         if (index < 0) return;
         const updatedQueries = [...allQueries];
         updatedQueries[index] = query;
-        const target = updatedQueries.find((q) => q.queryId === query.queryId);
         this.updateAllInStore(updatedQueries);
     }
 
     private static updateAllInStore(queries: Query[]) {
-        useSettingsStore.getState().setQueries(queries);
+        useSettingsStore.getState().setQueries([...queries.map((x) => ({ ...x }))]);
     }
 
     public static getWIStorage() {

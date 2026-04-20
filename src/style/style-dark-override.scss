@@ -151,8 +151,10 @@ html.FlowerpotDarkTheme,
         }
     }
     .filter-toggle-button.ui.basic.button:hover,
-    .filter-toggle-button.ui.basic.button:focus {
-        background-color: $bg !important;
+    .filter-toggle-button.ui.basic.button:focus,
+    .filter-toggle-button-img.ui.basic.button:hover,
+    .filter-toggle-button-img.ui.basic.button:focus {
+        background-color: transparent !important;
     }
 
     .ui.checkbox label,
@@ -206,7 +208,12 @@ html.FlowerpotDarkTheme,
 
     .ui.info.message {
         background-color: #405a5ac4;
-        color: #dfe4e6;
+        color: white !important;
+
+        .header,
+        p {
+            color: white !important;
+        }
     }
 
     .ui.error.message {

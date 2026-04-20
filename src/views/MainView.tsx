@@ -9,20 +9,14 @@ import { WorkItemsBlock } from "../components/work-items/WorkItemsBlock";
 import { triggerCollapseAll, triggerExpandAll } from "../events/collapse-expand";
 import Differences from "../helpers/Differences";
 import Platform from "../helpers/Platform";
-import { Query } from "../models/query";
-import { useDataStore } from "../zustand/data";
+import { useQueriesForBlocks } from "../hooks/useQueriesForBlocks";
 import { s } from "../values/Strings";
-import { useQuickSearchStore } from "../zustand/quick-search";
 import { useAppStore } from "../zustand/app";
+import { useDataStore } from "../zustand/data";
+import { useQuickSearchStore } from "../zustand/quick-search";
 import { useSettingsStore } from "../zustand/settings";
 import { ActionBannersContainer } from "./containers/ActionBannersContainer";
 import { QuickLinksContainer } from "./containers/QuickLinksContainer";
-
-export const queriesSorting = (a: Query, b: Query) => {
-    if (a.empty === b.empty) return 0;
-    if (!a.empty && b.empty) return -1;
-    else return 1;
-};
 
 export function MainView() {
     const updateStatus = useAppStore((state) => state.updateStatus);
@@ -30,7 +24,7 @@ export function MainView() {
     const setView = useAppStore((state) => state.setView);
     const setDialog = useAppStore((state) => state.setDialog);
     const setShowMineOnly = useAppStore((state) => state.setShowMineOnly);
-    const queries = useSettingsStore((state) => state.queries);
+    const queries = useQueriesForBlocks();
     const accounts = useSettingsStore((state) => state.accounts);
     const collapsedBlocks = useSettingsStore((state) => state.collapsedBlocks);
     const showQuickLinks = useSettingsStore((state) => state.showQuickLinks);
@@ -88,8 +82,6 @@ export function MainView() {
         clearChangesCollection();
     };
 
-    const queriesSorted = [...queries].sort(queriesSorting);
-
     const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);
 
     const noAccounts = accounts.length === 0;
@@ -99,8 +91,8 @@ export function MainView() {
             <Message.Header>{s("noAccountsSetup")}</Message.Header>
             <p>{s("noAccountsSetupText")}</p>
         </Message>
-    ) : queriesSorted.length ? (
-        queriesSorted.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
+    ) : queries.length ? (
+        queries.map((q) => <WorkItemsBlock key={q.queryId} query={q} />)
     ) : (
         <Message info>
             <Message.Header>{s("noQueriesToWatch")}</Message.Header>
@@ -108,7 +100,7 @@ export function MainView() {
         </Message>
     );
 
-    if (!queriesSorted.length) {
+    if (!queries.length) {
         Platform.current.updateTrayIcon(4);
     }
 

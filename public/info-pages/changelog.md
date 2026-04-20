@@ -2,9 +2,6 @@ _Release notes are not available in English for now_
 
 ## 0.8.5
 
-KNOWN ISSUES: 
-5. permawatch not working
-
 - добавлена возможность привязки темы приложения к теме операционной системы (в селекторе тем появилось значение "Системная")
 
 ## 0.8.4
