@@ -8,7 +8,7 @@ import { AccountBadge } from "../AccountBadge";
 
 export function QueriesSettingsTable() {
     const setView = useAppStore((s) => s.setView);
-    const queries = useSettingsStore((state) => state.queries);
+    const queries = useSettingsStore((state) => state.queries) || [];
 
     const openQuerySelector = () => {
         setView("selectqueries");
@@ -16,7 +16,7 @@ export function QueriesSettingsTable() {
 
     const isWeb = Platform.type === PlatformType.Web;
 
-    const rows = queries.map((q, v, a) => (
+    const rows = queries.map((q: any, idx: number) => (
         <Table.Row key={q.queryId}>
             <Table.Cell collapsing>
                 <Checkbox
@@ -54,14 +54,14 @@ export function QueriesSettingsTable() {
                 </Table.Cell>
             )}
             <Table.Cell collapsing>
-                <Button size="tiny" icon compact disabled={v === 0} onClick={() => QueryHelper.move(q, "up")}>
+                <Button size="tiny" icon compact disabled={idx === 0} onClick={() => QueryHelper.move(q, "up")}>
                     <Icon name="arrow up" />
                 </Button>
                 <Button
                     size="tiny"
                     icon
                     compact
-                    disabled={v === a.length - 1}
+                    disabled={idx === queries.length - 1}
                     onClick={() => QueryHelper.move(q, "dn")}
                 >
                     <Icon name="arrow down" />

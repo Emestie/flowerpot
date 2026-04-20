@@ -10,7 +10,11 @@ export const createLogger = <T>(name: string, initializer: (set: any, get: () =>
 
             const nextState = get();
 
-            console.log(`${PREFIX} ${name}:`, { prev: prevState, change: change, next: nextState });
+            console.log(`${PREFIX} ${name}:`, Object.keys(change).join(", "), {
+                change,
+                next: nextState,
+                prev: prevState,
+            });
         };
 
         return initializer(loggedSet, get, api);

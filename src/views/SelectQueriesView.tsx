@@ -51,7 +51,7 @@ export function SelectQueriesView() {
                 setIsLoading(false);
             });
         }, 50);
-    }, [queries]);
+    }, [accounts]);
 
     useEffect(() => {
         loadQueries();

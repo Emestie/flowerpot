@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { Query } from "../../models/query";
-import { WorkItem } from "../../models/work-item";
 import { useHighlights } from "/@/hooks/useHighlights";
 import { useDataStore } from "/@/zustand/data";
 

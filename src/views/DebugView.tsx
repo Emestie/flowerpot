@@ -14,7 +14,7 @@ import { useSettingsStore } from "../zustand/settings";
 export function DebugView() {
     const setView = useAppStore((s) => s.setView);
     const accounts = useSettingsStore((state) => state.accounts);
-    const projects = useSettingsStore((state) => state.projects);
+    const projects = useSettingsStore((state) => state.projects) || [];
     const queries = useSettingsStore((state) => state.queries);
 
     const api = accounts[0] ? getApi(accounts[0]?.id) : undefined;

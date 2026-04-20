@@ -101,7 +101,7 @@ export default class Settings {
         useAppStore.getState().setSettings({ autostart, locale });
     }
 
-    public static save(settings: ISettings) {
+    public static async save(settings: ISettings) {
         try {
             const settingsToStore = JSON.stringify(settings);
             Platform.current.setStoreProp("flowerpot", settingsToStore);

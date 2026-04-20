@@ -1,6 +1,13 @@
 import { create } from "zustand";
-import Platform from "../helpers/Platform";
-import Settings, { IAccount, IListItem, ISettings, TLists, TNotificationsMode, TSortPattern, TTheme } from "../helpers/Settings";
+import Settings, {
+    IAccount,
+    IListItem,
+    ISettings,
+    TLists,
+    TNotificationsMode,
+    TSortPattern,
+    TTheme,
+} from "../helpers/Settings";
 import { createLogger } from "./logger";
 
 export enum TableScale {
@@ -111,7 +118,7 @@ export const useSettingsStore = create<SettingsState>()(
         setSettings(settings) {
             const newState = { ...get(), ...settings };
             saveSettings(newState);
-            set(settings);
+            set(newState);
         },
 
         setAccounts(accounts) {
@@ -120,7 +127,11 @@ export const useSettingsStore = create<SettingsState>()(
         },
 
         setQueries(queries) {
+            const target = queries.find((q: any) => q.queryId === "13d942aa-093c-4794-b3c9-f6e19d0683e6");
             set({ queries });
+            const afterSet = useSettingsStore
+                .getState()
+                .queries.find((q: any) => q.queryId === "13d942aa-093c-4794-b3c9-f6e19d0683e6");
             saveSettings({ ...get(), queries });
         },
 

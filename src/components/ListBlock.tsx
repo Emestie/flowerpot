@@ -15,7 +15,8 @@ export function ListBlock(p: P) {
     const [inputVal, setInputVal] = useState("");
     const [selectedCollection, setSelectedCollection] = useState<{ accountId: string; collectionName: string }>();
 
-    const list = useSettingsStore((state) => state.lists[p.listName]);
+    const lists = useSettingsStore((state) => state.lists) || {};
+    const list = (lists[p.listName] || []) as any[];
 
     const inputError = (() => {
         if (p.listName === "permawatch") {

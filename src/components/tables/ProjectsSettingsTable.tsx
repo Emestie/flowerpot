@@ -7,7 +7,7 @@ import { s } from "../../values/Strings";
 import { AccountBadge } from "../AccountBadge";
 
 export function ProjectsSettingsTable() {
-    const projects = useSettingsStore((state) => state.projects);
+    const projects = useSettingsStore((state) => state.projects) || [];
 
     const openProjectSelector = () => {
         useAppStore.getState().setView("selectprojects");

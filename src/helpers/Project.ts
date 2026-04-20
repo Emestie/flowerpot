@@ -6,8 +6,7 @@ type TBoolProps = "enabled";
 export class ProjectHelper {
     public static add(project: Project) {
         const allProjects = useSettingsStore.getState().projects;
-        allProjects.push(project);
-        this.updateAllInStore(allProjects);
+        this.updateAllInStore([...allProjects, project]);
     }
 
     public static delete(project: Project) {
@@ -16,24 +15,17 @@ export class ProjectHelper {
     }
 
     public static toggleBoolean(project: Project, boolPropName: TBoolProps, forcedValue?: boolean) {
-        if (forcedValue === undefined) {
-            project[boolPropName] = !project[boolPropName];
-        } else {
-            project[boolPropName] = forcedValue;
-        }
-        this.updateSingleInStore(project);
+        const newBool = forcedValue !== undefined ? forcedValue : !project[boolPropName];
+        const updatedProject = { ...project, [boolPropName]: newBool };
+        const allProjects = useSettingsStore.getState().projects;
+        const index = allProjects.findIndex((p) => p.path === project.path);
+        const updatedProjects = [...allProjects];
+        updatedProjects[index] = updatedProject;
+        this.updateAllInStore(updatedProjects);
     }
 
     private static findIndex(project: Project) {
-        let exactQueryIndex = useSettingsStore.getState().projects.findIndex((p) => p.path === project.path);
-        return exactQueryIndex;
-    }
-
-    private static updateSingleInStore(project: Project) {
-        const allQueries = useSettingsStore.getState().projects;
-        const index = this.findIndex(project);
-        allQueries[index] = project;
-        this.updateAllInStore(allQueries);
+        return useSettingsStore.getState().projects.findIndex((p) => p.path === project.path);
     }
 
     private static updateAllInStore(projects: Project[]) {

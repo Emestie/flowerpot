@@ -6,7 +6,7 @@ import { useAppStore } from "../../zustand/app";
 import { useSettingsStore } from "../../zustand/settings";
 
 export function QuickLinksContainer() {
-    const links = useSettingsStore((state) => state.links);
+    const links = useSettingsStore((state) => state.links) || [];
     const sortedLinks = [...links].sort((a, b) => (a.order || 0) - (b.order || 0));
 
     const openLink = (url: string) => {

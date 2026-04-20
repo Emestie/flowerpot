@@ -6,7 +6,7 @@ import { useSettingsStore } from "../../zustand/settings";
 import { useAppStore } from "../../zustand/app";
 
 export function LinksSettingsTable() {
-    const links = useSettingsStore((state) => state.links).sort((a, b) => (a.order || 0) - (b.order || 0));
+    const links = (useSettingsStore((state) => state.links) || []).sort((a, b) => (a.order || 0) - (b.order || 0));
     const setDialog = useAppStore((state) => state.setDialog);
 
     const addLink = () => {

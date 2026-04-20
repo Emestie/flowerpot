@@ -5,7 +5,6 @@ export default class Lists {
     public static push(accountId: string, listName: TLists, collection: string, id: number, rev?: number) {
         if (!rev) rev = 0;
 
-        //remove from other lists if item in them
         const deferred = this.deleteFromList(accountId, "deferred", id, collection, true);
         const permawatch = this.deleteFromList(accountId, "permawatch", id, collection, true);
         const favorites = this.deleteFromList(accountId, "favorites", id, collection, true);
@@ -13,8 +12,7 @@ export default class Lists {
         const pinned = this.deleteFromList(accountId, "pinned", id, collection, true);
         const forwarded = this.deleteFromList(accountId, "forwarded", id, collection, true);
 
-        const list = this.deleteFromList(accountId, listName, id, collection, true);
-        list.push({ accountId, id, collection, rev });
+        const list = [...this.deleteFromList(accountId, listName, id, collection, true), { accountId, id, collection, rev }];
 
         const lists = { deferred, permawatch, favorites, hidden, pinned, forwarded, [listName]: list } as any;
 
@@ -24,9 +22,7 @@ export default class Lists {
     public static pushStrings(accountId: string, listName: TLists, word: string) {
         const list = useSettingsStore.getState().lists[listName] || [];
 
-        list.push({ accountId, id: Math.random(), rev: 0, word: word });
-
-        useSettingsStore.getState().setList(listName, list);
+        useSettingsStore.getState().setList(listName, [...list, { accountId, id: Math.random(), rev: 0, word: word }]);
     }
 
     public static deleteFromList(
@@ -88,12 +84,13 @@ export default class Lists {
         notes = notes.filter((x) => `${x.collection}-${x.id}` !== `${collection}-${id}`);
 
         if (note) {
-            if (!existingNote) existingNote = { accountId, id, collection, note, color };
-            else {
-                existingNote.note = note;
-                existingNote.color = color;
+            if (!existingNote) {
+                notes = [...notes, { accountId, id, collection, note, color }];
+            } else {
+                notes = notes.map((n) =>
+                    n.id === id && collection === n.collection ? { ...n, note, color } : n
+                );
             }
-            notes.push(existingNote);
         }
 
         useSettingsStore.getState().setNotes(notes);

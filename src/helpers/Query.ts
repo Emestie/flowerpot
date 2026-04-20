@@ -1,9 +1,9 @@
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
-import { dataStore } from "../zustand/data";
 import { s } from "../values/Strings";
-import Platform from "./Platform";
+import { dataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
+import Platform from "./Platform";
 
 type TBoolProps = "enabled" | "ignoreNotif" | "ignoreIcon" | "empty";
 
@@ -20,8 +20,7 @@ export default class QueryHelper {
 
         if (!!allQueries.find((aq) => aq.queryId === query.queryId && aq.accountId === query.accountId)) return;
 
-        allQueries.push(query);
-        this.updateAllInStore(allQueries);
+        this.updateAllInStore([...allQueries, query]);
     }
 
     public static delete(query: Query) {
@@ -30,47 +29,46 @@ export default class QueryHelper {
     }
 
     public static toggleBoolean(query: Query, boolPropName: TBoolProps, forcedValue?: boolean) {
-        if (forcedValue === undefined) {
-            query[boolPropName] = !query[boolPropName];
-        } else {
-            query[boolPropName] = forcedValue;
-        }
-        this.updateSingleInStore(query);
+        const newBool = forcedValue !== undefined ? forcedValue : !query[boolPropName];
+        const updatedQuery = { ...query, [boolPropName]: newBool };
+        this.updateSingleInStore(updatedQuery);
     }
 
     public static updateFilteredTypes(query: Query, filteredTypes: string[]) {
-        query.filteredTypes = filteredTypes;
-        this.updateSingleInStore(query);
+        const updatedQuery = { ...query, filteredTypes };
+        this.updateSingleInStore(updatedQuery);
     }
 
     public static updateFilteredStatuses(query: Query, filteredStatuses: string[]) {
-        query.filteredStatuses = filteredStatuses;
-        this.updateSingleInStore(query);
+        const updatedQuery = { ...query, filteredStatuses };
+        this.updateSingleInStore(updatedQuery);
     }
 
     public static move(query: Query, direction: "up" | "dn") {
-        let allQueries = useSettingsStore.getState().queries;
+        const allQueries = useSettingsStore.getState().queries || [];
+        const index = allQueries.findIndex((q) => q.queryId === query.queryId);
+        const indexToSwapWith = direction === "up" ? index - 1 : index + 1;
 
-        let index = this.findIndex(query);
-        let indexToSwapWith = direction === "up" ? index - 1 : index + 1;
+        if (index < 0 || indexToSwapWith < 0 || indexToSwapWith >= allQueries.length) {
+            return;
+        }
 
-        let buffer = allQueries[indexToSwapWith].order;
-        allQueries[indexToSwapWith].order = allQueries[index].order;
-        allQueries[index].order = buffer;
+        const updatedQueries = [...allQueries];
+        const tempOrder = updatedQueries[indexToSwapWith].order;
+        updatedQueries[indexToSwapWith] = { ...updatedQueries[indexToSwapWith], order: updatedQueries[index].order };
+        updatedQueries[index] = { ...updatedQueries[index], order: tempOrder };
 
-        this.updateAllInStore(allQueries);
-    }
-
-    private static findIndex(query: Query) {
-        let exactQueryIndex = useSettingsStore.getState().queries.findIndex((q) => q.queryId === query.queryId);
-        return exactQueryIndex;
+        this.updateAllInStore(updatedQueries);
     }
 
     private static updateSingleInStore(query: Query) {
-        let allQueries = useSettingsStore.getState().queries;
-        let index = this.findIndex(query);
-        allQueries[index] = query;
-        this.updateAllInStore(allQueries);
+        const allQueries = useSettingsStore.getState().queries || [];
+        const index = allQueries.findIndex((q) => q.queryId === query.queryId);
+        if (index < 0) return;
+        const updatedQueries = [...allQueries];
+        updatedQueries[index] = query;
+        const target = updatedQueries.find((q) => q.queryId === query.queryId);
+        this.updateAllInStore(updatedQueries);
     }
 
     private static updateAllInStore(queries: Query[]) {

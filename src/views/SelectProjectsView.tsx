@@ -17,7 +17,7 @@ interface ISelectableProject extends Project {
 export function SelectProjectsView() {
     const setView = useAppStore((s) => s.setView);
     const accounts = useSettingsStore((state) => state.accounts);
-    const projects = useSettingsStore((state) => state.projects);
+    const projects = useSettingsStore((state) => state.projects) || [];
     const [isLoading, setIsLoading] = useState(true);
     const [availableProjects, setAvailableProjects] = useState<ISelectableProject[]>([]);
 
