@@ -6,9 +6,9 @@ import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import QueryHelper from "../helpers/Query";
 import { Query } from "../models/query";
+import { s } from "../values/Strings";
 import { useAppStore } from "../zustand/app";
 import { useSettingsStore } from "../zustand/settings";
-import { s } from "../values/Strings";
 
 interface ISelectableQuery extends Query {
     checked: boolean;
@@ -17,7 +17,7 @@ interface ISelectableQuery extends Query {
 export function SelectQueriesView() {
     const setView = useAppStore((s) => s.setView);
     const accounts = useSettingsStore((state) => state.accounts);
-    const queries = useSettingsStore((state) => state.queries);
+    const queriesInSettings = useSettingsStore((state) => state.queries);
     const [isLoading, setIsLoading] = useState(true);
     const [availableQueries, setAvailableQueries] = useState<ISelectableQuery[]>([]);
     const [showPublic, setShowPublic] = useState(false);
@@ -35,14 +35,13 @@ export function SelectQueriesView() {
                     getApi(account.id)
                         .query.getAvailable()
                         .then((queries) => {
-                            const currentQueriesIds = queries
+                            const currentQueriesIds = queriesInSettings
                                 .filter((x) => x.accountId === account.id)
                                 .map((q) => q.queryId);
                             const queriesToSelect = queries.filter(
                                 (q) => !currentQueriesIds.includes(q.queryId)
                             ) as ISelectableQuery[];
                             queriesToSelect.forEach((q) => (q.checked = false));
-
                             return queriesToSelect;
                         })
                 )

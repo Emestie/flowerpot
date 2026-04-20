@@ -3,10 +3,7 @@ _Release notes are not available in English for now_
 ## 0.8.5
 
 KNOWN ISSUES: 
-1. queries sorting
 2. filters reset on refresh
-3. add query - no results
-4. queries delete not working
 5. permawatch not working
 
 - добавлена возможность привязки темы приложения к теме операционной системы (в селекторе тем появилось значение "Системная")

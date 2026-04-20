@@ -53,12 +53,11 @@ export default class QueryHelper {
             return;
         }
 
-        const updatedQueries = [...allQueries];
-        const tempOrder = updatedQueries[indexToSwapWith].order;
-        updatedQueries[indexToSwapWith] = { ...updatedQueries[indexToSwapWith], order: updatedQueries[index].order };
-        updatedQueries[index] = { ...updatedQueries[index], order: tempOrder };
+        const tempOrder = allQueries[indexToSwapWith].order;
+        allQueries[indexToSwapWith] = { ...allQueries[indexToSwapWith], order: allQueries[index].order };
+        allQueries[index] = { ...allQueries[index], order: tempOrder };
 
-        this.updateAllInStore(updatedQueries);
+        this.updateAllInStore([...allQueries.map((x) => ({ ...x }))]);
     }
 
     private static updateSingleInStore(query: Query) {

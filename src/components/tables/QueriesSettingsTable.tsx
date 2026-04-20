@@ -1,14 +1,14 @@
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
+import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
 import { useSettingsStore } from "../../zustand/settings";
-import { s } from "../../values/Strings";
 import { AccountBadge } from "../AccountBadge";
 
 export function QueriesSettingsTable() {
     const setView = useAppStore((s) => s.setView);
-    const queries = useSettingsStore((state) => state.queries) || [];
+    const queries = useSettingsStore((state) => state.queries.sort((a, b) => a.order - b.order)) || [];
 
     const openQuerySelector = () => {
         setView("selectqueries");
