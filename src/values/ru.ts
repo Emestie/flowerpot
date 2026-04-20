@@ -330,6 +330,9 @@ const ru: LocalizedStrings = {
     themeLight: "Светлая тема",
     themeDark: "Тёмная тема",
     themeSystem: "Системная тема (по настройкам ОС)",
+
+    filterStatusPrefix: "Статус: ",
+    filterTypePrefix: "Тип: ",
 };
 
 export default ru;

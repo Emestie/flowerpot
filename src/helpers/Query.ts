@@ -44,6 +44,11 @@ export default class QueryHelper {
         this.updateSingleInStore(query);
     }
 
+    public static updateFilteredStatuses(query: Query, filteredStatuses: string[]) {
+        query.filteredStatuses = filteredStatuses;
+        this.updateSingleInStore(query);
+    }
+
     public static move(query: Query, direction: "up" | "dn") {
         let allQueries = getQueriesSelector(true)(store.getState());
 

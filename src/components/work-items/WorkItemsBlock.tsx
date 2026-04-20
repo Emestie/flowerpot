@@ -8,13 +8,13 @@ import { useQueryLoader } from "../../hooks/useQueryLoader";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
 import { settingsSelector } from "../../redux/selectors/settingsSelectors";
-import { useDataStore } from "../../zustand/data";
 import { s } from "../../values/Strings";
+import { useAppStore } from "../../zustand/app";
+import { useDataStore } from "../../zustand/data";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { WorkItemRow } from "./WorkItemRow";
 import { useFilteredWorkItems } from "./use-filtered-work-items";
-import { useAppStore } from "../../zustand/app";
 
 interface IProps {
     query: Query;
@@ -25,6 +25,7 @@ export function WorkItemsBlock(props: IProps) {
     const settings = useSelector(settingsSelector);
     const showMineOnly = useAppStore((state) => state.showMineOnly);
     const filteredTypes = props.query.filteredTypes || [];
+    const filteredStatuses = props.query.filteredStatuses || [];
 
     const setWorkItemsForQuery = useDataStore((state) => state.setWorkItemsForQuery);
 
@@ -42,12 +43,26 @@ export function WorkItemsBlock(props: IProps) {
             .sort((a, b) => a.type.localeCompare(b.type));
     }, [workItems]);
 
+    const availableStatuses = useMemo(() => {
+        const statuses = new Map<string, string | undefined>();
+        workItems.forEach((wi) => {
+            if (wi.state && !statuses.has(wi.state)) {
+                statuses.set(wi.state, wi.stateColor);
+            }
+        });
+        return Array.from(statuses.entries())
+            .map(([state, color]) => ({ state, color }))
+            .sort((a, b) => a.state.localeCompare(b.state));
+    }, [workItems]);
+
     const isPermawatch = props.query.queryId.startsWith("___permawatch");
     const totalItemsCount = workItems
         .filter((wi) => !filteredTypes.includes(wi.type))
+        .filter((wi) => !filteredStatuses.includes(wi.state))
         .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev)).length;
     const redItemsCount = workItems
         .filter((wi) => !filteredTypes.includes(wi.type))
+        .filter((wi) => !filteredStatuses.includes(wi.state))
         .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => wi.isRed).length;
 
@@ -136,6 +151,7 @@ export function WorkItemsBlock(props: IProps) {
         .filter((wi) => (showMineOnly ? wi._isMine : true))
         .filter((wi) => !Lists.isIn(props.query.accountId, "hidden", props.query.collectionName, wi.id, wi.rev))
         .filter((wi) => !filteredTypes.includes(wi.type))
+        .filter((wi) => !filteredStatuses.includes(wi.state))
         .map((wi) => (
             <WorkItemRow
                 key={wi.id}
@@ -172,7 +188,7 @@ export function WorkItemsBlock(props: IProps) {
             }}
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             rightBlock={
-                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 6 }}>
+                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "flex-end", gap: 6 }}>
                     {!!query.queryPath && (
                         <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
                             <Icon size="small" name="external share" />
@@ -187,6 +203,7 @@ export function WorkItemsBlock(props: IProps) {
                         <FilterToggleButton
                             key={t.type}
                             label={t.type}
+                            hintPrefix={s("filterTypePrefix")}
                             checked={!filteredTypes.includes(t.type)}
                             onChange={() => {
                                 if (filteredTypes.includes(t.type)) {
@@ -199,7 +216,25 @@ export function WorkItemsBlock(props: IProps) {
                                 }
                             }}
                             imgUrl={t.url}
-                            //?.replace(/color=.+&/, settings.darkTheme ? "color=E9E9E9&" : "color=676768&")
+                        />
+                    ))}
+                    {availableStatuses.map((st) => (
+                        <FilterToggleButton
+                            key={st.state}
+                            label={st.state}
+                            hintPrefix={s("filterStatusPrefix")}
+                            checked={!filteredStatuses.includes(st.state)}
+                            onChange={() => {
+                                if (filteredStatuses.includes(st.state)) {
+                                    QueryHelper.updateFilteredStatuses(
+                                        props.query,
+                                        filteredStatuses.filter((x) => x !== st.state)
+                                    );
+                                } else {
+                                    QueryHelper.updateFilteredStatuses(props.query, [...filteredStatuses, st.state]);
+                                }
+                            }}
+                            colorDot={st.color ? "#" + st.color : undefined}
                         />
                     ))}
                 </div>
