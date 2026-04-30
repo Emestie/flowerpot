@@ -111,8 +111,10 @@ export default class Differences {
 
         console.log("New PRs", news.length, "Changed PRs", changed.length);
 
-        //unhide PRs that have changes
+        //unhide PRs that have changes and mark them in collection
         changed.forEach((pr) => {
+            useDataStore.getState().setPrChangesCollectionItem(pr, true);
+
             if (Lists.isPrHidden(pr.accountId, pr.collectionName, pr.id)) {
                 const hiddenPrs = useSettingsStore.getState().hiddenPrs;
                 const updatedHiddenPrs = hiddenPrs.filter(

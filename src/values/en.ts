@@ -167,8 +167,8 @@ const en = {
     openById: "Open by ID",
     openByIdText: "Enter the Work Item ID to open",
 
-    showUnreads: "Mark new work items",
-    markAllAsRead: "Mark all new work items as read",
+    showUnreads: "Mark new Work Items and Pull Requests",
+    markAllAsRead: "Mark all new work items and PRs as read",
 
     contributors: "Contributors: ",
     keyword: "Keyword",

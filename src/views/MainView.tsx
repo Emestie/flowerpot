@@ -80,6 +80,7 @@ export function MainView() {
 
     const markAllAsRead = () => {
         clearChangesCollection();
+        useDataStore.getState().clearPrChangesCollection();
     };
 
     const isChangesCollectionHasItems = Differences.isChangesCollectionHasChanges(changesCollection);

@@ -170,8 +170,8 @@ const ru: LocalizedStrings = {
     openById: "Открыть по ID",
     openByIdText: "Введите ID рабочего элемента, который нужно открыть",
 
-    showUnreads: "Помечать новые рабочие элементы",
-    markAllAsRead: "Отметить все новые рабочие элементы как прочитанные",
+    showUnreads: "Помечать новые рабочие элементы и Pull Requests",
+    markAllAsRead: "Отметить все новые рабочие элементы и PR как прочитанные",
 
     contributors: "Участники: ",
     keyword: "Ключевое слово",
