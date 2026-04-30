@@ -1,21 +1,21 @@
 import { Button, Container, Icon, Menu } from "semantic-ui-react";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
-import { isDarkTheme } from "../../helpers/Theme";
 import { TTheme } from "../../helpers/Settings";
+import { isDarkTheme } from "../../helpers/Theme";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
-import { useSettingsStore } from "../../zustand/settings";
+import { Sections, useSettingsStore } from "../../zustand/settings";
 import { AccountSection } from "./sections/AccountSection";
 import { CreditsSection } from "./sections/CreditsSection";
 import { ImportSection } from "./sections/ImportSection";
 import { ListsView } from "./sections/ListsSection";
+import { NotificationsSection } from "./sections/NotificationsSection";
 import { ProjectsSection } from "./sections/ProjectsSection";
 import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
-import { WorkItemsSection } from "./sections/WorkItemsSection";
+import { AppearanceSection } from "./sections/WorkItemsSection";
 import { PageLayout } from "/@/components/PageLayout";
-import { Sections } from "../../zustand/settings";
 
 const sectionsList = [
     {
@@ -35,12 +35,16 @@ const sectionsList = [
         captionKey: "sectionLists",
     },
     {
-        id: Sections.WorkItems,
+        id: Sections.QuickLinks,
+        captionKey: "sectionQL",
+    },
+    {
+        id: Sections.Appearance,
         captionKey: "sectionWI",
     },
     {
-        id: Sections.QuickLinks,
-        captionKey: "sectionQL",
+        id: Sections.Notifications,
+        captionKey: "sectionNotifications",
     },
     {
         id: Sections.Import,
@@ -58,8 +62,8 @@ const getSectionComponent = (sectionId: Sections) => {
             return <AccountSection />;
         case Sections.Credits:
             return <CreditsSection />;
-        case Sections.WorkItems:
-            return <WorkItemsSection />;
+        case Sections.Appearance:
+            return <AppearanceSection />;
         case Sections.Projects:
             return <ProjectsSection />;
         case Sections.Queries:
@@ -68,6 +72,8 @@ const getSectionComponent = (sectionId: Sections) => {
             return <QuickLinksSections />;
         case Sections.Lists:
             return <ListsView />;
+        case Sections.Notifications:
+            return <NotificationsSection />;
         case Sections.Import:
             return <ImportSection />;
         default:

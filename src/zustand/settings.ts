@@ -21,10 +21,11 @@ export enum Sections {
     Queries = 1,
     Projects = 2,
     Lists = 3,
-    WorkItems = 4,
+    Appearance = 4,
     QuickLinks = 5,
-    Import = 6,
-    Credits = 7,
+    Notifications = 6,
+    Import = 7,
+    Credits = 8,
 }
 
 export interface SettingsState extends ISettings {
@@ -52,7 +53,7 @@ export interface SettingsState extends ISettings {
     setIncludeTeamsPRs: (include: boolean) => void;
     setIncludeAcceptedByMePRs: (include: boolean) => void;
     setIncludeHiddenPRs: (include: boolean) => void;
-    setPrNotificationsEnabled: (enabled: boolean) => void;
+    setPrNotifications: (enabled: string) => void;
     setAllowTelemetry: (allow: boolean) => void;
     setLastVersion: (version: string) => void;
     setLastVersionLong: (version: string) => void;
@@ -98,7 +99,7 @@ const initialState: ISettings = {
     includeTeamsPRs: true,
     includeAcceptedByMePRs: true,
     includeHiddenPRs: false,
-    prNotificationsEnabled: true,
+    prNotifications: "on",
     enableIterationColors: true,
     enableQueryColorCode: false,
     collapsedBlocks: [],
@@ -241,9 +242,9 @@ export const useSettingsStore = create<SettingsState>()(
             saveSettings({ ...get(), includeHiddenPRs });
         },
 
-        setPrNotificationsEnabled(enabled) {
-            set({ prNotificationsEnabled: enabled });
-            saveSettings({ ...get(), prNotificationsEnabled: enabled });
+        setPrNotifications(enabled: string) {
+            set({ prNotifications: enabled });
+            saveSettings({ ...get(), prNotifications: enabled });
         },
 
         setAllowTelemetry(allowTelemetry) {

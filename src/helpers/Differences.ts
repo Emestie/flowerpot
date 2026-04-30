@@ -83,7 +83,7 @@ export default class Differences {
     }
 
     public static putPRs(accountId: string, pullRequests: PullRequest[]) {
-        if (!useSettingsStore.getState().prNotificationsEnabled) return;
+        if (useSettingsStore.getState().prNotifications !== "on") return;
 
         let prStorage = QueryHelper.getPRStorage();
 

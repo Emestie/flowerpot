@@ -1,20 +1,13 @@
 import { DropdownItemProps, Form, Header } from "semantic-ui-react";
 import Platform, { PlatformType } from "../../../helpers/Platform";
-import { TNotificationsMode, TSortPattern } from "../../../helpers/Settings";
-import { TableScale } from "../../../zustand/settings";
+import { TSortPattern } from "../../../helpers/Settings";
 import { s } from "../../../values/Strings";
-import { useSettingsStore } from "../../../zustand/settings";
+import { TableScale, useSettingsStore } from "../../../zustand/settings";
 
 const getSortPatterns: () => DropdownItemProps[] = () => [
     { key: 1, text: s("sortPatternWeight"), value: "default" },
     { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
     { key: 3, text: s("sortPatternId"), value: "id" },
-];
-
-const getNotificationsModes: () => DropdownItemProps[] = () => [
-    { key: 1, text: s("notifModeAll"), value: "all" },
-    { key: 2, text: s("notifModeMine"), value: "mine" },
-    { key: 3, text: s("notifModeNone"), value: "none" },
 ];
 
 const getTableScales: () => DropdownItemProps[] = () => [
@@ -31,7 +24,7 @@ const getRefreshRates: () => DropdownItemProps[] = () => [
     { key: 5, text: s("refresh20m"), value: 1200 },
 ];
 
-export function WorkItemsSection() {
+export function AppearanceSection() {
     const showUnreads = useSettingsStore((state) => state.showUnreads);
     const iconChangesOnMyWorkItemsOnly = useSettingsStore((state) => state.iconChangesOnMyWorkItemsOnly);
     const mineOnTop = useSettingsStore((state) => state.mineOnTop);
@@ -40,7 +33,6 @@ export function WorkItemsSection() {
     const showEmptyQueries = useSettingsStore((state) => state.showEmptyQueries);
     const refreshRate = useSettingsStore((state) => state.refreshRate);
     const sortPattern = useSettingsStore((state) => state.sortPattern);
-    const notificationsMode = useSettingsStore((state) => state.notificationsMode);
     const tableScale = useSettingsStore((state) => state.tableScale);
     const setShowUnreads = useSettingsStore((state) => state.setShowUnreads);
     const setIconChangesOnMyWorkItemsOnly = useSettingsStore((state) => state.setIconChangesOnMyWorkItemsOnly);
@@ -51,13 +43,9 @@ export function WorkItemsSection() {
     const setTableScale = useSettingsStore((state) => state.setTableScale);
     const setRefreshRate = useSettingsStore((state) => state.setRefreshRate);
     const setSortPattern = useSettingsStore((state) => state.setSortPattern);
-    const setNotificationsMode = useSettingsStore((state) => state.setNotificationsMode);
-    const prNotificationsEnabled = useSettingsStore((state) => state.prNotificationsEnabled);
-    const setPrNotificationsEnabled = useSettingsStore((state) => state.setPrNotificationsEnabled);
 
     const refreshRates = getRefreshRates();
     const tableScales = getTableScales();
-    const notificationsModes = getNotificationsModes();
     const sortPatterns = getSortPatterns();
 
     if (Platform.current.isDev()) {
@@ -105,14 +93,6 @@ export function WorkItemsSection() {
         setSortPattern(val);
     };
 
-    const onNotifModeSelect = (val: TNotificationsMode) => {
-        setNotificationsMode(val);
-    };
-
-    const togglePrNotifications = () => {
-        setPrNotificationsEnabled(!prNotificationsEnabled);
-    };
-
     return (
         <>
             <Header as="h3" dividing>
@@ -132,23 +112,6 @@ export function WorkItemsSection() {
                 onChange={(e, { value }) => onSortSelect(value as TSortPattern)}
             />
             <br />
-            {Platform.type === PlatformType.Electron && (
-                <>
-                    <Form.Select
-                        label={s("ddShowNotifLabel")}
-                        options={notificationsModes}
-                        value={notificationsMode}
-                        onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
-                    />
-                    <br />
-                    <Form.Checkbox
-                        label={s("prNotificationsEnabled")}
-                        checked={prNotificationsEnabled}
-                        onChange={togglePrNotifications}
-                    />
-                    <br />
-                </>
-            )}
             {Platform.type === PlatformType.Electron && (
                 <>
                     <Form.Checkbox
@@ -175,11 +138,7 @@ export function WorkItemsSection() {
                 onChange={toggleQueryColorCode}
             />
             <br />
-            <Form.Checkbox
-                label={s("showEmptyQueries")}
-                checked={showEmptyQueries}
-                onChange={toggleShowEmptyQueries}
-            />
+            <Form.Checkbox label={s("showEmptyQueries")} checked={showEmptyQueries} onChange={toggleShowEmptyQueries} />
             <br />
             <Form.Select
                 label={s("ddTableScale")}
