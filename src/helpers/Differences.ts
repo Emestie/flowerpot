@@ -1,18 +1,26 @@
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
+import { PullRequest } from "../models/pull-request";
 import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
 import QueryHelper from "./Query";
+import Lists from "./Lists";
 
 interface IShownWI {
     id: number;
     rev: number;
 }
 
+interface IShownPR {
+    id: number;
+    commitId: string;
+}
+
 export default class Differences {
     private static shownWI: IShownWI[] = [];
+    private static shownPR: IShownPR[] = [];
 
     public static put(query: Query, workItems: WorkItem[]) {
         let wiStorage = QueryHelper.getWIStorage();
@@ -74,6 +82,61 @@ export default class Differences {
         QueryHelper.saveWIStorage(wiStorage);
     }
 
+    public static putPRs(accountId: string, pullRequests: PullRequest[]) {
+        if (!useSettingsStore.getState().prNotificationsEnabled) return;
+
+        let prStorage = QueryHelper.getPRStorage();
+
+        if (!prStorage[accountId]) {
+            prStorage[accountId] = [...pullRequests];
+            QueryHelper.savePRStorage(prStorage);
+            return;
+        }
+
+        let storage = prStorage[accountId];
+        let news: PullRequest[] = [];
+        let changed: PullRequest[] = [];
+
+        pullRequests.forEach((pr) => {
+            if (!storage) return;
+            let stored = this.getPRById(storage, pr.id);
+            if (!stored) {
+                news.push(pr);
+                return;
+            }
+            if (stored.commitId !== pr.commitId) {
+                changed.push(pr);
+            }
+        });
+
+        console.log("New PRs", news.length, "Changed PRs", changed.length);
+
+        //unhide PRs that have changes
+        changed.forEach((pr) => {
+            if (Lists.isPrHidden(pr.accountId, pr.collectionName, pr.id)) {
+                const hiddenPrs = useSettingsStore.getState().hiddenPrs;
+                const updatedHiddenPrs = hiddenPrs.filter(
+                    (x) => !(x.accountId === pr.accountId && x.collection === pr.collectionName && x.id === pr.id)
+                );
+                useSettingsStore.getState().setHiddenPrs(updatedHiddenPrs);
+            }
+        });
+
+        //dont show same notifs twice
+        news = news.filter((pr) => !this.shownPR.find((x) => x.id === pr.id && x.commitId === pr.commitId));
+        changed = changed.filter((pr) => !this.shownPR.find((x) => x.id === pr.id && x.commitId === pr.commitId));
+        this.shownPR.push(
+            ...news.map((pr) => ({ id: pr.id, commitId: pr.commitId })),
+            ...changed.map((pr) => ({ id: pr.id, commitId: pr.commitId }))
+        );
+
+        this.operatePRNotifsToShow(news, "new");
+        this.operatePRNotifsToShow(changed, "change");
+
+        prStorage[accountId] = [...pullRequests];
+        QueryHelper.savePRStorage(prStorage);
+    }
+
     private static operateNotifsToShow(wis: WorkItem[], type: "new" | "change") {
         const wisToShow: WorkItem[] = [];
         const settings = useSettingsStore.getState();
@@ -101,6 +164,43 @@ export default class Differences {
 
     private static getWIById(storage: WorkItem[], id: number) {
         return storage.find((wi) => wi.id === id);
+    }
+
+    private static getPRById(storage: PullRequest[], id: number) {
+        return storage.find((pr) => pr.id === id);
+    }
+
+    private static operatePRNotifsToShow(prs: PullRequest[], type: "new" | "change") {
+        const prsToShow: PullRequest[] = [];
+        const settings = useSettingsStore.getState();
+
+        prs.forEach((pr) => {
+            const belonging = pr.getBelonging();
+            if (belonging) {
+                if (belonging === "team" && !settings.includeTeamsPRs) return;
+                prsToShow.push(pr);
+            }
+        });
+
+        if (prsToShow.length < 2) {
+            prsToShow.forEach((pr) => this.showPRNotif(this.createTextForPR(pr), type));
+        } else {
+            const count = prsToShow.length;
+            this.showNotif(count + (type === "new" ? s("prsNew") : s("prsWasChanged")), type);
+        }
+    }
+
+    private static createTextForPR(pr: PullRequest) {
+        return `[${pr.repoName}] ${pr.id}: ${pr.title}`;
+    }
+
+    private static showPRNotif(text: string, reason?: "new" | "change") {
+        let title = "Flowerpot";
+        if (reason) {
+            if (reason === "new") title += s("notifNewPR");
+            if (reason === "change") title += s("notifChangedPR");
+        }
+        Platform.current.showNotification({ title: title, body: text });
     }
 
     private static showNotif(text: string, reason?: "new" | "change") {

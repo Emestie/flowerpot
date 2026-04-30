@@ -89,6 +89,11 @@ const ru: LocalizedStrings = {
     throwUnknown: "Что-то пошло не так во время обработки запроса",
     notifNewItem: ": новое",
     notifChangedItem: ": изменения",
+    notifNewPR: ": новый PR",
+    notifChangedPR: ": изменения PR",
+    prsNew: " новых PR",
+    prsWasChanged: " PR изменены",
+    prNotificationsEnabled: "Уведомления о PR",
     //comps
     timeSinceCreated: "Время с момента создания",
     revision: "Ревизия",

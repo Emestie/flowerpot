@@ -77,6 +77,7 @@ export interface ISettings {
     includeTeamsPRs: boolean;
     includeAcceptedByMePRs: boolean;
     includeHiddenPRs: boolean;
+    prNotificationsEnabled: boolean;
     enableIterationColors: boolean;
     enableQueryColorCode: boolean;
     collapsedBlocks: string[];

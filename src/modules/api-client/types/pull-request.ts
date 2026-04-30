@@ -7,6 +7,10 @@ export interface IResponsePullRequest {
     };
     isDraft: boolean;
     creationDate: string;
+    lastMergeSourceCommit: {
+        commitId: string;
+        url: string;
+    };
     pullRequestId: number;
     repository: {
         id: string;

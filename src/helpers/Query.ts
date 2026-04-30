@@ -1,5 +1,6 @@
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
+import { PullRequest } from "../models/pull-request";
 import { s } from "../values/Strings";
 import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
@@ -9,6 +10,10 @@ type TBoolProps = "enabled" | "ignoreNotif" | "ignoreIcon" | "empty";
 
 export interface IWIStorage {
     [queryId: string]: WorkItem[] | undefined;
+}
+
+export interface IPRStorage {
+    [accountId: string]: PullRequest[];
 }
 
 export default class QueryHelper {
@@ -87,6 +92,16 @@ export default class QueryHelper {
 
     public static saveWIStorage(wis: IWIStorage) {
         localStorage.setItem("WIStorage", JSON.stringify(wis));
+    }
+
+    public static getPRStorage(): IPRStorage {
+        let ls = localStorage.getItem("PRStorage");
+        if (!ls) return {};
+        return JSON.parse(ls);
+    }
+
+    public static savePRStorage(prs: IPRStorage) {
+        localStorage.setItem("PRStorage", JSON.stringify(prs));
     }
 
     public static calculateIconLevel(query: Query, workItems: WorkItem[]) {

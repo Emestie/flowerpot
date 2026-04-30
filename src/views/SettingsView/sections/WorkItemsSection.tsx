@@ -52,6 +52,8 @@ export function WorkItemsSection() {
     const setRefreshRate = useSettingsStore((state) => state.setRefreshRate);
     const setSortPattern = useSettingsStore((state) => state.setSortPattern);
     const setNotificationsMode = useSettingsStore((state) => state.setNotificationsMode);
+    const prNotificationsEnabled = useSettingsStore((state) => state.prNotificationsEnabled);
+    const setPrNotificationsEnabled = useSettingsStore((state) => state.setPrNotificationsEnabled);
 
     const refreshRates = getRefreshRates();
     const tableScales = getTableScales();
@@ -107,6 +109,10 @@ export function WorkItemsSection() {
         setNotificationsMode(val);
     };
 
+    const togglePrNotifications = () => {
+        setPrNotificationsEnabled(!prNotificationsEnabled);
+    };
+
     return (
         <>
             <Header as="h3" dividing>
@@ -133,6 +139,12 @@ export function WorkItemsSection() {
                         options={notificationsModes}
                         value={notificationsMode}
                         onChange={(e, { value }) => onNotifModeSelect(value as TNotificationsMode)}
+                    />
+                    <br />
+                    <Form.Checkbox
+                        label={s("prNotificationsEnabled")}
+                        checked={prNotificationsEnabled}
+                        onChange={togglePrNotifications}
                     />
                     <br />
                 </>

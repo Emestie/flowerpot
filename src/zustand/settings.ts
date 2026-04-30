@@ -52,6 +52,7 @@ export interface SettingsState extends ISettings {
     setIncludeTeamsPRs: (include: boolean) => void;
     setIncludeAcceptedByMePRs: (include: boolean) => void;
     setIncludeHiddenPRs: (include: boolean) => void;
+    setPrNotificationsEnabled: (enabled: boolean) => void;
     setAllowTelemetry: (allow: boolean) => void;
     setLastVersion: (version: string) => void;
     setLastVersionLong: (version: string) => void;
@@ -97,6 +98,7 @@ const initialState: ISettings = {
     includeTeamsPRs: true,
     includeAcceptedByMePRs: true,
     includeHiddenPRs: false,
+    prNotificationsEnabled: true,
     enableIterationColors: true,
     enableQueryColorCode: false,
     collapsedBlocks: [],
@@ -237,6 +239,11 @@ export const useSettingsStore = create<SettingsState>()(
         setIncludeHiddenPRs(includeHiddenPRs) {
             set({ includeHiddenPRs });
             saveSettings({ ...get(), includeHiddenPRs });
+        },
+
+        setPrNotificationsEnabled(enabled) {
+            set({ prNotificationsEnabled: enabled });
+            saveSettings({ ...get(), prNotificationsEnabled: enabled });
         },
 
         setAllowTelemetry(allowTelemetry) {

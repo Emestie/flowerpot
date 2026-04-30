@@ -88,6 +88,11 @@ const en = {
     throwUnknown: "Something went wrong during request processing",
     notifNewItem: ": new",
     notifChangedItem: ": changes",
+    notifNewPR: ": new PR",
+    notifChangedPR: ": PR changes",
+    prsNew: " new pull requests",
+    prsWasChanged: " pull requests changed",
+    prNotificationsEnabled: "Enable PR notifications",
     //comps
     timeSinceCreated: "Time since created",
     revision: "Revision",

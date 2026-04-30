@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { getApi } from "../api/client";
+import Differences from "../helpers/Differences";
 import { Timers } from "../helpers/Timers";
 import { Project } from "../models/project";
 import { PullRequest } from "../models/pull-request";
@@ -27,13 +28,14 @@ export function usePullRequestsLoader(
                 ? []
                 : await getApi(accountId).pullRequest.getByProjects(projects.filter((p) => p.enabled));
             setAllPullRequests(allPRs);
+            Differences.putPRs(accountId, allPRs);
             setErrorMessage(null);
         } catch (e: any) {
             setErrorMessage(e.message);
         } finally {
             setIsLoading(false);
         }
-    }, [projects]);
+    }, [projects, accountId]);
 
     const routineStart = useCallback(async () => {
         setIsLoading(true);
