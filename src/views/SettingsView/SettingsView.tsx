@@ -6,6 +6,7 @@ import { isDarkTheme } from "../../helpers/Theme";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
 import { Sections, useSettingsStore } from "../../zustand/settings";
+import { useState, useRef, useCallback } from "react";
 import { AccountSection } from "./sections/AccountSection";
 import { CreditsSection } from "./sections/CreditsSection";
 import { ImportSection } from "./sections/ImportSection";
@@ -86,6 +87,23 @@ export function SettingsView() {
     const theme = useSettingsStore((state) => state.theme);
     const accounts = useSettingsStore((state) => state.accounts);
     const setView = useAppStore((state) => state.setView);
+    const [tapCount, setTapCount] = useState(0);
+    const tapTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleCreditsClick = useCallback(() => {
+        if (tapTimeout.current) {
+            clearTimeout(tapTimeout.current);
+        }
+        const newCount = tapCount + 1;
+        setTapCount(newCount);
+        if (newCount >= 7) {
+            setTapCount(0);
+            setView("debug");
+        } else {
+            tapTimeout.current = setTimeout(() => setTapCount(0), 2000);
+        }
+        useSettingsStore.getState().setSettingsSection(Sections.Credits);
+    }, [tapCount, setView]);
 
     const toggleTheme = () => {
         const themes: TTheme[] = ["light", "dark", "system"];
@@ -133,7 +151,7 @@ export function SettingsView() {
                 key={i}
                 as="a"
                 active={section.id === settingsSection}
-                onClick={() => useSettingsStore.getState().setSettingsSection(section.id)}
+                onClick={section.id === Sections.Credits ? handleCreditsClick : () => useSettingsStore.getState().setSettingsSection(section.id)}
             >
                 {s(section.captionKey as any)}
             </Menu.Item>
