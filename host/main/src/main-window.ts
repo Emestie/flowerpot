@@ -1,10 +1,48 @@
-import { app, BrowserWindow, globalShortcut } from "electron";
+import { app, BrowserWindow, globalShortcut, Menu, MenuItemConstructorOptions } from "electron";
 import { join } from "path";
 import { URL } from "url";
 import { buildIconPath, buildTrayIcon, registerAutostart } from "./functions";
 import { store } from "./store";
 import { setWindowOnHandlers } from "./window-on-handlers";
 const Splashscreen = require("@trodi/electron-splashscreen");
+
+function setMacOSMenu() {
+    if (process.platform !== "darwin") return;
+
+    const menuTemplate: MenuItemConstructorOptions[] = [
+        {
+            label: app.name,
+            submenu: [
+                { role: "about", label: "About" },
+                { type: "separator" },
+                { role: "quit", label: "Quit Flowerpot" },
+            ],
+        },
+        {
+            label: "View",
+            submenu: [
+                { role: "reload" },
+                { role: "forceReload" },
+                { role: "toggleDevTools" },
+                { type: "separator" },
+                { role: "togglefullscreen" },
+            ],
+        },
+        {
+            label: "Window",
+            submenu: [
+                { role: "minimize" },
+                { role: "zoom" },
+                { type: "separator" },
+                { role: "front" },
+                { type: "separator" },
+                { role: "window" },
+            ],
+        },
+    ];
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
+}
 
 async function createWindow() {
     let { width, height } = store.get("windowDim");
@@ -42,7 +80,11 @@ async function createWindow() {
 
     const browserWindow = Splashscreen.initSplashScreen(splashCfg) as BrowserWindow;
 
-    if (import.meta.env.PROD) browserWindow.setMenu(null);
+    setMacOSMenu();
+
+    if (process.platform !== "darwin") {
+        browserWindow.setMenu(null);
+    }
 
     setWindowOnHandlers(browserWindow);
 
