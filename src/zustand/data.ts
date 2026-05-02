@@ -19,7 +19,7 @@ export interface DataStore {
 }
 
 export const useDataStore = create<DataStore>()(
-    createLogger("useDataStore", (set, get) => {
+    createLogger("useDataStore", "#e67e22", (set, get) => {
         return {
             workItems: [],
             changesCollection: {},

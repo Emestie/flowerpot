@@ -7,7 +7,7 @@ export interface QuickSearchStore {
 }
 
 export const useQuickSearchStore = create<QuickSearchStore>()(
-    createLogger("useQuickSearchStore", (set, get) => {
+    createLogger("useQuickSearchStore", "#27ae60", (set, get) => {
         return {
             value: "",
             setValue(value) {

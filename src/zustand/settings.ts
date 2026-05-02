@@ -115,7 +115,7 @@ const saveSettings = (state: ISettings) => {
 };
 
 export const useSettingsStore = create<SettingsState>()(
-    createLogger("useSettingsStore", (set, get) => ({
+    createLogger("useSettingsStore", "#9b59b6", (set, get) => ({
         ...initialState,
 
         setSettings(settings) {

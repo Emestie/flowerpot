@@ -7,7 +7,7 @@ export interface CredentialsModeStore {
 }
 
 export const useCredentialsModeStore = create<CredentialsModeStore>()(
-    createLogger("useCredentialsModeStore", (set, get) => {
+    createLogger("useCredentialsModeStore", "#d35400", (set, get) => {
         return {
             selectedAccoundId: null,
             setSelectedAccountId(id) {
