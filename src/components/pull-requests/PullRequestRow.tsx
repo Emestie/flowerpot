@@ -11,6 +11,8 @@ import { Tag } from "../Tag";
 import { PRReviewer } from "./PRReviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
 import { getApi } from "/@/api/client";
+import { useDataStore } from "/@/zustand/data";
+import { useSettingsStore } from "/@/zustand/settings";
 
 interface IProps {
     pullRequest: PullRequest;
@@ -43,6 +45,10 @@ function createReviewersComponents(revs: PullRequestReviewer[], accountId: strin
 
 export function PullRequestRow(props: IProps) {
     const { pullRequest } = props;
+    const prChangesCollection = useDataStore((state) => state.prChangesCollection);
+    const showUnreads = useSettingsStore((state) => state.showUnreads);
+
+    const hasChanges = showUnreads && !!prChangesCollection[pullRequest.id];
 
     const [totalComments, setTotalComments] = useState<number | null>(null);
     const [resolvedComments, setResolvedComments] = useState<number | null>(null);
@@ -94,8 +100,20 @@ export function PullRequestRow(props: IProps) {
 
     const reviewers = createReviewersComponents(pullRequest.reviewers, props.accountId);
 
+    const rowStyle = hasChanges ? { fontWeight: "bold" as const } : undefined;
+
+    const dropChanges = () => {
+        useDataStore.getState().setPrChangesCollectionItem(pullRequest, false);
+    };
+
+    const handleClick = () => {
+        if (hasChanges) {
+            dropChanges();
+        }
+    };
+
     return (
-        <Table.Row>
+        <Table.Row style={rowStyle} onClick={handleClick}>
             <Table.Cell
                 className={pullRequest.isHidden() ? "cellRelative workItemDeferred " : "cellRelative "}
                 collapsing
@@ -107,6 +125,7 @@ export function PullRequestRow(props: IProps) {
                             {pullRequest.newThreadsCount > 99 ? "99" : pullRequest.newThreadsCount}
                         </span>
                     )}
+                    {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
                     <Icon name="level up alternate" /> {pullRequest.id}
                 </ContextMenuTrigger>
                 <PullRequestContextMenu uid={uid} pullRequest={pullRequest} />

@@ -24,7 +24,7 @@ export interface AppState<IVP = Record<string, any>> {
 }
 
 export const useAppStore = create<AppState>()(
-    createLogger("useAppStore", (set, get) => ({
+    createLogger("useAppStore", "#4a90d9", (set, get) => ({
         view: "loading",
         viewParams: {},
         updateStatus: "none",

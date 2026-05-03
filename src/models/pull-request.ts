@@ -29,6 +29,7 @@ export class PullRequest {
     labels: { name: string }[];
     mergeStatus: "conflicts" | "succeeded";
     newThreadsCount: number;
+    commitId: string;
 
     private connectionData: ReturnType<typeof getConnectionData>;
 
@@ -69,6 +70,7 @@ export class PullRequest {
         this.labels = resp.labels || [];
         this.mergeStatus = resp.mergeStatus;
         this.newThreadsCount = newThreadsCount;
+        this.commitId = resp.lastMergeSourceCommit?.commitId || "";
     }
 
     getBelonging(): null | "author" | "reviewer" | "team" {

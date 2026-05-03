@@ -21,10 +21,11 @@ export enum Sections {
     Queries = 1,
     Projects = 2,
     Lists = 3,
-    WorkItems = 4,
+    Appearance = 4,
     QuickLinks = 5,
-    Import = 6,
-    Credits = 7,
+    Notifications = 6,
+    Import = 7,
+    Credits = 8,
 }
 
 export interface SettingsState extends ISettings {
@@ -52,6 +53,7 @@ export interface SettingsState extends ISettings {
     setIncludeTeamsPRs: (include: boolean) => void;
     setIncludeAcceptedByMePRs: (include: boolean) => void;
     setIncludeHiddenPRs: (include: boolean) => void;
+    setPrNotifications: (enabled: string) => void;
     setAllowTelemetry: (allow: boolean) => void;
     setLastVersion: (version: string) => void;
     setLastVersionLong: (version: string) => void;
@@ -97,6 +99,7 @@ const initialState: ISettings = {
     includeTeamsPRs: true,
     includeAcceptedByMePRs: true,
     includeHiddenPRs: false,
+    prNotifications: "on",
     enableIterationColors: true,
     enableQueryColorCode: false,
     collapsedBlocks: [],
@@ -112,7 +115,7 @@ const saveSettings = (state: ISettings) => {
 };
 
 export const useSettingsStore = create<SettingsState>()(
-    createLogger("useSettingsStore", (set, get) => ({
+    createLogger("useSettingsStore", "#9b59b6", (set, get) => ({
         ...initialState,
 
         setSettings(settings) {
@@ -237,6 +240,11 @@ export const useSettingsStore = create<SettingsState>()(
         setIncludeHiddenPRs(includeHiddenPRs) {
             set({ includeHiddenPRs });
             saveSettings({ ...get(), includeHiddenPRs });
+        },
+
+        setPrNotifications(enabled: string) {
+            set({ prNotifications: enabled });
+            saveSettings({ ...get(), prNotifications: enabled });
         },
 
         setAllowTelemetry(allowTelemetry) {
