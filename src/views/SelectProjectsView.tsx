@@ -6,9 +6,9 @@ import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { ProjectHelper } from "../helpers/Project";
 import { Project } from "../models/project";
+import { s } from "../values/Strings";
 import { useAppStore } from "../zustand/app";
 import { useSettingsStore } from "../zustand/settings";
-import { s } from "../values/Strings";
 
 interface ISelectableProject extends Project {
     checked: boolean;
@@ -29,8 +29,8 @@ export function SelectProjectsView() {
                 accounts.map((account) => {
                     return getApi(account.id)
                         .project.getAll()
-                        .then((projects) => {
-                            const currentProjectPaths = projects
+                        .then((pjs) => {
+                            const currentProjectPaths = pjs
                                 .filter((x) => x.accountId === account.id)
                                 .map((p) => p.path);
                             const projectsToSelect = projects.filter(
