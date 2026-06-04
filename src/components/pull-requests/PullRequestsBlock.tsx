@@ -2,10 +2,10 @@ import { useMemo } from "react";
 import { Icon, Message, Table } from "semantic-ui-react";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
 import { s } from "../../values/Strings";
+import { useSettingsStore } from "../../zustand/settings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { PullRequestRow } from "./PullRequestRow";
-import { useSettingsStore } from "../../zustand/settings";
 
 export function PullRequestsBlock(props: { accountId: string }) {
     const {
@@ -20,7 +20,10 @@ export function PullRequestsBlock(props: { accountId: string }) {
     const setIncludeTeamsPRs = useSettingsStore((state) => state.setIncludeTeamsPRs);
     const setIncludeAcceptedByMePRs = useSettingsStore((state) => state.setIncludeAcceptedByMePRs);
 
-    const projects = useMemo(() => _allProjects.filter((x) => x.accountId === props.accountId), []);
+    const projects = useMemo(
+        () => _allProjects.filter((x) => x.accountId === props.accountId),
+        [_allProjects, props.accountId]
+    );
 
     const {
         isLoading,
@@ -48,7 +51,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
     };
 
     const pullRequestsComponents = pullRequests.map((pr) => (
-        <PullRequestRow key={pr.id} pullRequest={pr} accountId={props.accountId} />
+        <PullRequestRow key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
     ));
 
     if (!pullRequests.length && !showEmptyQueries && !allPullRequests.length) return null;

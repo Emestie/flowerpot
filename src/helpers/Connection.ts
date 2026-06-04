@@ -11,11 +11,13 @@ export function preloadConnectionData(accountId: string) {
             .then((resp) => {
                 currentConnectionData[accountId] = resp;
                 (window as any)._conn = resp;
-                singletonPromise[accountId] = null;
 
                 return resp;
             })
-            .catch(() => undefined);
+            .catch(() => undefined)
+            .finally(() => {
+                singletonPromise[accountId] = null;
+            });
     }
 
     return singletonPromise[accountId];
