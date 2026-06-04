@@ -192,6 +192,11 @@ nav {
     z-index: 10 !important;
 }
 
+.ui.table.wiTable tbody tr:hover {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.04);
+}
+
 .ui.table tr:hover {
     background-color: color-mix(in srgb, white, black 2%);
     box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.05);

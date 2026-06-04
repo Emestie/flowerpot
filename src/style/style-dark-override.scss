@@ -227,6 +227,11 @@ html.FlowerpotDarkTheme,
         box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.05);
     }
 
+    .ui.table.wiTable tbody tr:hover {
+        background-color: transparent;
+        box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.08);
+    }
+
     .ui.table td.warning,
     .ui.table tr.warning {
         color: $text !important;
