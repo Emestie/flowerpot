@@ -52,18 +52,17 @@ export function SingleInputColorDialog(p: IProps) {
 
     const singleLabelDialogContent = (
         <div
-            style={{ padding: 20 }}
+            className="dialog-content"
             onKeyPress={(e) => {
                 if (e.charCode === 13 && !p.area) onConfirm();
             }}
         >
-            <div style={{ marginBottom: 20 }}>{p.caption}</div>
+            <div className="dialog-caption">{p.caption}</div>
             <div>
                 {p.area ? (
                     <TextArea
-                        style={{ width: "100%" }}
+                        className="w-full af-input"
                         value={textValue}
-                        className="af-input"
                         onChange={(e, data) => {
                             if (p.readonly) return;
                             setTextValue((data.value || "") as string);
@@ -84,20 +83,19 @@ export function SingleInputColorDialog(p: IProps) {
                                 />
                             )}
                             <Form.Input
-                                style={{ width: "100%" }}
+                                className="w-full af-input"
                                 value={textValue}
                                 onChange={(e) => {
                                     setTextValue(e.target.value);
                                 }}
                                 maxLength="50"
-                                className="af-input"
                             />
                         </Form.Group>
                     </Form>
                 )}
             </div>
             {!!p.showColors && (
-                <div style={{ marginTop: 10 }}>
+                <div className="dialog-color-picker">
                     <ColorPicker value={colorValue} onPick={setColorValue} />
                 </div>
             )}

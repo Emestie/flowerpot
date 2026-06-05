@@ -109,7 +109,7 @@ export function SelectQueriesView() {
         </Message>
     ) : filteredAvailableQueries.length ? (
         filteredAvailableQueries.map((q) => (
-            <div key={q.queryId} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+            <div key={q.queryId} className="mb-6 flex items-center">
                 <AccountBadge accountId={q.accountId} rightGap={8} />
                 <Checkbox label={q.nameInList} checked={q.checked} onChange={() => toggleCheck(q)} />
             </div>
@@ -156,7 +156,7 @@ export function SelectQueriesView() {
                         <Icon size="small" name="refresh" disabled={isLoading} />
                     </span>
                     {s("selqAvailableHeader")}
-                    <span style={{ marginLeft: 20 }}>
+                    <span className="public-queries-toggle">
                         <Checkbox
                             label={s("showPublicQueries")}
                             onChange={(_, a) => setShowPublic(!!a.checked)}

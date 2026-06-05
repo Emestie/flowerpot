@@ -33,8 +33,8 @@ export function WorkItemRow(props: IProps) {
     const promptnessEl = (() => {
         if (!props.item.priority) return undefined;
         return (
-            <span title={props.item.priorityText} style={{ marginLeft: 4 }}>
-                <span style={{ fontSize: 12 }}>
+            <span title={props.item.priorityText} className="wi-promptness">
+                <span className="font-sm">
                     <Icon name="clock outline" />
                 </span>
                 {props.item.priority}
@@ -57,7 +57,7 @@ export function WorkItemRow(props: IProps) {
         return (
             <span
                 title={s("timeSinceCreated") + ` (${new Date(props.item.createdDate).toLocaleString()})`}
-                style={{ marginLeft: 4 }}
+                className="wi-freshness"
             >
                 <span>
                     <Icon name="leaf" />
@@ -161,7 +161,7 @@ export function WorkItemRow(props: IProps) {
         <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
             <Table.Cell collapsing className={"cellRelative " + getClass()}>
                 <ContextMenuTrigger id={uid}>
-                    <span style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
+                    <span className="wi-flex-id">
                         <span
                             onDoubleClick={() => {
                                 Platform.current.copyString(item.id.toString());
@@ -184,8 +184,8 @@ export function WorkItemRow(props: IProps) {
                         <HighlightenText text={item.titleFull} />
                     </Link>
                     {!!fullNote && (
-                        <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + fullNote}>
-                            <Label basic color={noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
+                        <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
+                            <Label basic color={noteColor as any} size="mini" className="label-mini">
                                 {getNote()}
                             </Label>
                         </span>

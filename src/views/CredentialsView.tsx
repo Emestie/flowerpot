@@ -178,11 +178,11 @@ export function CredentialsView() {
                         </b>{" "}
                         {s("credsTokenInfo3")}
                         <br />
-                        <div style={{ marginTop: 10, marginBottom: -10 }}>
+                        <div className="btn-group-wrap">
                             <Button
                                 primary
                                 size="small"
-                                style={{ marginRight: 10 }}
+                                className="mr-10"
                                 onClick={() => {
                                     Platform.current.openUrl(
                                         "https://learn.microsoft.com/" +

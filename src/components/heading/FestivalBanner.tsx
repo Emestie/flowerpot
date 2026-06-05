@@ -19,8 +19,8 @@ export function FestivalBanner() {
     } = _currentFestival;
 
     return (
-        <div style={{ position: "absolute", top: top, left: left, width: width, height: height }}>
-            <img src={path} alt={""} style={{ maxWidth: "100%", maxHeight: "100%" }} />
+        <div className="festival-banner-container" style={{ top: top, left: left, width: width, height: height }}>
+            <img src={path} alt={""} className="festival-banner-img" />
         </div>
     );
 }

@@ -141,19 +141,19 @@ export function CreditsSection() {
                 as="a"
                 image
                 onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}
-                style={{ marginBottom: 8 }}
+                className="credits-label"
             >
                 <img src={avatar} alt="" />
                 <Icon name="github" />
                 Emestie/flowerpot
             </Label>
-            <Label style={{ marginBottom: 8 }}>
+            <Label className="credits-label">
                 {s("versionWord")}
                 <Label.Detail>
                     {getPlatformIcon()} {Version.long}
                 </Label.Detail>
             </Label>
-            <Label as="a" onClick={showChangelog} style={{ marginBottom: 8 }}>
+            <Label as="a" onClick={showChangelog} className="credits-label">
                 {s("releaseNotes")}
             </Label>
             {Platform.type === PlatformType.Web ? null : updateLabel}

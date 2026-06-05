@@ -19,7 +19,7 @@ export function ProjectsSettingsTable() {
                 <Checkbox checked={project.enabled} onChange={() => ProjectHelper.toggleBoolean(project, "enabled")} />
             </Table.Cell>
             <Table.Cell>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div className="collection-badge-row">
                     <AccountBadge accountId={project.accountId} display="flex" rightGap={4} size="l" />{" "}
                     {project.collectionName}
                 </div>

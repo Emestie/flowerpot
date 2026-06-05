@@ -16,11 +16,7 @@ export function QuickLinksSections() {
             <Header as="h3" dividing>
                 {s("quickLinksSettingsHeader")}
             </Header>
-            <Form.Checkbox
-                label={s("cbQuickLinksLabel")}
-                checked={showQuickLinks}
-                onChange={toggleQuickLinks}
-            />
+            <Form.Checkbox label={s("cbQuickLinksLabel")} checked={showQuickLinks} onChange={toggleQuickLinks} />
             <LinksSettingsTable />
         </>
     );

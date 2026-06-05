@@ -53,7 +53,7 @@ export function ErrorView() {
                     <Message.Header>{s("errorMsg")}</Message.Header>
                     <p>{errorMessage}</p>
                 </Message>
-                <div style={{ textAlign: "center" }}>
+                <div className="text-center">
                     <div>
                         {s("errorDesc1")}{" "}
                         <Button size="tiny" compact primary onClick={onRefreshClick}>
@@ -61,7 +61,7 @@ export function ErrorView() {
                         </Button>{" "}
                         {s("errorDesc2")}
                     </div>
-                    <div style={{ marginTop: 10 }}>
+                    <div className="mt-10">
                         {s("errorDesc3")}{" "}
                         <Button size="tiny" compact onClick={onSettingsClick}>
                             {s("tfsSettings")}

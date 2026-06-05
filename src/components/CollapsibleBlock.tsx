@@ -73,9 +73,9 @@ export function CollapsibleBlock(props: {
 
     return (
         <>
-            <Header as="h3" style={{ marginBottom: 0 }}>
-                <div style={{ display: "flex" }} className="dynamic-flex-wrap">
-                    <div style={{ display: "flex", width: "100%", alignItems: "center" }}>
+            <Header as="h3" className="collapsible-header">
+                <div className="flex dynamic-flex-wrap">
+                    <div className="flex w-full items-center">
                         {isLoading && (
                             <span>
                                 <Icon name="circle notched" loading />
@@ -104,7 +104,7 @@ export function CollapsibleBlock(props: {
                         </span>
                         {subcaption && (
                             <small>
-                                <span style={{ marginLeft: 10, color: "gray" }} title={subcaptionTooltip}>
+                                <span className="ml-10 collapsible-subcaption" title={subcaptionTooltip}>
                                     {subcaption}
                                 </span>
                             </small>
@@ -123,7 +123,7 @@ export function CollapsibleBlock(props: {
                             )}
                         </span>
                     </div>
-                    <div style={{ flexShrink: 0 }}>{rightBlock}</div>
+                    <div className="flex-shrink-0">{rightBlock}</div>
                 </div>
             </Header>
             {(isCollapseEnabled ? !isCollapsed : true) && children}

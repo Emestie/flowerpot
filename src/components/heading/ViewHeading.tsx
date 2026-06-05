@@ -44,8 +44,8 @@ export function ViewHeading(p: P) {
 
     return (
         <>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <Header as="h1" className="main-view-heading" style={{ marginLeft: leftMargin, marginBottom: 0 }}>
+            <div className="heading-flex">
+                <Header as="h1" className="main-view-heading" style={{ marginLeft: leftMargin }}>
                     {viewCaption}
                 </Header>
                 <div>{p.children}</div>

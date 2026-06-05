@@ -185,7 +185,7 @@ export function WorkItemsBlock({ query }: IProps) {
             }}
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             rightBlock={
-                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "flex-end", gap: 6 }}>
+                <div className="right-block-wi">
                     {!!query.queryPath && (
                         <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
                             <Icon size="small" name="external share" />

@@ -72,12 +72,10 @@ export function PullRequestsBlock(props: { accountId: string }) {
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             iconComponent={<Icon name="level up alternate" />}
             rightBlock={
-                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 6 }}>
+                <div className="right-block-pr">
                     <span
                         title={s("refresh")}
-                        className="externalLink"
-                        onClick={refreshBlock}
-                        style={{ opacity: isLoading ? 0 : 1 }}
+                        className={`externalLink${isLoading ? " pr-refresh-link" : " pr-refresh-link-visible"}`}
                     >
                         <Icon size="small" name="refresh" />
                     </span>

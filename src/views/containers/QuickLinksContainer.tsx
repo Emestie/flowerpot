@@ -32,7 +32,7 @@ export function QuickLinksContainer() {
 
     if (!items.length) {
         items.push(
-            <span key="nolinkskey" style={{ color: "gray", fontSize: 10, fontStyle: "italic" }}>
+            <span key="nolinkskey" className="no-links-placeholder">
                 {s("noLinks")}
             </span>
         );
@@ -46,9 +46,5 @@ export function QuickLinksContainer() {
         );
     }
 
-    return (
-        <div className="ql-container" style={{ textAlign: "right" }}>
-            {items}
-        </div>
-    );
+    return <div className="ql-container text-right">{items}</div>;
 }

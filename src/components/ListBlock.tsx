@@ -98,7 +98,7 @@ export function ListBlock(p: P) {
     };
 
     let items = list.map((l) => (
-        <span key={l.id} style={{ marginBottom: 3, marginRight: 3, display: "inline-block" }}>
+        <span key={l.id} className="list-item">
             <Label color={color}>
                 {!!l.accountId && <AccountBadge accountId={l.accountId} size="s" />}
                 {!!l.collection && <Label.Detail>{l.collection + "/"}</Label.Detail>}

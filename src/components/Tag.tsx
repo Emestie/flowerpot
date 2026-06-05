@@ -16,7 +16,8 @@ export function Tag(props: IProps) {
             key={Math.random()}
             size="mini"
             basic
-            style={{ padding: "3px 4px", marginRight: 2, color: "white", backgroundColor: color, borderColor: color }}
+            className="label-mini"
+            style={{ marginRight: 2, color: "white", backgroundColor: color, borderColor: color }}
         >
             <HighlightenText text={text} />
         </Label>

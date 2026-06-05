@@ -27,7 +27,7 @@ export function QueriesSettingsTable() {
                 />
             </Table.Cell>
             <Table.Cell>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div className="collection-badge-row">
                     <AccountBadge accountId={q.accountId} display="flex" rightGap={4} size="l" /> {q.collectionName}
                 </div>
             </Table.Cell>

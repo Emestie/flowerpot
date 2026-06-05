@@ -106,8 +106,9 @@ export function createWorkItemLoaders(
 function getWorkItemsByQueryType(queryResult: IQueryResult | null, query: Query): IWorkItemShort[] {
     if (queryResult === null) {
         return query.queryId.startsWith("___permawatch")
-            ? useSettingsStore.getState().lists.permawatch
-                  .filter((x) => x.accountId === query.accountId)
+            ? useSettingsStore
+                  .getState()
+                  .lists.permawatch.filter((x) => x.accountId === query.accountId)
                   .map((x) => ({
                       id: x.id,
                       collection: x.collection || "",

@@ -8,16 +8,10 @@ export function Id({ item, hasChanges }: { item: WorkItem; hasChanges: boolean }
     const scale = useSettingsStore((state) => state.tableScale);
 
     return (
-        <span title={item.type} style={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+        <span title={item.type} className="flex-start">
             {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
             {item.typeIconUrl && (
-                <span
-                    style={{
-                        width: "1.1em",
-                        height: scale === TableScale.Small ? "1.25em" : "1.2em",
-                        marginRight: "0.4rem",
-                    }}
-                >
+                <span className={`id-icon-wrap ${scale === TableScale.Small ? "id-icon-wrap-sm" : "id-icon-wrap-md"}`}>
                     <img src={item.typeIconUrl} />
                 </span>
             )}

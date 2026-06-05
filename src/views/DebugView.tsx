@@ -100,9 +100,7 @@ export function DebugView() {
                 <Button onClick={() => console.log(api?.collection.getAll())}>load collections</Button>
                 <Button onClick={() => console.log(api?.project.getAll())}>load projects</Button>
                 <Button onClick={() => console.log(api?.query.getAvailable())}>load av queries</Button>
-                <Button onClick={() => console.log(api?.workItem.getByQuery(queries[0]))}>
-                    load wi by query
-                </Button>
+                <Button onClick={() => console.log(api?.workItem.getByQuery(queries[0]))}>load wi by query</Button>
                 <Button onClick={() => console.log(api?.connectionData.get())}>conn data</Button>
                 <Header as="h3" dividing>
                     More

@@ -151,7 +151,11 @@ export function SettingsView() {
                 key={i}
                 as="a"
                 active={section.id === settingsSection}
-                onClick={section.id === Sections.Credits ? handleCreditsClick : () => useSettingsStore.getState().setSettingsSection(section.id)}
+                onClick={
+                    section.id === Sections.Credits
+                        ? handleCreditsClick
+                        : () => useSettingsStore.getState().setSettingsSection(section.id)
+                }
             >
                 {s(section.captionKey as any)}
             </Menu.Item>

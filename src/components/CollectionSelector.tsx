@@ -21,7 +21,7 @@ export function CollectionSelector(props: {
                 .map((x, i) => ({
                     key: i,
                     text: (
-                        <div style={{ display: "flex", alignItems: "center" }}>
+                        <div className="collection-badge-row">
                             <AccountBadge accountId={x.accountId} rightGap={8} display="flex" />
                             {x.collectionName}
                         </div>

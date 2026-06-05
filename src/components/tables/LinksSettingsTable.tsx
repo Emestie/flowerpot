@@ -17,7 +17,7 @@ export function LinksSettingsTable() {
         <Table.Row key={link.url + link.name + link.order}>
             <Table.Cell>{link.name}</Table.Cell>
             <Table.Cell>
-                <span style={{ userSelect: "text" }}>{link.url}</span>
+                <span className="link-url-text">{link.url}</span>
             </Table.Cell>
             <Table.Cell>
                 <ColorPicker
@@ -90,7 +90,7 @@ export function LinksSettingsTable() {
                             <Icon name="add" /> {s("addLink")}
                         </Button>
                         {links.length >= LINKS_COUNT_LIMIT && (
-                            <span style={{ marginLeft: 10 }}>{s("linksLimitReached")}</span>
+                            <span className="links-limit-msg">{s("linksLimitReached")}</span>
                         )}
                     </Table.HeaderCell>
                 </Table.Row>

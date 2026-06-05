@@ -151,7 +151,7 @@ export function MainView() {
                             </Button>
                         )}
                         {!noAccounts && (
-                            <div className="hide-on-mobile" style={{ display: "inline-block", marginRight: 3.5 }}>
+                            <div className="hide-on-mobile search-bar-wrapper">
                                 <SearchBar />
                             </div>
                         )}

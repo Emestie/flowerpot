@@ -39,8 +39,7 @@ export function NotificationsSection() {
     };
 
     const isWeb = Platform.type === PlatformType.Web;
-    const showPermissionButton =
-        isWeb && "Notification" in window && Notification.permission !== "granted";
+    const showPermissionButton = isWeb && "Notification" in window && Notification.permission !== "granted";
 
     return (
         <>
@@ -63,9 +62,7 @@ export function NotificationsSection() {
             <br />
             {showPermissionButton && (
                 <>
-                    <Button onClick={requestNotificationPermission}>
-                        {s("requestNotificationPermission")}
-                    </Button>
+                    <Button onClick={requestNotificationPermission}>{s("requestNotificationPermission")}</Button>
                     <br />
                 </>
             )}

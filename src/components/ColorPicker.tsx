@@ -18,7 +18,7 @@ export default function ColorPicker(p: P) {
                     label={
                         <Label
                             basic={value !== c}
-                            style={{ marginRight: 10, userSelect: "none" }}
+                            className="color-picker-label"
                             circular
                             size="mini"
                             color={c as any}

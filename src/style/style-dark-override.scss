@@ -299,4 +299,22 @@ html.FlowerpotDarkTheme,
     a.url-link {
         color: white;
     }
+
+    .pr-reviewer-status {
+        background-color: $bg1;
+    }
+
+    .filter-icon-dark,
+    .filter-label-dark {
+        color: white;
+    }
+
+    .crossed-out-overlay {
+        background-color: #e05050;
+    }
+
+    .feedback-toast {
+        background-color: $bg1;
+        border: 1px solid $bg3;
+    }
 }
