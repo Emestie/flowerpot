@@ -12,6 +12,7 @@ const packagejson = require("./package.json");
  * @see https://www.electron.build/configuration/configuration
  */
 const config = {
+    compression: "maximum",
     directories: {
         output: "dist",
         buildResources: "build-resources",

@@ -1,4 +1,3 @@
-import chunk from "lodash/chunk";
 import { Query } from "../../../models/query";
 import { WorkItem } from "../../../models/work-item";
 import { IApiClientParams } from "../create";
@@ -72,7 +71,10 @@ export function createWorkItemLoaders(
             const workItemResponses = await Promise.all(
                 collections.flatMap((collection) => {
                     const ids = list.filter((l) => l.collection === collection).map((l) => l.id);
-                    const chunkedIds = chunk(ids, 200);
+                    const chunkedIds: number[][] = [];
+                    for (let i = 0; i < ids.length; i += 200) {
+                        chunkedIds.push(ids.slice(i, i + 200));
+                    }
 
                     return chunkedIds.map((ids) => {
                         return loader<IValue<IResponseWorkItem[]>>(
