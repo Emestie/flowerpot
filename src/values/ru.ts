@@ -17,6 +17,7 @@ const ru: LocalizedStrings = {
     localeAuto: "Автоопределение",
     localeEn: "Английский",
     localeRu: "Русский",
+    localeBe: "Беларуская",
     updateStateChecking: "Проверка наличия обновлений...",
     updateStateDownloading: "Загрузка обновлений...",
     updateStateReady: "Обновления готовы к установке. Нажмите чтобы начать",

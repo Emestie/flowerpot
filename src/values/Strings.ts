@@ -1,5 +1,6 @@
 import { useAppStore } from "../zustand/app";
 import { TLocale } from "../types";
+import be from "./be";
 import en from "./en";
 import ru from "./ru";
 
@@ -9,6 +10,7 @@ export function s(string: keyof LocalizedStrings, locale?: TLocale): string {
     if (!locale) locale = useAppStore.getState().locale;
     if ((locale as any) === "auto") locale = "en";
 
+    if (locale === "be") return be[string] || en[string] || "?-" + string;
     if (locale === "ru") return ru[string] || en[string] || "?-" + string;
     if (locale === "en") return en[string] || "?-" + string;
     return "[" + locale + "] " + string;

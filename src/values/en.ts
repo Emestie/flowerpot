@@ -15,6 +15,7 @@ const en = {
     localeAuto: "Auto",
     localeEn: "English",
     localeRu: "Russian",
+    localeBe: "Belarusian",
     updateStateChecking: "Checking for updates...",
     updateStateDownloading: "Downloading update...",
     updateStateReady: "Update is ready to install. Click to start",

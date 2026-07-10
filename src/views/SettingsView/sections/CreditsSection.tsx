@@ -8,8 +8,9 @@ import { useAppStore } from "../../../zustand/app";
 import { useSettingsStore } from "../../../zustand/settings";
 
 const locales: DropdownItemProps[] = [
-    { key: 2, text: s("localeEn"), value: "en" },
-    { key: 3, text: s("localeRu"), value: "ru" },
+    { key: 1, text: s("localeEn"), value: "en" },
+    { key: 2, text: s("localeRu"), value: "ru" },
+    { key: 3, text: s("localeBe"), value: "be" },
 ];
 
 export function CreditsSection() {
