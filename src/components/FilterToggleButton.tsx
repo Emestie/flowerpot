@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Button, Icon, SemanticICONS } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Icon, SemanticICONS } from "semantic-ui-react";
 import { isDarkTheme } from "../helpers/Theme";
 import { useSettingsStore } from "../zustand/settings";
 

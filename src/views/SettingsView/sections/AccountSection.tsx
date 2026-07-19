@@ -1,4 +1,5 @@
-import { Button, ButtonGroup, Card, CardGroup, Header, Icon } from "semantic-ui-react";
+import { Button, ButtonGroup } from "../../../ui/button";
+import { Card, CardGroup, Header, Icon } from "semantic-ui-react";
 import { AccountBadge } from "../../../components/AccountBadge";
 import { IAccount } from "../../../helpers/Settings";
 import { s } from "../../../values/Strings";

@@ -2,7 +2,7 @@
     display: inline-flex;
     flex-direction: row;
     vertical-align: baseline;
-    margin: 0;
+    margin: 0 0.25em 0 0;
 }
 .group.mini {
     font-size: 0.78571429rem;

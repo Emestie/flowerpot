@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Form, Icon, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Container, Form, Icon, Message } from "semantic-ui-react";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import { PageLayout } from "../components/PageLayout";
 import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { s } from "../../values/Strings";
 import Platform from "../../helpers/Platform";
-import { Message, Button } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
+import { Button } from "../../ui/button";
 import { useAppStore } from "../../zustand/app";
 
 export function UpdateBanner() {

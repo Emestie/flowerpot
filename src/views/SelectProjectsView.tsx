@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";

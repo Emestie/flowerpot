@@ -1,4 +1,5 @@
-import { Message, Button } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
+import { Button } from "../../ui/button";
 import { s } from "../../values/Strings";
 import Version from "../../helpers/Version";
 import { useAppStore } from "../../zustand/app";

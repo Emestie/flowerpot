@@ -1,6 +1,7 @@
 import Markdown from "markdown-to-jsx";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Container, Icon, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Container, Icon, Message } from "semantic-ui-react";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Info } from "../helpers/Info";

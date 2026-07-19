@@ -2,8 +2,16 @@
     --btn-bg: #e0e1e2;
     --btn-color: rgba(0, 0, 0, 0.6);
     --btn-hover-bg: #cacbcd;
+    --btn-hover-color: rgba(0, 0, 0, 0.8);
     --btn-active-bg: #babbbc;
+    --btn-active-color: rgba(0, 0, 0, 0.9);
+    --btn-shadow-color: rgba(34, 36, 38, 0.15);
     --btn-basic-border: rgba(34, 36, 38, 0.15);
+    --btn-basic-hover-bg: #fff;
+    --btn-basic-hover-color: rgba(0, 0, 0, 0.8);
+    --btn-basic-hover-border: rgba(34, 36, 38, 0.35);
+    --btn-basic-active-bg: #f8f8f8;
+    --btn-basic-active-color: rgba(0, 0, 0, 0.9);
     --btn-group-border: rgba(34, 36, 38, 0.15);
 }
 
@@ -12,7 +20,15 @@ html.FlowerpotDarkTheme,
     --btn-bg: #454546;
     --btn-color: rgba(255, 255, 255, 0.979);
     --btn-hover-bg: #656566;
+    --btn-hover-color: rgba(255, 255, 255, 0.979);
     --btn-active-bg: #555556;
+    --btn-active-color: rgba(255, 255, 255, 0.979);
+    --btn-shadow-color: rgba(34, 36, 38, 0.15);
     --btn-basic-border: rgba(255, 255, 255, 0.15);
+    --btn-basic-hover-bg: transparent;
+    --btn-basic-hover-color: rgba(255, 255, 255, 0.979);
+    --btn-basic-hover-border: rgba(255, 255, 255, 0.35);
+    --btn-basic-active-bg: transparent;
+    --btn-basic-active-color: rgba(255, 255, 255, 0.979);
     --btn-group-border: rgba(255, 255, 255, 0.15);
 }

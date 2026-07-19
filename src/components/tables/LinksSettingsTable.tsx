@@ -1,4 +1,5 @@
-import { Button, Icon, Table } from "semantic-ui-react";
+import { Button } from "../../ui/button";
+import { Icon, Table } from "semantic-ui-react";
 import { s } from "../../values/Strings";
 import Links, { LINKS_COUNT_LIMIT } from "../../helpers/Links";
 import ColorPicker from "../ColorPicker";

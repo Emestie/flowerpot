@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from "react";
-import { Button, Container, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Container, Message } from "semantic-ui-react";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import Platform from "../helpers/Platform";

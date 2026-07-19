@@ -1,5 +1,6 @@
 import { createRef, useCallback, useEffect, useState } from "react";
-import { Button, Container, Form, Header, Label, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Container, Form, Header, Label, Message } from "semantic-ui-react";
 import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";

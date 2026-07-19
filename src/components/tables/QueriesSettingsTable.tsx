@@ -1,4 +1,5 @@
-import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
+import { Button } from "../../ui/button";
+import { Checkbox, Icon, Table } from "semantic-ui-react";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
 import { s } from "../../values/Strings";

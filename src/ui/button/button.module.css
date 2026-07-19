@@ -4,10 +4,12 @@
     gap: 0.5em;
     cursor: pointer;
     outline: none;
-    border: 1px solid transparent;
+    border: none;
     border-radius: 0.28571429rem;
     padding: 0.78571429em 1.5em;
-    font-family: inherit;
+    min-height: 1em;
+    margin: 0 0.25em 0 0;
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
     font-weight: 700;
     line-height: 1em;
     text-transform: none;
@@ -21,12 +23,18 @@
     color: var(--btn-color, rgba(0, 0, 0, 0.6));
     font-size: 1rem;
     text-decoration: none;
+    box-shadow: 0 0 0 1px transparent inset,
+        0 0 0 0 var(--btn-shadow-color, rgba(34, 36, 38, 0.15)) inset;
 }
 .btn:hover {
     background-color: var(--btn-hover-bg, #cacbcd);
+    color: var(--btn-hover-color, rgba(0, 0, 0, 0.8));
+    box-shadow: 0 0 0 1px transparent inset,
+        0 0 0 0 var(--btn-shadow-color, rgba(34, 36, 38, 0.15)) inset;
 }
 .btn:active {
     background-color: var(--btn-active-bg, #babbbc);
+    color: var(--btn-active-color, rgba(0, 0, 0, 0.9));
 }
 
 /* Sizes */
@@ -42,62 +50,101 @@
 
 /* Compact */
 .compact {
-    padding: 0.78571429em 1.15em;
+    padding: 0.58928571em 1.125em;
+}
+.compact.icon {
+    padding: 0.58928571em;
+}
+.compact.labeledLeft {
+    padding: 0.58928571em 3.69642857em;
 }
 
 /* Icon button — square */
 .icon {
     padding: 0.78571429em;
     min-width: 2.57142857em;
+    justify-content: center;
+}
+.icon > :not(.loader) {
+    margin: 0 !important;
+}
+.icon.labeledLeft {
+    min-width: 0;
+    justify-content: flex-start;
 }
 
 /* Color variants */
 .primary {
     background-color: #2185d0;
     color: #fff;
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
 }
 .primary:hover {
     background-color: #1678c2;
+    color: #fff;
+}
+.primary:focus {
+    background-color: #0d71bb;
+    color: #fff;
 }
 .primary:active {
     background-color: #1a69a4;
+    color: #fff;
 }
 
 .positive {
     background-color: #21ba45;
     color: #fff;
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
 }
 .positive:hover {
     background-color: #16ab39;
+    color: #fff;
+}
+.positive:focus {
+    background-color: #0ea432;
+    color: #fff;
 }
 .positive:active {
     background-color: #198f35;
+    color: #fff;
 }
 
 .negative {
     background-color: #db2828;
     color: #fff;
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
 }
 .negative:hover {
     background-color: #d01919;
+    color: #fff;
+}
+.negative:focus {
+    background-color: #ca1010;
+    color: #fff;
 }
 .negative:active {
     background-color: #b21e1e;
+    color: #fff;
 }
 
 /* Basic */
 .basic {
     background: transparent;
     color: var(--btn-color, rgba(0, 0, 0, 0.6));
-    border-color: var(--btn-basic-border, rgba(34, 36, 38, 0.15));
-    box-shadow: none;
+    font-weight: 400;
+    box-shadow: 0 0 0 1px var(--btn-basic-border, rgba(34, 36, 38, 0.15)) inset;
 }
 .basic:hover {
-    background: transparent;
-    color: var(--btn-color, rgba(0, 0, 0, 0.8));
+    background: var(--btn-basic-hover-bg, #fff);
+    color: var(--btn-basic-hover-color, rgba(0, 0, 0, 0.8));
+    box-shadow: 0 0 0 1px var(--btn-basic-hover-border, rgba(34, 36, 38, 0.35)) inset;
 }
 .basic:active {
-    background: transparent;
+    background: var(--btn-basic-active-bg, #f8f8f8);
+    color: var(--btn-basic-active-color, rgba(0, 0, 0, 0.9));
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset,
+        0 1px 4px 0 rgba(34, 36, 38, 0.15) inset;
 }
 
 /* Disabled */
@@ -105,6 +152,8 @@
 .disabled:hover {
     opacity: 0.45;
     cursor: default;
+    background-image: none;
+    box-shadow: none;
     pointer-events: none;
 }
 
@@ -116,26 +165,42 @@
 .loading > :not(.loader) {
     opacity: 0;
 }
+.loading::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: inherit;
+}
+.loading.primary::before,
+.loading.positive::before,
+.loading.negative::before {
+    background-color: transparent;
+}
 
 .loader {
     position: absolute;
     z-index: 2;
     top: 50%;
     left: 50%;
-    width: 1.2em;
-    height: 1.2em;
-    margin: -0.6em 0 0 -0.6em;
-    border: 2px solid;
+    width: 1.28571429em;
+    height: 1.28571429em;
+    margin: -0.64285714em 0 0 -0.64285714em;
+    border: 0.2em solid rgba(0, 0, 0, 0.15);
     border-top-color: transparent;
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
-    color: var(--btn-color, rgba(0, 0, 0, 0.6));
 }
 
 .primary .loader,
 .positive .loader,
 .negative .loader {
-    color: #fff;
+    border-color: rgba(255, 255, 255, 0.8);
+    border-top-color: transparent;
 }
 
 @keyframes spin {
@@ -149,7 +214,8 @@
 
 /* Label position left */
 .labeledLeft {
-    padding-left: 2.57142857em;
+    padding-left: 4.07142857em;
+    padding-right: 1.5em;
     position: relative;
 }
 .labeledLeft > :first-child {
@@ -164,4 +230,5 @@
     background: rgba(0, 0, 0, 0.05);
     border-radius: 0.28571429rem 0 0 0.28571429rem;
     margin: 0;
+    box-shadow: -1px 0 0 0 transparent inset;
 }

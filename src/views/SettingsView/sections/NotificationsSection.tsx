@@ -1,4 +1,5 @@
-import { Button, DropdownItemProps, Form, Header } from "semantic-ui-react";
+import { Button } from "../../../ui/button";
+import { DropdownItemProps, Form, Header } from "semantic-ui-react";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import { TNotificationsMode } from "../../../helpers/Settings";
 import { s } from "../../../values/Strings";

@@ -1,4 +1,5 @@
-import { Button, Container, Icon, Menu } from "semantic-ui-react";
+import { Button } from "../../ui/button";
+import { Container, Icon, Menu } from "semantic-ui-react";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
 import { TTheme } from "../../helpers/Settings";
