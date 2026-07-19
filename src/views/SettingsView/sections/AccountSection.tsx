@@ -45,9 +45,12 @@ function AccountCard(props: { account: IAccount; deleteable: boolean }) {
     return (
         <Card>
             <Card.Content>
-                <Card.Header>
-                    <AccountBadge accountId={props.account.id} size="l" /> {props.account.displayName}
-                </Card.Header>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <AccountBadge accountId={props.account.id} size="l" display="flex" />
+                    <span style={{ fontWeight: "bold", fontSize: "1.28571429rem" }}>
+                        {props.account.displayName}
+                    </span>
+                </div>
                 <Card.Meta>{props.account.url}</Card.Meta>
                 <div className="account-card-buttons">
                     <ButtonGroup size="tiny" compact icon>
