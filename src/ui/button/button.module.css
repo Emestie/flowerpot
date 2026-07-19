@@ -21,7 +21,7 @@
     -webkit-appearance: none;
     background-color: var(--btn-bg, #e0e1e2);
     color: var(--btn-color, rgba(0, 0, 0, 0.6));
-    font-size: 1rem;
+    font-size: inherit;
     text-decoration: none;
     box-shadow: 0 0 0 1px transparent inset,
         0 0 0 0 var(--btn-shadow-color, rgba(34, 36, 38, 0.15)) inset;

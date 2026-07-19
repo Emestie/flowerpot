@@ -16,7 +16,6 @@
 .group > * {
     font-size: inherit;
     margin: 0;
-    flex: 1 0 auto;
 }
 .group > :global(* + *) {
     border-left: 1px solid var(--btn-group-border, rgba(34, 36, 38, 0.15));

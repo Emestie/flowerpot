@@ -46,8 +46,6 @@ export function AccountBadge(props: {
     return (
         <span
             style={{
-                width: size,
-                height: props.display === "flex" ? undefined : size,
                 display: props.display === "flex" ? "flex" : "inline-block",
                 justifyContent: "center",
                 alignItems: "center",
