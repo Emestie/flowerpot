@@ -668,16 +668,26 @@ a.url-link {
     font-weight: bold;
 }
 
-.pr-reviewer-status {
-    position: absolute;
-    right: 5px;
-    bottom: 0;
-    background-color: white;
-    border-radius: 50%;
-}
-
 .pr-reviewer-overlap {
     margin-right: -12px;
+}
+
+.pr-reviewer-overlap .user-label {
+    position: relative;
+    padding: 0 !important;
+}
+
+.pr-author-cell {
+    padding-left: 14px !important;
+}
+
+.pr-reviewer-status {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    background-color: white;
+    border-radius: 50%;
+    z-index: 1;
 }
 
 .pr-reviewer-required {
