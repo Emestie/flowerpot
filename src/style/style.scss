@@ -234,21 +234,6 @@ nav {
     width: 25px;
 }
 
-img.av-class,
-img.ui.avatar.image.av-class {
-    height: 26px !important;
-    width: 26px !important;
-    border-radius: 50% !important;
-    margin-right: 4px;
-}
-
-.user-label {
-    border: none !important;
-    background-color: transparent !important;
-    font-weight: normal !important;
-    box-shadow: none !important;
-}
-
 .mar8NameLabel {
     color: #ca639b !important;
 }
@@ -671,25 +656,6 @@ a.url-link {
 
 
 
-.user-label {
-    position: relative;
-    padding-right: 0px;
-}
-
-
-
-.pr-reviewer-status {
-    position: absolute;
-    right: -2px;
-    bottom: -2px;
-    background-color: white;
-    border-radius: 50%;
-    z-index: 1;
-}
-
-.pr-reviewer-required {
-    border: 2px solid #21cfff;
-}
 
 .collapsible-header {
     margin-bottom: 0;
