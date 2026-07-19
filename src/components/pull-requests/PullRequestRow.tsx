@@ -174,7 +174,7 @@ export function PullRequestRow(props: IProps) {
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>{reviewers}</Table.Cell>
-            <Table.Cell collapsing className="pr-author-cell" onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
+            <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
                 <ContextMenuTrigger id={uid}>
                     <ProfileWidget
                         accountId={props.accountId}

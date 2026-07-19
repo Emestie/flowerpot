@@ -239,6 +239,7 @@ img.ui.avatar.image.av-class {
     height: 26px !important;
     width: 26px !important;
     border-radius: 50% !important;
+    margin-right: 4px;
 }
 
 .user-label {
@@ -668,18 +669,14 @@ a.url-link {
     font-weight: bold;
 }
 
-.pr-reviewer-overlap {
-    margin-right: -12px;
-}
 
-.pr-reviewer-overlap .user-label {
+
+.user-label {
     position: relative;
-    padding: 0 !important;
+    padding-right: 0px;
 }
 
-.pr-author-cell {
-    padding-left: 14px !important;
-}
+
 
 .pr-reviewer-status {
     position: absolute;

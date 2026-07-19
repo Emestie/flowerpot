@@ -1,8 +1,8 @@
-import { Label } from "../../ui/label";
 import { Icon } from "semantic-ui-react";
-import { Image } from "/@/ui/image";
 import { PullRequestReviewer } from "../../models/pull-request-reviewer";
+import { Label } from "../../ui/label";
 import { useAvatar } from "/@/hooks/useAvatar";
+import { Image } from "/@/ui/image";
 import { s } from "/@/values/Strings";
 
 interface P {
@@ -23,10 +23,7 @@ export function PRReviewer({ reviewer, accountId }: P) {
     const avatar = useAvatar(accountId, reviewer.imageUrl);
 
     return (
-        <span
-            title={reviewer.name + (reviewer.isRequired ? ` (${s("requiredReviewer")})` : "")}
-            className="pr-reviewer-overlap"
-        >
+        <span title={reviewer.name + (reviewer.isRequired ? ` (${s("requiredReviewer")})` : "")}>
             <Label basic image className="user-label">
                 <Image
                     className={`av-class${reviewer.isRequired ? " pr-reviewer-required" : ""}`}
