@@ -4,6 +4,7 @@ import "semantic-ui-css/semantic.min.css";
 import { App } from "./components/App";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./debug-fns";
+import "./style/ui.css";
 import "./style/style-dark-override.scss";
 import "./style/style.scss";
 
