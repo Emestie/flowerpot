@@ -13,6 +13,11 @@
 .group.small {
     font-size: 0.92857143rem;
 }
+.group > * {
+    font-size: inherit;
+    margin: 0;
+    flex: 1 0 auto;
+}
 .group > :global(* + *) {
     border-left: 1px solid var(--btn-group-border, rgba(34, 36, 38, 0.15));
 }
@@ -24,4 +29,18 @@
 }
 .group > :only-child {
     border-radius: 0.28571429rem;
+}
+.group.compact > * {
+    padding: 0.58928571em 1.125em;
+}
+.group.compact.icon > * {
+    padding: 0.58928571em;
+}
+.group.icon > * {
+    padding: 0.78571429em;
+    min-width: 2.57142857em;
+    justify-content: center;
+}
+.group.icon > * > :not(.loader) {
+    margin: 0 !important;
 }
