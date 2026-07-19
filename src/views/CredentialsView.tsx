@@ -1,6 +1,7 @@
 import { createRef, useCallback, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Container, Form, Header, Label } from "semantic-ui-react";
+import { Label, type TColor } from "../ui/label";
+import { Container, Form, Header } from "semantic-ui-react";
 import { Message } from "../ui/message";
 import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
@@ -23,7 +24,7 @@ enum ECredState {
     Duplication = 4,
 }
 
-const statuses = [
+const statuses: { color?: TColor; text: string }[] = [
     { color: undefined, text: s("credsState1") },
     { color: undefined, text: s("credsState2") },
     { color: "red", text: s("credsState4") },
@@ -227,7 +228,7 @@ export function CredentialsView() {
                 <br />
                 <div>
                     {s("status")}
-                    <Label color={statusParams.color as any}>{statusParams.text}</Label>
+                    <Label color={statusParams.color}>{statusParams.text}</Label>
                 </div>
                 <br />
                 <Button positive loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>

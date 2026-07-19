@@ -1,5 +1,6 @@
 import { ContextMenuTrigger } from "react-contextmenu";
-import { Icon, Label, Table } from "semantic-ui-react";
+import { Label, type TColor } from "../../ui/label";
+import { Icon, Table } from "semantic-ui-react";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { Query } from "../../models/query";
@@ -185,7 +186,7 @@ export function WorkItemRow(props: IProps) {
                     </Link>
                     {!!fullNote && (
                         <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
-                            <Label basic color={noteColor as any} size="mini" className="label-mini">
+                            <Label basic color={noteColor as TColor} size="mini">
                                 {getNote()}
                             </Label>
                         </span>

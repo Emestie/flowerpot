@@ -1,5 +1,6 @@
 import { ReactNode, useEffect } from "react";
-import { Header, Icon, Label, SemanticCOLORS } from "semantic-ui-react";
+import { Label, type TColor } from "../ui/label";
+import { Header, Icon } from "semantic-ui-react";
 import { APP_EVENT_COLLAPSE_ALL, APP_EVENT_EXPAND_ALL } from "../events/collapse-expand";
 import { isDarkTheme } from "../helpers/Theme";
 import { tagPalette } from "../modules/palette";
@@ -17,7 +18,7 @@ export function CollapsibleBlock(props: {
     subcaption?: string;
     subcaptionTooltip?: string;
     rightBlock?: ReactNode;
-    counters?: { [id: string | number]: { count: number | string; color?: SemanticCOLORS; basic?: boolean } };
+    counters?: { [id: string | number]: { count: number | string; color?: TColor; basic?: boolean } };
     enableColorCode: boolean;
     status?: "done" | "error";
 }) {

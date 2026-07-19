@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { Form, Icon, Input, Label } from "semantic-ui-react";
+import { Label } from "../ui/label";
+import { Form, Icon, Input } from "semantic-ui-react";
 import Lists from "../helpers/Lists";
 import { TLists } from "../helpers/Settings";
 import { s } from "../values/Strings";

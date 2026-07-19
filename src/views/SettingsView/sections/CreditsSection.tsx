@@ -1,4 +1,5 @@
-import { DropdownItemProps, Form, Header, Icon, Label } from "semantic-ui-react";
+import { Label } from "../../../ui/label";
+import { DropdownItemProps, Form, Header, Icon } from "semantic-ui-react";
 import { Checkbox } from "../../../ui/checkbox";
 import avatar from "../../../assets/ti.jpg";
 import Platform, { PlatformType } from "../../../helpers/Platform";

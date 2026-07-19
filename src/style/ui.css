@@ -52,6 +52,10 @@
     --menu-item-hover-color: rgba(0, 0, 0, 0.95);
     --menu-item-active-hover-bg: rgba(0, 0, 0, 0.08);
     --menu-item-hover-active-bg: rgba(0, 0, 0, 0.08);
+
+    --label-bg: #e8e8e8;
+    --label-color: rgba(0, 0, 0, 0.6);
+    --label-basic-border: rgba(34, 36, 38, 0.15);
 }
 
 html.FlowerpotDarkTheme,
@@ -108,4 +112,8 @@ html.FlowerpotDarkTheme,
     --menu-item-hover-bg: rgba(255, 255, 255, 0.04);
     --menu-item-hover-color: #fff;
     --menu-item-active-hover-bg: rgba(255, 255, 255, 0.12);
+
+    --label-bg: #454546;
+    --label-color: rgba(255, 255, 255, 0.9);
+    --label-basic-border: rgba(255, 255, 255, 0.15);
 }

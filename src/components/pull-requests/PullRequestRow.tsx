@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
-import { Icon, Label, Table } from "semantic-ui-react";
+import { Label } from "../../ui/label";
+import { Icon, Table } from "semantic-ui-react";
 import Platform from "../../helpers/Platform";
 import { PullRequest } from "../../models/pull-request";
 import { PullRequestReviewer } from "../../models/pull-request-reviewer";
@@ -135,14 +136,14 @@ export function PullRequestRow(props: IProps) {
                     )}
                     {!!pullRequest.isDraft && (
                         <span>
-                            <Label key={Math.random()} size="mini" className="label-mini mr-4" color="grey">
+                            <Label key={Math.random()} size="mini" className="mr-4" color="grey">
                                 {s("draftPullRequest")}
                             </Label>
                         </span>
                     )}
                     {pullRequest.mergeStatus === "conflicts" && (
                         <span>
-                            <Label key={Math.random()} size="mini" className="label-mini mr-4" color="red">
+                            <Label key={Math.random()} size="mini" className="mr-4" color="red">
                                 {s("prMergeConflicts")}
                             </Label>
                         </span>
@@ -155,7 +156,7 @@ export function PullRequestRow(props: IProps) {
                             key={Math.random()}
                             size="mini"
                             basic
-                            className="label-mini mr-4"
+                            className="mr-4"
                             style={{ color: "#689473" }}
                         >
                             {pullRequest.sourceBranch} &rarr; {pullRequest.targetBranch}

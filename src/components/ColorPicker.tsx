@@ -1,7 +1,18 @@
-import { Label } from "semantic-ui-react";
+import { Label, type TColor } from "../ui/label";
 import { Radio } from "../ui/radio";
 
-const colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "brown", "grey", undefined];
+const colorList: (TColor | undefined)[] = [
+    "red",
+    "orange",
+    "yellow",
+    "olive",
+    "green",
+    "teal",
+    "blue",
+    "brown",
+    "grey",
+    undefined,
+];
 
 interface P {
     value: string | undefined;
@@ -23,7 +34,7 @@ export default function ColorPicker(p: P) {
                             className="color-picker-label"
                             circular
                             size="mini"
-                            color={c as any}
+                            color={c}
                         ></Label>
                     }
                     name="colorGrp"

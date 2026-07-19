@@ -1,4 +1,4 @@
-import { Label } from "semantic-ui-react";
+import { Label } from "../ui/label";
 import { tagPalette } from "../modules/palette";
 import { HighlightenText } from "./HighlightenText";
 
@@ -15,9 +15,8 @@ export function Tag(props: IProps) {
         <Label
             key={Math.random()}
             size="mini"
-            basic
-            className="label-mini"
-            style={{ marginRight: 2, color: "white", backgroundColor: color, borderColor: color }}
+            customColor={color}
+            style={{ marginRight: 2 }}
         >
             <HighlightenText text={text} />
         </Label>

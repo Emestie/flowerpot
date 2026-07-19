@@ -188,16 +188,12 @@ html.FlowerpotDarkTheme,
         }
     }
 
-    .ui.label,
     .ui.button:not(.primary):not(.positive):not(.negative) {
         background-color: $bg2;
         color: $text;
         &:hover {
             background-color: $bg4;
         }
-    }
-    .ui.basic.label {
-        background: transparent !important;
     }
     .filter-toggle-button.ui.basic.button:hover,
     .filter-toggle-button.ui.basic.button:focus,
@@ -274,12 +270,6 @@ html.FlowerpotDarkTheme,
 
     .mar8NameLabel {
         color: pink !important;
-    }
-
-    .ql-container {
-        .label.quick-link-label {
-            background-color: #252526 !important;
-        }
     }
 
     .pr-comments-green {

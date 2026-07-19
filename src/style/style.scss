@@ -216,9 +216,9 @@ nav {
 }
 
 .WICounts {
-    div {
-        margin-bottom: 3px;
-    }
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
 }
 
 .LinkStyleButton {
@@ -245,6 +245,7 @@ img.ui.avatar.image.av-class {
     border: none !important;
     background-color: transparent !important;
     font-weight: normal !important;
+    box-shadow: none !important;
 }
 
 .mar8NameLabel {
@@ -382,11 +383,13 @@ a.url-link {
 
 .filter-toggle-button {
     padding: 4px !important;
+    min-width: auto !important;
     display: inline-block !important;
 }
 
 .filter-toggle-button-img {
     padding: 2px !important;
+    min-width: auto !important;
     display: inline-block !important;
 }
 
@@ -691,10 +694,6 @@ a.url-link {
 
 .collapsible-right-block {
     flex-shrink: 0;
-}
-
-.label-mini {
-    padding: 3px 4px;
 }
 
 .crossed-out-overlay {

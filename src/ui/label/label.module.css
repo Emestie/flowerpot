@@ -1,0 +1,213 @@
+.label {
+    display: inline-flex;
+    align-items: center;
+    cursor: default;
+    outline: none;
+    border: 0 solid transparent;
+    border-radius: 0.28571429rem;
+    padding: 0.5833em 0.833em;
+    margin: 0 0.14285714em;
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 0.85714286rem;
+    line-height: 1;
+    text-transform: none;
+    text-shadow: none;
+    vertical-align: baseline;
+    transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease,
+        box-shadow 0.1s ease;
+    user-select: none;
+    text-decoration: none;
+    background: var(--label-bg, #e8e8e8);
+    color: var(--label-color, rgba(0, 0, 0, 0.6));
+}
+
+/* Interactive (has onClick or as="a") */
+.asLink {
+    cursor: pointer;
+}
+.asLink:hover {
+    color: inherit;
+}
+.asLink.red:hover { color: #fff; }
+.asLink.orange:hover { color: #fff; }
+.asLink.yellow:hover { color: rgba(0, 0, 0, 0.6); }
+.asLink.olive:hover { color: rgba(0, 0, 0, 0.6); }
+.asLink.green:hover { color: #fff; }
+.asLink.teal:hover { color: #fff; }
+.asLink.blue:hover { color: #fff; }
+.asLink.violet:hover { color: #fff; }
+.asLink.purple:hover { color: #fff; }
+.asLink.pink:hover { color: #fff; }
+.asLink.brown:hover { color: #fff; }
+.asLink.grey:hover { color: #fff; }
+.asLink.black:hover { color: #fff; }
+.asLink.basic.red:hover { color: #db2828; }
+.asLink.basic.orange:hover { color: #f2711c; }
+.asLink.basic.yellow:hover { color: #fbbd08; }
+.asLink.basic.olive:hover { color: #b5cc18; }
+.asLink.basic.green:hover { color: #21ba45; }
+.asLink.basic.teal:hover { color: #00b5ad; }
+.asLink.basic.blue:hover { color: #2185d0; }
+.asLink.basic.violet:hover { color: #6435c9; }
+.asLink.basic.purple:hover { color: #a333c8; }
+.asLink.basic.pink:hover { color: #e03997; }
+.asLink.basic.brown:hover { color: #a5673f; }
+.asLink.basic.grey:hover { color: #767676; }
+.asLink.basic.black:hover { color: #1b1c1d; }
+
+/* Color variants */
+.red {
+    background: #db2828;
+    color: #fff;
+}
+.orange {
+    background: #f2711c;
+    color: #fff;
+}
+.yellow {
+    background: #fbbd08;
+    color: rgba(0, 0, 0, 0.6);
+}
+.olive {
+    background: #b5cc18;
+    color: rgba(0, 0, 0, 0.6);
+}
+.green {
+    background: #21ba45;
+    color: #fff;
+}
+.teal {
+    background: #00b5ad;
+    color: #fff;
+}
+.blue {
+    background: #2185d0;
+    color: #fff;
+}
+.violet {
+    background: #6435c9;
+    color: #fff;
+}
+.purple {
+    background: #a333c8;
+    color: #fff;
+}
+.pink {
+    background: #e03997;
+    color: #fff;
+}
+.brown {
+    background: #a5673f;
+    color: #fff;
+}
+.grey {
+    background: #767676;
+    color: #fff;
+}
+.black {
+    background: #1b1c1d;
+    color: #fff;
+}
+
+/* Basic variant */
+.basic {
+    background: transparent !important;
+    box-shadow: 0 0 0 1px var(--label-basic-border, rgba(34, 36, 38, 0.15)) inset;
+    color: var(--label-color, rgba(0, 0, 0, 0.6));
+}
+.basic.red {
+    color: #db2828;
+    box-shadow: 0 0 0 1px #db2828 inset;
+}
+.basic.orange {
+    color: #f2711c;
+    box-shadow: 0 0 0 1px #f2711c inset;
+}
+.basic.yellow {
+    color: #fbbd08;
+    box-shadow: 0 0 0 1px #fbbd08 inset;
+}
+.basic.olive {
+    color: #b5cc18;
+    box-shadow: 0 0 0 1px #b5cc18 inset;
+}
+.basic.green {
+    color: #21ba45;
+    box-shadow: 0 0 0 1px #21ba45 inset;
+}
+.basic.teal {
+    color: #00b5ad;
+    box-shadow: 0 0 0 1px #00b5ad inset;
+}
+.basic.blue {
+    color: #2185d0;
+    box-shadow: 0 0 0 1px #2185d0 inset;
+}
+.basic.violet {
+    color: #6435c9;
+    box-shadow: 0 0 0 1px #6435c9 inset;
+}
+.basic.purple {
+    color: #a333c8;
+    box-shadow: 0 0 0 1px #a333c8 inset;
+}
+.basic.pink {
+    color: #e03997;
+    box-shadow: 0 0 0 1px #e03997 inset;
+}
+.basic.brown {
+    color: #a5673f;
+    box-shadow: 0 0 0 1px #a5673f inset;
+}
+.basic.grey {
+    color: #767676;
+    box-shadow: 0 0 0 1px #767676 inset;
+}
+.basic.black {
+    color: #1b1c1d;
+    box-shadow: 0 0 0 1px #1b1c1d inset;
+}
+
+/* Circular */
+.circular {
+    border-radius: 500rem !important;
+    padding: 0.5em 0.833em !important;
+}
+.circular.mini {
+    padding: 0.25em 0.45em !important;
+}
+
+/* Image variant */
+.image {
+    padding-left: 0 !important;
+    vertical-align: bottom;
+}
+.image > :global(img) {
+    height: 2.1667em;
+    width: 2.1667em;
+    margin: -0.5833em 0.833em -0.5833em 0;
+    border-radius: 0.28571429rem 0 0 0.28571429rem;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Mini size */
+.mini {
+    font-size: 0.71428571rem;
+    padding: 0.25em 0.45em;
+}
+
+/* Detail sub-component */
+.detail {
+    font-weight: 400;
+    margin-left: auto;
+    vertical-align: middle;
+}
+
+/* Dark theme */
+:global(.FlowerpotDarkTheme) .label {
+    --label-bg: #454546;
+    --label-color: rgba(255, 255, 255, 0.9);
+    --label-basic-border: rgba(255, 255, 255, 0.15);
+}
