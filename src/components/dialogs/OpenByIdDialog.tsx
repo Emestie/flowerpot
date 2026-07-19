@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Confirm, Form } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
+import { Confirm } from "../../ui/confirm";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
