@@ -1,4 +1,5 @@
-import { Radio, Label } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
+import { Radio } from "../ui/radio";
 
 const colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "brown", "grey", undefined];
 
@@ -15,6 +16,7 @@ export default function ColorPicker(p: P) {
             {colorList.map((c) => (
                 <Radio
                     key={c || "def"}
+                    indicator={false}
                     label={
                         <Label
                             basic={value !== c}

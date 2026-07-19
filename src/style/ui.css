@@ -28,6 +28,13 @@
     --input-error-color: #9f3a38;
     --input-error-placeholder: #e7bdbc;
     --input-error-placeholder-focus: #da9796;
+
+    --radio-color: rgba(0, 0, 0, 0.87);
+    --radio-border: rgba(34, 36, 38, 0.15);
+    --radio-bg: #fff;
+    --radio-dot: rgba(0, 0, 0, 0.95);
+    --radio-hover-border: rgba(34, 36, 38, 0.35);
+    --radio-focus-border: #85b7d9;
 }
 
 html.FlowerpotDarkTheme,
@@ -61,4 +68,11 @@ html.FlowerpotDarkTheme,
     --input-error-color: #f08a8a;
     --input-error-placeholder: rgba(200, 100, 100, 0.7);
     --input-error-placeholder-focus: rgba(200, 100, 100, 0.5);
+
+    --radio-color: rgba(255, 255, 255, 0.9);
+    --radio-border: rgba(255, 255, 255, 0.15);
+    --radio-bg: transparent;
+    --radio-dot: rgba(255, 255, 255, 0.95);
+    --radio-hover-border: rgba(255, 255, 255, 0.35);
+    --radio-focus-border: #6bb3e0;
 }
