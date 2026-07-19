@@ -13,3 +13,4 @@ Gradual rewrite rules for replacing Semantic UI React with a custom UI kit.
 7. **Fidelity** — Reference the original Semantic UI React component during rewrite; result must look and feel identical
 8. **Dark theme** — Always account for dark theme
 9. **Scope** — Port only features actually used in this project (e.g. don't port XL size if never used)
+10. **Apply on rewrite** — Upon finishing a rewrite, replace all usages of the old Semantic UI React component with the new one across the project

@@ -43,6 +43,15 @@
     --checkbox-checked-color: #fff;
     --checkbox-hover-border: rgba(34, 36, 38, 0.35);
     --checkbox-focus-border: #85b7d9;
+
+    --menu-bg: #fff;
+    --menu-item-color: rgba(0, 0, 0, 0.87);
+    --menu-item-active-bg: rgba(0, 0, 0, 0.05);
+    --menu-item-active-color: rgba(0, 0, 0, 0.95);
+    --menu-item-hover-bg: rgba(0, 0, 0, 0.03);
+    --menu-item-hover-color: rgba(0, 0, 0, 0.95);
+    --menu-item-active-hover-bg: rgba(0, 0, 0, 0.08);
+    --menu-item-hover-active-bg: rgba(0, 0, 0, 0.08);
 }
 
 html.FlowerpotDarkTheme,
@@ -91,4 +100,12 @@ html.FlowerpotDarkTheme,
     --checkbox-checked-color: rgba(0, 0, 0, 0.95);
     --checkbox-hover-border: rgba(255, 255, 255, 0.35);
     --checkbox-focus-border: #6bb3e0;
+
+    --menu-bg: #3d3e3f;
+    --menu-item-color: rgba(255, 255, 255, 0.9);
+    --menu-item-active-bg: rgba(255, 255, 255, 0.08);
+    --menu-item-active-color: #fff;
+    --menu-item-hover-bg: rgba(255, 255, 255, 0.04);
+    --menu-item-hover-color: #fff;
+    --menu-item-active-hover-bg: rgba(255, 255, 255, 0.12);
 }
