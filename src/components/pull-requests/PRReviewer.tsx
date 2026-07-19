@@ -1,4 +1,5 @@
-import { Icon, Image, Label } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
+import { Image } from "/@/ui/image";
 import { PullRequestReviewer } from "../../models/pull-request-reviewer";
 import { useAvatar } from "/@/hooks/useAvatar";
 import { s } from "/@/values/Strings";

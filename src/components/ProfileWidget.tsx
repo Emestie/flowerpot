@@ -1,4 +1,5 @@
-import { Image, Label } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
+import { Image } from "../ui/image";
 import Platform from "../helpers/Platform";
 import { useAvatar } from "../hooks/useAvatar";
 import { HighlightenText } from "./HighlightenText";
