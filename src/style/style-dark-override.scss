@@ -196,6 +196,9 @@ html.FlowerpotDarkTheme,
             background-color: $bg4;
         }
     }
+    .ui.basic.label {
+        background: transparent !important;
+    }
     .filter-toggle-button.ui.basic.button:hover,
     .filter-toggle-button.ui.basic.button:focus,
     .filter-toggle-button-img.ui.basic.button:hover,
