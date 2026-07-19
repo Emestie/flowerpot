@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Confirm, Form, TextArea } from "semantic-ui-react";
+import { Confirm, Form } from "semantic-ui-react";
+import { TextArea } from "../../ui/textarea";
 import ColorPicker from "../ColorPicker";
 
 interface IProps {
@@ -63,9 +64,9 @@ export function SingleInputColorDialog(p: IProps) {
                     <TextArea
                         className="w-full af-input"
                         value={textValue}
-                        onChange={(e, data) => {
+                        onChange={(e) => {
                             if (p.readonly) return;
-                            setTextValue((data.value || "") as string);
+                            setTextValue(e.target.value);
                         }}
                         maxLength={p.unlimitedLength ? undefined : "500"}
                     />

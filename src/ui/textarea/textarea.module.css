@@ -1,0 +1,57 @@
+.textarea {
+    margin: 0;
+    outline: none;
+    line-height: 1.28571429em;
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    padding: 0.78571429em 1em;
+    background: var(--input-bg, #fff);
+    border: 1px solid var(--input-border, rgba(34, 36, 38, 0.15));
+    color: var(--input-color, rgba(0, 0, 0, 0.87));
+    border-radius: 0.28571429rem;
+    box-shadow: none;
+    transition: box-shadow 0.1s ease, border-color 0.1s ease;
+    width: 100%;
+    resize: vertical;
+    min-height: 10em;
+    font-size: inherit;
+}
+
+.textarea::placeholder {
+    color: var(--input-placeholder, rgba(191, 191, 191, 0.87));
+}
+
+.textarea:focus {
+    border-color: var(--input-focus-border, #85b7d9);
+    background: var(--input-focus-bg, #fff);
+    color: var(--input-color, rgba(0, 0, 0, 0.8));
+    box-shadow: none;
+}
+
+.textarea:focus::placeholder {
+    color: var(--input-focus-placeholder, rgba(115, 115, 115, 0.87));
+}
+
+.textarea:active {
+    border-color: var(--input-active-border, rgba(0, 0, 0, 0.3));
+    background: var(--input-active-bg, #fafafa);
+    color: var(--input-color, rgba(0, 0, 0, 0.87));
+}
+
+.error {
+    background: var(--input-error-bg, #fff6f6) !important;
+    border-color: var(--input-error-border, #e0b4b4) !important;
+    color: var(--input-error-color, #9f3a38) !important;
+}
+
+.error::placeholder {
+    color: var(--input-error-placeholder, #e7bdbc);
+}
+
+.error:focus::placeholder {
+    color: var(--input-error-placeholder-focus, #da9796);
+}
+
+.disabled {
+    opacity: 0.45;
+    pointer-events: none;
+}
