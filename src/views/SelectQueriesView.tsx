@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Checkbox, Container, Form, Header, Icon, Label } from "semantic-ui-react";
+import { Checkbox } from "../ui/checkbox";
+import { Container, Form, Header, Icon, Label } from "semantic-ui-react";
 import { Message } from "../ui/message";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";

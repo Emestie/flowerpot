@@ -35,6 +35,14 @@
     --radio-dot: rgba(0, 0, 0, 0.95);
     --radio-hover-border: rgba(34, 36, 38, 0.35);
     --radio-focus-border: #85b7d9;
+
+    --checkbox-color: rgba(0, 0, 0, 0.87);
+    --checkbox-border: rgba(34, 36, 38, 0.15);
+    --checkbox-bg: #fff;
+    --checkbox-checked-bg: rgba(0, 0, 0, 0.95);
+    --checkbox-checked-color: #fff;
+    --checkbox-hover-border: rgba(34, 36, 38, 0.35);
+    --checkbox-focus-border: #85b7d9;
 }
 
 html.FlowerpotDarkTheme,
@@ -75,4 +83,12 @@ html.FlowerpotDarkTheme,
     --radio-dot: rgba(255, 255, 255, 0.95);
     --radio-hover-border: rgba(255, 255, 255, 0.35);
     --radio-focus-border: #6bb3e0;
+
+    --checkbox-color: rgba(255, 255, 255, 0.9);
+    --checkbox-border: rgba(255, 255, 255, 0.15);
+    --checkbox-bg: transparent;
+    --checkbox-checked-bg: rgba(255, 255, 255, 0.95);
+    --checkbox-checked-color: rgba(0, 0, 0, 0.95);
+    --checkbox-hover-border: rgba(255, 255, 255, 0.35);
+    --checkbox-focus-border: #6bb3e0;
 }

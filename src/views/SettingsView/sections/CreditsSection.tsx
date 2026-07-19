@@ -1,4 +1,5 @@
 import { DropdownItemProps, Form, Header, Icon, Label } from "semantic-ui-react";
+import { Checkbox } from "../../../ui/checkbox";
 import avatar from "../../../assets/ti.jpg";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import Version from "../../../helpers/Version";
@@ -103,11 +104,11 @@ export function CreditsSection() {
             <br />
             {Platform.current.os === "win32" && (
                 <>
-                    <Form.Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
+                    <Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
                     <br />
                 </>
             )}
-            <Form.Checkbox label={s("cbTelemetry")} checked={allowTelemetry} onChange={toggleTelemetry} />
+            <Checkbox label={s("cbTelemetry")} checked={allowTelemetry} onChange={toggleTelemetry} />
             <br />
             <Header as="h3" dividing>
                 {s("settingsActionsHeader")}

@@ -1,4 +1,5 @@
-import { Form, Header } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
+import { Checkbox } from "../../../ui/checkbox";
 import { LinksSettingsTable } from "../../../components/tables/LinksSettingsTable";
 import { s } from "../../../values/Strings";
 import { useSettingsStore } from "../../../zustand/settings";
@@ -16,7 +17,7 @@ export function QuickLinksSections() {
             <Header as="h3" dividing>
                 {s("quickLinksSettingsHeader")}
             </Header>
-            <Form.Checkbox label={s("cbQuickLinksLabel")} checked={showQuickLinks} onChange={toggleQuickLinks} />
+            <Checkbox label={s("cbQuickLinksLabel")} checked={showQuickLinks} onChange={toggleQuickLinks} />
             <LinksSettingsTable />
         </>
     );

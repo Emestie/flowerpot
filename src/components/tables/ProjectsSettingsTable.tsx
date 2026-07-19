@@ -1,5 +1,6 @@
 import { Button } from "../../ui/button";
-import { Checkbox, Icon, Table } from "semantic-ui-react";
+import { Checkbox } from "../../ui/checkbox";
+import { Icon, Table } from "semantic-ui-react";
 import { Project } from "../../models/project";
 import { ProjectHelper } from "../../helpers/Project";
 import { useSettingsStore } from "../../zustand/settings";

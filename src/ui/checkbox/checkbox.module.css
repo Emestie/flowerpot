@@ -1,0 +1,115 @@
+.checkbox {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-start;
+    cursor: pointer;
+    font-size: inherit;
+    outline: none;
+    margin: 0 0.5em 0 0;
+}
+
+.input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.label {
+    position: relative;
+    display: block;
+    padding-left: 1.85714em;
+    min-height: 17px;
+    color: var(--checkbox-color, rgba(0, 0, 0, 0.87));
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    line-height: 1.21428571em;
+    cursor: pointer;
+    user-select: none;
+}
+
+.label::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 17px;
+    height: 17px;
+    border: 1px solid var(--checkbox-border, rgba(34, 36, 38, 0.15));
+    border-radius: 3px;
+    background: var(--checkbox-bg, #fff);
+    box-sizing: border-box;
+    transition: border-color 0.1s ease, background 0.1s ease;
+}
+
+.label::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 17px;
+    height: 17px;
+    background: var(--checkbox-checked-bg, rgba(0, 0, 0, 0.95));
+    border-radius: 3px;
+    transform: scale(0);
+    transition: transform 0.2s ease;
+}
+
+.checked .label::after {
+    transform: scale(1);
+}
+
+.label .checkmark {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    transition: transform 0.2s ease;
+    z-index: 1;
+}
+
+.checked .label .checkmark {
+    transform: scale(1);
+}
+
+.checkmarkSvg {
+    width: 11px;
+    height: 11px;
+    fill: none;
+    stroke: var(--checkbox-checked-color, #fff);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.checkbox:hover .input ~ .label::before {
+    border-color: var(--checkbox-hover-border, rgba(34, 36, 38, 0.35));
+}
+
+.input:focus-visible ~ .label::before {
+    border-color: var(--checkbox-focus-border, #85b7d9);
+}
+
+.disabled {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.disabled .label {
+    cursor: default;
+}
+
+.noIndicator .label {
+    padding-left: 0;
+}
+
+.noIndicator .label::before,
+.noIndicator .label::after,
+.noIndicator .label .checkmark {
+    display: none;
+}

@@ -1,4 +1,5 @@
 import { DropdownItemProps, Form, Header } from "semantic-ui-react";
+import { Checkbox } from "../../../ui/checkbox";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import { TSortPattern } from "../../../helpers/Settings";
 import { s } from "../../../values/Strings";
@@ -114,7 +115,7 @@ export function AppearanceSection() {
             <br />
             {Platform.type === PlatformType.Electron && (
                 <>
-                    <Form.Checkbox
+                    <Checkbox
                         label={s("cbIconLabel")}
                         checked={iconChangesOnMyWorkItemsOnly}
                         onChange={toggleIconColor}
@@ -122,23 +123,23 @@ export function AppearanceSection() {
                     <br />
                 </>
             )}
-            <Form.Checkbox label={s("mineOnTop")} checked={mineOnTop} onChange={toggleMineOnTop} />
+            <Checkbox label={s("mineOnTop")} checked={mineOnTop} onChange={toggleMineOnTop} />
             <br />
-            <Form.Checkbox label={s("showUnreads")} checked={showUnreads} onChange={toggleShowUnreads} />
+            <Checkbox label={s("showUnreads")} checked={showUnreads} onChange={toggleShowUnreads} />
             <br />
-            <Form.Checkbox
+            <Checkbox
                 label={s("enableIterationColors")}
                 checked={enableIterationColors}
                 onChange={toggleIterationColors}
             />
             <br />
-            <Form.Checkbox
+            <Checkbox
                 label={s("enableQueryColorCode")}
                 checked={enableQueryColorCode}
                 onChange={toggleQueryColorCode}
             />
             <br />
-            <Form.Checkbox label={s("showEmptyQueries")} checked={showEmptyQueries} onChange={toggleShowEmptyQueries} />
+            <Checkbox label={s("showEmptyQueries")} checked={showEmptyQueries} onChange={toggleShowEmptyQueries} />
             <br />
             <Form.Select
                 label={s("ddTableScale")}
