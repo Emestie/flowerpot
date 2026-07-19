@@ -8,7 +8,7 @@ import { WorkItem } from "../../models/work-item";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
 import { Link } from "../Link";
-import { ProfileWidget } from "../ProfileWidget";
+import { ProfileWidget } from "../profile-widget/profile-widget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 import { Id } from "./id";
