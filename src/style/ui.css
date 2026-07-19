@@ -13,6 +13,21 @@
     --btn-basic-active-bg: #f8f8f8;
     --btn-basic-active-color: rgba(0, 0, 0, 0.9);
     --btn-group-border: rgba(34, 36, 38, 0.15);
+
+    --input-bg: #fff;
+    --input-color: rgba(0, 0, 0, 0.87);
+    --input-border: rgba(34, 36, 38, 0.15);
+    --input-focus-border: #85b7d9;
+    --input-focus-bg: #fff;
+    --input-focus-placeholder: rgba(115, 115, 115, 0.87);
+    --input-active-border: rgba(0, 0, 0, 0.3);
+    --input-active-bg: #fafafa;
+    --input-placeholder: rgba(191, 191, 191, 0.87);
+    --input-error-bg: #fff6f6;
+    --input-error-border: #e0b4b4;
+    --input-error-color: #9f3a38;
+    --input-error-placeholder: #e7bdbc;
+    --input-error-placeholder-focus: #da9796;
 }
 
 html.FlowerpotDarkTheme,
@@ -31,4 +46,19 @@ html.FlowerpotDarkTheme,
     --btn-basic-active-bg: transparent;
     --btn-basic-active-color: rgba(255, 255, 255, 0.979);
     --btn-group-border: rgba(255, 255, 255, 0.15);
+
+    --input-bg: #3d3e3f;
+    --input-color: rgba(255, 255, 255, 0.9);
+    --input-border: rgba(255, 255, 255, 0.15);
+    --input-focus-border: #6bb3e0;
+    --input-focus-bg: #3d3e3f;
+    --input-focus-placeholder: rgba(200, 200, 200, 0.87);
+    --input-active-border: rgba(255, 255, 255, 0.3);
+    --input-active-bg: #454546;
+    --input-placeholder: rgba(180, 180, 180, 0.5);
+    --input-error-bg: #4a1a1a;
+    --input-error-border: #8a3a3a;
+    --input-error-color: #f08a8a;
+    --input-error-placeholder: rgba(200, 100, 100, 0.7);
+    --input-error-placeholder-focus: rgba(200, 100, 100, 0.5);
 }
