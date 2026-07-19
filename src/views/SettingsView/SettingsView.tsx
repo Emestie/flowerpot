@@ -89,6 +89,7 @@ export function SettingsView() {
     const theme = useSettingsStore((state) => state.theme);
     const accounts = useSettingsStore((state) => state.accounts);
     const setView = useAppStore((state) => state.setView);
+    useAppStore((state) => state.locale);
     const [tapCount, setTapCount] = useState(0);
     const tapTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
