@@ -1,4 +1,4 @@
-import { Message } from "semantic-ui-react";
+import { Message } from "../../ui/message";
 import { Button } from "../../ui/button";
 import { s } from "../../values/Strings";
 import Version from "../../helpers/Version";

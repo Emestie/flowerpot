@@ -1,6 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from "react";
 import { Button } from "../ui/button";
-import { Message } from "semantic-ui-react";
+import { Message } from "../ui/message";
 import { s } from "../values/Strings";
 
 interface Props {

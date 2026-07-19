@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { Icon, Message, Table } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
+import { Message } from "../../ui/message";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";

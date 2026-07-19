@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Message } from "semantic-ui-react";
+import { Message } from "../../ui/message";
 import { LinkAddingDialog } from "../../components/dialogs/LinkAddingDialog";
 import { OpenByIdDialog } from "../../components/dialogs/OpenByIdDialog";
 import { SingleInputColorDialog } from "../../components/dialogs/SingleInputColorDialog";

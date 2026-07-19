@@ -1,4 +1,4 @@
-import { Message } from "semantic-ui-react";
+import { Message } from "../../ui/message";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
 import { useSettingsStore } from "../../zustand/settings";
