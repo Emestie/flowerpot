@@ -1,0 +1,64 @@
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 290px;
+    min-height: 0;
+    background: #fff;
+    padding: 0;
+    border: none;
+    border-radius: 0.28571429rem;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.card > :first-child {
+    border-radius: 0.28571429rem 0.28571429rem 0 0;
+    border-top: none;
+}
+
+.card > :last-child {
+    border-radius: 0 0 0.28571429rem 0.28571429rem;
+}
+
+.card > :only-child {
+    border-radius: 0.28571429rem;
+}
+
+.content {
+    flex-grow: 1;
+    border: none;
+    border-top: 1px solid rgba(34, 36, 38, 0.1);
+    background: none;
+    margin: 0;
+    padding: 1em;
+    box-shadow: none;
+    font-size: 1em;
+    border-radius: 0;
+}
+
+.meta {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.meta > * {
+    margin-right: 0.3em;
+}
+
+.meta > :last-child {
+    margin-right: 0;
+}
+
+:global(.FlowerpotDarkTheme) .card {
+    background: #353536;
+    box-shadow: none;
+}
+
+:global(.FlowerpotDarkTheme) .meta {
+    color: rgba(255, 255, 255, 0.979);
+}
+
+:global(.FlowerpotDarkTheme) .content {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
