@@ -1,0 +1,18 @@
+:root {
+    --btn-bg: #e0e1e2;
+    --btn-color: rgba(0, 0, 0, 0.6);
+    --btn-hover-bg: #cacbcd;
+    --btn-active-bg: #babbbc;
+    --btn-basic-border: rgba(34, 36, 38, 0.15);
+    --btn-group-border: rgba(34, 36, 38, 0.15);
+}
+
+html.FlowerpotDarkTheme,
+.FlowerpotDarkTheme {
+    --btn-bg: #454546;
+    --btn-color: rgba(255, 255, 255, 0.979);
+    --btn-hover-bg: #656566;
+    --btn-active-bg: #555556;
+    --btn-basic-border: rgba(255, 255, 255, 0.15);
+    --btn-group-border: rgba(255, 255, 255, 0.15);
+}

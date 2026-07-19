@@ -1,0 +1,167 @@
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 0.28571429rem;
+    padding: 0.78571429em 1.5em;
+    font-family: inherit;
+    font-weight: 700;
+    line-height: 1em;
+    text-transform: none;
+    text-shadow: none;
+    vertical-align: baseline;
+    transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease,
+        box-shadow 0.1s ease, background 0.1s ease;
+    user-select: none;
+    -webkit-appearance: none;
+    background-color: var(--btn-bg, #e0e1e2);
+    color: var(--btn-color, rgba(0, 0, 0, 0.6));
+    font-size: 1rem;
+    text-decoration: none;
+}
+.btn:hover {
+    background-color: var(--btn-hover-bg, #cacbcd);
+}
+.btn:active {
+    background-color: var(--btn-active-bg, #babbbc);
+}
+
+/* Sizes */
+.mini {
+    font-size: 0.78571429rem;
+}
+.tiny {
+    font-size: 0.85714286rem;
+}
+.small {
+    font-size: 0.92857143rem;
+}
+
+/* Compact */
+.compact {
+    padding: 0.78571429em 1.15em;
+}
+
+/* Icon button — square */
+.icon {
+    padding: 0.78571429em;
+    min-width: 2.57142857em;
+}
+
+/* Color variants */
+.primary {
+    background-color: #2185d0;
+    color: #fff;
+}
+.primary:hover {
+    background-color: #1678c2;
+}
+.primary:active {
+    background-color: #1a69a4;
+}
+
+.positive {
+    background-color: #21ba45;
+    color: #fff;
+}
+.positive:hover {
+    background-color: #16ab39;
+}
+.positive:active {
+    background-color: #198f35;
+}
+
+.negative {
+    background-color: #db2828;
+    color: #fff;
+}
+.negative:hover {
+    background-color: #d01919;
+}
+.negative:active {
+    background-color: #b21e1e;
+}
+
+/* Basic */
+.basic {
+    background: transparent;
+    color: var(--btn-color, rgba(0, 0, 0, 0.6));
+    border-color: var(--btn-basic-border, rgba(34, 36, 38, 0.15));
+    box-shadow: none;
+}
+.basic:hover {
+    background: transparent;
+    color: var(--btn-color, rgba(0, 0, 0, 0.8));
+}
+.basic:active {
+    background: transparent;
+}
+
+/* Disabled */
+.disabled,
+.disabled:hover {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Loading */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+.loading > :not(.loader) {
+    opacity: 0;
+}
+
+.loader {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    margin: -0.6em 0 0 -0.6em;
+    border: 2px solid;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    color: var(--btn-color, rgba(0, 0, 0, 0.6));
+}
+
+.primary .loader,
+.positive .loader,
+.negative .loader {
+    color: #fff;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Label position left */
+.labeledLeft {
+    padding-left: 2.57142857em;
+    position: relative;
+}
+.labeledLeft > :first-child {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2.57142857em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0.28571429rem 0 0 0.28571429rem;
+    margin: 0;
+}

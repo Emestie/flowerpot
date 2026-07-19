@@ -1,0 +1,27 @@
+.group {
+    display: inline-flex;
+    flex-direction: row;
+    vertical-align: baseline;
+    margin: 0;
+}
+.group.mini {
+    font-size: 0.78571429rem;
+}
+.group.tiny {
+    font-size: 0.85714286rem;
+}
+.group.small {
+    font-size: 0.92857143rem;
+}
+.group > :global(* + *) {
+    border-left: 1px solid var(--btn-group-border, rgba(34, 36, 38, 0.15));
+}
+.group > :first-child {
+    border-radius: 0.28571429rem 0 0 0.28571429rem;
+}
+.group > :last-child {
+    border-radius: 0 0.28571429rem 0.28571429rem 0;
+}
+.group > :only-child {
+    border-radius: 0.28571429rem;
+}
