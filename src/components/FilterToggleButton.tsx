@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { Button } from "../ui/button";
-import { Icon, SemanticICONS as SuiICONS } from "semantic-ui-react";
-import { SemanticICONS } from "../ui/icon/semantic-icons";
+import { Icon, SemanticICONS } from "/@/ui/icon";
 import { isDarkTheme } from "../helpers/Theme";
 import { useSettingsStore } from "../zustand/settings";
 
@@ -17,7 +16,7 @@ interface FilterToggleButtonProps {
 }
 
 const IconRenderer: FC<{ icon: SemanticICONS; isDark: boolean }> = ({ icon, isDark }) => (
-    <Icon name={icon as SuiICONS} className={isDark ? "filter-icon-dark" : undefined} />
+    <Icon name={icon} className={isDark ? "filter-icon-dark" : undefined} />
 );
 
 const ColorDot: FC<{ colorDot: string; label: string; isDark: boolean }> = ({ colorDot, label, isDark }) => (

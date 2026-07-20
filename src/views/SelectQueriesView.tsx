@@ -4,7 +4,7 @@ import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 import { Container } from "../ui/container";
 import { Form } from "../ui/form";
-import { Icon } from "semantic-ui-react";
+import { Icon } from "/@/ui/icon";
 import { Header } from "../ui/header";
 import { Message } from "../ui/message";
 import { getApi } from "../api/client";

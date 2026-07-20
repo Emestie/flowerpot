@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Label } from "../../ui/label";
-import { Icon } from "semantic-ui-react";
+import { Icon } from "/@/ui/icon";
 import { Table } from "../../ui/table";
 import Platform from "../../helpers/Platform";
 import { PullRequest } from "../../models/pull-request";

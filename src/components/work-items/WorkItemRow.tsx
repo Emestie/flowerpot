@@ -1,6 +1,6 @@
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Label, type TColor } from "../../ui/label";
-import { Icon } from "semantic-ui-react";
+import { Icon } from "/@/ui/icon";
 import { Table } from "../../ui/table";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";

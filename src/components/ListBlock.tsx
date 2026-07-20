@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Form } from "../ui/form";
-import { Icon } from "semantic-ui-react";
+import { Icon } from "/@/ui/icon";
 import Lists from "../helpers/Lists";
 import { TLists } from "../helpers/Settings";
 import { s } from "../values/Strings";
