@@ -22,7 +22,7 @@
     padding-left: 1.85714em;
     min-height: 17px;
     color: var(--radio-color, rgba(0, 0, 0, 0.87));
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: var(--font-family);
     line-height: 1.21428571em;
     cursor: pointer;
     user-select: none;

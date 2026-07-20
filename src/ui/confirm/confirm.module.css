@@ -54,7 +54,7 @@
     border-radius: 0.28571429rem;
     padding: 0.78571429em 1.5em;
     min-height: 1em;
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: var(--font-family);
     font-weight: 700;
     line-height: 1em;
     text-transform: none;
@@ -91,7 +91,7 @@
     border-radius: 0.28571429rem;
     padding: 0.78571429em 1.5em;
     min-height: 1em;
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: var(--font-family);
     font-weight: 700;
     line-height: 1em;
     text-transform: none;

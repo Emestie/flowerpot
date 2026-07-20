@@ -17,7 +17,7 @@ body {
     margin: 0;
     min-width: 320px;
     background: #fff;
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: var(--font-family);
     font-size: 14px;
     line-height: 1.4285em;
     color: rgba(0, 0, 0, 0.87);
@@ -70,7 +70,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: var(--font-family);
     font-weight: 700;
     line-height: 1.28571429em;
     margin: calc(2rem - 0.14285714em) 0 1rem;
@@ -122,13 +122,15 @@ h6 {
 
 /* Text container (previously .ui.text.container) */
 .text.container {
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: var(--font-family);
     max-width: 700px !important;
     line-height: 1.5;
     font-size: 1.14285714rem;
 }
 
 :root {
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
     --btn-bg: #e0e1e2;
     --btn-color: rgba(0, 0, 0, 0.6);
     --btn-hover-bg: #cacbcd;

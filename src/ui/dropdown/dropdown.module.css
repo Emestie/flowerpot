@@ -4,7 +4,7 @@
     cursor: pointer;
     outline: none;
     text-align: left;
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: var(--font-family);
     background: var(--input-bg, #fff);
     border: 1px solid var(--input-border, rgba(34, 36, 38, 0.15));
     color: var(--input-color, rgba(0, 0, 0, 0.87));

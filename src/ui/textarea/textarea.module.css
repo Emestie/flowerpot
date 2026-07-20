@@ -2,7 +2,7 @@
     margin: 0;
     outline: none;
     line-height: 1.28571429em;
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: var(--font-family);
     padding: 0.78571429em 1em;
     background: var(--input-bg, #fff);
     border: 1px solid var(--input-border, rgba(34, 36, 38, 0.15));
