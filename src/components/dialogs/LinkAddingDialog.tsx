@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Form } from "../../ui/form";
 import { Confirm } from "../../ui/confirm";
 import Links from "../../helpers/Links";
 import { s } from "../../values/Strings";

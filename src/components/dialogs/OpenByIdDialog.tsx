@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Form } from "../../ui/form";
 import { Confirm } from "../../ui/confirm";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
@@ -75,7 +75,7 @@ export function OpenByIdDialog(p: IProps) {
                             value={accountId && collectionName ? { accountId, collectionName } : undefined}
                         />
                         <Form.Input
-                            className="w-full af-input"
+                            className="af-input"
                             value={id}
                             onChange={(e) => {
                                 setId(e.target.value);

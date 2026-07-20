@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Form } from "../ui/form";
 import { AccountBadge } from "./AccountBadge";
 import { useSettingsStore } from "../zustand/settings";
 

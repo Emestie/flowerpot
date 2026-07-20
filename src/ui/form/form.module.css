@@ -1,0 +1,35 @@
+.form {
+    position: relative;
+    font-size: 1rem;
+}
+
+.form > *:not(:last-child) {
+    margin-bottom: 1em;
+}
+
+/* Loading overlay */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loaderWrapper {
+    position: relative;
+    opacity: 0.45;
+}
+
+/* Group */
+.group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.group > *:not(:last-child) {
+    margin-right: 0.25em;
+}
+
+.inline {
+    flex-direction: row;
+}

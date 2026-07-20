@@ -1,5 +1,6 @@
 import { Button } from "../../../ui/button";
-import { DropdownItemProps, Form } from "semantic-ui-react";
+import { DropdownItemProps } from "semantic-ui-react";
+import { Form } from "../../../ui/form";
 import { Header } from "../../../ui/header";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import { TNotificationsMode } from "../../../helpers/Settings";

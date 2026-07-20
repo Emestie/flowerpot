@@ -3,13 +3,28 @@
     font-weight: normal;
     font-style: normal;
     display: inline-flex;
+    flex-direction: column;
     color: var(--input-color, rgba(0, 0, 0, 0.87));
+}
+
+.label {
+    display: block;
+    margin: 0 0 0.28571429rem 0;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 0.92857143em;
+    font-weight: bold;
+    text-transform: none;
+}
+
+:global(html.FlowerpotDarkTheme) .label,
+:global(.FlowerpotDarkTheme) .label {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .input > input {
     margin: 0;
+    width: auto;
     max-width: 100%;
-    flex: 1 0 auto;
     outline: none;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     text-align: left;
@@ -74,7 +89,8 @@
 }
 
 .fluid > input {
-    width: 0;
+    flex: 1 0 auto;
+    width: 100%;
 }
 
 /* Sizes */
@@ -108,6 +124,18 @@
     border-top-color: rgba(0, 0, 0, 0.6);
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
+}
+
+.errorText {
+    margin-top: 0.28571429rem;
+    color: var(--input-error-color, #9f3a38);
+    font-size: 0.85714286em;
+    line-height: 1.21428571em;
+}
+
+:global(html.FlowerpotDarkTheme) .errorText,
+:global(.FlowerpotDarkTheme) .errorText {
+    color: var(--input-error-color, #f08a8a);
 }
 
 @keyframes spin {

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Container } from "../ui/container";
-import { Form, Icon } from "semantic-ui-react";
+import { Form } from "../ui/form";
+import { Icon } from "semantic-ui-react";
 import { Message } from "../ui/message";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import { PageLayout } from "../components/PageLayout";
