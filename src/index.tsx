@@ -1,6 +1,5 @@
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
-import "semantic-ui-css/semantic.min.css";
 import { App } from "./components/App";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./debug-fns";

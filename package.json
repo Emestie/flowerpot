@@ -27,6 +27,7 @@
         "dayjs": "^1.11.21",
         "electron-updater": "^6.1.9",
         "markdown-to-jsx": "^7.4.7",
+        "prop-types": "^15.8.1",
         "zustand": "^5.0.14"
     },
     "devDependencies": {
@@ -45,8 +46,6 @@
         "react-contextmenu": "^2.14.0",
         "react-dom": "^19.0.7",
         "sass": "^1.77.8",
-        "semantic-ui-css": "^2.5.0",
-        "semantic-ui-react": "^3.0.0-beta.2",
         "typescript": "~5.9.3",
         "unplugin-auto-expose": "0.0.2",
         "vite": "^6.0.15",

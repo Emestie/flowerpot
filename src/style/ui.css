@@ -1,3 +1,133 @@
+/* Base reset + typography (faithful port of the layout/font bits previously provided by semantic-ui-css) */
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 1.15;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background: #fff;
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.4285em;
+    color: rgba(0, 0, 0, 0.87);
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}
+
+p {
+    margin: 0 0 1em;
+    line-height: 1.4285em;
+}
+
+p:first-child {
+    margin-top: 0;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+small {
+    font-size: 80%;
+}
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+sup {
+    top: -0.5em;
+}
+
+b,
+strong {
+    font-weight: 700;
+}
+
+/* Heading scale (previously provided by semantic-ui-css) */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    line-height: 1.28571429em;
+    margin: calc(2rem - 0.14285714em) 0 1rem;
+    padding: 0;
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+    margin-top: -0.14285714em;
+}
+
+h1:last-child,
+h2:last-child,
+h3:last-child,
+h4:last-child,
+h5:last-child,
+h6:last-child {
+    margin-bottom: 0;
+}
+
+h1 {
+    min-height: 1rem;
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.71428571rem;
+}
+
+h3 {
+    font-size: 1.28571429rem;
+}
+
+h4 {
+    font-size: 1.07142857rem;
+}
+
+h5 {
+    font-size: 1rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+/* Text container (previously .ui.text.container) */
+.text.container {
+    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    max-width: 700px !important;
+    line-height: 1.5;
+    font-size: 1.14285714rem;
+}
+
 :root {
     --btn-bg: #e0e1e2;
     --btn-color: rgba(0, 0, 0, 0.6);
