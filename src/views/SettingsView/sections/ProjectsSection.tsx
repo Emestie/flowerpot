@@ -1,4 +1,4 @@
-import { Header } from "semantic-ui-react";
+import { Header } from "../../../ui/header";
 import { ProjectsSettingsTable } from "../../../components/tables/ProjectsSettingsTable";
 import { s } from "../../../values/Strings";
 

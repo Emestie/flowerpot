@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Header } from "semantic-ui-react";
+import { Header } from "../../ui/header";
 import { TView } from "../../types";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";

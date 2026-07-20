@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { Label, type TColor } from "../ui/label";
-import { Header, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
+import { Header } from "../ui/header";
 import { APP_EVENT_COLLAPSE_ALL, APP_EVENT_EXPAND_ALL } from "../events/collapse-expand";
 import { isDarkTheme } from "../helpers/Theme";
 import { tagPalette } from "../modules/palette";

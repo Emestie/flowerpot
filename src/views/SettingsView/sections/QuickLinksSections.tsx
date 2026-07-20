@@ -1,4 +1,4 @@
-import { Header } from "semantic-ui-react";
+import { Header } from "../../../ui/header";
 import { Checkbox } from "../../../ui/checkbox";
 import { LinksSettingsTable } from "../../../components/tables/LinksSettingsTable";
 import { s } from "../../../values/Strings";

@@ -1,7 +1,8 @@
 import { createRef, useCallback, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Label, type TColor } from "../ui/label";
-import { Container, Form, Header } from "semantic-ui-react";
+import { Container, Form } from "semantic-ui-react";
+import { Header } from "../ui/header";
 import { Message } from "../ui/message";
 import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";

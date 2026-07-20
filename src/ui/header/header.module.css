@@ -1,0 +1,38 @@
+.header {
+    display: block;
+    font-family: inherit;
+    font-weight: 700;
+    line-height: 1.2857em;
+    margin: calc(2rem - 0.1429em) 0 1rem;
+    padding: 0;
+    color: inherit;
+}
+
+.header:first-child {
+    margin-top: -0.1429em;
+}
+
+.dividing {
+    border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+    padding-bottom: 0.2143rem;
+    margin-bottom: 1rem;
+}
+
+.sub {
+    font-weight: 400;
+    font-size: 0.9286em;
+    line-height: 1.2857em;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.block {
+    display: block;
+}
+
+:global(.FlowerpotDarkTheme) .dividing {
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+:global(.FlowerpotDarkTheme) .sub {
+    color: rgba(255, 255, 255, 0.6);
+}

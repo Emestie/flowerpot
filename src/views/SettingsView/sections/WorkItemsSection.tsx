@@ -1,4 +1,5 @@
-import { DropdownItemProps, Form, Header } from "semantic-ui-react";
+import { DropdownItemProps, Form } from "semantic-ui-react";
+import { Header } from "../../../ui/header";
 import { Checkbox } from "../../../ui/checkbox";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import { TSortPattern } from "../../../helpers/Settings";

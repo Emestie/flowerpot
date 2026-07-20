@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { Container, Header } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
+import { Header } from "../ui/header";
 import { getApi } from "../api/client";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
