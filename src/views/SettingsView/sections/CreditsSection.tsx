@@ -1,5 +1,6 @@
 import { Label } from "../../../ui/label";
-import { DropdownItemProps, Icon } from "semantic-ui-react";
+import { DropdownItemProps } from "../../../ui/dropdown/dropdown-item-props";
+import { Icon } from "semantic-ui-react";
 import { Form } from "../../../ui/form";
 import { Header } from "../../../ui/header";
 import { Checkbox } from "../../../ui/checkbox";

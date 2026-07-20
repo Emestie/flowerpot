@@ -1,5 +1,5 @@
 import { Button } from "../../../ui/button";
-import { DropdownItemProps } from "semantic-ui-react";
+import { DropdownItemProps } from "../../../ui/dropdown/dropdown-item-props";
 import { Form } from "../../../ui/form";
 import { Header } from "../../../ui/header";
 import Platform, { PlatformType } from "../../../helpers/Platform";
