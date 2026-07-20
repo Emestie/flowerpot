@@ -1,0 +1,15 @@
+.container {
+    display: block;
+    width: 1127px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container:not(.fluid) {
+    width: 1127px;
+}
+
+.fluid {
+    width: 100%;
+}

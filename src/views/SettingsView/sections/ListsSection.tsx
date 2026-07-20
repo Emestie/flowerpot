@@ -1,5 +1,6 @@
 import { Label } from "../../../ui/label";
-import { Container, Icon } from "semantic-ui-react";
+import { Container } from "../../../ui/container";
+import { Icon } from "semantic-ui-react";
 import { Header } from "../../../ui/header";
 import { ListBlock } from "../../../components/ListBlock";
 import { s } from "../../../values/Strings";
