@@ -1,9 +1,9 @@
+import Platform, { PlatformType } from "../../../helpers/Platform";
+import { TSortPattern } from "../../../helpers/Settings";
+import { Checkbox } from "../../../ui/checkbox";
 import { DropdownItemProps } from "../../../ui/dropdown/dropdown-item-props";
 import { Form } from "../../../ui/form";
 import { Header } from "../../../ui/header";
-import { Checkbox } from "../../../ui/checkbox";
-import Platform, { PlatformType } from "../../../helpers/Platform";
-import { TSortPattern } from "../../../helpers/Settings";
 import { s } from "../../../values/Strings";
 import { TableScale, useSettingsStore } from "../../../zustand/settings";
 
@@ -142,6 +142,7 @@ export function AppearanceSection() {
             />
             <br />
             <Checkbox label={s("showEmptyQueries")} checked={showEmptyQueries} onChange={toggleShowEmptyQueries} />
+            <br />
             <br />
             <Form.Select
                 label={s("ddTableScale")}

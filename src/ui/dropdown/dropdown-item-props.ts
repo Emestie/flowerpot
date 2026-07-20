@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 export interface DropdownItemProps {
     key: string | number;
-    text: string;
+    text: ReactNode;
     value: string | number;
     disabled?: boolean;
     icon?: string;
