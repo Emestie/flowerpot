@@ -1,0 +1,229 @@
+.table {
+    width: 100%;
+    background: #fff;
+    margin: 1em 0;
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    box-shadow: none;
+    border-radius: 0.28571429rem;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.87);
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 1em;
+}
+
+.table:first-child {
+    margin-top: 0;
+}
+
+.table:last-child {
+    margin-bottom: 0;
+}
+
+.table th,
+.table td {
+    transition:
+        background 0.1s ease,
+        color 0.1s ease;
+}
+
+.table thead th {
+    cursor: auto;
+    background: #f9fafb;
+    text-align: inherit;
+    color: rgba(0, 0, 0, 0.87);
+    padding: 0.92857143em 0.78571429em;
+    vertical-align: inherit;
+    font-style: none;
+    font-weight: 700;
+    text-transform: none;
+    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+    border-left: none;
+}
+
+.table thead tr > th:first-child {
+    border-left: none;
+}
+
+.table thead tr:first-child > th:first-child {
+    border-radius: 0.28571429rem 0 0 0;
+}
+
+.table thead tr:first-child > th:last-child {
+    border-radius: 0 0.28571429rem 0 0;
+}
+
+.table tfoot th {
+    cursor: auto;
+    border-top: 1px solid rgba(34, 36, 38, 0.15);
+    background: #f9fafb;
+    text-align: inherit;
+    color: rgba(0, 0, 0, 0.87);
+    padding: 0.78571429em 0.78571429em;
+    vertical-align: middle;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: none;
+}
+
+.table tfoot tr > th:first-child {
+    border-left: none;
+}
+
+.table tfoot tr:first-child > th:first-child {
+    border-radius: 0 0 0 0.28571429rem;
+}
+
+.table tfoot tr:first-child > th:last-child {
+    border-radius: 0 0 0.28571429rem 0;
+}
+
+.table tr td {
+    border-top: 1px solid rgba(34, 36, 38, 0.1);
+}
+
+.table tr:first-child td {
+    border-top: none;
+}
+
+.table td {
+    padding: 0.78571429em 0.78571429em;
+    text-align: inherit;
+}
+
+/* Celled */
+.table.celled {
+    border-collapse: separate;
+}
+
+.table.celled th,
+.table.celled td {
+    border: 1px solid rgba(34, 36, 38, 0.1);
+}
+
+.table.celled thead tr th,
+.table.celled tfoot tr th {
+    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+}
+
+.table.celled tr td:first-child {
+    border-left: none;
+}
+
+.table.celled tr th:first-child {
+    border-left: none;
+}
+
+.table.celled tr:first-child td {
+    border-top: none;
+}
+
+.table.celled thead tr:first-child th {
+    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+}
+
+/* Compact */
+.table.compact th,
+.table.compact td {
+    padding: 0.5em 0.7em;
+}
+
+.table.compact.celled th,
+.table.compact.celled td {
+    padding: 0.4em 0.7em;
+}
+
+/* Sizes */
+.table.small {
+    font-size: 0.9em;
+}
+
+.table.small th,
+.table.small td {
+    padding: 0.2em 0.6em;
+}
+
+.table.large {
+    font-size: 1.1em;
+}
+
+.table.large th,
+.table.large td {
+    padding: 1em 1em;
+}
+
+/* Collapsing */
+.table th.collapsing,
+.table td.collapsing {
+    width: 1px;
+    white-space: nowrap;
+}
+
+/* Negative row */
+.table tr.negative td {
+    background: #fff0f0;
+    color: #9f3a38;
+    border-color: #e8c4c4;
+}
+
+.table tr.negative:hover td {
+    background: #ffe7e7;
+    color: #933624;
+}
+
+/* Footer full width */
+.table tfoot.fullWidth th {
+    text-align: left;
+}
+
+/* Hover row (settings tables) */
+.table tbody tr:hover td {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* Dark theme */
+:global(html.FlowerpotDarkTheme) .table,
+:global(.FlowerpotDarkTheme) .table {
+    background: #1b1c1d;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+:global(html.FlowerpotDarkTheme) .table thead th,
+:global(.FlowerpotDarkTheme) .table thead th,
+:global(html.FlowerpotDarkTheme) .table tfoot th,
+:global(.FlowerpotDarkTheme) .table tfoot th {
+    background: #212223;
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(html.FlowerpotDarkTheme) .table tr td,
+:global(.FlowerpotDarkTheme) .table tr td {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(html.FlowerpotDarkTheme) .table.celled th,
+:global(.FlowerpotDarkTheme) .table.celled th,
+:global(html.FlowerpotDarkTheme) .table.celled td,
+:global(.FlowerpotDarkTheme) .table.celled td {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(html.FlowerpotDarkTheme) .table tbody tr:hover td,
+:global(.FlowerpotDarkTheme) .table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+:global(html.FlowerpotDarkTheme) .table tr.negative td,
+:global(.FlowerpotDarkTheme) .table tr.negative td {
+    background: #3a1f1f;
+    color: #ff8a85;
+    border-color: #5c2f2f;
+}
+
+:global(html.FlowerpotDarkTheme) .table tr.negative:hover td,
+:global(.FlowerpotDarkTheme) .table tr.negative:hover td {
+    background: #4a2626;
+    color: #ff9d99;
+}

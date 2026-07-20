@@ -1,5 +1,6 @@
 import { Button } from "../../ui/button";
-import { Icon, Table } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
+import { Table } from "../../ui/table";
 import { s } from "../../values/Strings";
 import Links, { LINKS_COUNT_LIMIT } from "../../helpers/Links";
 import ColorPicker from "../ColorPicker";
@@ -79,7 +80,7 @@ export function LinksSettingsTable() {
             <Table.Body>{rows}</Table.Body>
             <Table.Footer fullWidth>
                 <Table.Row>
-                    <Table.HeaderCell colSpan="6">
+                    <Table.HeaderCell colSpan={6}>
                         <Button
                             disabled={links.length >= LINKS_COUNT_LIMIT}
                             icon

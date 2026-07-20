@@ -1,6 +1,7 @@
 import { Button } from "../../ui/button";
 import { Checkbox } from "../../ui/checkbox";
-import { Icon, Table } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
+import { Table } from "../../ui/table";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
 import { s } from "../../values/Strings";
@@ -92,7 +93,7 @@ export function QueriesSettingsTable() {
             <Table.Footer fullWidth>
                 <Table.Row>
                     <Table.HeaderCell />
-                    <Table.HeaderCell colSpan="6">
+                    <Table.HeaderCell colSpan={6}>
                         <Button icon labelPosition="left" primary size="small" onClick={openQuerySelector}>
                             <Icon name="add" /> {s("addQuery")}
                         </Button>

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { Icon, Table } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
+import { Table } from "../../ui/table";
 import { Message } from "../../ui/message";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
 import { s } from "../../values/Strings";
