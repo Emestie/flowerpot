@@ -21,6 +21,7 @@ import { DialogsContainer } from "../views/containers/DialogsContainer";
 import { useAppStore } from "../zustand/app";
 import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
+import { HashRouterProvider, parseHash } from "../features/hash-router";
 
 export function App() {
     const view = useAppStore((state) => state.view);
@@ -87,10 +88,12 @@ export function App() {
             Platform.current.checkForUpdates(true);
 
             setTimeout(() => {
-                if (Platform.current.isDev()) {
-                    setView("debug");
-                } else {
-                    setView("main");
+                if (!parseHash()) {
+                    if (Platform.current.isDev()) {
+                        setView("debug");
+                    } else {
+                        setView("main");
+                    }
                 }
 
                 setWIChangesCollection();
@@ -135,8 +138,10 @@ export function App() {
 
     return (
         <div className={isDark ? "FlowerpotDarkTheme" : ""}>
-            <DialogsContainer />
-            {scene}
+            <HashRouterProvider>
+                <DialogsContainer />
+                {scene}
+            </HashRouterProvider>
         </div>
     );
 }
