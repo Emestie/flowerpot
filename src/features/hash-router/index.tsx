@@ -80,6 +80,7 @@ export function HashRouterProvider({ children }: { children: React.ReactNode }) 
     const settingsSection = useSettingsStore((s) => s.settingsSection);
 
     const initialSyncDone = useRef(false);
+    const prevView = useRef(view);
 
     useEffect(() => {
         const syncToStore = () => {
@@ -108,8 +109,13 @@ export function HashRouterProvider({ children }: { children: React.ReactNode }) 
         if (view === "loading") return;
         const hash = buildHash(view, viewParams, settingsSection);
         if (window.location.hash !== hash) {
-            window.history.pushState(null, "", hash);
+            if (view !== prevView.current) {
+                window.history.pushState(null, "", hash);
+            } else {
+                window.history.replaceState(null, "", hash);
+            }
         }
+        prevView.current = view;
     }, [view, viewParams, settingsSection]);
 
     return <>{children}</>;
