@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useAppStore } from "../../zustand/app";
+import { Sections, useSettingsStore } from "../../zustand/settings";
 import { TView } from "../../types";
 
 export interface IHashRoute {
     view: TView;
     params: Record<string, string>;
+    settingsSection?: Sections;
 }
 
 const validViews: TView[] = [
@@ -19,6 +21,16 @@ const validViews: TView[] = [
     "refreshhelper",
     "info",
 ];
+
+const sectionToUrlName = (section: Sections): string =>
+    Sections[section].toLowerCase();
+
+const urlNameToSection = (name: string): Sections | undefined => {
+    const key = Object.keys(Sections).find(
+        (k) => k.toLowerCase() === name
+    ) as keyof typeof Sections | undefined;
+    return key != null ? Sections[key] : undefined;
+};
 
 export function parseHash(hash?: string): IHashRoute | null {
     const h = hash ?? window.location.hash;
@@ -36,13 +48,26 @@ export function parseHash(hash?: string): IHashRoute | null {
         });
     }
 
-    return { view: viewPart as TView, params };
+    const sectionName = params["section"]?.toLowerCase();
+    const settingsSection =
+        viewPart === "settings" && sectionName ? urlNameToSection(sectionName) : undefined;
+
+    return { view: viewPart as TView, params, settingsSection };
 }
 
-export function buildHash(view: TView, params: Record<string, any> = {}): string {
+export function buildHash(
+    view: TView,
+    params?: Record<string, any>,
+    settingsSection?: Sections
+): string {
     const sp = new URLSearchParams();
-    for (const [k, v] of Object.entries(params)) {
-        if (v != null) sp.set(k, String(v));
+    if (view === "settings" && settingsSection != null) {
+        sp.set("section", sectionToUrlName(settingsSection));
+    }
+    if (params) {
+        for (const [k, v] of Object.entries(params)) {
+            if (v != null && k !== "section") sp.set(k, String(v));
+        }
     }
     const s = sp.toString();
     return s ? `#/${view}?${s}` : `#/${view}`;
@@ -51,29 +76,30 @@ export function buildHash(view: TView, params: Record<string, any> = {}): string
 export function HashRouterProvider({ children }: { children: React.ReactNode }) {
     const view = useAppStore((s) => s.view);
     const viewParams = useAppStore((s) => s.viewParams);
+    const settingsSection = useSettingsStore((s) => s.settingsSection);
 
     useEffect(() => {
-        const hash = buildHash(view, viewParams);
+        const hash = buildHash(view, viewParams, settingsSection);
         if (window.location.hash !== hash) {
             window.history.replaceState(null, "", hash);
         }
-    }, [view, viewParams]);
+    }, [view, viewParams, settingsSection]);
 
     useEffect(() => {
-        const onHashChange = () => {
+        const syncToStore = () => {
             const route = parseHash();
             if (route) {
                 useAppStore.getState().setView(route.view, route.params);
+                if (route.settingsSection != null) {
+                    useSettingsStore.getState().setSettingsSection(route.settingsSection);
+                }
             }
         };
 
-        const route = parseHash();
-        if (route) {
-            useAppStore.getState().setView(route.view, route.params);
-        }
+        syncToStore();
 
-        window.addEventListener("hashchange", onHashChange);
-        return () => window.removeEventListener("hashchange", onHashChange);
+        window.addEventListener("hashchange", syncToStore);
+        return () => window.removeEventListener("hashchange", syncToStore);
     }, []);
 
     return <>{children}</>;
