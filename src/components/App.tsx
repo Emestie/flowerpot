@@ -88,7 +88,8 @@ export function App() {
             Platform.current.checkForUpdates(true);
 
             setTimeout(() => {
-                if (!parseHash()) {
+                const route = parseHash();
+                if (!route || route.view === "loading") {
                     if (Platform.current.isDev()) {
                         setView("debug");
                     } else {

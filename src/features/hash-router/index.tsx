@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppStore } from "../../zustand/app";
 import { Sections, useSettingsStore } from "../../zustand/settings";
 import { TView } from "../../types";
@@ -37,7 +37,8 @@ export function parseHash(hash?: string): IHashRoute | null {
     if (!h || h === "#") return null;
 
     const withoutHash = h.startsWith("#") ? h.slice(1) : h;
-    const [viewPart, searchPart] = withoutHash.split("?");
+    const trimmed = withoutHash.startsWith("/") ? withoutHash.slice(1) : withoutHash;
+    const [viewPart, searchPart] = trimmed.split("?");
 
     if (!validViews.includes(viewPart as TView)) return null;
 
@@ -78,12 +79,7 @@ export function HashRouterProvider({ children }: { children: React.ReactNode }) 
     const viewParams = useAppStore((s) => s.viewParams);
     const settingsSection = useSettingsStore((s) => s.settingsSection);
 
-    useEffect(() => {
-        const hash = buildHash(view, viewParams, settingsSection);
-        if (window.location.hash !== hash) {
-            window.history.replaceState(null, "", hash);
-        }
-    }, [view, viewParams, settingsSection]);
+    const initialSyncDone = useRef(false);
 
     useEffect(() => {
         const syncToStore = () => {
@@ -97,10 +93,24 @@ export function HashRouterProvider({ children }: { children: React.ReactNode }) 
         };
 
         syncToStore();
+        initialSyncDone.current = true;
 
         window.addEventListener("hashchange", syncToStore);
-        return () => window.removeEventListener("hashchange", syncToStore);
+        window.addEventListener("popstate", syncToStore);
+        return () => {
+            window.removeEventListener("hashchange", syncToStore);
+            window.removeEventListener("popstate", syncToStore);
+        };
     }, []);
+
+    useEffect(() => {
+        if (!initialSyncDone.current) return;
+        if (view === "loading") return;
+        const hash = buildHash(view, viewParams, settingsSection);
+        if (window.location.hash !== hash) {
+            window.history.pushState(null, "", hash);
+        }
+    }, [view, viewParams, settingsSection]);
 
     return <>{children}</>;
 }
