@@ -1,5 +1,5 @@
 import Platform, { PlatformType } from "../../../helpers/Platform";
-import { TSortPattern } from "../../../helpers/Settings";
+import { TColorScheme, TSortPattern, TTheme } from "../../../helpers/Settings";
 import { Checkbox } from "../../../ui/checkbox";
 import { DropdownItemProps } from "../../../ui/dropdown/dropdown-item-props";
 import { Form } from "../../../ui/form";
@@ -17,6 +17,16 @@ const getTableScales: () => DropdownItemProps[] = () => [
     { key: 0, text: s("tableSizeSmall"), value: 0 },
     { key: 1, text: s("tableSizeMedium"), value: 1 },
     { key: 2, text: s("tableSizeLarge"), value: 2 },
+];
+
+const getColorSchemes: () => DropdownItemProps[] = () => [
+    { key: 1, text: s("colorSchemeClassic"), value: "classic" },
+];
+
+const getThemes: () => DropdownItemProps[] = () => [
+    { key: 1, text: s("themeLight"), value: "light" },
+    { key: 2, text: s("themeDark"), value: "dark" },
+    { key: 3, text: s("themeSystem"), value: "system" },
 ];
 
 const getRefreshRates: () => DropdownItemProps[] = () => [
@@ -37,6 +47,8 @@ export function AppearanceSection() {
     const refreshRate = useSettingsStore((state) => state.refreshRate);
     const sortPattern = useSettingsStore((state) => state.sortPattern);
     const tableScale = useSettingsStore((state) => state.tableScale);
+    const theme = useSettingsStore((state) => state.theme);
+    const colorScheme = useSettingsStore((state) => state.colorScheme);
     const setShowUnreads = useSettingsStore((state) => state.setShowUnreads);
     const setIconChangesOnMyWorkItemsOnly = useSettingsStore((state) => state.setIconChangesOnMyWorkItemsOnly);
     const setMineOnTop = useSettingsStore((state) => state.setMineOnTop);
@@ -46,10 +58,13 @@ export function AppearanceSection() {
     const setTableScale = useSettingsStore((state) => state.setTableScale);
     const setRefreshRate = useSettingsStore((state) => state.setRefreshRate);
     const setSortPattern = useSettingsStore((state) => state.setSortPattern);
+    const setTheme = useSettingsStore((state) => state.setTheme);
 
     const refreshRates = getRefreshRates();
+    const colorSchemes = getColorSchemes();
     const tableScales = getTableScales();
     const sortPatterns = getSortPatterns();
+    const themes = getThemes();
 
     if (Platform.current.isDev()) {
         if (refreshRates.length !== 6)
@@ -96,8 +111,49 @@ export function AppearanceSection() {
         setSortPattern(val);
     };
 
+    const onThemeSelect = (val: TTheme) => {
+        setTheme(val);
+    };
+
     return (
         <>
+            <Header as="h3" dividing>
+                {s("settingsThemesHeader")}
+            </Header>
+            <Form.Select
+                label={s("ddThemeLabel")}
+                options={themes}
+                value={theme}
+                onChange={(e, { value }) => onThemeSelect(value as TTheme)}
+            />
+            <br />
+            <Form.Select
+                label={s("ddColorSchemeLabel")}
+                options={colorSchemes}
+                value={colorScheme}
+                disabled
+            />
+            <br />
+            <Form.Select
+                label={s("ddTableScale")}
+                options={tableScales}
+                value={tableScale}
+                onChange={(e, { value }) => onTableScaleSelect(value as TableScale)}
+            />
+            <br />
+            <Checkbox
+                label={s("enableIterationColors")}
+                checked={enableIterationColors}
+                onChange={toggleIterationColors}
+            />
+            <br />
+            <Checkbox
+                label={s("enableQueryColorCode")}
+                checked={enableQueryColorCode}
+                onChange={toggleQueryColorCode}
+            />
+            <br />
+            <br />
             <Header as="h3" dividing>
                 {s("settingsWIHeader")}
             </Header>
@@ -129,27 +185,7 @@ export function AppearanceSection() {
             <br />
             <Checkbox label={s("showUnreads")} checked={showUnreads} onChange={toggleShowUnreads} />
             <br />
-            <Checkbox
-                label={s("enableIterationColors")}
-                checked={enableIterationColors}
-                onChange={toggleIterationColors}
-            />
-            <br />
-            <Checkbox
-                label={s("enableQueryColorCode")}
-                checked={enableQueryColorCode}
-                onChange={toggleQueryColorCode}
-            />
-            <br />
             <Checkbox label={s("showEmptyQueries")} checked={showEmptyQueries} onChange={toggleShowEmptyQueries} />
-            <br />
-            <br />
-            <Form.Select
-                label={s("ddTableScale")}
-                options={tableScales}
-                value={tableScale}
-                onChange={(e, { value }) => onTableScaleSelect(value as TableScale)}
-            />
             <br />
         </>
     );

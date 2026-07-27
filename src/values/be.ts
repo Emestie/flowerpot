@@ -115,7 +115,7 @@ const be: LocalizedStrings = {
     sortPattern: "Сартаванне вынікаў запыту: ",
     //lists
     mineOnTop: "Паказваць мае працоўныя элементы першымі",
-    settingsWIHeader: "Знешні выгляд",
+    settingsWIHeader: "Паводзіны",
     favoritesDescription: "ID працоўных элементаў, якія будуць пазначаны зорачкай.",
     favorites: "Абранае",
     forwardedDescription: "ID працоўных элементаў, якія будуць пазначаны стрэлкай.",
@@ -339,9 +339,13 @@ const be: LocalizedStrings = {
 
     openWebVersion: "Адкрыць вэб-версію Flowerpot",
 
-    themeLight: "Светлая тэма",
-    themeDark: "Цёмная тэма",
-    themeSystem: "Сістэмная тэма (паводле наладак АС)",
+    themeLight: "Светлая",
+    themeDark: "Цёмная",
+    themeSystem: "Сістэмная",
+    settingsThemesHeader: "Інтэрфейс",
+    ddThemeLabel: "Тэма: ",
+    ddColorSchemeLabel: "Колеравая схема: ",
+    colorSchemeClassic: "Класічная",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тып: ",

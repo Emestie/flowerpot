@@ -3,6 +3,7 @@ import Settings, {
     IAccount,
     IListItem,
     ISettings,
+    TColorScheme,
     TLists,
     TNotificationsMode,
     TSortPattern,
@@ -39,6 +40,7 @@ export interface SettingsState extends ISettings {
     toggleCollapsedBlock: (blockId: string) => void;
     setSettingsSection: (section: Sections) => void;
     setTheme: (theme: TTheme) => void;
+    setColorScheme: (colorScheme: TColorScheme) => void;
     setRefreshRate: (refreshRate: number) => void;
     setSortPattern: (sortPattern: TSortPattern) => void;
     setNotificationsMode: (notificationsMode: TNotificationsMode) => void;
@@ -87,6 +89,7 @@ const initialState: ISettings = {
     links: [],
     hiddenPrs: [],
     theme: "system",
+    colorScheme: "classic",
     darkTheme: undefined,
     allowTelemetry: true,
     showUnreads: true,
@@ -170,6 +173,11 @@ export const useSettingsStore = create<SettingsState>()(
         setTheme(theme) {
             set({ theme });
             saveSettings({ ...get(), theme });
+        },
+
+        setColorScheme(colorScheme) {
+            set({ colorScheme });
+            saveSettings({ ...get(), colorScheme });
         },
 
         setRefreshRate(refreshRate) {

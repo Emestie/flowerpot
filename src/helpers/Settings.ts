@@ -10,6 +10,7 @@ import Platform from "./Platform";
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
 export type TTheme = "light" | "dark" | "system";
+export type TColorScheme = "classic";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned" | "forwarded";
 
 export interface IAccount {
@@ -64,6 +65,7 @@ export interface ISettings {
     links: ILinkItem[];
     hiddenPrs: IHiddenPr[];
     theme: TTheme;
+    colorScheme: TColorScheme;
     /** @deprecated Use `theme` instead */
     darkTheme: boolean | undefined;
     allowTelemetry: boolean;

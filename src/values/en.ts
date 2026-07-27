@@ -114,7 +114,7 @@ const en = {
     sortPattern: "Work Items sort pattern: ",
     //lists
     mineOnTop: "Show my Work Items on top",
-    settingsWIHeader: "Appearance",
+    settingsWIHeader: "Behavior",
     favoritesDescription: "IDs of Work Items you will see marked with a star.",
     favorites: "Favorites",
     forwardedDescription: "IDs of Work Items you will see marked with an arrow.",
@@ -337,9 +337,13 @@ const en = {
 
     openWebVersion: "Open web version of Flowerpot",
 
-    themeLight: "Light theme",
-    themeDark: "Dark theme",
-    themeSystem: "System theme (follows OS setting)",
+    themeLight: "Light",
+    themeDark: "Dark",
+    themeSystem: "System",
+    settingsThemesHeader: "Interface",
+    ddThemeLabel: "Theme: ",
+    ddColorSchemeLabel: "Color scheme: ",
+    colorSchemeClassic: "Classic",
 
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",

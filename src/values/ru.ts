@@ -115,7 +115,7 @@ const ru: LocalizedStrings = {
     sortPattern: "Сортировка результатов запроса: ",
     //lists
     mineOnTop: "Показывать мои рабочие элементы первыми",
-    settingsWIHeader: "Внешний вид",
+    settingsWIHeader: "Поведение",
     favoritesDescription: "ID рабочих элементов, которые будут помечены звездочкой.",
     favorites: "Избранные",
     forwardedDescription: "ID рабочих элементов, которые будут помечены стрелкой.",
@@ -339,9 +339,13 @@ const ru: LocalizedStrings = {
 
     openWebVersion: "Открыть веб-версию Flowerpot",
 
-    themeLight: "Светлая тема",
-    themeDark: "Тёмная тема",
-    themeSystem: "Системная тема (по настройкам ОС)",
+    themeLight: "Светлая",
+    themeDark: "Тёмная",
+    themeSystem: "Системная",
+    settingsThemesHeader: "Интерфейс",
+    ddThemeLabel: "Тема: ",
+    ddColorSchemeLabel: "Цветовая схема: ",
+    colorSchemeClassic: "Классическая",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тип: ",
