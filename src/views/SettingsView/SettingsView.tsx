@@ -155,6 +155,7 @@ export function SettingsView() {
                 key={i}
                 as="a"
                 active={section.id === settingsSection}
+                className="sidebarMenuItem"
                 onClick={
                     section.id === Sections.Credits
                         ? handleCreditsClick
