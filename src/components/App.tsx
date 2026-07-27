@@ -138,7 +138,7 @@ export function App() {
     const scene = getScene(view);
 
     return (
-        <div className={isDark ? "FlowerpotDarkTheme" : ""}>
+        <div className={isDark ? "FlowerpotDarkTheme" : ""} style={{ height: "100%" }}>
             <HashRouterProvider>
                 <DialogsContainer />
                 {scene}
