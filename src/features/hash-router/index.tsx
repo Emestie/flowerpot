@@ -22,13 +22,10 @@ const validViews: TView[] = [
     "info",
 ];
 
-const sectionToUrlName = (section: Sections): string =>
-    Sections[section].toLowerCase();
+const sectionToUrlName = (section: Sections): string => Sections[section].toLowerCase();
 
 const urlNameToSection = (name: string): Sections | undefined => {
-    const key = Object.keys(Sections).find(
-        (k) => k.toLowerCase() === name
-    ) as keyof typeof Sections | undefined;
+    const key = Object.keys(Sections).find((k) => k.toLowerCase() === name) as keyof typeof Sections | undefined;
     return key != null ? Sections[key] : undefined;
 };
 
@@ -50,17 +47,12 @@ export function parseHash(hash?: string): IHashRoute | null {
     }
 
     const sectionName = params["section"]?.toLowerCase();
-    const settingsSection =
-        viewPart === "settings" && sectionName ? urlNameToSection(sectionName) : undefined;
+    const settingsSection = viewPart === "settings" && sectionName ? urlNameToSection(sectionName) : undefined;
 
     return { view: viewPart as TView, params, settingsSection };
 }
 
-export function buildHash(
-    view: TView,
-    params?: Record<string, any>,
-    settingsSection?: Sections
-): string {
+export function buildHash(view: TView, params?: Record<string, any>, settingsSection?: Sections): string {
     const sp = new URLSearchParams();
     if (view === "settings" && settingsSection != null) {
         sp.set("section", sectionToUrlName(settingsSection));

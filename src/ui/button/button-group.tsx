@@ -10,14 +10,7 @@ export interface ButtonGroupProps {
     style?: Record<string, string>;
 }
 
-export const ButtonGroup: FC<ButtonGroupProps> = ({
-    size,
-    compact,
-    icon,
-    className,
-    children,
-    style,
-}) => {
+export const ButtonGroup: FC<ButtonGroupProps> = ({ size, compact, icon, className, children, style }) => {
     const classNames = [
         groupStyles.group,
         size && groupStyles[size],

@@ -1,12 +1,12 @@
 .table {
     width: 100%;
-    background: #fff;
+    background: var(--table-bg, #fff);
     margin: 1em 0;
-    border: 1px solid rgba(34, 36, 38, 0.15);
+    border: 1px solid var(--table-border, rgba(34, 36, 38, 0.15));
     box-shadow: none;
     border-radius: 0.28571429rem;
     text-align: left;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--table-color, rgba(0, 0, 0, 0.87));
     border-collapse: separate;
     border-spacing: 0;
     font-size: 1em;
@@ -29,15 +29,15 @@
 
 .table thead th {
     cursor: auto;
-    background: #f9fafb;
+    background: var(--table-header-bg, #f9fafb);
     text-align: inherit;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--table-header-color, rgba(0, 0, 0, 0.87));
     padding: 0.92857143em 0.78571429em;
     vertical-align: inherit;
     font-style: none;
     font-weight: 700;
     text-transform: none;
-    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+    border-bottom: 1px solid var(--table-border, rgba(34, 36, 38, 0.1));
     border-left: none;
 }
 
@@ -55,10 +55,10 @@
 
 .table tfoot th {
     cursor: auto;
-    border-top: 1px solid rgba(34, 36, 38, 0.15);
-    background: #f9fafb;
+    border-top: 1px solid var(--table-border, rgba(34, 36, 38, 0.15));
+    background: var(--table-header-bg, #f9fafb);
     text-align: inherit;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--table-header-color, rgba(0, 0, 0, 0.87));
     padding: 0.78571429em 0.78571429em;
     vertical-align: middle;
     font-style: normal;
@@ -79,7 +79,7 @@
 }
 
 .table tr td {
-    border-top: 1px solid rgba(34, 36, 38, 0.1);
+    border-top: 1px solid var(--table-border, rgba(34, 36, 38, 0.1));
 }
 
 .table tr:first-child td {
@@ -184,42 +184,42 @@
 /* Dark theme */
 :global(html.FlowerpotDarkTheme) .table,
 :global(.FlowerpotDarkTheme) .table {
-    background: #1b1c1d;
-    border-color: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.9);
+    background: var(--table-bg, #1b1c1d);
+    border-color: var(--table-border, rgba(255, 255, 255, 0.1));
+    color: var(--table-color, rgba(255, 255, 255, 0.9));
 }
 
 :global(html.FlowerpotDarkTheme) .table thead th,
 :global(.FlowerpotDarkTheme) .table thead th,
 :global(html.FlowerpotDarkTheme) .table tfoot th,
 :global(.FlowerpotDarkTheme) .table tfoot th {
-    background: #212223;
-    color: rgba(255, 255, 255, 0.9);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: var(--table-header-bg, #212223);
+    color: var(--table-header-color, rgba(255, 255, 255, 0.9));
+    border-color: var(--table-border, rgba(255, 255, 255, 0.1));
 }
 
 :global(html.FlowerpotDarkTheme) .table tr td,
 :global(.FlowerpotDarkTheme) .table tr td {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-top-color: var(--table-border, rgba(255, 255, 255, 0.1));
 }
 
 :global(html.FlowerpotDarkTheme) .table.celled th,
 :global(.FlowerpotDarkTheme) .table.celled th,
 :global(html.FlowerpotDarkTheme) .table.celled td,
 :global(.FlowerpotDarkTheme) .table.celled td {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--table-border, rgba(255, 255, 255, 0.1));
 }
 
 :global(html.FlowerpotDarkTheme) .table tbody tr:hover td,
 :global(.FlowerpotDarkTheme) .table tbody tr:hover td {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--table-hover-bg, rgba(255, 255, 255, 0.06));
 }
 
 :global(html.FlowerpotDarkTheme) .table tr.negative td,
 :global(.FlowerpotDarkTheme) .table tr.negative td {
     background: #3a1f1f;
     color: #ff8a85;
-    border-color: #5c2f2f;
+    border-color: #c48888;
 }
 
 :global(html.FlowerpotDarkTheme) .table tr.negative:hover td,

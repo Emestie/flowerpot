@@ -24,9 +24,7 @@ export function PRReviewer({ reviewer, accountId }: P) {
     return (
         <span title={reviewer.name + (reviewer.isRequired ? ` (${s("requiredReviewer")})` : "")}>
             <span className={styles.label}>
-                <span
-                    className={`${styles.avatarWrap}${reviewer.isRequired ? ` ${styles.requiredBorder}` : ""}`}
-                >
+                <span className={`${styles.avatarWrap}${reviewer.isRequired ? ` ${styles.requiredBorder}` : ""}`}>
                     <img className={styles.avatar} src={avatar ?? undefined} alt="" />
                 </span>
                 {getStatusIcon(reviewer.vote)}

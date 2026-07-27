@@ -12,12 +12,7 @@ export function Tag(props: IProps) {
     const color = tagPalette.getColor(text).hex;
 
     return (
-        <Label
-            key={Math.random()}
-            size="mini"
-            customColor={color}
-            style={{ marginRight: 2 }}
-        >
+        <Label key={Math.random()} size="mini" customColor={color} style={{ marginRight: 2 }}>
             <HighlightenText text={text} />
         </Label>
     );

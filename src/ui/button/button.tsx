@@ -56,13 +56,7 @@ export const Button: FC<ButtonProps> = ({
         .join(" ");
 
     return (
-        <button
-            className={classNames}
-            disabled={disabled || loading}
-            title={title}
-            onClick={onClick}
-            style={style}
-        >
+        <button className={classNames} disabled={disabled || loading} title={title} onClick={onClick} style={style}>
             {children}
             {loading && <span className={styles.loader} />}
         </button>

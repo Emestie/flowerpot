@@ -6,6 +6,7 @@ import "./debug-fns";
 import "./style/ui.css";
 import "./style/style-dark-override.scss";
 import "./style/style.scss";
+import "./style/schemes/flexoki.css";
 
 let remountKey = 0;
 const render = () => {

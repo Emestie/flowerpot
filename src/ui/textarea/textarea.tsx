@@ -22,12 +22,7 @@ export const TextArea: FC<TextAreaProps> = ({
     disabled,
     error,
 }) => {
-    const classNames = [
-        styles.textarea,
-        error && styles.error,
-        disabled && styles.disabled,
-        className,
-    ]
+    const classNames = [styles.textarea, error && styles.error, disabled && styles.disabled, className]
         .filter(Boolean)
         .join(" ");
 

@@ -18,13 +18,7 @@ export function QuickLinksContainer() {
     };
 
     const items = sortedLinks.map((x) => (
-        <Label
-            key={x.url}
-            color={x.color as TColor}
-            onClick={() => openLink(x.url)}
-            size="mini"
-            basic
-        >
+        <Label key={x.url} color={x.color as TColor} onClick={() => openLink(x.url)} size="mini" basic>
             {x.name}
         </Label>
     ));

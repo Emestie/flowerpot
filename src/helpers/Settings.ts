@@ -10,7 +10,7 @@ import Platform from "./Platform";
 export type TSortPattern = "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
 export type TTheme = "light" | "dark" | "system";
-export type TColorScheme = "classic";
+export type TColorScheme = "classic" | "flexoki";
 export type TLists = "permawatch" | "favorites" | "deferred" | "hidden" | "keywords" | "pinned" | "forwarded";
 
 export interface IAccount {

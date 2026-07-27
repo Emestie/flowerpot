@@ -55,6 +55,37 @@ Tech stack: Electron 19, React 19, TypeScript, Vite 6, Zustand, Semantic UI Reac
 - Settings: Managed via `src/helpers/Settings.ts` and Zustand `settings` store
 - Notifications: Handled in main process via IPC, renderer triggers via `#preload` API
 
+## Color Schemes
+
+Color scheme switching uses a `.scheme-{name}` class on `<html>` + root `<div>`, orthogonal to `.FlowerpotDarkTheme`.
+
+To add a new scheme:
+
+1. Create `src/style/schemes/{name}.css` with three blocks:
+   - `.scheme-{name}` — light mode CSS variables + Semantic UI overrides
+   - `.scheme-{name}.FlowerpotDarkTheme` — dark mode CSS variables + overrides
+2. Import it in `src/index.tsx`
+3. Add the scheme name to `TColorScheme` type in `src/helpers/Settings.ts`
+4. Add a `colorScheme{Name}` localization string to `src/values/{en,ru,be}.ts`
+5. Add the option in the dropdown in `src/views/SettingsView/sections/WorkItemsSection.tsx`
+
+### CSS Variable Contract
+
+Components expect these CSS variables (with fallback defaults in `src/style/ui.css`):
+
+| Category | Variables |
+|---|---|
+| Buttons | `--btn-bg`, `--btn-color`, `--btn-hover-bg`, `--btn-hover-color`, `--btn-active-bg`, `--btn-active-color`, `--btn-primary-bg`, `--btn-primary-hover-bg`, `--btn-primary-focus-bg`, `--btn-primary-active-bg`, `--btn-shadow-color`, `--btn-basic-border`, `--btn-basic-hover-bg`, `--btn-basic-hover-color`, `--btn-basic-hover-border`, `--btn-basic-active-bg`, `--btn-basic-active-color`, `--btn-group-border` |
+| Inputs | `--input-bg`, `--input-color`, `--input-border`, `--input-focus-border`, `--input-focus-bg`, `--input-focus-placeholder`, `--input-active-border`, `--input-active-bg`, `--input-placeholder`, `--input-error-bg`, `--input-error-border`, `--input-error-color`, `--input-error-placeholder`, `--input-error-placeholder-focus` |
+| Radio | `--radio-color`, `--radio-border`, `--radio-bg`, `--radio-dot`, `--radio-hover-border`, `--radio-focus-border` |
+| Checkbox | `--checkbox-color`, `--checkbox-border`, `--checkbox-bg`, `--checkbox-checked-bg`, `--checkbox-checked-color`, `--checkbox-hover-border`, `--checkbox-focus-border` |
+| Menu | `--menu-bg`, `--menu-item-color`, `--menu-item-active-bg`, `--menu-item-active-color`, `--menu-item-hover-bg`, `--menu-item-hover-color`, `--menu-item-active-hover-bg` |
+| Labels | `--label-bg`, `--label-color`, `--label-basic-border` |
+| Table | `--table-bg`, `--table-color`, `--table-border`, `--table-header-bg`, `--table-header-color`, `--table-hover-bg` |
+| Card | `--card-bg`, `--card-meta-color` |
+
+Semantic UI class overrides use higher specificity selectors (e.g., `html.scheme-{name}.FlowerpotDarkTheme` beats `html.FlowerpotDarkTheme`).
+
 ## Notes
 
 - Electron main process uses CommonJS output (Vite CJS format)

@@ -62,23 +62,23 @@
     vertical-align: baseline;
     user-select: none;
     -webkit-appearance: none;
-    background-color: #e0e1e2;
-    color: rgba(0, 0, 0, 0.6);
+    background-color: var(--btn-bg, #e0e1e2);
+    color: var(--btn-color, rgba(0, 0, 0, 0.6));
     font-size: inherit;
-    box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
+    box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 var(--btn-shadow-color, rgba(34, 36, 38, 0.15)) inset;
     transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease,
         box-shadow 0.1s ease, background 0.1s ease;
     margin-left: 0.75em;
 }
 
 .cancelBtn:hover {
-    background-color: #cacbcd;
-    color: rgba(0, 0, 0, 0.8);
+    background-color: var(--btn-hover-bg, #cacbcd);
+    color: var(--btn-hover-color, rgba(0, 0, 0, 0.8));
 }
 
 .cancelBtn:active {
-    background-color: #babbbc;
-    color: rgba(0, 0, 0, 0.9);
+    background-color: var(--btn-active-bg, #babbbc);
+    color: var(--btn-active-color, rgba(0, 0, 0, 0.9));
 }
 
 .confirmBtn {
@@ -103,19 +103,19 @@
     transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease,
         box-shadow 0.1s ease, background 0.1s ease;
     margin-left: 0.75em;
-    background-color: #2185d0;
-    color: #fff;
+    background-color: var(--btn-primary-bg, #2185d0);
+    color: var(--btn-primary-color, #fff);
     box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
 }
 
 .confirmBtn:hover {
-    background-color: #1678c2;
-    color: #fff;
+    background-color: var(--btn-primary-hover-bg, #1678c2);
+    color: var(--btn-primary-color, #fff);
 }
 
 .confirmBtn:active {
-    background-color: #1a69a4;
-    color: #fff;
+    background-color: var(--btn-primary-active-bg, #1a69a4);
+    color: var(--btn-primary-color, #fff);
 }
 
 :global(.FlowerpotDarkTheme) .dimmer {
@@ -140,26 +140,26 @@
 }
 
 :global(.FlowerpotDarkTheme) .cancelBtn {
-    background-color: #454546;
-    color: rgba(255, 255, 255, 0.979);
+    background-color: var(--btn-bg, #454546);
+    color: var(--btn-color, rgba(255, 255, 255, 0.979));
 }
 
 :global(.FlowerpotDarkTheme) .cancelBtn:hover {
-    background-color: #656566;
-    color: rgba(255, 255, 255, 0.979);
+    background-color: var(--btn-hover-bg, #656566);
+    color: var(--btn-hover-color, rgba(255, 255, 255, 0.979));
 }
 
 :global(.FlowerpotDarkTheme) .cancelBtn:active {
-    background-color: #555556;
-    color: rgba(255, 255, 255, 0.979);
+    background-color: var(--btn-active-bg, #555556);
+    color: var(--btn-active-color, rgba(255, 255, 255, 0.979));
 }
 
 :global(.FlowerpotDarkTheme) .confirmBtn {
-    background-color: #2185d0;
-    color: #fff;
+    background-color: var(--btn-primary-bg, #2185d0);
+    color: var(--btn-primary-color, #fff);
 }
 
 :global(.FlowerpotDarkTheme) .confirmBtn:hover {
-    background-color: #1678c2;
-    color: #fff;
+    background-color: var(--btn-primary-hover-bg, #1678c2);
+    color: var(--btn-primary-color, #fff);
 }

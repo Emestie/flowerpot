@@ -35,9 +35,7 @@ export interface LabelDetailProps {
     children?: ReactNode;
 }
 
-const LabelDetail: FC<LabelDetailProps> = ({ children }) => (
-    <span className={styles.detail}>{children}</span>
-);
+const LabelDetail: FC<LabelDetailProps> = ({ children }) => <span className={styles.detail}>{children}</span>;
 
 const LabelComponent: FC<LabelProps> = ({
     color,

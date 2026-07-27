@@ -344,6 +344,7 @@ const en = {
     ddThemeLabel: "Theme: ",
     ddColorSchemeLabel: "Color scheme: ",
     colorSchemeClassic: "Classic",
+    colorSchemeFlexoki: "Flexoki",
 
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",

@@ -19,12 +19,7 @@ export interface MenuItemProps {
 }
 
 const MenuRoot: FC<MenuProps> = ({ vertical, inverted, size, secondary, className, children }) => {
-    const classNames = [
-        styles.menu,
-        secondary && styles.secondary,
-        size === "small" && styles.small,
-        className,
-    ]
+    const classNames = [styles.menu, secondary && styles.secondary, size === "small" && styles.small, className]
         .filter(Boolean)
         .join(" ");
 
@@ -32,13 +27,7 @@ const MenuRoot: FC<MenuProps> = ({ vertical, inverted, size, secondary, classNam
 };
 
 const Item: FC<MenuItemProps> = ({ as: Tag = "div", active, onClick, className, children }) => {
-    const classNames = [
-        styles.item,
-        active && styles.active,
-        className,
-    ]
-        .filter(Boolean)
-        .join(" ");
+    const classNames = [styles.item, active && styles.active, className].filter(Boolean).join(" ");
 
     return (
         <Tag className={classNames} onClick={onClick}>

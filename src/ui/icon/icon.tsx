@@ -80,12 +80,5 @@ export const Icon: FC<IconProps> = ({
         .filter(Boolean)
         .join(" ");
 
-    return (
-        <i
-            className={classNames}
-            onClick={onClick}
-            style={style}
-            aria-hidden="true"
-        />
-    );
+    return <i className={classNames} onClick={onClick} style={style} aria-hidden="true" />;
 };

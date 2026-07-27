@@ -346,6 +346,7 @@ const ru: LocalizedStrings = {
     ddThemeLabel: "Тема: ",
     ddColorSchemeLabel: "Цветовая схема: ",
     colorSchemeClassic: "Классическая",
+    colorSchemeFlexoki: "Flexoki",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тип: ",

@@ -23,13 +23,9 @@ export interface MessageContentProps {
     children?: ReactNode;
 }
 
-const MessageHeader: FC<MessageHeaderProps> = ({ children }) => (
-    <div className={styles.header}>{children}</div>
-);
+const MessageHeader: FC<MessageHeaderProps> = ({ children }) => <div className={styles.header}>{children}</div>;
 
-const MessageContent: FC<MessageContentProps> = ({ children }) => (
-    <div className={styles.content}>{children}</div>
-);
+const MessageContent: FC<MessageContentProps> = ({ children }) => <div className={styles.content}>{children}</div>;
 
 const MessageComponent: FC<MessageProps> = ({
     info,

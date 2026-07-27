@@ -136,6 +136,32 @@ h6 {
 :root {
     --font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
+    --table-bg: #fff;
+    --table-color: rgba(0, 0, 0, 0.87);
+    --table-border: rgba(34, 36, 38, 0.15);
+    --table-header-bg: #f9fafb;
+    --table-header-color: rgba(0, 0, 0, 0.87);
+    --table-hover-bg: rgba(0, 0, 0, 0.03);
+
+    --card-bg: #fff;
+    --card-meta-color: rgba(0, 0, 0, 0.4);
+
+    --btn-primary-bg: #2185d0;
+    --btn-primary-color: #fff;
+    --btn-primary-hover-bg: #1678c2;
+    --btn-primary-focus-bg: #0d71bb;
+    --btn-primary-active-bg: #1a69a4;
+    --btn-positive-bg: #21ba45;
+    --btn-positive-color: #fff;
+    --btn-positive-hover-bg: #16ab39;
+    --btn-positive-focus-bg: #0ea432;
+    --btn-positive-active-bg: #198f35;
+    --btn-negative-bg: #db2828;
+    --btn-negative-color: #fff;
+    --btn-negative-hover-bg: #d01919;
+    --btn-negative-focus-bg: #ca1010;
+    --btn-negative-active-bg: #b21e1e;
+
     --btn-bg: #e0e1e2;
     --btn-color: rgba(0, 0, 0, 0.6);
     --btn-hover-bg: #cacbcd;
@@ -197,6 +223,32 @@ h6 {
 
 html.FlowerpotDarkTheme,
 .FlowerpotDarkTheme {
+    --table-bg: #1b1c1d;
+    --table-color: rgba(255, 255, 255, 0.9);
+    --table-border: rgba(255, 255, 255, 0.1);
+    --table-header-bg: #212223;
+    --table-header-color: rgba(255, 255, 255, 0.9);
+    --table-hover-bg: rgba(255, 255, 255, 0.06);
+
+    --card-bg: #353536;
+    --card-meta-color: rgba(255, 255, 255, 0.979);
+
+    --btn-primary-bg: #2185d0;
+    --btn-primary-color: #fff;
+    --btn-primary-hover-bg: #1678c2;
+    --btn-primary-focus-bg: #0d71bb;
+    --btn-primary-active-bg: #1a69a4;
+    --btn-positive-bg: #21ba45;
+    --btn-positive-color: #fff;
+    --btn-positive-hover-bg: #16ab39;
+    --btn-positive-focus-bg: #0ea432;
+    --btn-positive-active-bg: #198f35;
+    --btn-negative-bg: #db2828;
+    --btn-negative-color: #fff;
+    --btn-negative-hover-bg: #d01919;
+    --btn-negative-focus-bg: #ca1010;
+    --btn-negative-active-bg: #b21e1e;
+
     --btn-bg: #454546;
     --btn-color: rgba(255, 255, 255, 0.979);
     --btn-hover-bg: #656566;

@@ -16,16 +16,7 @@ export interface DropdownProps {
     style?: CSSProperties;
 }
 
-const Dropdown: FC<DropdownProps> = ({
-    options,
-    value,
-    onChange,
-    disabled,
-    placeholder,
-    fluid,
-    className,
-    style,
-}) => {
+const Dropdown: FC<DropdownProps> = ({ options, value, onChange, disabled, placeholder, fluid, className, style }) => {
     const [open, setOpen] = useState(false);
     const [coords, setCoords] = useState<{ top: number; left: number; width: number }>({
         top: 0,

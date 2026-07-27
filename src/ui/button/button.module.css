@@ -75,57 +75,57 @@
 
 /* Color variants */
 .primary {
-    background-color: #2185d0;
-    color: #fff;
+    background-color: var(--btn-primary-bg, #2185d0);
+    color: var(--btn-primary-color, #fff);
     box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
 }
 .primary:hover {
-    background-color: #1678c2;
-    color: #fff;
+    background-color: var(--btn-primary-hover-bg, #1678c2);
+    color: var(--btn-primary-color, #fff);
 }
 .primary:focus {
-    background-color: #0d71bb;
-    color: #fff;
+    background-color: var(--btn-primary-focus-bg, #0d71bb);
+    color: var(--btn-primary-color, #fff);
 }
 .primary:active {
-    background-color: #1a69a4;
-    color: #fff;
+    background-color: var(--btn-primary-active-bg, #1a69a4);
+    color: var(--btn-primary-color, #fff);
 }
 
 .positive {
-    background-color: #21ba45;
-    color: #fff;
+    background-color: var(--btn-positive-bg, #21ba45);
+    color: var(--btn-positive-color, #fff);
     box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
 }
 .positive:hover {
-    background-color: #16ab39;
-    color: #fff;
+    background-color: var(--btn-positive-hover-bg, #16ab39);
+    color: var(--btn-positive-color, #fff);
 }
 .positive:focus {
-    background-color: #0ea432;
-    color: #fff;
+    background-color: var(--btn-positive-focus-bg, #0ea432);
+    color: var(--btn-positive-color, #fff);
 }
 .positive:active {
-    background-color: #198f35;
-    color: #fff;
+    background-color: var(--btn-positive-active-bg, #198f35);
+    color: var(--btn-positive-color, #fff);
 }
 
 .negative {
-    background-color: #db2828;
-    color: #fff;
+    background-color: var(--btn-negative-bg, #db2828);
+    color: var(--btn-negative-color, #fff);
     box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
 }
 .negative:hover {
-    background-color: #d01919;
-    color: #fff;
+    background-color: var(--btn-negative-hover-bg, #d01919);
+    color: var(--btn-negative-color, #fff);
 }
 .negative:focus {
-    background-color: #ca1010;
-    color: #fff;
+    background-color: var(--btn-negative-focus-bg, #ca1010);
+    color: var(--btn-negative-color, #fff);
 }
 .negative:active {
-    background-color: #b21e1e;
-    color: #fff;
+    background-color: var(--btn-negative-active-bg, #b21e1e);
+    color: var(--btn-negative-color, #fff);
 }
 
 /* Basic */

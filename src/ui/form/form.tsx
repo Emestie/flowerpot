@@ -44,10 +44,7 @@ export const Form: FC<FormProps> & {
     const classNames = [styles.form, loading && styles.loading, className].filter(Boolean).join(" ");
 
     return (
-        <form
-            className={classNames}
-            onSubmit={(e) => e.preventDefault()}
-        >
+        <form className={classNames} onSubmit={(e) => e.preventDefault()}>
             {loading && <span className={styles.loaderWrapper}>{children}</span>}
             {!loading && children}
         </form>

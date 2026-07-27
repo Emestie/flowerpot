@@ -4,7 +4,7 @@
     flex-direction: column;
     width: 290px;
     min-height: 0;
-    background: #fff;
+    background: var(--card-bg, #fff);
     padding: 0;
     border: none;
     border-radius: 0.28571429rem;
@@ -39,7 +39,7 @@
 
 .meta {
     font-size: 1em;
-    color: rgba(0, 0, 0, 0.4);
+    color: var(--card-meta-color, rgba(0, 0, 0, 0.4));
 }
 
 .meta > * {
@@ -51,12 +51,12 @@
 }
 
 :global(.FlowerpotDarkTheme) .card {
-    background: #353536;
+    background: var(--card-bg, #353536);
     box-shadow: none;
 }
 
 :global(.FlowerpotDarkTheme) .meta {
-    color: rgba(255, 255, 255, 0.979);
+    color: var(--card-meta-color, rgba(255, 255, 255, 0.979));
 }
 
 :global(.FlowerpotDarkTheme) .content {

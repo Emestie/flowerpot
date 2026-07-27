@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import Festival from "../helpers/Festival";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
-import Settings from "../helpers/Settings";
+import Settings, { TColorScheme } from "../helpers/Settings";
 import { getSystemThemeListener, isDarkTheme } from "../helpers/Theme";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
@@ -28,8 +28,11 @@ export function App() {
     const setView = useAppStore((state) => state.setView);
     const setShowWhatsNew = useAppStore((state) => state.setShowWhatsNew);
     const theme = useSettingsStore((state) => state.theme);
+    const colorScheme = useSettingsStore((state) => state.colorScheme);
     const [ready, setIsReady] = useState(false);
     const [isDark, setIsDark] = useState(() => isDarkTheme(theme));
+
+    const getSchemeClass = (scheme: TColorScheme) => (scheme === "classic" ? "" : `scheme-${scheme}`);
 
     useEffect(() => {
         setIsDark(isDarkTheme(theme));
@@ -50,6 +53,14 @@ export function App() {
             document.documentElement.classList.remove("FlowerpotDarkTheme");
         }
     }, [isDark]);
+
+    useEffect(() => {
+        document.documentElement.classList.remove("scheme-classic", "scheme-flexoki");
+        const schemeClass = getSchemeClass(colorScheme);
+        if (schemeClass) {
+            document.documentElement.classList.add(schemeClass);
+        }
+    }, [colorScheme]);
 
     const setChangesCollection = useDataStore((state) => state.setChangesCollection);
 
@@ -137,8 +148,10 @@ export function App() {
 
     const scene = getScene(view);
 
+    const schemeClass = getSchemeClass(colorScheme);
+
     return (
-        <div className={isDark ? "FlowerpotDarkTheme" : ""} style={{ height: "100%" }}>
+        <div className={`${isDark ? "FlowerpotDarkTheme" : ""} ${schemeClass}`.trim()} style={{ height: "100%" }}>
             <HashRouterProvider>
                 <DialogsContainer />
                 {scene}

@@ -1,4 +1,12 @@
-import type { FC, ReactNode, CSSProperties, MouseEvent, HTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
+import type {
+    FC,
+    ReactNode,
+    CSSProperties,
+    MouseEvent,
+    HTMLAttributes,
+    TdHTMLAttributes,
+    ThHTMLAttributes,
+} from "react";
 import styles from "./table.module.css";
 
 export type TableSize = "small" | "large";

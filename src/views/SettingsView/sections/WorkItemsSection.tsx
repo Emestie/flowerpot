@@ -21,6 +21,7 @@ const getTableScales: () => DropdownItemProps[] = () => [
 
 const getColorSchemes: () => DropdownItemProps[] = () => [
     { key: 1, text: s("colorSchemeClassic"), value: "classic" },
+    { key: 2, text: s("colorSchemeFlexoki"), value: "flexoki" },
 ];
 
 const getThemes: () => DropdownItemProps[] = () => [
@@ -59,6 +60,7 @@ export function AppearanceSection() {
     const setRefreshRate = useSettingsStore((state) => state.setRefreshRate);
     const setSortPattern = useSettingsStore((state) => state.setSortPattern);
     const setTheme = useSettingsStore((state) => state.setTheme);
+    const setColorScheme = useSettingsStore((state) => state.setColorScheme);
 
     const refreshRates = getRefreshRates();
     const colorSchemes = getColorSchemes();
@@ -131,7 +133,7 @@ export function AppearanceSection() {
                 label={s("ddColorSchemeLabel")}
                 options={colorSchemes}
                 value={colorScheme}
-                disabled
+                onChange={(e, { value }) => colorScheme !== value && setColorScheme(value as TColorScheme)}
             />
             <br />
             <Form.Select

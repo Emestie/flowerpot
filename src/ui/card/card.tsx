@@ -14,13 +14,9 @@ export interface CardMetaProps {
     children?: ReactNode;
 }
 
-const CardContent: FC<CardContentProps> = ({ children }) => (
-    <div className={styles.content}>{children}</div>
-);
+const CardContent: FC<CardContentProps> = ({ children }) => <div className={styles.content}>{children}</div>;
 
-const CardMeta: FC<CardMetaProps> = ({ children }) => (
-    <div className={styles.meta}>{children}</div>
-);
+const CardMeta: FC<CardMetaProps> = ({ children }) => <div className={styles.meta}>{children}</div>;
 
 const CardComponent: FC<CardProps> = ({ className, children }) => {
     const classNames = [styles.card, className].filter(Boolean).join(" ");

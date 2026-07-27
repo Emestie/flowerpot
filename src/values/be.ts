@@ -124,8 +124,7 @@ const be: LocalizedStrings = {
     pinned: "Замацаваныя",
     deferredDescription: "ID працоўных элементаў, якія будуць адлюстроўвацца ўнізе спісу.",
     deferred: "Адкладзеныя",
-    hiddenDescription:
-        "ID працоўных элементаў, якія будуць схаваны са спісу (пакуль у іх не будуць унесены змены).",
+    hiddenDescription: "ID працоўных элементаў, якія будуць схаваны са спісу (пакуль у іх не будуць унесены змены).",
     hidden: "Схаваныя",
     permawatchDescription:
         "ID працоўных элементаў, якія будуць дададзены ў спецыяльны запыт і будуць знаходзіцца там, пакуль не будуць выдалены ўручную.",
@@ -346,6 +345,7 @@ const be: LocalizedStrings = {
     ddThemeLabel: "Тэма: ",
     ddColorSchemeLabel: "Колеравая схема: ",
     colorSchemeClassic: "Класічная",
+    colorSchemeFlexoki: "Flexoki",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тып: ",
