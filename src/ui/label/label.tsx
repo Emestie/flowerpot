@@ -66,7 +66,7 @@ const LabelComponent: FC<LabelProps> = ({
     const Tag = as === "a" ? "a" : "div";
 
     const customStyle: CSSProperties | undefined = customColor
-        ? { ...style, backgroundColor: customColor, color: "#fff", borderColor: customColor }
+        ? { backgroundColor: customColor, color: "#fff", borderColor: customColor, ...style }
         : style;
 
     const interactive = as === "a" || !!onClick;

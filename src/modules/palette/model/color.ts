@@ -23,7 +23,7 @@ export class Color {
     get textColor(): TextColor {
         const luminance = this.getLuminanace(this.rgb);
 
-        return luminance < 0.2 ? "light" : "dark";
+        return luminance < 0.4 ? "light" : "dark";
     }
 
     hexWithTransparency(transparencyLevel: number): string {

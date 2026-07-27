@@ -9,10 +9,12 @@ interface IProps {
 export function Tag(props: IProps) {
     const { text } = props;
 
-    const color = tagPalette.getColor(text).hex;
+    const colorObj = tagPalette.getColor(text);
+    const color = colorObj.hex;
+    const textColor = colorObj.textColor === "light" ? "#fff" : "#333";
 
     return (
-        <Label key={Math.random()} size="mini" customColor={color} style={{ marginRight: 2 }}>
+        <Label key={Math.random()} size="mini" customColor={color} style={{ marginRight: 2, color: textColor }}>
             <HighlightenText text={text} />
         </Label>
     );
