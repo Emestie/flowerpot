@@ -1,0 +1,397 @@
+html.FlowerpotDarkTheme,
+.FlowerpotDarkTheme {
+    --table-bg: #1b1c1d;
+    --table-color: rgba(255, 255, 255, 0.9);
+    --table-border: rgba(255, 255, 255, 0.1);
+    --table-header-bg: #212223;
+    --table-header-color: rgba(255, 255, 255, 0.9);
+    --table-hover-bg: rgba(255, 255, 255, 0.06);
+
+    --card-bg: #353536;
+    --card-meta-color: rgba(255, 255, 255, 0.979);
+
+    --btn-primary-bg: #2185d0;
+    --btn-primary-color: #fff;
+    --btn-primary-hover-bg: #1678c2;
+    --btn-primary-focus-bg: #0d71bb;
+    --btn-primary-active-bg: #1a69a4;
+    --btn-positive-bg: #21ba45;
+    --btn-positive-color: #fff;
+    --btn-positive-hover-bg: #16ab39;
+    --btn-positive-focus-bg: #0ea432;
+    --btn-positive-active-bg: #198f35;
+    --btn-negative-bg: #db2828;
+    --btn-negative-color: #fff;
+    --btn-negative-hover-bg: #d01919;
+    --btn-negative-focus-bg: #ca1010;
+    --btn-negative-active-bg: #b21e1e;
+
+    --btn-bg: #454546;
+    --btn-color: rgba(255, 255, 255, 0.979);
+    --btn-hover-bg: #656566;
+    --btn-hover-color: rgba(255, 255, 255, 0.979);
+    --btn-active-bg: #555556;
+    --btn-active-color: rgba(255, 255, 255, 0.979);
+    --btn-shadow-color: rgba(34, 36, 38, 0.15);
+    --btn-basic-border: rgba(255, 255, 255, 0.15);
+    --btn-basic-hover-bg: transparent;
+    --btn-basic-hover-color: rgba(255, 255, 255, 0.979);
+    --btn-basic-hover-border: rgba(255, 255, 255, 0.35);
+    --btn-basic-active-bg: transparent;
+    --btn-basic-active-color: rgba(255, 255, 255, 0.979);
+    --btn-group-border: rgba(255, 255, 255, 0.15);
+
+    --input-bg: #3d3e3f;
+    --input-color: rgba(255, 255, 255, 0.9);
+    --input-border: rgba(255, 255, 255, 0.15);
+    --input-focus-border: #6bb3e0;
+    --input-focus-bg: #3d3e3f;
+    --input-focus-placeholder: rgba(200, 200, 200, 0.87);
+    --input-active-border: rgba(255, 255, 255, 0.3);
+    --input-active-bg: #454546;
+    --input-placeholder: rgba(180, 180, 180, 0.5);
+    --input-error-bg: #4a1a1a;
+    --input-error-border: #8a3a3a;
+    --input-error-color: #f08a8a;
+    --input-error-placeholder: rgba(200, 100, 100, 0.7);
+    --input-error-placeholder-focus: rgba(200, 100, 100, 0.5);
+
+    --radio-color: rgba(255, 255, 255, 0.9);
+    --radio-border: rgba(255, 255, 255, 0.15);
+    --radio-bg: transparent;
+    --radio-dot: rgba(255, 255, 255, 0.95);
+    --radio-hover-border: rgba(255, 255, 255, 0.35);
+    --radio-focus-border: #6bb3e0;
+
+    --checkbox-color: rgba(255, 255, 255, 0.9);
+    --checkbox-border: rgba(255, 255, 255, 0.15);
+    --checkbox-bg: transparent;
+    --checkbox-checked-bg: rgba(255, 255, 255, 0.95);
+    --checkbox-checked-color: rgba(0, 0, 0, 0.95);
+    --checkbox-hover-border: rgba(255, 255, 255, 0.35);
+    --checkbox-focus-border: #6bb3e0;
+
+    --menu-bg: #3d3e3f;
+    --menu-item-color: rgba(255, 255, 255, 0.9);
+    --menu-item-active-bg: rgba(255, 255, 255, 0.08);
+    --menu-item-active-color: #fff;
+    --menu-item-hover-bg: rgba(255, 255, 255, 0.04);
+    --menu-item-hover-color: #fff;
+    --menu-item-active-hover-bg: rgba(255, 255, 255, 0.12);
+
+    --label-bg: #454546;
+    --label-color: rgba(255, 255, 255, 0.9);
+    --label-basic-border: rgba(255, 255, 255, 0.15);
+}
+
+html.FlowerpotDarkTheme,
+.FlowerpotDarkTheme {
+    min-height: 100%;
+    background-color: #252526;
+    color: rgba(255, 255, 255, 0.979);
+
+    .PageLayout {
+        background-color: #252526;
+    }
+
+    .ui.modal {
+        background-color: #353536;
+        color: white;
+        border: 1px solid #555556;
+
+        > .header,
+        > .content,
+        > .actions {
+            background-color: #353536;
+            color: white;
+            border-color: #454546;
+        }
+
+        > .header {
+            border-bottom: 1px solid #454546;
+        }
+
+        > .actions {
+            border-top: 1px solid #454546;
+        }
+
+        .ui.input > input {
+            background-color: #454546;
+            color: white;
+            border-color: #555556;
+        }
+
+        .ui.form input:not([type]),
+        .ui.form input[type="text"],
+        .ui.form input[type="password"],
+        .ui.form textarea {
+            background-color: #454546;
+            color: white;
+            border-color: #555556;
+        }
+
+        .ui.form .field > label {
+            color: white;
+        }
+
+        textarea {
+            background-color: #454546;
+            color: white;
+        }
+    }
+
+    .ui.header {
+        background-color: #252526;
+        color: white;
+    }
+
+    .ui.menu .item,
+    .ui.popup,
+    .ui.form .field > label,
+    .ui.form input:not([type]):focus,
+    .ui.form input[type="date"]:focus,
+    .ui.form input[type="datetime-local"]:focus,
+    .ui.form input[type="email"]:focus,
+    .ui.form input[type="file"]:focus,
+    .ui.form input[type="number"]:focus,
+    .ui.form input[type="password"]:focus,
+    .ui.form input[type="search"]:focus,
+    .ui.form input[type="tel"]:focus,
+    .ui.form input[type="text"]:focus,
+    .ui.form input[type="time"]:focus,
+    .ui.form input[type="url"]:focus {
+        background-color: #353536;
+        color: white;
+        border-color: rgba(69, 73, 77, 0.15);
+    }
+
+    .ui.table,
+    .ui.selection.dropdown,
+    .ui.input > input,
+    .ui.input.error > input,
+    .ui.dropdown .menu .item {
+        background-color: #353536;
+        color: white;
+        border-color: rgba(69, 73, 77, 0.15);
+    }
+
+    .ui.table thead th,
+    .ui.table tfoot th {
+        background-color: #404041;
+        color: white;
+    }
+
+    .ui.form .field.error input:not([type]),
+    .ui.form .field.error input[type="date"],
+    .ui.form .field.error input[type="datetime-local"],
+    .ui.form .field.error input[type="email"],
+    .ui.form .field.error input[type="file"],
+    .ui.form .field.error input[type="number"],
+    .ui.form .field.error input[type="password"],
+    .ui.form .field.error input[type="search"],
+    .ui.form .field.error input[type="tel"],
+    .ui.form .field.error input[type="text"],
+    .ui.form .field.error input[type="time"],
+    .ui.form .field.error input[type="url"],
+    .ui.form .field.error select,
+    .ui.form .field.error textarea,
+    .ui.form .fields.error .field input:not([type]),
+    .ui.form .fields.error .field input[type="date"],
+    .ui.form .fields.error .field input[type="datetime-local"],
+    .ui.form .fields.error .field input[type="email"],
+    .ui.form .fields.error .field input[type="file"],
+    .ui.form .fields.error .field input[type="number"],
+    .ui.form .fields.error .field input[type="password"],
+    .ui.form .fields.error .field input[type="search"],
+    .ui.form .fields.error .field input[type="tel"],
+    .ui.form .fields.error .field input[type="text"],
+    .ui.form .fields.error .field input[type="time"],
+    .ui.form .fields.error .field input[type="url"],
+    .ui.form .fields.error .field select,
+    .ui.form .fields.error .field textarea,
+    .ui.form .field.error .input,
+    .ui.form .field.error label,
+    .ui.form .fields.error .field .input,
+    .ui.form .fields.error .field label {
+        color: rgb(199, 68, 68);
+    }
+
+    .ui.form .field.error input:not([type]):focus,
+    .ui.form .field.error input[type="date"]:focus,
+    .ui.form .field.error input[type="datetime-local"]:focus,
+    .ui.form .field.error input[type="email"]:focus,
+    .ui.form .field.error input[type="file"]:focus,
+    .ui.form .field.error input[type="number"]:focus,
+    .ui.form .field.error input[type="password"]:focus,
+    .ui.form .field.error input[type="search"]:focus,
+    .ui.form .field.error input[type="tel"]:focus,
+    .ui.form .field.error input[type="text"]:focus,
+    .ui.form .field.error input[type="time"]:focus,
+    .ui.form .field.error input[type="url"]:focus,
+    .ui.form .fields.error .field input:not([type]):focus,
+    .ui.form .fields.error .field input[type="date"]:focus,
+    .ui.form .fields.error .field input[type="datetime-local"]:focus,
+    .ui.form .fields.error .field input[type="email"]:focus,
+    .ui.form .fields.error .field input[type="file"]:focus,
+    .ui.form .fields.error .field input[type="number"]:focus,
+    .ui.form .fields.error .field input[type="password"]:focus,
+    .ui.form .fields.error .field input[type="search"]:focus,
+    .ui.form .fields.error .field input[type="tel"]:focus,
+    .ui.form .fields.error .field input[type="text"]:focus,
+    .ui.form .fields.error .field input[type="time"]:focus,
+    .ui.form .fields.error .field input[type="url"]:focus {
+        background-color: #454546;
+    }
+
+    .ui.selection.visible.dropdown > .text:not(.default) {
+        color: rgba(255, 255, 255, 0.979);
+    }
+
+    .ui.selection.active.dropdown .menu,
+    .ui.selection.active.dropdown:hover,
+    .ui.dropdown .menu .item:hover {
+        border-color: #353536;
+        background-color: #555556;
+    }
+
+    .ui.checkbox .box:before,
+    .ui.checkbox label:before,
+    .ui.checkbox input:focus ~ .box:before,
+    .ui.checkbox input:focus ~ label:before,
+    .ui.checkbox input:checked ~ .box:before,
+    .ui.checkbox input:checked ~ label:before {
+        background-color: #454546;
+        border-color: #656566;
+    }
+
+    .ui.checkbox input:checked:focus ~ .box:after,
+    .ui.checkbox input:checked:focus ~ label:after,
+    .ui.checkbox input:not([type="radio"]):indeterminate:focus ~ .box:after,
+    .ui.checkbox input:not([type="radio"]):indeterminate:focus ~ label:after,
+    .ui.checkbox input:checked ~ .box:after,
+    .ui.checkbox input:checked ~ label:after {
+        color: rgba(255, 255, 255, 0.979);
+    }
+
+    .ui.menu {
+        border: 1px solid #252526;
+    }
+
+    .ui.menu .item:focus {
+        outline: none;
+    }
+
+    .ui.menu .item:hover {
+        background-color: #555556;
+        cursor: pointer;
+    }
+
+    .ui.button:not(.primary):not(.positive):not(.negative) {
+        background-color: #454546;
+        color: rgba(255, 255, 255, 0.979);
+    }
+
+    .ui.button:not(.primary):not(.positive):not(.negative):hover {
+        background-color: #656566;
+    }
+
+    .filter-toggle-button.ui.basic.button:hover,
+    .filter-toggle-button.ui.basic.button:focus,
+    .filter-toggle-button-img.ui.basic.button:hover,
+    .filter-toggle-button-img.ui.basic.button:focus {
+        background-color: transparent !important;
+    }
+
+    .ui.checkbox label,
+    .ui.checkbox + label,
+    .ui.checkbox input:focus ~ label {
+        color: rgba(255, 255, 255, 0.979);
+    }
+
+    .ui.dividing.header {
+        border-bottom: 1px solid #454546;
+    }
+
+    .ui.celled.table tr td,
+    .ui.celled.table tr th {
+        border-left: 1px solid rgba(228, 230, 231, 0.1);
+    }
+
+    .ui.table tr td {
+        border-top: 1px solid rgba(228, 230, 231, 0.1);
+    }
+
+    .ui.table tr:hover {
+        background-color: color-mix(in srgb, #252526, white 10%);
+        box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .ui.table.wiTable tbody tr:hover {
+        background-color: transparent;
+        box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.08);
+    }
+
+    .ui.table td.warning,
+    .ui.table tr.warning {
+        color: rgba(255, 255, 255, 0.979) !important;
+        background-color: rgba(133, 116, 69, 0.425) !important;
+    }
+
+    .ui.table td.negative,
+    .ui.table tr.negative {
+        color: rgba(255, 255, 255, 0.979) !important;
+        background-color: rgba(145, 49, 40, 0.384) !important;
+    }
+
+    .ui.info.message {
+        background-color: #405a5ac4;
+        color: white !important;
+    }
+
+    .ui.info.message .header,
+    .ui.info.message p {
+        color: white !important;
+    }
+
+    .ui.error.message {
+        background-color: #532d2dc4;
+        color: #e6dfdf;
+    }
+
+    .ui.icon.message {
+        background-color: #555556;
+        color: rgba(255, 255, 255, 0.979);
+    }
+
+    .table tr:hover {
+        background-color: color-mix(in srgb, #252526, white 10%);
+        box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .pr-comments-green {
+        color: rgb(146, 199, 146);
+    }
+
+    .pr-reviewer-status {
+        background-color: #353536;
+    }
+
+    .filter-icon-dark,
+    .filter-label-dark {
+        color: white;
+    }
+
+    .crossed-out-overlay {
+        background-color: #e05050;
+    }
+
+    .feedback-toast {
+        background-color: #353536;
+        border: 1px solid #555556;
+    }
+}
+
+html.FlowerpotDarkTheme a.url-link,
+.FlowerpotDarkTheme a.url-link {
+    color: white;
+}

@@ -4,8 +4,7 @@ import { App } from "./components/App";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./debug-fns";
 import "./style/ui.css";
-import "./style/style-dark-override.scss";
-import "./style/style.scss";
+import "./style/ui-dark.css";
 import "./style/schemes/flexoki.css";
 
 let remountKey = 0;

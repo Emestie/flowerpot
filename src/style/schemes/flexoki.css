@@ -271,10 +271,6 @@ html.scheme-flexoki,
         box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.2);
     }
 
-    a.url-link {
-        color: #205ea6;
-    }
-
     .pr-reviewer-status {
         background-color: #f2f0e5;
     }
@@ -283,6 +279,11 @@ html.scheme-flexoki,
         background-color: #f2f0e5;
         border: 1px solid #cecdc3;
     }
+}
+
+html.scheme-flexoki a.url-link,
+.scheme-flexoki a.url-link {
+    color: #403e3c;
 }
 
 html.scheme-flexoki.FlowerpotDarkTheme,
@@ -594,10 +595,6 @@ html.scheme-flexoki.FlowerpotDarkTheme,
         color: #879a39;
     }
 
-    a.url-link {
-        color: #fffcf0;
-    }
-
     .pr-reviewer-status {
         background-color: #1c1b1a;
     }
@@ -615,4 +612,9 @@ html.scheme-flexoki.FlowerpotDarkTheme,
         background-color: #1c1b1a;
         border: 1px solid #403e3c;
     }
+}
+
+html.scheme-flexoki.FlowerpotDarkTheme a.url-link,
+.scheme-flexoki.FlowerpotDarkTheme a.url-link {
+    color: #fffcf0;
 }

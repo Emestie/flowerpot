@@ -46,6 +46,9 @@ Tech stack: Electron 19, React 19, TypeScript, Vite 6, Zustand, Semantic UI Reac
 - `src/modules/api-client/` - TFS/Azure DevOps API client with loader pattern
 - `src/helpers/Platform.ts` - Platform abstraction (Electron vs Web)
 - `src/values/{en,ru}.ts` - Localization strings, use `s()` helper from `Strings.ts`
+- `src/style/ui.css` - Base reset, CSS variables (light default), shared component classes, Semantic UI overrides
+- `src/style/ui-dark.css` - Dark theme CSS variables and Semantic UI overrides under `.FlowerpotDarkTheme`
+- `src/style/schemes/{name}.css` - Per-scheme CSS variable overrides + Semantic UI restyling
 
 ## Key Patterns
 
