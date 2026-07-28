@@ -2,6 +2,7 @@ import type { FC, ReactNode, MouseEvent } from "react";
 import styles from "./button.module.css";
 
 export interface ButtonProps {
+    id?: string;
     icon?: boolean;
     size?: "mini" | "tiny" | "small";
     compact?: boolean;
@@ -21,6 +22,7 @@ export interface ButtonProps {
 }
 
 export const Button: FC<ButtonProps> = ({
+    id,
     icon,
     size,
     compact,
@@ -56,7 +58,7 @@ export const Button: FC<ButtonProps> = ({
         .join(" ");
 
     return (
-        <button className={classNames} disabled={disabled || loading} title={title} onClick={onClick} style={style}>
+        <button id={id} className={classNames} disabled={disabled || loading} title={title} onClick={onClick} style={style}>
             {children}
             {loading && <span className={styles.loader} />}
         </button>

@@ -72,6 +72,8 @@
     --btn-primary-focus-bg: #b85719;
     --btn-primary-active-bg: #a64a0f;
 
+    --pr-branch-label-color: #879a39;
+
     --modal-bg: #f2f0e5;
     --modal-color: #100f0f;
     --modal-actions-bg: #f2f0e5;
@@ -365,6 +367,8 @@ html.scheme-flexoki.FlowerpotDarkTheme,
     --btn-primary-hover-bg: #e08040;
     --btn-primary-focus-bg: #e58a4d;
     --btn-primary-active-bg: #ea945a;
+
+    --pr-branch-label-color: #879a39;
 
     --modal-bg: #1c1b1a;
     --modal-color: #fffcf0;

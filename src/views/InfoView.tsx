@@ -28,10 +28,14 @@ export function InfoView() {
             const text = await Info.getInfoText(viewParams.contentFileName);
             setContentText(text);
             setIsLoading(false);
-
-            Info.registerEventListeners(viewParams.contentFileName);
         })();
     }, [viewParams]);
+
+    useEffect(() => {
+        if (!isLoading && contentText) {
+            Info.registerEventListeners(viewParams.contentFileName);
+        }
+    }, [isLoading, contentText, viewParams.contentFileName]);
 
     const onSave = useCallback(() => {
         useAppStore.getState().setView("main");

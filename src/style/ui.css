@@ -234,6 +234,8 @@ h6 {
     --wi-keyword-bg: #6280b11f;
     --wi-pinned-color: #eca06e;
     --wi-pinned-bg: #eca06e15;
+
+    --pr-branch-label-color: #689473;
 }
 
 /* ── Global ── */
@@ -446,7 +448,7 @@ td.workItemKeyword {
 }
 
 .pr-comments-green {
-    color: green;
+    color: #689473;
 }
 
 a.url-link {
