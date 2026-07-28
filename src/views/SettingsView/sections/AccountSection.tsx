@@ -1,6 +1,6 @@
 import { Button, ButtonGroup } from "../../../ui/button";
 import { Card, CardGroup } from "../../../ui/card";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../../ui/icon";
 import { Header } from "../../../ui/header";
 import { AccountBadge } from "../../../components/AccountBadge";
 import { IAccount } from "../../../helpers/Settings";

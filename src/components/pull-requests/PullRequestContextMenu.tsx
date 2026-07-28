@@ -1,5 +1,5 @@
 import { ContextMenu, MenuItem } from "react-contextmenu";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../ui/icon";
 import { Menu } from "../../ui/menu";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";

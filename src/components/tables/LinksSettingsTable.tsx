@@ -1,5 +1,5 @@
 import { Button } from "../../ui/button";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
 import { s } from "../../values/Strings";
 import Links, { LINKS_COUNT_LIMIT } from "../../helpers/Links";

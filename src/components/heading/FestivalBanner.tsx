@@ -1,6 +1,6 @@
 import flowerpotLogo from "../../assets/flower4.png";
-import { IFestivalDescriptor } from "/@/helpers/Festival";
-import { useAppStore } from "/@/zustand/app";
+import { IFestivalDescriptor } from "../../helpers/Festival";
+import { useAppStore } from "../../zustand/app";
 
 export const defaultFestivalIcon: IFestivalDescriptor = {
     icon: { width: 28, height: 28, left: 16, top: 16, offset: 40, path: flowerpotLogo },

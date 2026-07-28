@@ -17,8 +17,7 @@
         "jsx": "react-jsx",
         "noFallthroughCasesInSwitch": true,
         "paths": {
-            "#preload": ["./host/preload/src/index"],
-            "/@/*": ["./src/*"]
+            "#preload": ["./host/preload/src/index"]
         }
     },
     "include": ["src/**/*.ts", "src/**/*.tsx", "types/**/*.d.ts"],

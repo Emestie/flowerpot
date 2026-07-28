@@ -1,5 +1,5 @@
 import { IApiClientParams } from "./create";
-import { s } from "/@/values/Strings";
+import { s } from "../../values/Strings";
 
 export type Loader = ReturnType<typeof createLoader>;
 

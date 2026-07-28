@@ -1,7 +1,7 @@
 import { Color } from "../model/color";
 import { Palette } from "../model/palette";
-import { isDarkTheme } from "/@/helpers/Theme";
-import { useSettingsStore } from "/@/zustand/settings";
+import { isDarkTheme } from "../../../helpers/Theme";
+import { useSettingsStore } from "../../../zustand/settings";
 
 const iterationPalette = new Palette({
     colors: [

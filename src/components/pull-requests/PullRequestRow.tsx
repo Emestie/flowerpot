@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Label } from "../../ui/label";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
 import Platform from "../../helpers/Platform";
 import { PullRequest } from "../../models/pull-request";
@@ -12,9 +12,9 @@ import { ProfileWidget } from "../profile-widget/profile-widget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./pr-reviewer/pr-reviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
-import { getApi } from "/@/api/client";
-import { useDataStore } from "/@/zustand/data";
-import { useSettingsStore } from "/@/zustand/settings";
+import { getApi } from "../../api/client";
+import { useDataStore } from "../../zustand/data";
+import { useSettingsStore } from "../../zustand/settings";
 
 interface IProps {
     pullRequest: PullRequest;

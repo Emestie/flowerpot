@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Container } from "../ui/container";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../ui/icon";
 import { Header } from "../ui/header";
 import { Message } from "../ui/message";
 import { getApi } from "../api/client";

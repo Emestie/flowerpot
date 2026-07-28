@@ -1,6 +1,6 @@
 import { Label } from "../../../ui/label";
 import { DropdownItemProps } from "../../../ui/dropdown/dropdown-item-props";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../../ui/icon";
 import { Form } from "../../../ui/form";
 import { Header } from "../../../ui/header";
 import { Checkbox } from "../../../ui/checkbox";

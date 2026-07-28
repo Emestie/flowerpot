@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Query } from "../../models/query";
-import { useHighlights } from "/@/hooks/useHighlights";
-import { useDataStore } from "/@/zustand/data";
+import { useHighlights } from "../../hooks/useHighlights";
+import { useDataStore } from "../../zustand/data";
 
 export function useFilteredWorkItems(query: Query) {
     const workItems = useDataStore((state) => state.workItems);

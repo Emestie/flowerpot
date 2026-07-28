@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
 import { Message } from "../../ui/message";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";

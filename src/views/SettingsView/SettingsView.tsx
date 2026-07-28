@@ -1,6 +1,6 @@
 import { Button } from "../../ui/button";
 import { Container } from "../../ui/container";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../ui/icon";
 import { Menu } from "../../ui/menu";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
@@ -19,7 +19,7 @@ import { ProjectsSection } from "./sections/ProjectsSection";
 import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
 import { AppearanceSection } from "./sections/WorkItemsSection";
-import { PageLayout } from "/@/components/PageLayout";
+import { PageLayout } from "../../components/PageLayout";
 
 const sectionsList = [
     {

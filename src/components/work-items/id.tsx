@@ -1,8 +1,8 @@
 import { WorkItem } from "../../models/work-item";
 import { HighlightenText } from "../HighlightenText";
-import { TableScale } from "/@/zustand/settings";
-import { useSettingsStore } from "/@/zustand/settings";
-import { s } from "/@/values/Strings";
+import { TableScale } from "../../zustand/settings";
+import { useSettingsStore } from "../../zustand/settings";
+import { s } from "../../values/Strings";
 
 export function Id({ item, hasChanges }: { item: WorkItem; hasChanges: boolean }) {
     const scale = useSettingsStore((state) => state.tableScale);

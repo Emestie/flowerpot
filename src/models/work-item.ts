@@ -1,11 +1,11 @@
 import { IResponseWorkItem } from "../modules/api-client/types";
 import { IWorkItemType } from "../modules/api-client/types/work-item-type";
 import { Query } from "./query";
-import { ItemsCommon } from "/@/helpers/ItemsCommon";
-import Lists from "/@/helpers/Lists";
-import { TLists } from "/@/helpers/Settings";
-import { useSettingsStore } from "/@/zustand/settings";
-import { s } from "/@/values/Strings";
+import { ItemsCommon } from "../helpers/ItemsCommon";
+import Lists from "../helpers/Lists";
+import { TLists } from "../helpers/Settings";
+import { useSettingsStore } from "../zustand/settings";
+import { s } from "../values/Strings";
 
 //! do not use functions in WorkItem
 export class WorkItem {

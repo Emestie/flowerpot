@@ -1,6 +1,6 @@
 import { Button } from "../../ui/button";
 import { Checkbox } from "../../ui/checkbox";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";

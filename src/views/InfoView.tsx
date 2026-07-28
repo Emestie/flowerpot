@@ -2,7 +2,7 @@ import Markdown from "markdown-to-jsx";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Container } from "../ui/container";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../ui/icon";
 import { Message } from "../ui/message";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";

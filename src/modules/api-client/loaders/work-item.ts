@@ -4,10 +4,10 @@ import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { IQueryResult, IResponseWorkItem, IValue, IWorkItemShort } from "../types";
 import { createWorkItemTypeLoaders } from "./work-item-type";
-import Differences from "/@/helpers/Differences";
-import Lists from "/@/helpers/Lists";
-import QueryHelper from "/@/helpers/Query";
-import { useSettingsStore } from "/@/zustand/settings";
+import Differences from "../../../helpers/Differences";
+import Lists from "../../../helpers/Lists";
+import QueryHelper from "../../../helpers/Query";
+import { useSettingsStore } from "../../../zustand/settings";
 
 export function createWorkItemLoaders(
     params: IApiClientParams,

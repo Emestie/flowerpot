@@ -1,6 +1,6 @@
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Label, type TColor } from "../../ui/label";
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
@@ -15,8 +15,8 @@ import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 import { Id } from "./id";
 import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
-import { useDataStore } from "/@/zustand/data";
-import { useSettingsStore } from "/@/zustand/settings";
+import { useDataStore } from "../../zustand/data";
+import { useSettingsStore } from "../../zustand/settings";
 
 interface IProps {
     item: WorkItem;

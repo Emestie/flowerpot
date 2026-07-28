@@ -4,7 +4,7 @@ import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { IResponseQuery, IValue } from "../types";
 import { createProjectLoaders } from "./project";
-import { s } from "/@/values/Strings";
+import { s } from "../../../values/Strings";
 
 export function createQueryLoaders(params: IApiClientParams, loader: Loader) {
     return {

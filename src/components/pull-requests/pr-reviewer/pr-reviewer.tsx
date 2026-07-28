@@ -1,7 +1,7 @@
-import { Icon } from "/@/ui/icon";
+import { Icon } from "../../../ui/icon";
 import { PullRequestReviewer } from "../../../models/pull-request-reviewer";
-import { useAvatar } from "/@/hooks/useAvatar";
-import { s } from "/@/values/Strings";
+import { useAvatar } from "../../../hooks/useAvatar";
+import { s } from "../../../values/Strings";
 import styles from "./pr-reviewer.module.css";
 
 interface P {
