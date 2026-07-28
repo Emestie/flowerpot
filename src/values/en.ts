@@ -346,6 +346,9 @@ const en = {
     colorSchemeClassic: "Classic",
     colorSchemeFlexoki: "Flexoki",
 
+    flexokiBannerText: "New Flexoki color scheme is available! Try it out in Settings → Interface.",
+    flexokiBannerAction: "Try",
+
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",
 };

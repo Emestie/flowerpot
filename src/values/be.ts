@@ -347,6 +347,9 @@ const be: LocalizedStrings = {
     colorSchemeClassic: "Класічная",
     colorSchemeFlexoki: "Flexoki",
 
+    flexokiBannerText: "Даступная новая колеравая схема Flexoki! Паспрабуйце яе ў Налады → Інтэрфейс.",
+    flexokiBannerAction: "Паспрабаваць",
+
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тып: ",
 };

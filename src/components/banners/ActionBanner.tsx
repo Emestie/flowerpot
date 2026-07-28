@@ -7,6 +7,7 @@ export interface IActionBannerProps {
     id: number;
     text: string;
     actionText: string;
+    dismissText?: string;
     openUrl?: string;
     action?: () => void;
     img?: string;
@@ -46,7 +47,7 @@ export function ActionBanner(p: IActionBannerProps) {
                     {p.actionText}
                 </span>
                 <span className="LinkStyleButton ml-20" onClick={hideMessage}>
-                    {s("hideBanner")}
+                    {p.dismissText ?? s("hideBanner")}
                 </span>
             </span>
         </Message>
