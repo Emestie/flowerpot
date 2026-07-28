@@ -13,7 +13,6 @@ Migrate Flowerpot from **Electron 19** (Node.js + Chromium 102) to **Deno 2.9 De
 - **Main Process**: `host/main/src/` — 8 files (window mgmt, tray, IPC handlers, store, security, auto-updater, splash screen)
 - **Bridge**: renderer imports `#preload` alias → calls `eapi.ipcSend/invoke/on` → main process handlers
 - **Platform Abstraction**: `IPlatformClass` in `src/helpers/Platform.ts` with `ElectronPlatform`/`WebPlatform` implementations
-- **Web Proxy**: `host/web-server-proxy/server.js` — standalone Node Express server forwarding calls to TFS/Azure DevOps
 - **Build**: 3 separate Vite builds (main, preload, renderer) + electron-builder for packaging
 - **Dist**: `dist/` directory with `.exe` installers, published via GitHub releases with `electron-updater`
 
@@ -144,43 +143,34 @@ Migrate Flowerpot from **Electron 19** (Node.js + Chromium 102) to **Deno 2.9 De
     - Deno Desktop CEF/WebView doesn't offer fine-grained navigation blocking
     - Handle partially via `win.addEventListener("keydown")` and custom bindings
 
-### Phase 4 — Convert Web Server Proxy
+### Phase 4 — Dev Workflow & Build
 
-18. **Replace `host/web-server-proxy/server.js`** with a Deno-native HTTP handler:
-    - Can run in the same process as the desktop entrypoint
-    - `Deno.serve()` on a different port, proxying to TFS target
-    - Use `Deno.connectTls()` for HTTPS proxying
-    - Mount at `/api/` route in the main `Deno.serve()` or as a separate server
-
-### Phase 5 — Dev Workflow & Build
-
-19. **Dev mode**:
+18. **Dev mode**:
     - Start Vite dev server for React
     - Run `deno desktop --hmr desktop.ts` which auto-detects the Vite server
     - Deno Desktop HMR reloads webview on changes
 
-20. **Build pipeline**:
+19. **Build pipeline**:
     - `vite build` (builds React app to `build/`)
     - `deno desktop build desktop.ts` (produces binary with embedded web engine)
     - Cross-compilation: `deno desktop build --all-targets desktop.ts`
 
-21. **Update `package.json` scripts**:
+20. **Update `package.json` scripts**:
     - `dev`: `deno task dev`
     - `build`: `npm run build:renderer && deno task build`
     - `compile`: `npm run build:renderer && deno task build --output ./dist`
 
-### Phase 6 — Cleanup & Remove Electron Artifacts
+### Phase 5 — Cleanup & Remove Electron Artifacts
 
-22. **Remove files/directories**:
+21. **Remove files/directories**:
     - `host/main/`
     - `host/preload/`
-    - `host/web-server-proxy/`
     - `.electron-builder.config.js`
     - `.electron-vendors.cache.json`
     - `scripts/watch.js`
     - `dist/` (old electron-builder output)
 
-23. **Simplify `package.json`**:
+22. **Simplify `package.json`**:
     - Remove Electron-specific scripts
     - Keep only web-related scripts or move to `deno task`
     - Reduce devDependencies
@@ -241,7 +231,6 @@ Migrate Flowerpot from **Electron 19** (Node.js + Chromium 102) to **Deno 2.9 De
 | Phase 1 | Scaffolding, config, deps cleanup | 0.5-1 day |
 | Phase 2 | Bindings bridge + DenoPlatform class | 1-1.5 days |
 | Phase 3 | Main process logic in Deno | 2-3 days |
-| Phase 4 | Web proxy conversion | 0.5 day |
-| Phase 5 | Dev workflow + build pipeline | 0.5-1 day |
-| Phase 6 | Cleanup + testing | 1 day |
-| **Total** | | **5.5-8 days** |
+| Phase 4 | Dev workflow + build pipeline | 0.5-1 day |
+| Phase 5 | Cleanup + testing | 1 day |
+| **Total** | | **5-7.5 days** |
