@@ -4,7 +4,32 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href="./manifest.json" />
-        <meta name="theme-color" content="#000000" />
+        <script>
+            // Prevent "flashbang" — apply dark theme before React renders
+            (function () {
+                try {
+                    var raw = localStorage.getItem("@settings");
+                    if (raw) {
+                        var data = JSON.parse(raw);
+                        var settingsStr = data["flowerpot"];
+                        if (settingsStr) {
+                            var settings = JSON.parse(settingsStr);
+                            var theme = settings.theme;
+                            var isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+                            if (isDark) {
+                                document.documentElement.classList.add("FlowerpotDarkTheme");
+                                document.documentElement.style.backgroundColor = "#1b1c1d";
+                                var meta = document.getElementById("theme-color");
+                                if (meta) meta.setAttribute("content", "#1b1c1d");
+                            }
+                        }
+                    }
+                } catch (e) {
+                    // ignore parse errors — will fall through to CSS/media query
+                }
+            })();
+        </script>
+        <meta name="theme-color" content="#000000" id="theme-color" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="apple-mobile-web-app-title" content="Flowerpot" />

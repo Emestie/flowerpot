@@ -47,10 +47,15 @@ export function App() {
     }, [theme]);
 
     useEffect(() => {
+        const meta = document.getElementById("theme-color");
         if (isDark) {
             document.documentElement.classList.add("FlowerpotDarkTheme");
+            document.documentElement.style.backgroundColor = "#1b1c1d";
+            if (meta) meta.setAttribute("content", "#1b1c1d");
         } else {
             document.documentElement.classList.remove("FlowerpotDarkTheme");
+            document.documentElement.style.backgroundColor = "";
+            if (meta) meta.setAttribute("content", "#000000");
         }
     }, [isDark]);
 
@@ -151,7 +156,7 @@ export function App() {
     const schemeClass = getSchemeClass(colorScheme);
 
     return (
-        <div className={`${isDark ? "FlowerpotDarkTheme" : ""} ${schemeClass}`.trim()} style={{ height: "100%" }}>
+        <div className={`${isDark ? "FlowerpotDarkTheme" : ""} ${schemeClass}`.trim()} style={{ height: "100%", background: isDark ? "#1b1c1d" : "#fff" }}>
             <HashRouterProvider>
                 <DialogsContainer />
                 {scene}

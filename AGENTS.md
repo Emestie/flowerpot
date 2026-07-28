@@ -89,6 +89,45 @@ Components expect these CSS variables (with fallback defaults in `src/style/ui.c
 
 Semantic UI class overrides use higher specificity selectors (e.g., `html.scheme-{name}.FlowerpotDarkTheme` beats `html.FlowerpotDarkTheme`).
 
+## PWA Flashbang Prevention (Dark Theme Flash)
+
+### Problem
+
+The PWA/web version had a "flashbang" effect at night: when opening in dark mode, the page rendered white briefly before React loaded settings and applied the `FlowerpotDarkTheme` class. This happened because:
+- `ui.css` hardcodes `body { background: #fff; }`
+- The theme preference is stored in `localStorage("@settings").flowerpot.theme` and only read after React hydrates
+- Before React runs, the white body background is visible
+
+### Solution (3 layers)
+
+1. **Inline sync script in `index.html`** (runs before first paint):
+   - Reads `localStorage("@settings")`, parses the `flowerpot` JSON, checks `theme`
+   - If `"dark"` or `"system"` + `prefers-color-scheme: dark`: adds `FlowerpotDarkTheme` to `<html>`, sets `document.documentElement.style.backgroundColor`, updates `theme-color` meta tag
+   - If no saved settings / parse error → silently falls through to layer 2
+
+2. **CSS `@media (prefers-color-scheme: dark)` in `ui.css`**:
+   - Sets `body { background: #1b1c1d; color: rgba(255, 255, 255, 0.9); }`
+   - Covers system-theme users who haven't saved a preference yet
+
+3. **React `App.tsx` effect**:
+   - When `isDark` changes, updates `theme-color` meta tag dynamically (dark → `#1b1c1d`, light → `#000000`)
+   - Sets `document.documentElement.style.backgroundColor` and root `<div>` background to match
+
+### Files involved
+
+| File | Role |
+|---|---|
+| `index.html` | Inline `<script>` + `id="theme-color"` on `<meta>` |
+| `src/style/ui.css` | `@media (prefers-color-scheme: dark)` fallback |
+| `src/components/App.tsx` | Dynamic theme-color + html background on theme change |
+| `public/manifest.json` | `background_color: "#1b1c1d"` (PWA splash screen) |
+
+### Notes
+
+- The inline script uses generic `#1b1c1d` for dark background, not scheme-specific colors (Flexoki uses `#100f0f`). This is fine: the scheme CSS overrides it on first render, and both values are very dark — the transition is a subtle hue shift, not a brightness flash.
+- Flexoki light mode users still get a brief `#fff` body before Flexoki's `#fffcf0` takes over, but this is not a "flashbang" since they're already in light mode.
+- The `manifest.json` `background_color` controls the PWA native splash screen. Changed from `#ffffff` to `#1b1c1d` so it doesn't flash white on PWA launch in dark mode.
+
 ## Notes
 
 - Electron main process uses CommonJS output (Vite CJS format)

@@ -25,6 +25,14 @@ body {
     -moz-osx-font-smoothing: auto;
 }
 
+/* Dark mode body background as CSS-only fallback for system-theme users */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #1b1c1d;
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
+
 p {
     margin: 0 0 1em;
     line-height: 1.4285em;
