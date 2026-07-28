@@ -56,7 +56,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
         <PullRequestRow key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
     ));
 
-    if (!pullRequests.length && !showEmptyQueries && !allPullRequests.length) return null;
+    if (!isLoading && !pullRequests.length && !showEmptyQueries && !allPullRequests.length) return null;
 
     return (
         <CollapsibleBlock
