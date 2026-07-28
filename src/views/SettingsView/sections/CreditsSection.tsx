@@ -139,6 +139,11 @@ export function CreditsSection() {
                     {s("openWebVersion")}
                 </Label>
             )}
+            {Platform.current.isDev() && (
+                <Label as="a" color="grey" onClick={() => setView("debug")}>
+                    Debug panel
+                </Label>
+            )}
             <br />
             <Header as="h3" dividing>
                 {s("settingsCreditsHeader")}
