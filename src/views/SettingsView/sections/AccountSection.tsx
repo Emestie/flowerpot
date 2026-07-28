@@ -1,4 +1,7 @@
-import { Button, ButtonGroup, Card, CardGroup, Header, Icon } from "semantic-ui-react";
+import { Button, ButtonGroup } from "../../../ui/button";
+import { Card, CardGroup } from "../../../ui/card";
+import { Icon } from "../../../ui/icon";
+import { Header } from "../../../ui/header";
 import { AccountBadge } from "../../../components/AccountBadge";
 import { IAccount } from "../../../helpers/Settings";
 import { s } from "../../../values/Strings";
@@ -19,7 +22,7 @@ export function AccountSection() {
                     <AccountCard key={account.id} account={account} deleteable={accounts.length > 1} />
                 ))}
             </CardGroup>
-            <div style={{ marginTop: 16 }}></div>
+            <div className="account-spacer"></div>
             {accounts.length < 3 && (
                 <Button
                     icon
@@ -44,11 +47,12 @@ function AccountCard(props: { account: IAccount; deleteable: boolean }) {
     return (
         <Card>
             <Card.Content>
-                <Card.Header>
-                    <AccountBadge accountId={props.account.id} size="l" /> {props.account.displayName}
-                </Card.Header>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <AccountBadge accountId={props.account.id} size="l" display="flex" />
+                    <span style={{ fontWeight: "bold", fontSize: "1.28571429rem" }}>{props.account.displayName}</span>
+                </div>
                 <Card.Meta>{props.account.url}</Card.Meta>
-                <div style={{ marginTop: 8 }}>
+                <div className="account-card-buttons">
                     <ButtonGroup size="tiny" compact icon>
                         <Button
                             onClick={() => {
@@ -64,12 +68,8 @@ function AccountCard(props: { account: IAccount; deleteable: boolean }) {
                                 onClick={() => {
                                     settings.setSettings({
                                         accounts: settings.accounts.filter((x) => x.id !== props.account.id),
-                                        projects: settings.projects.filter(
-                                            (x) => x.accountId !== props.account.id
-                                        ),
-                                        queries: settings.queries.filter(
-                                            (x) => x.accountId !== props.account.id
-                                        ),
+                                        projects: settings.projects.filter((x) => x.accountId !== props.account.id),
+                                        queries: settings.queries.filter((x) => x.accountId !== props.account.id),
                                         lists: {
                                             deferred:
                                                 settings.lists?.deferred.filter(

@@ -1,0 +1,59 @@
+.form {
+    position: relative;
+    font-size: 1rem;
+}
+
+.form > *:not(:last-child) {
+    margin-bottom: 1em;
+}
+
+/* Loading overlay */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loaderWrapper {
+    position: relative;
+    opacity: 0.45;
+}
+
+/* Field (Select) */
+.field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-weight: normal;
+    font-style: normal;
+    color: var(--input-color, rgba(0, 0, 0, 0.87));
+}
+
+.field .label {
+    display: block;
+    margin: 0 0 0.28571429rem 0;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 0.92857143em;
+    font-weight: bold;
+    text-transform: none;
+}
+
+:global(html.FlowerpotDarkTheme) .field .label,
+:global(.FlowerpotDarkTheme) .field .label {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Group */
+.group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.group > *:not(:last-child) {
+    margin-right: 0.25em;
+}
+
+.inline {
+    flex-direction: row;
+}

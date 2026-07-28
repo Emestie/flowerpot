@@ -1,4 +1,5 @@
-import { Button, Header } from "semantic-ui-react";
+import { Button } from "../../../ui/button";
+import { Header } from "../../../ui/header";
 import { useAppStore } from "../../../zustand/app";
 import { useSettingsStore } from "../../../zustand/settings";
 import { s } from "../../../values/Strings";

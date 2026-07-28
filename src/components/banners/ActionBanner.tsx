@@ -1,4 +1,4 @@
-import { Message } from "semantic-ui-react";
+import { Message } from "../../ui/message";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
 import { useSettingsStore } from "../../zustand/settings";
@@ -7,6 +7,7 @@ export interface IActionBannerProps {
     id: number;
     text: string;
     actionText: string;
+    dismissText?: string;
     openUrl?: string;
     action?: () => void;
     img?: string;
@@ -38,25 +39,15 @@ export function ActionBanner(p: IActionBannerProps) {
 
     return (
         <Message {...types}>
-            {p.img && (
-                <img
-                    alt=""
-                    style={{ position: "absolute", top: 8, left: 8, height: 32, width: 32, borderRadius: "50%" }}
-                    src={p.img}
-                ></img>
-            )}
+            {p.img && <img alt="" className="banner-img" src={p.img}></img>}
             <span style={{ marginLeft: p.img ? 32 : 5 }}>
                 {p.text}
 
-                <span
-                    className="LinkStyleButton"
-                    style={{ marginLeft: 20, fontWeight: "bold" }}
-                    onClick={doActionAndHideBanner}
-                >
+                <span className="LinkStyleButton ml-20 font-bold" onClick={doActionAndHideBanner}>
                     {p.actionText}
                 </span>
-                <span className="LinkStyleButton" style={{ marginLeft: 20 }} onClick={hideMessage}>
-                    {s("hideBanner")}
+                <span className="LinkStyleButton ml-20" onClick={hideMessage}>
+                    {p.dismissText ?? s("hideBanner")}
                 </span>
             </span>
         </Message>

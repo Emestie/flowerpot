@@ -1,4 +1,7 @@
-import { Button, DropdownItemProps, Form, Header } from "semantic-ui-react";
+import { Button } from "../../../ui/button";
+import { DropdownItemProps } from "../../../ui/dropdown/dropdown-item-props";
+import { Form } from "../../../ui/form";
+import { Header } from "../../../ui/header";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import { TNotificationsMode } from "../../../helpers/Settings";
 import { s } from "../../../values/Strings";
@@ -39,8 +42,7 @@ export function NotificationsSection() {
     };
 
     const isWeb = Platform.type === PlatformType.Web;
-    const showPermissionButton =
-        isWeb && "Notification" in window && Notification.permission !== "granted";
+    const showPermissionButton = isWeb && "Notification" in window && Notification.permission !== "granted";
 
     return (
         <>
@@ -63,9 +65,7 @@ export function NotificationsSection() {
             <br />
             {showPermissionButton && (
                 <>
-                    <Button onClick={requestNotificationPermission}>
-                        {s("requestNotificationPermission")}
-                    </Button>
+                    <Button onClick={requestNotificationPermission}>{s("requestNotificationPermission")}</Button>
                     <br />
                 </>
             )}

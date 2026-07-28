@@ -1,4 +1,7 @@
-import { Container, Header, Icon, Label } from "semantic-ui-react";
+import { Label } from "../../../ui/label";
+import { Container } from "../../../ui/container";
+import { Icon } from "../../../ui/icon";
+import { Header } from "../../../ui/header";
 import { ListBlock } from "../../../components/ListBlock";
 import { s } from "../../../values/Strings";
 

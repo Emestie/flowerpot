@@ -1,0 +1,123 @@
+.dimmer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--modal-dimmer-bg, rgba(0, 0, 0, 0.85));
+    overflow: auto;
+}
+
+.modal {
+    position: relative;
+    z-index: 1001;
+    text-align: left;
+    background: var(--modal-bg, #fff);
+    color: var(--modal-color, inherit);
+    border: none;
+    border-radius: 0.28571429rem;
+    box-shadow:
+        1px 3px 3px 0 rgba(0, 0, 0, 0.2),
+        1px 3px 15px 2px rgba(0, 0, 0, 0.2);
+    flex: 0 0 auto;
+    width: 680px;
+    margin: 0;
+    user-select: text;
+    overflow: hidden;
+}
+
+.content {
+    display: block;
+    width: 100%;
+    font-size: 1em;
+    line-height: 1.4;
+    background: var(--modal-bg, #fff);
+    color: var(--modal-color, inherit);
+}
+
+.actions {
+    background: var(--modal-actions-bg, #f9fafb);
+    padding: 1rem;
+    border-top: 1px solid var(--modal-actions-border-color, rgba(34, 36, 38, 0.15));
+    text-align: right;
+}
+
+.cancelBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 0.28571429rem;
+    padding: 0.78571429em 1.5em;
+    min-height: 1em;
+    font-family: var(--font-family);
+    font-weight: 700;
+    line-height: 1em;
+    text-transform: none;
+    text-shadow: none;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-appearance: none;
+    background-color: var(--btn-bg, #e0e1e2);
+    color: var(--btn-color, rgba(0, 0, 0, 0.6));
+    font-size: inherit;
+    box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 var(--btn-shadow-color, rgba(34, 36, 38, 0.15)) inset;
+    transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease,
+        box-shadow 0.1s ease, background 0.1s ease;
+    margin-left: 0.75em;
+}
+
+.cancelBtn:hover {
+    background-color: var(--btn-hover-bg, #cacbcd);
+    color: var(--btn-hover-color, rgba(0, 0, 0, 0.8));
+}
+
+.cancelBtn:active {
+    background-color: var(--btn-active-bg, #babbbc);
+    color: var(--btn-active-color, rgba(0, 0, 0, 0.9));
+}
+
+.confirmBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 0.28571429rem;
+    padding: 0.78571429em 1.5em;
+    min-height: 1em;
+    font-family: var(--font-family);
+    font-weight: 700;
+    line-height: 1em;
+    text-transform: none;
+    text-shadow: none;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-appearance: none;
+    font-size: inherit;
+    transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease,
+        box-shadow 0.1s ease, background 0.1s ease;
+    margin-left: 0.75em;
+    background-color: var(--btn-primary-bg, #2185d0);
+    color: var(--btn-primary-color, #fff);
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
+}
+
+.confirmBtn:hover {
+    background-color: var(--btn-primary-hover-bg, #1678c2);
+    color: var(--btn-primary-color, #fff);
+}
+
+.confirmBtn:active {
+    background-color: var(--btn-primary-active-bg, #1a69a4);
+    color: var(--btn-primary-color, #fff);
+}
+
+

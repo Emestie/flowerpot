@@ -1,4 +1,5 @@
-import { Message, Button } from "semantic-ui-react";
+import { Message } from "../../ui/message";
+import { Button } from "../../ui/button";
 import { s } from "../../values/Strings";
 import Version from "../../helpers/Version";
 import { useAppStore } from "../../zustand/app";
@@ -20,7 +21,7 @@ export function WhatsNewBanner() {
     return (
         <Message info size="mini">
             {s("justUpdatedMessage1")} <i>{Version.long}</i>.
-            <span style={{ marginLeft: 10 }}>
+            <span className="whatsnew-buttons">
                 <Button compact size="mini" onClick={showNotes}>
                     {s("justUpdatedMessage2")}
                 </Button>

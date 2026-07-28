@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Confirm, Form } from "semantic-ui-react";
+import { Form } from "../../ui/form";
+import { Confirm } from "../../ui/confirm";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
@@ -57,12 +58,12 @@ export function OpenByIdDialog(p: IProps) {
 
     const content = (
         <div
-            style={{ padding: 20 }}
+            className="dialog-content"
             onKeyPress={(e) => {
                 if (e.charCode === 13) onConfirm();
             }}
         >
-            <div style={{ marginBottom: 20 }}>{s("openByIdText")}</div>
+            <div className="dialog-caption">{s("openByIdText")}</div>
             <div>
                 <Form>
                     <Form.Group inline>
@@ -74,13 +75,12 @@ export function OpenByIdDialog(p: IProps) {
                             value={accountId && collectionName ? { accountId, collectionName } : undefined}
                         />
                         <Form.Input
-                            style={{ width: "100%" }}
+                            className="af-input"
                             value={id}
                             onChange={(e) => {
                                 setId(e.target.value);
                             }}
                             maxLength="50"
-                            className="af-input"
                         />
                     </Form.Group>
                 </Form>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Form } from "../ui/form";
 import { AccountBadge } from "./AccountBadge";
 import { useSettingsStore } from "../zustand/settings";
 
@@ -21,7 +21,7 @@ export function CollectionSelector(props: {
                 .map((x, i) => ({
                     key: i,
                     text: (
-                        <div style={{ display: "flex", alignItems: "center" }}>
+                        <div className="collection-badge-row">
                             <AccountBadge accountId={x.accountId} rightGap={8} display="flex" />
                             {x.collectionName}
                         </div>

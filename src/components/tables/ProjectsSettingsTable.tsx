@@ -1,4 +1,7 @@
-import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
+import { Button } from "../../ui/button";
+import { Checkbox } from "../../ui/checkbox";
+import { Icon } from "../../ui/icon";
+import { Table } from "../../ui/table";
 import { Project } from "../../models/project";
 import { ProjectHelper } from "../../helpers/Project";
 import { useSettingsStore } from "../../zustand/settings";
@@ -19,7 +22,7 @@ export function ProjectsSettingsTable() {
                 <Checkbox checked={project.enabled} onChange={() => ProjectHelper.toggleBoolean(project, "enabled")} />
             </Table.Cell>
             <Table.Cell>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div className="collection-badge-row">
                     <AccountBadge accountId={project.accountId} display="flex" rightGap={4} size="l" />{" "}
                     {project.collectionName}
                 </div>
@@ -47,7 +50,7 @@ export function ProjectsSettingsTable() {
             <Table.Footer fullWidth>
                 <Table.Row>
                     <Table.HeaderCell />
-                    <Table.HeaderCell colSpan="6">
+                    <Table.HeaderCell colSpan={6}>
                         <Button icon labelPosition="left" primary size="small" onClick={openProjectSelector}>
                             <Icon name="add" /> {s("addProject")}
                         </Button>

@@ -1,7 +1,7 @@
-import { Image, Label } from "semantic-ui-react";
-import Platform from "../helpers/Platform";
-import { useAvatar } from "../hooks/useAvatar";
-import { HighlightenText } from "./HighlightenText";
+import Platform from "../../helpers/Platform";
+import { useAvatar } from "../../hooks/useAvatar";
+import { HighlightenText } from "../HighlightenText";
+import styles from "./profile-widget.module.css";
 
 interface IProps {
     nameFull: string;
@@ -22,10 +22,10 @@ export function ProfileWidget({ avatarUrl, displayName, nameFull, accountId, cop
                 Platform.current.copyString(copyName);
             }}
         >
-            <Label basic image className="user-label">
-                {avatar && !!displayName && <Image className="av-class" avatar spaced="right" src={avatar} />}
+            <span className={styles.label}>
+                {avatar && !!displayName && <img className={styles.avatar} src={avatar} alt="" />}
                 <HighlightenText text={displayName} />
-            </Label>
+            </span>
         </span>
     );
 }

@@ -1,5 +1,10 @@
 import { createRef, useCallback, useEffect, useState } from "react";
-import { Button, Container, Form, Header, Label, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Label, type TColor } from "../ui/label";
+import { Container } from "../ui/container";
+import { Form } from "../ui/form";
+import { Header } from "../ui/header";
+import { Message } from "../ui/message";
 import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
@@ -21,7 +26,7 @@ enum ECredState {
     Duplication = 4,
 }
 
-const statuses = [
+const statuses: { color?: TColor; text: string }[] = [
     { color: undefined, text: s("credsState1") },
     { color: undefined, text: s("credsState2") },
     { color: "red", text: s("credsState4") },
@@ -178,11 +183,11 @@ export function CredentialsView() {
                         </b>{" "}
                         {s("credsTokenInfo3")}
                         <br />
-                        <div style={{ marginTop: 10, marginBottom: -10 }}>
+                        <div className="btn-group-wrap">
                             <Button
                                 primary
                                 size="small"
-                                style={{ marginRight: 10 }}
+                                className="mr-10"
                                 onClick={() => {
                                     Platform.current.openUrl(
                                         "https://learn.microsoft.com/" +
@@ -225,10 +230,10 @@ export function CredentialsView() {
                 <br />
                 <div>
                     {s("status")}
-                    <Label color={statusParams.color as any}>{statusParams.text}</Label>
+                    <Label color={statusParams.color}>{statusParams.text}</Label>
                 </div>
                 <br />
-                <Button positive loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
+                <Button primary loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
                     {s("validate")}
                 </Button>
                 <Button loading={checkInProgress} onClick={goToSettings}>

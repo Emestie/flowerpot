@@ -15,6 +15,7 @@ const en = {
     localeAuto: "Auto",
     localeEn: "English",
     localeRu: "Russian",
+    localeBe: "Belarusian",
     updateStateChecking: "Checking for updates...",
     updateStateDownloading: "Downloading update...",
     updateStateReady: "Update is ready to install. Click to start",
@@ -113,7 +114,7 @@ const en = {
     sortPattern: "Work Items sort pattern: ",
     //lists
     mineOnTop: "Show my Work Items on top",
-    settingsWIHeader: "Appearance",
+    settingsWIHeader: "Behavior",
     favoritesDescription: "IDs of Work Items you will see marked with a star.",
     favorites: "Favorites",
     forwardedDescription: "IDs of Work Items you will see marked with an arrow.",
@@ -336,9 +337,17 @@ const en = {
 
     openWebVersion: "Open web version of Flowerpot",
 
-    themeLight: "Light theme",
-    themeDark: "Dark theme",
-    themeSystem: "System theme (follows OS setting)",
+    themeLight: "Light",
+    themeDark: "Dark",
+    themeSystem: "System",
+    settingsThemesHeader: "Interface",
+    ddThemeLabel: "Theme: ",
+    ddColorSchemeLabel: "Color scheme: ",
+    colorSchemeClassic: "Classic",
+    colorSchemeFlexoki: "Flexoki",
+
+    flexokiBannerText: "New Flexoki color scheme is available! Try it out in Settings → Interface.",
+    flexokiBannerAction: "Try",
 
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",

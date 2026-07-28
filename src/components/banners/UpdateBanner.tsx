@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { s } from "../../values/Strings";
 import Platform from "../../helpers/Platform";
-import { Message, Button } from "semantic-ui-react";
+import { Message } from "../../ui/message";
+import { Button } from "../../ui/button";
 import { useAppStore } from "../../zustand/app";
 
 export function UpdateBanner() {
@@ -19,7 +20,7 @@ export function UpdateBanner() {
                 <Message.Header>{s("updateArrived")}</Message.Header>
                 <p>
                     {s("updateArrivedText1")}{" "}
-                    <Button compact positive size="tiny" loading={updateInstallInProgress} onClick={onUpdate}>
+                    <Button compact primary size="tiny" loading={updateInstallInProgress} onClick={onUpdate}>
                         {s("install")}
                     </Button>{" "}
                     {s("updateArrivedText2")}

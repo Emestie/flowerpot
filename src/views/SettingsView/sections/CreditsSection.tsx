@@ -1,4 +1,9 @@
-import { DropdownItemProps, Form, Header, Icon, Label } from "semantic-ui-react";
+import { Label } from "../../../ui/label";
+import { DropdownItemProps } from "../../../ui/dropdown/dropdown-item-props";
+import { Icon } from "../../../ui/icon";
+import { Form } from "../../../ui/form";
+import { Header } from "../../../ui/header";
+import { Checkbox } from "../../../ui/checkbox";
 import avatar from "../../../assets/ti.jpg";
 import Platform, { PlatformType } from "../../../helpers/Platform";
 import Version from "../../../helpers/Version";
@@ -8,8 +13,9 @@ import { useAppStore } from "../../../zustand/app";
 import { useSettingsStore } from "../../../zustand/settings";
 
 const locales: DropdownItemProps[] = [
-    { key: 2, text: s("localeEn"), value: "en" },
-    { key: 3, text: s("localeRu"), value: "ru" },
+    { key: 1, text: s("localeEn"), value: "en" },
+    { key: 2, text: s("localeRu"), value: "ru" },
+    { key: 3, text: s("localeBe"), value: "be" },
 ];
 
 export function CreditsSection() {
@@ -102,11 +108,11 @@ export function CreditsSection() {
             <br />
             {Platform.current.os === "win32" && (
                 <>
-                    <Form.Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
+                    <Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
                     <br />
                 </>
             )}
-            <Form.Checkbox label={s("cbTelemetry")} checked={allowTelemetry} onChange={toggleTelemetry} />
+            <Checkbox label={s("cbTelemetry")} checked={allowTelemetry} onChange={toggleTelemetry} />
             <br />
             <Header as="h3" dividing>
                 {s("settingsActionsHeader")}
@@ -133,6 +139,11 @@ export function CreditsSection() {
                     {s("openWebVersion")}
                 </Label>
             )}
+            {Platform.current.isDev() && (
+                <Label as="a" color="grey" onClick={() => setView("debug")}>
+                    Debug panel
+                </Label>
+            )}
             <br />
             <Header as="h3" dividing>
                 {s("settingsCreditsHeader")}
@@ -141,19 +152,19 @@ export function CreditsSection() {
                 as="a"
                 image
                 onClick={() => Platform.current.openUrl("https://github.com/Emestie/flowerpot")}
-                style={{ marginBottom: 8 }}
+                className="credits-label"
             >
                 <img src={avatar} alt="" />
                 <Icon name="github" />
                 Emestie/flowerpot
             </Label>
-            <Label style={{ marginBottom: 8 }}>
+            <Label className="credits-label">
                 {s("versionWord")}
                 <Label.Detail>
                     {getPlatformIcon()} {Version.long}
                 </Label.Detail>
             </Label>
-            <Label as="a" onClick={showChangelog} style={{ marginBottom: 8 }}>
+            <Label as="a" onClick={showChangelog} className="credits-label">
                 {s("releaseNotes")}
             </Label>
             {Platform.type === PlatformType.Web ? null : updateLabel}

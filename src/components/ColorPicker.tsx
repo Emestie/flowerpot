@@ -1,6 +1,18 @@
-import { Radio, Label } from "semantic-ui-react";
+import { Label, type TColor } from "../ui/label";
+import { Radio } from "../ui/radio";
 
-const colorList = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "brown", "grey", undefined];
+const colorList: (TColor | undefined)[] = [
+    "red",
+    "orange",
+    "yellow",
+    "olive",
+    "green",
+    "teal",
+    "blue",
+    "brown",
+    "grey",
+    undefined,
+];
 
 interface P {
     value: string | undefined;
@@ -15,13 +27,12 @@ export default function ColorPicker(p: P) {
             {colorList.map((c) => (
                 <Radio
                     key={c || "def"}
+                    indicator={false}
                     label={
                         <Label
                             basic={value !== c}
-                            style={{ marginRight: 10, userSelect: "none" }}
-                            circular
-                            size="mini"
-                            color={c as any}
+                            className="color-picker-label"
+                            color={c}
                         ></Label>
                     }
                     name="colorGrp"

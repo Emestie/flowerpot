@@ -1,0 +1,234 @@
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 0.28571429rem;
+    padding: 0.78571429em 1.5em;
+    min-height: 1em;
+    margin: 0 0.25em 0 0;
+    font-family: var(--font-family);
+    font-weight: 700;
+    line-height: 1em;
+    text-transform: none;
+    text-shadow: none;
+    vertical-align: baseline;
+    transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease,
+        box-shadow 0.1s ease, background 0.1s ease;
+    user-select: none;
+    -webkit-appearance: none;
+    background-color: var(--btn-bg, #e0e1e2);
+    color: var(--btn-color, rgba(0, 0, 0, 0.6));
+    font-size: inherit;
+    text-decoration: none;
+    box-shadow: 0 0 0 1px transparent inset,
+        0 0 0 0 var(--btn-shadow-color, rgba(34, 36, 38, 0.15)) inset;
+}
+.btn:hover {
+    background-color: var(--btn-hover-bg, #cacbcd);
+    color: var(--btn-hover-color, rgba(0, 0, 0, 0.8));
+    box-shadow: 0 0 0 1px transparent inset,
+        0 0 0 0 var(--btn-shadow-color, rgba(34, 36, 38, 0.15)) inset;
+}
+.btn:active {
+    background-color: var(--btn-active-bg, #babbbc);
+    color: var(--btn-active-color, rgba(0, 0, 0, 0.9));
+}
+
+/* Sizes */
+.mini {
+    font-size: 0.78571429rem;
+}
+.tiny {
+    font-size: 0.85714286rem;
+}
+.small {
+    font-size: 0.92857143rem;
+}
+
+/* Compact */
+.compact {
+    padding: 0.58928571em 1.125em;
+}
+.compact.icon {
+    padding: 0.5em;
+}
+.compact.labeledLeft {
+    padding: 0.58928571em 3.69642857em;
+}
+
+/* Icon button — square */
+.icon {
+    padding: 0.78571429em;
+    min-width: 2.57142857em;
+    justify-content: center;
+}
+.icon > :not(.loader) {
+    margin: 0 !important;
+}
+.icon.labeledLeft {
+    min-width: 0;
+    justify-content: flex-start;
+}
+
+/* Color variants */
+.primary {
+    background-color: var(--btn-primary-bg, #2185d0);
+    color: var(--btn-primary-color, #fff);
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
+}
+.primary:hover {
+    background-color: var(--btn-primary-hover-bg, #1678c2);
+    color: var(--btn-primary-color, #fff);
+}
+.primary:focus {
+    background-color: var(--btn-primary-focus-bg, #0d71bb);
+    color: var(--btn-primary-color, #fff);
+}
+.primary:active {
+    background-color: var(--btn-primary-active-bg, #1a69a4);
+    color: var(--btn-primary-color, #fff);
+}
+
+.positive {
+    background-color: var(--btn-positive-bg, #21ba45);
+    color: var(--btn-positive-color, #fff);
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
+}
+.positive:hover {
+    background-color: var(--btn-positive-hover-bg, #16ab39);
+    color: var(--btn-positive-color, #fff);
+}
+.positive:focus {
+    background-color: var(--btn-positive-focus-bg, #0ea432);
+    color: var(--btn-positive-color, #fff);
+}
+.positive:active {
+    background-color: var(--btn-positive-active-bg, #198f35);
+    color: var(--btn-positive-color, #fff);
+}
+
+.negative {
+    background-color: var(--btn-negative-bg, #db2828);
+    color: var(--btn-negative-color, #fff);
+    box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
+}
+.negative:hover {
+    background-color: var(--btn-negative-hover-bg, #d01919);
+    color: var(--btn-negative-color, #fff);
+}
+.negative:focus {
+    background-color: var(--btn-negative-focus-bg, #ca1010);
+    color: var(--btn-negative-color, #fff);
+}
+.negative:active {
+    background-color: var(--btn-negative-active-bg, #b21e1e);
+    color: var(--btn-negative-color, #fff);
+}
+
+/* Basic */
+.basic {
+    background: transparent;
+    color: var(--btn-color, rgba(0, 0, 0, 0.6));
+    font-weight: 400;
+    box-shadow: 0 0 0 1px var(--btn-basic-border, rgba(34, 36, 38, 0.15)) inset;
+}
+.basic:hover {
+    background: var(--btn-basic-hover-bg, #fff);
+    color: var(--btn-basic-hover-color, rgba(0, 0, 0, 0.8));
+    box-shadow: 0 0 0 1px var(--btn-basic-hover-border, rgba(34, 36, 38, 0.35)) inset;
+}
+.basic:active {
+    background: var(--btn-basic-active-bg, #f8f8f8);
+    color: var(--btn-basic-active-color, rgba(0, 0, 0, 0.9));
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset,
+        0 1px 4px 0 rgba(34, 36, 38, 0.15) inset;
+}
+
+/* Disabled */
+.disabled,
+.disabled:hover {
+    opacity: 0.45;
+    cursor: default;
+    background-image: none;
+    box-shadow: none;
+    pointer-events: none;
+}
+
+/* Loading */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+.loading > :not(.loader) {
+    opacity: 0;
+}
+.loading::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: inherit;
+}
+.loading.primary::before,
+.loading.positive::before,
+.loading.negative::before {
+    background-color: transparent;
+}
+
+.loader {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 1.28571429em;
+    height: 1.28571429em;
+    margin: -0.64285714em 0 0 -0.64285714em;
+    border: 0.2em solid rgba(0, 0, 0, 0.15);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.primary .loader,
+.positive .loader,
+.negative .loader {
+    border-color: rgba(255, 255, 255, 0.8);
+    border-top-color: transparent;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Label position left */
+.labeledLeft {
+    padding-left: 4.07142857em;
+    padding-right: 1.5em;
+    position: relative;
+}
+.labeledLeft > :first-child {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2.57142857em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0.28571429rem 0 0 0.28571429rem;
+    margin: 0;
+    box-shadow: -1px 0 0 0 transparent inset;
+}

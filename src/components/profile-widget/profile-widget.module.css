@@ -1,0 +1,22 @@
+.label {
+    display: inline-flex;
+    align-items: center;
+    cursor: default;
+    border: none;
+    background: transparent;
+    font-weight: normal;
+    box-shadow: none;
+    padding: 0;
+    vertical-align: bottom;
+}
+
+.avatar {
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    margin-right: 4px;
+    display: inline-block;
+    vertical-align: middle;
+    object-fit: cover;
+    flex-shrink: 0;
+}

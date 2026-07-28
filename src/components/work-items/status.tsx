@@ -1,6 +1,6 @@
 import { WorkItem } from "../../models/work-item";
 import { HighlightenText } from "../HighlightenText";
-import { s } from "/@/values/Strings";
+import { s } from "../../values/Strings";
 
 interface Props {
     workItem: WorkItem;

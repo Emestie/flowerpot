@@ -1,0 +1,152 @@
+.dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    text-align: left;
+    font-family: var(--font-family);
+    background: var(--input-bg, #fff);
+    border: 1px solid var(--input-border, rgba(34, 36, 38, 0.15));
+    color: var(--input-color, rgba(0, 0, 0, 0.87));
+    border-radius: 0.28571429rem;
+    transition: box-shadow 0.1s ease, border-color 0.1s ease;
+    line-height: 1.21428571em;
+    font-size: 1em;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+.dropdown.fluid {
+    display: block;
+    width: 100%;
+}
+
+.dropdown:focus,
+.dropdown.visible {
+    border-color: var(--input-focus-border, #85b7d9);
+    background: var(--input-focus-bg, #fff);
+    color: var(--input-color, rgba(0, 0, 0, 0.8));
+    box-shadow: none;
+}
+
+:global(html.FlowerpotDarkTheme) .dropdown,
+:global(.FlowerpotDarkTheme) .dropdown {
+    background: var(--input-bg, #3d3e3f);
+    border-color: var(--input-border, rgba(255, 255, 255, 0.15));
+    color: var(--input-color, rgba(255, 255, 255, 0.9));
+}
+
+:global(html.FlowerpotDarkTheme) .dropdown:focus,
+:global(.FlowerpotDarkTheme) .dropdown.visible {
+    border-color: var(--input-focus-border, #6bb3e0);
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5em;
+    padding: 0.67857143em 1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.selected {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.placeholder {
+    color: var(--input-placeholder, rgba(191, 191, 191, 0.87));
+}
+
+.caret {
+    margin-left: auto !important;
+    flex: 0 0 auto;
+    transition: transform 0.1s ease;
+}
+
+.dropdown.visible .caret {
+    transform: rotate(180deg);
+}
+
+.menu {
+    position: fixed;
+    z-index: 2000;
+    max-height: 18em;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--menu-bg, #fff);
+    border: 1px solid var(--input-border, rgba(34, 36, 38, 0.15));
+    border-radius: 0.28571429rem;
+    box-shadow: 0 2px 8px 0 rgba(34, 36, 38, 0.15);
+    outline: none;
+}
+
+:global(html.FlowerpotDarkTheme) .menu,
+:global(.FlowerpotDarkTheme) .menu {
+    background: var(--menu-bg, #3d3e3f);
+    border-color: var(--input-border, rgba(255, 255, 255, 0.15));
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.item {
+    position: relative;
+    cursor: pointer;
+    display: block;
+    border: none;
+    height: auto;
+    line-height: 1.21428571em;
+    padding: 0.67857143em 1em;
+    font-size: 1em;
+    color: var(--menu-item-color, rgba(0, 0, 0, 0.87));
+    white-space: normal;
+    word-wrap: normal;
+}
+
+:global(html.FlowerpotDarkTheme) .item,
+:global(.FlowerpotDarkTheme) .item {
+    color: var(--menu-item-color, rgba(255, 255, 255, 0.9));
+}
+
+.item:hover {
+    background: var(--menu-item-hover-bg, rgba(0, 0, 0, 0.03));
+    color: var(--menu-item-hover-color, rgba(0, 0, 0, 0.95));
+}
+
+:global(html.FlowerpotDarkTheme) .item:hover,
+:global(.FlowerpotDarkTheme) .item:hover {
+    background: var(--menu-item-hover-bg, rgba(255, 255, 255, 0.04));
+    color: var(--menu-item-hover-color, #fff);
+}
+
+.item.active {
+    font-weight: 700;
+    background: var(--menu-item-active-bg, rgba(0, 0, 0, 0.05));
+    color: var(--menu-item-active-color, rgba(0, 0, 0, 0.95));
+}
+
+:global(html.FlowerpotDarkTheme) .item.active,
+:global(.FlowerpotDarkTheme) .item.active {
+    background: var(--menu-item-active-bg, rgba(255, 255, 255, 0.08));
+    color: var(--menu-item-active-color, #fff);
+}
+
+.itemDisabled,
+.itemDisabled:hover {
+    cursor: default;
+    opacity: 0.45;
+    pointer-events: none;
+    background: transparent;
+    color: var(--menu-item-color, rgba(0, 0, 0, 0.4));
+}
+
+.disabled,
+.disabled:hover {
+    opacity: 0.45;
+    pointer-events: none;
+    cursor: default;
+}

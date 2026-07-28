@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.8.9",
+    "version": "0.8.10",
     "description": "TFS/Azure DevOps work items tracking tool",
     "author": {
         "name": "Valery Murashko",
@@ -24,16 +24,15 @@
     "dependencies": {
         "@trodi/electron-splashscreen": "^1.0.2",
         "cyrillic-to-translit-js": "3.1.0",
+        "dayjs": "^1.11.21",
         "electron-updater": "^6.1.9",
-        "lodash": "^4.18.1",
         "markdown-to-jsx": "^7.4.7",
-        "moment": "^2.30.1",
+        "prop-types": "^15.8.1",
         "zustand": "^5.0.14"
     },
     "devDependencies": {
         "@babel/core": "^7.25.9",
         "@types/jest": "^29.5.14",
-        "@types/lodash": "^4.17.24",
         "@types/node": "^18.18.14",
         "@types/react": "^19.0.14",
         "@types/react-dom": "^19.0.6",
@@ -41,23 +40,18 @@
         "cross-env": "^7.0.3",
         "electron": "^19.1.9",
         "electron-builder": "^24.13.3",
-        "express": "^5.2.1",
         "prettier": "^3.8.3",
         "react": "^19.0.7",
         "react-contextmenu": "^2.14.0",
         "react-dom": "^19.0.7",
-        "sass": "^1.77.8",
-        "semantic-ui-css": "^2.5.0",
-        "semantic-ui-react": "^3.0.0-beta.2",
-        "typescript": "^5.5.4",
+        "typescript": "~5.9.3",
         "unplugin-auto-expose": "0.0.2",
         "vite": "^6.0.15",
-        "vite-plugin-checker": "^0.8.0"
+        "vite-plugin-checker": "^0.14.4"
     },
     "scripts": {
         "web": "vite",
         "deploy-web": "npm run build:renderer && firebase deploy --only hosting",
-        "proxy": "cd ./host/web-server-proxy && node ./server.js",
         "dev": "node scripts/watch.js",
         "build": "npm run build:main && npm run build:preload && npm run build:renderer",
         "build:main": "cd ./host/main && tsc && vite build",

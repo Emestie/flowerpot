@@ -1,5 +1,7 @@
 import { useMemo } from "react";
-import { Icon, Message, Table } from "semantic-ui-react";
+import { Icon } from "../../ui/icon";
+import { Table } from "../../ui/table";
+import { Message } from "../../ui/message";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
@@ -185,7 +187,7 @@ export function WorkItemsBlock({ query }: IProps) {
             }}
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             rightBlock={
-                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "flex-end", gap: 6 }}>
+                <div className="right-block-wi">
                     {!!query.queryPath && (
                         <span title={s("openExternal")} className="externalLink" onClick={onOpenQueryInBrowser}>
                             <Icon size="small" name="external share" />

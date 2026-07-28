@@ -1,4 +1,7 @@
-import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
+import { Button } from "../../ui/button";
+import { Checkbox } from "../../ui/checkbox";
+import { Icon } from "../../ui/icon";
+import { Table } from "../../ui/table";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
 import { s } from "../../values/Strings";
@@ -27,7 +30,7 @@ export function QueriesSettingsTable() {
                 />
             </Table.Cell>
             <Table.Cell>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div className="collection-badge-row">
                     <AccountBadge accountId={q.accountId} display="flex" rightGap={4} size="l" /> {q.collectionName}
                 </div>
             </Table.Cell>
@@ -90,7 +93,7 @@ export function QueriesSettingsTable() {
             <Table.Footer fullWidth>
                 <Table.Row>
                     <Table.HeaderCell />
-                    <Table.HeaderCell colSpan="6">
+                    <Table.HeaderCell colSpan={6}>
                         <Button icon labelPosition="left" primary size="small" onClick={openQuerySelector}>
                             <Icon name="add" /> {s("addQuery")}
                         </Button>

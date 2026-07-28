@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Checkbox, Container, Form, Header, Icon, Label, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
+import { Container } from "../ui/container";
+import { Form } from "../ui/form";
+import { Icon } from "../ui/icon";
+import { Header } from "../ui/header";
+import { Message } from "../ui/message";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";
@@ -109,7 +116,7 @@ export function SelectQueriesView() {
         </Message>
     ) : filteredAvailableQueries.length ? (
         filteredAvailableQueries.map((q) => (
-            <div key={q.queryId} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+            <div key={q.queryId} className="mb-6 flex items-center">
                 <AccountBadge accountId={q.accountId} rightGap={8} />
                 <Checkbox label={q.nameInList} checked={q.checked} onChange={() => toggleCheck(q)} />
             </div>
@@ -125,7 +132,7 @@ export function SelectQueriesView() {
             heading={
                 <ViewHeading>
                     <Button onClick={onCancel}>{s("cancel")}</Button>
-                    <Button onClick={onAdd} positive disabled={!isAddAvailable}>
+                    <Button onClick={onAdd} primary disabled={!isAddAvailable}>
                         {s("add")}
                     </Button>
                 </ViewHeading>
@@ -156,7 +163,7 @@ export function SelectQueriesView() {
                         <Icon size="small" name="refresh" disabled={isLoading} />
                     </span>
                     {s("selqAvailableHeader")}
-                    <span style={{ marginLeft: 20 }}>
+                    <span className="public-queries-toggle">
                         <Checkbox
                             label={s("showPublicQueries")}
                             onChange={(_, a) => setShowPublic(!!a.checked)}

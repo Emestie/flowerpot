@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Message } from "semantic-ui-react";
+import { Message } from "../../ui/message";
 import { LinkAddingDialog } from "../../components/dialogs/LinkAddingDialog";
 import { OpenByIdDialog } from "../../components/dialogs/OpenByIdDialog";
 import { SingleInputColorDialog } from "../../components/dialogs/SingleInputColorDialog";
@@ -47,15 +47,9 @@ export function DialogsContainer() {
                 area
             />
             {feedbackStatus && (
-                <Message
-                    positive={feedbackStatus.success}
-                    error={!feedbackStatus.success}
-                    style={{ position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)", zIndex: 9999 }}
-                >
+                <Message positive={feedbackStatus.success} error={!feedbackStatus.success} className="feedback-toast">
                     {feedbackStatus.success ? s("feedbackSent") : s("feedbackFailed")}
-                    {feedbackStatus.reason && (
-                        <div style={{ fontSize: "0.8em", marginTop: 5 }}>{feedbackStatus.reason}</div>
-                    )}
+                    {feedbackStatus.reason && <div className="feedback-reason">{feedbackStatus.reason}</div>}
                 </Message>
             )}
             <SingleInputColorDialog

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import Festival from "../helpers/Festival";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
-import Settings from "../helpers/Settings";
+import Settings, { TColorScheme } from "../helpers/Settings";
 import { getSystemThemeListener, isDarkTheme } from "../helpers/Theme";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
@@ -21,14 +21,18 @@ import { DialogsContainer } from "../views/containers/DialogsContainer";
 import { useAppStore } from "../zustand/app";
 import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
+import { HashRouterProvider, parseHash } from "../features/hash-router";
 
 export function App() {
     const view = useAppStore((state) => state.view);
     const setView = useAppStore((state) => state.setView);
     const setShowWhatsNew = useAppStore((state) => state.setShowWhatsNew);
     const theme = useSettingsStore((state) => state.theme);
+    const colorScheme = useSettingsStore((state) => state.colorScheme);
     const [ready, setIsReady] = useState(false);
     const [isDark, setIsDark] = useState(() => isDarkTheme(theme));
+
+    const getSchemeClass = (scheme: TColorScheme) => (scheme === "classic" ? "" : `scheme-${scheme}`);
 
     useEffect(() => {
         setIsDark(isDarkTheme(theme));
@@ -43,12 +47,25 @@ export function App() {
     }, [theme]);
 
     useEffect(() => {
+        const meta = document.getElementById("theme-color");
         if (isDark) {
             document.documentElement.classList.add("FlowerpotDarkTheme");
+            document.documentElement.style.backgroundColor = "#1b1c1d";
+            if (meta) meta.setAttribute("content", "#1b1c1d");
         } else {
             document.documentElement.classList.remove("FlowerpotDarkTheme");
+            document.documentElement.style.backgroundColor = "";
+            if (meta) meta.setAttribute("content", "#000000");
         }
     }, [isDark]);
+
+    useEffect(() => {
+        document.documentElement.classList.remove("scheme-classic", "scheme-flexoki");
+        const schemeClass = getSchemeClass(colorScheme);
+        if (schemeClass) {
+            document.documentElement.classList.add(schemeClass);
+        }
+    }, [colorScheme]);
 
     const setChangesCollection = useDataStore((state) => state.setChangesCollection);
 
@@ -87,10 +104,13 @@ export function App() {
             Platform.current.checkForUpdates(true);
 
             setTimeout(() => {
-                if (Platform.current.isDev()) {
-                    setView("debug");
-                } else {
-                    setView("main");
+                const route = parseHash();
+                if (!route || route.view === "loading") {
+                    if (Platform.current.isDev()) {
+                        setView("debug");
+                    } else {
+                        setView("main");
+                    }
                 }
 
                 setWIChangesCollection();
@@ -133,10 +153,14 @@ export function App() {
 
     const scene = getScene(view);
 
+    const schemeClass = getSchemeClass(colorScheme);
+
     return (
-        <div className={isDark ? "FlowerpotDarkTheme" : ""}>
-            <DialogsContainer />
-            {scene}
+        <div className={`${isDark ? "FlowerpotDarkTheme" : ""} ${schemeClass}`.trim()} style={{ height: "100%", background: isDark ? "#1b1c1d" : "#fff" }}>
+            <HashRouterProvider>
+                <DialogsContainer />
+                {scene}
+            </HashRouterProvider>
         </div>
     );
 }

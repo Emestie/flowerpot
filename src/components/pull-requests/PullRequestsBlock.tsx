@@ -1,5 +1,7 @@
 import { useMemo } from "react";
-import { Icon, Message, Table } from "semantic-ui-react";
+import { Icon } from "../../ui/icon";
+import { Table } from "../../ui/table";
+import { Message } from "../../ui/message";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
 import { s } from "../../values/Strings";
 import { useSettingsStore } from "../../zustand/settings";
@@ -54,7 +56,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
         <PullRequestRow key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
     ));
 
-    if (!pullRequests.length && !showEmptyQueries && !allPullRequests.length) return null;
+    if (!isLoading && !pullRequests.length && !showEmptyQueries && !allPullRequests.length) return null;
 
     return (
         <CollapsibleBlock
@@ -72,12 +74,10 @@ export function PullRequestsBlock(props: { accountId: string }) {
             status={!totalItemsCount && !isLoading && !errorMessage ? "done" : errorMessage ? "error" : undefined}
             iconComponent={<Icon name="level up alternate" />}
             rightBlock={
-                <div style={{ display: "flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 6 }}>
+                <div className="right-block-pr">
                     <span
                         title={s("refresh")}
-                        className="externalLink"
-                        onClick={refreshBlock}
-                        style={{ opacity: isLoading ? 0 : 1 }}
+                        className={`externalLink${isLoading ? " pr-refresh-link" : " pr-refresh-link-visible"}`}
                     >
                         <Icon size="small" name="refresh" />
                     </span>

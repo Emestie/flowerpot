@@ -1,4 +1,6 @@
-import { Button, Icon, Table } from "semantic-ui-react";
+import { Button } from "../../ui/button";
+import { Icon } from "../../ui/icon";
+import { Table } from "../../ui/table";
 import { s } from "../../values/Strings";
 import Links, { LINKS_COUNT_LIMIT } from "../../helpers/Links";
 import ColorPicker from "../ColorPicker";
@@ -17,7 +19,7 @@ export function LinksSettingsTable() {
         <Table.Row key={link.url + link.name + link.order}>
             <Table.Cell>{link.name}</Table.Cell>
             <Table.Cell>
-                <span style={{ userSelect: "text" }}>{link.url}</span>
+                <span className="link-url-text">{link.url}</span>
             </Table.Cell>
             <Table.Cell>
                 <ColorPicker
@@ -78,7 +80,7 @@ export function LinksSettingsTable() {
             <Table.Body>{rows}</Table.Body>
             <Table.Footer fullWidth>
                 <Table.Row>
-                    <Table.HeaderCell colSpan="6">
+                    <Table.HeaderCell colSpan={6}>
                         <Button
                             disabled={links.length >= LINKS_COUNT_LIMIT}
                             icon
@@ -90,7 +92,7 @@ export function LinksSettingsTable() {
                             <Icon name="add" /> {s("addLink")}
                         </Button>
                         {links.length >= LINKS_COUNT_LIMIT && (
-                            <span style={{ marginLeft: 10 }}>{s("linksLimitReached")}</span>
+                            <span className="links-limit-msg">{s("linksLimitReached")}</span>
                         )}
                     </Table.HeaderCell>
                 </Table.Row>

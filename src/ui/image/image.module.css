@@ -1,0 +1,20 @@
+.img {
+    display: inline-block;
+    position: relative;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+.avatar {
+    width: 2em;
+    height: 2em;
+    border-radius: 500rem;
+}
+
+.spacedRight {
+    margin-right: 0.5em;
+}
+
+.spacedLeft {
+    margin-left: 0.5em;
+}

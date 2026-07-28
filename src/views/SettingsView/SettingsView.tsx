@@ -1,4 +1,7 @@
-import { Button, Container, Icon, Menu } from "semantic-ui-react";
+import { Button } from "../../ui/button";
+import { Container } from "../../ui/container";
+import { Icon } from "../../ui/icon";
+import { Menu } from "../../ui/menu";
 import { LocalVersionBanner } from "../../components/LocalVersionBanner";
 import { ViewHeading } from "../../components/heading/ViewHeading";
 import { TTheme } from "../../helpers/Settings";
@@ -16,7 +19,7 @@ import { ProjectsSection } from "./sections/ProjectsSection";
 import { QueriesSection } from "./sections/QueriesSection";
 import { QuickLinksSections } from "./sections/QuickLinksSections";
 import { AppearanceSection } from "./sections/WorkItemsSection";
-import { PageLayout } from "/@/components/PageLayout";
+import { PageLayout } from "../../components/PageLayout";
 
 const sectionsList = [
     {
@@ -87,6 +90,7 @@ export function SettingsView() {
     const theme = useSettingsStore((state) => state.theme);
     const accounts = useSettingsStore((state) => state.accounts);
     const setView = useAppStore((state) => state.setView);
+    useAppStore((state) => state.locale);
     const [tapCount, setTapCount] = useState(0);
     const tapTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -151,7 +155,12 @@ export function SettingsView() {
                 key={i}
                 as="a"
                 active={section.id === settingsSection}
-                onClick={section.id === Sections.Credits ? handleCreditsClick : () => useSettingsStore.getState().setSettingsSection(section.id)}
+                className="sidebarMenuItem"
+                onClick={
+                    section.id === Sections.Credits
+                        ? handleCreditsClick
+                        : () => useSettingsStore.getState().setSettingsSection(section.id)
+                }
             >
                 {s(section.captionKey as any)}
             </Menu.Item>
@@ -167,7 +176,7 @@ export function SettingsView() {
                     <Button icon onClick={toggleTheme} title={getThemeTitle()}>
                         {getThemeIcon()}
                     </Button>
-                    <Button positive onClick={onSave}>
+                    <Button primary onClick={onSave}>
                         {s("settingsBackButton")}
                     </Button>
                 </ViewHeading>

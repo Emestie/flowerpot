@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
-import { Icon, Menu } from "semantic-ui-react";
+import { Icon } from "../../ui/icon";
+import { Menu } from "../../ui/menu";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { TLists } from "../../helpers/Settings";

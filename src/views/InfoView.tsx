@@ -1,6 +1,9 @@
 import Markdown from "markdown-to-jsx";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Container, Icon, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Container } from "../ui/container";
+import { Icon } from "../ui/icon";
+import { Message } from "../ui/message";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Info } from "../helpers/Info";
@@ -25,10 +28,14 @@ export function InfoView() {
             const text = await Info.getInfoText(viewParams.contentFileName);
             setContentText(text);
             setIsLoading(false);
-
-            Info.registerEventListeners(viewParams.contentFileName);
         })();
     }, [viewParams]);
+
+    useEffect(() => {
+        if (!isLoading && contentText) {
+            Info.registerEventListeners(viewParams.contentFileName);
+        }
+    }, [isLoading, contentText, viewParams.contentFileName]);
 
     const onSave = useCallback(() => {
         useAppStore.getState().setView("main");
@@ -55,7 +62,7 @@ export function InfoView() {
         <PageLayout
             heading={
                 <ViewHeading viewCaption={viewParams.viewCaption}>
-                    <Button positive onClick={onSave}>
+                    <Button primary onClick={onSave}>
                         {s("settingsBackButton")}
                     </Button>
                 </ViewHeading>

@@ -12,6 +12,6 @@ export type TView =
 
 export type TUpdateStatus = "none" | "downloading" | "ready" | "checking" | "error";
 
-export type TLocale = "en" | "ru";
+export type TLocale = "en" | "ru" | "be";
 
 export type TDialog = "openById" | "feedback" | "addLink" | "exportSettings" | "importSettings";

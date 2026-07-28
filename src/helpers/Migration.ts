@@ -48,12 +48,9 @@ export default class Migration {
         const queries = settings.queries.map((x) => ({ ...x, accountId: x.accountId || account.id }));
         const projects = settings.projects.map((x) => ({ ...x, accountId: x.accountId || account.id }));
         const notes = settings.notes?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
-        const deferred =
-            settings.lists.deferred?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
-        const favorites =
-            settings.lists.favorites?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
-        const forwarded =
-            settings.lists.forwarded?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const deferred = settings.lists.deferred?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const favorites = settings.lists.favorites?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
+        const forwarded = settings.lists.forwarded?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
         const hidden = settings.lists.hidden?.map((x) => ({ ...x, accountId: x.accountId || account.id })) || [];
         const keywords = settings.lists.keywords?.map((x) => ({ ...x, accountId: x.accountId || "" })) || [];
         const permawatch =

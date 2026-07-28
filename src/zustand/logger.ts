@@ -1,11 +1,7 @@
 const PREFIX = "[Zustand]";
 const TAG = "\u2588";
 
-export const createLogger = <T>(
-    name: string,
-    color: string,
-    initializer: (set: any, get: () => T, api: any) => T
-) => {
+export const createLogger = <T>(name: string, color: string, initializer: (set: any, get: () => T, api: any) => T) => {
     return (set: any, get: any, api: any) => {
         const loggedSet = (partial: any, replace?: boolean) => {
             const prevState = get();

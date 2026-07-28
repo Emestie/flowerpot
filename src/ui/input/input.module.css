@@ -1,0 +1,148 @@
+.input {
+    position: relative;
+    font-weight: normal;
+    font-style: normal;
+    display: inline-flex;
+    flex-direction: column;
+    color: var(--input-color, rgba(0, 0, 0, 0.87));
+}
+
+.label {
+    display: block;
+    margin: 0 0 0.28571429rem 0;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 0.92857143em;
+    font-weight: bold;
+    text-transform: none;
+}
+
+:global(html.FlowerpotDarkTheme) .label,
+:global(.FlowerpotDarkTheme) .label {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.input > input {
+    margin: 0;
+    width: auto;
+    max-width: 100%;
+    outline: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    text-align: left;
+    line-height: 1.21428571em;
+    font-family: var(--font-family);
+    padding: 0.67857143em 1em;
+    background: var(--input-bg, #fff);
+    border: 1px solid var(--input-border, rgba(34, 36, 38, 0.15));
+    color: var(--input-color, rgba(0, 0, 0, 0.87));
+    border-radius: 0.28571429rem;
+    transition: box-shadow 0.1s ease, border-color 0.1s ease;
+    box-shadow: none;
+}
+
+.input > input::placeholder {
+    color: var(--input-placeholder, rgba(191, 191, 191, 0.87));
+}
+
+.input > input:focus {
+    border-color: var(--input-focus-border, #85b7d9);
+    background: var(--input-focus-bg, #fff);
+    color: var(--input-color, rgba(0, 0, 0, 0.8));
+    box-shadow: none;
+}
+
+.input > input:focus::placeholder {
+    color: var(--input-focus-placeholder, rgba(115, 115, 115, 0.87));
+}
+
+.input > input:active {
+    border-color: var(--input-active-border, rgba(0, 0, 0, 0.3));
+    background: var(--input-active-bg, #fafafa);
+    color: var(--input-color, rgba(0, 0, 0, 0.87));
+}
+
+/* Error */
+.error > input {
+    background: var(--input-error-bg, #fff6f6) !important;
+    border-color: var(--input-error-border, #e0b4b4) !important;
+    color: var(--input-error-color, #9f3a38) !important;
+}
+
+.error > input::placeholder {
+    color: var(--input-error-placeholder, #e7bdbc);
+}
+
+.error > input:focus::placeholder {
+    color: var(--input-error-placeholder-focus, #da9796);
+}
+
+/* Disabled */
+.disabled,
+.disabled > input {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+/* Fluid */
+.fluid {
+    display: flex;
+    width: 100%;
+}
+
+.fluid > input {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+/* Sizes */
+.small {
+    font-size: 0.92857143em;
+}
+
+.mini {
+    font-size: 0.78571429em;
+}
+
+/* Loading */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading > input {
+    opacity: 0.45;
+}
+
+.loader {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 1.28571429em;
+    height: 1.28571429em;
+    margin: -0.64285714em 0 0 -0.64285714em;
+    border: 0.2em solid rgba(0, 0, 0, 0.1);
+    border-top-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.errorText {
+    margin-top: 0.28571429rem;
+    color: var(--input-error-color, #9f3a38);
+    font-size: 0.85714286em;
+    line-height: 1.21428571em;
+}
+
+:global(html.FlowerpotDarkTheme) .errorText,
+:global(.FlowerpotDarkTheme) .errorText {
+    color: var(--input-error-color, #f08a8a);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

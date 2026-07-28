@@ -1,18 +1,20 @@
 import { ReactNode, useEffect, useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
-import { Icon, Label, Table } from "semantic-ui-react";
+import { Label } from "../../ui/label";
+import { Icon } from "../../ui/icon";
+import { Table } from "../../ui/table";
 import Platform from "../../helpers/Platform";
 import { PullRequest } from "../../models/pull-request";
 import { PullRequestReviewer } from "../../models/pull-request-reviewer";
 import { s } from "../../values/Strings";
 import { Link } from "../Link";
-import { ProfileWidget } from "../ProfileWidget";
+import { ProfileWidget } from "../profile-widget/profile-widget";
 import { Tag } from "../Tag";
-import { PRReviewer } from "./PRReviewer";
+import { PRReviewer } from "./pr-reviewer/pr-reviewer";
 import { PullRequestContextMenu } from "./PullRequestContextMenu";
-import { getApi } from "/@/api/client";
-import { useDataStore } from "/@/zustand/data";
-import { useSettingsStore } from "/@/zustand/settings";
+import { getApi } from "../../api/client";
+import { useDataStore } from "../../zustand/data";
+import { useSettingsStore } from "../../zustand/settings";
 
 interface IProps {
     pullRequest: PullRequest;
@@ -65,10 +67,7 @@ export function PullRequestRow(props: IProps) {
 
     const freshnessEl = (() => {
         return (
-            <span
-                title={s("timeSinceCreated") + ` (${new Date(pullRequest.date).toLocaleString()})`}
-                style={{ marginLeft: 4 }}
-            >
+            <span title={s("timeSinceCreated") + ` (${new Date(pullRequest.date).toLocaleString()})`} className="ml-4">
                 <span>
                     <Icon name="leaf" />
                 </span>
@@ -85,8 +84,7 @@ export function PullRequestRow(props: IProps) {
         return (
             <span
                 title={s("prComments")}
-                className={commentsElIsGreen ? "pr-comments-green" : undefined}
-                style={{ marginLeft: 4 }}
+                className={commentsElIsGreen ? "pr-comments-green pr-comments" : "pr-comments"}
             >
                 <span>
                     <Icon name="comments" />
@@ -139,24 +137,14 @@ export function PullRequestRow(props: IProps) {
                     )}
                     {!!pullRequest.isDraft && (
                         <span>
-                            <Label
-                                key={Math.random()}
-                                size="mini"
-                                style={{ padding: "3px 4px", marginRight: 4 }}
-                                color="grey"
-                            >
+                            <Label key={Math.random()} size="mini" className="mr-4" color="grey">
                                 {s("draftPullRequest")}
                             </Label>
                         </span>
                     )}
                     {pullRequest.mergeStatus === "conflicts" && (
                         <span>
-                            <Label
-                                key={Math.random()}
-                                size="mini"
-                                style={{ padding: "3px 4px", marginRight: 4 }}
-                                color="red"
-                            >
+                            <Label key={Math.random()} size="mini" className="mr-4" color="red">
                                 {s("prMergeConflicts")}
                             </Label>
                         </span>
@@ -165,12 +153,7 @@ export function PullRequestRow(props: IProps) {
                         {pullRequest.projectName}/{pullRequest.repoName}
                     </span>
                     <span>
-                        <Label
-                            key={Math.random()}
-                            size="mini"
-                            basic
-                            style={{ padding: "3px 4px", marginRight: 4, color: "#689473" }}
-                        >
+                        <Label key={Math.random()} size="mini" basic className="mr-4" style={{ color: "var(--pr-branch-label-color, #689473)" }}>
                             {pullRequest.sourceBranch} &rarr; {pullRequest.targetBranch}
                         </Label>
                     </span>

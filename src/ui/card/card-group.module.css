@@ -1,0 +1,19 @@
+.group {
+    display: flex;
+    margin: -0.875em -0.5em;
+    flex-wrap: wrap;
+}
+
+.group::after {
+    display: block;
+    content: "";
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.group > * {
+    margin: 0.875em 0.5em;
+    float: none;
+}

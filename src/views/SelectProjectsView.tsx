@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Checkbox, Container, Header, Icon, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import { Container } from "../ui/container";
+import { Icon } from "../ui/icon";
+import { Header } from "../ui/header";
+import { Message } from "../ui/message";
 import { getApi } from "../api/client";
 import { AccountBadge } from "../components/AccountBadge";
 import { PageLayout } from "../components/PageLayout";
@@ -84,7 +89,7 @@ export function SelectProjectsView() {
         </Message>
     ) : availableProjects.length ? (
         availableProjects.map((p) => (
-            <div key={p.path} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+            <div key={p.path} className="mb-6 flex items-center">
                 <AccountBadge accountId={p.accountId} rightGap={8} />
                 <Checkbox
                     label={p.collectionName + " / " + p.name}
@@ -104,7 +109,7 @@ export function SelectProjectsView() {
             heading={
                 <ViewHeading>
                     <Button onClick={onCancel}>{s("cancel")}</Button>
-                    <Button onClick={onAdd} positive disabled={!isAddAvailable}>
+                    <Button onClick={onAdd} primary disabled={!isAddAvailable}>
                         {s("add")}
                     </Button>
                 </ViewHeading>

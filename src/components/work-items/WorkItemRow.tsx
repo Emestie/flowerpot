@@ -1,5 +1,7 @@
 import { ContextMenuTrigger } from "react-contextmenu";
-import { Icon, Label, Table } from "semantic-ui-react";
+import { Label, type TColor } from "../../ui/label";
+import { Icon } from "../../ui/icon";
+import { Table } from "../../ui/table";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { Query } from "../../models/query";
@@ -7,14 +9,14 @@ import { WorkItem } from "../../models/work-item";
 import { s } from "../../values/Strings";
 import { HighlightenText } from "../HighlightenText";
 import { Link } from "../Link";
-import { ProfileWidget } from "../ProfileWidget";
+import { ProfileWidget } from "../profile-widget/profile-widget";
 import { Tag } from "../Tag";
 import { WorkItemRowContextMenu } from "./WorkItemRowContextMenu";
 import { Id } from "./id";
 import { IterationPath } from "./iteration-path";
 import { Status } from "./status";
-import { useDataStore } from "/@/zustand/data";
-import { useSettingsStore } from "/@/zustand/settings";
+import { useDataStore } from "../../zustand/data";
+import { useSettingsStore } from "../../zustand/settings";
 
 interface IProps {
     item: WorkItem;
@@ -33,8 +35,8 @@ export function WorkItemRow(props: IProps) {
     const promptnessEl = (() => {
         if (!props.item.priority) return undefined;
         return (
-            <span title={props.item.priorityText} style={{ marginLeft: 4 }}>
-                <span style={{ fontSize: 12 }}>
+            <span title={props.item.priorityText} className="wi-promptness">
+                <span className="font-sm">
                     <Icon name="clock outline" />
                 </span>
                 {props.item.priority}
@@ -57,7 +59,7 @@ export function WorkItemRow(props: IProps) {
         return (
             <span
                 title={s("timeSinceCreated") + ` (${new Date(props.item.createdDate).toLocaleString()})`}
-                style={{ marginLeft: 4 }}
+                className="wi-freshness"
             >
                 <span>
                     <Icon name="leaf" />
@@ -161,7 +163,7 @@ export function WorkItemRow(props: IProps) {
         <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
             <Table.Cell collapsing className={"cellRelative " + getClass()}>
                 <ContextMenuTrigger id={uid}>
-                    <span style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
+                    <span className="wi-flex-id">
                         <span
                             onDoubleClick={() => {
                                 Platform.current.copyString(item.id.toString());
@@ -184,8 +186,8 @@ export function WorkItemRow(props: IProps) {
                         <HighlightenText text={item.titleFull} />
                     </Link>
                     {!!fullNote && (
-                        <span style={{ marginLeft: 5 }} title={s("localNoteHint") + ": " + fullNote}>
-                            <Label basic color={noteColor as any} size="mini" style={{ padding: "3px 4px" }}>
+                        <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
+                            <Label basic color={noteColor as TColor} size="mini">
                                 {getNote()}
                             </Label>
                         </span>

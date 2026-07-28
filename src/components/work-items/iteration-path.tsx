@@ -1,7 +1,7 @@
 import { WorkItem } from "../../models/work-item";
 import { HighlightenText } from "../HighlightenText";
-import { iterationPalette } from "/@/modules/palette";
-import { useSettingsStore } from "/@/zustand/settings";
+import { iterationPalette } from "../../modules/palette";
+import { useSettingsStore } from "../../zustand/settings";
 
 export function IterationPath({ item }: { item: WorkItem }) {
     const [iterationPathA, iterationPathB] = createIterationPathParts(item.iterationPath);

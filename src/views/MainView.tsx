@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Form, Icon, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Container } from "../ui/container";
+import { Form } from "../ui/form";
+import { Icon } from "../ui/icon";
+import { Message } from "../ui/message";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import { PageLayout } from "../components/PageLayout";
 import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
@@ -116,7 +120,7 @@ export function MainView() {
                         {updateStatus === "ready" && (
                             <Button
                                 icon
-                                positive
+                                primary
                                 onClick={updateApp}
                                 title={s("updateArrived")}
                                 disabled={isInstallingUpdate}
@@ -151,7 +155,7 @@ export function MainView() {
                             </Button>
                         )}
                         {!noAccounts && (
-                            <div className="hide-on-mobile" style={{ display: "inline-block", marginRight: 3.5 }}>
+                            <div className="hide-on-mobile search-bar-wrapper">
                                 <SearchBar />
                             </div>
                         )}

@@ -1,14 +1,13 @@
-import chunk from "lodash/chunk";
 import { Query } from "../../../models/query";
 import { WorkItem } from "../../../models/work-item";
 import { IApiClientParams } from "../create";
 import { Loader } from "../loader";
 import { IQueryResult, IResponseWorkItem, IValue, IWorkItemShort } from "../types";
 import { createWorkItemTypeLoaders } from "./work-item-type";
-import Differences from "/@/helpers/Differences";
-import Lists from "/@/helpers/Lists";
-import QueryHelper from "/@/helpers/Query";
-import { useSettingsStore } from "/@/zustand/settings";
+import Differences from "../../../helpers/Differences";
+import Lists from "../../../helpers/Lists";
+import QueryHelper from "../../../helpers/Query";
+import { useSettingsStore } from "../../../zustand/settings";
 
 export function createWorkItemLoaders(
     params: IApiClientParams,
@@ -72,7 +71,10 @@ export function createWorkItemLoaders(
             const workItemResponses = await Promise.all(
                 collections.flatMap((collection) => {
                     const ids = list.filter((l) => l.collection === collection).map((l) => l.id);
-                    const chunkedIds = chunk(ids, 200);
+                    const chunkedIds: number[][] = [];
+                    for (let i = 0; i < ids.length; i += 200) {
+                        chunkedIds.push(ids.slice(i, i + 200));
+                    }
 
                     return chunkedIds.map((ids) => {
                         return loader<IValue<IResponseWorkItem[]>>(
@@ -106,8 +108,9 @@ export function createWorkItemLoaders(
 function getWorkItemsByQueryType(queryResult: IQueryResult | null, query: Query): IWorkItemShort[] {
     if (queryResult === null) {
         return query.queryId.startsWith("___permawatch")
-            ? useSettingsStore.getState().lists.permawatch
-                  .filter((x) => x.accountId === query.accountId)
+            ? useSettingsStore
+                  .getState()
+                  .lists.permawatch.filter((x) => x.accountId === query.accountId)
                   .map((x) => ({
                       id: x.id,
                       collection: x.collection || "",

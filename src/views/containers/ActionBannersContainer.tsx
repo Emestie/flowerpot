@@ -1,3 +1,4 @@
+import flexokiPalette from "../../assets/flexoki-palette.svg";
 import pull from "../../assets/pull.png";
 import { ActionBanner, IActionBannerProps } from "../../components/banners/ActionBanner";
 import { s } from "../../values/Strings";
@@ -34,10 +35,26 @@ function getActionBannersList(): IActionBannerProps[] {
                 return state.accounts.length > 0 && state.projects.length === 0;
             },
         },
+        {
+            id: 7,
+            text: s("flexokiBannerText"),
+            actionText: s("flexokiBannerAction"),
+            img: flexokiPalette,
+            type: "positive",
+            action() {
+                useSettingsStore.getState().setColorScheme("flexoki");
+            },
+            condition() {
+                const state = useSettingsStore.getState();
+                if (state.colorScheme === "flexoki") return false;
+                if (Date.now() >= new Date(2026, 7, 20).getTime()) return false;
+                return true;
+            },
+        },
     ];
 }
 
-//! LAST USED INDEX: 6
+//! LAST USED INDEX: 7
 
 export function ActionBannersContainer() {
     const banners = getActionBannersList().map((x) => <ActionBanner key={x.id} {...x} />);

@@ -2,7 +2,7 @@ import { ItemsCommon } from "../helpers/ItemsCommon";
 import Lists from "../helpers/Lists";
 import { IResponsePullRequest } from "../modules/api-client";
 import { PullRequestReviewer } from "./pull-request-reviewer";
-import { getConnectionData } from "/@/helpers/Connection";
+import { getConnectionData } from "../helpers/Connection";
 
 export class PullRequest {
     id: number;

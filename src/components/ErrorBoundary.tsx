@@ -1,5 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from "react";
-import { Button, Message } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Message } from "../ui/message";
 import { s } from "../values/Strings";
 
 interface Props {
@@ -38,7 +39,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                         onClick={() => {
                             this.props.onRemount?.();
                         }}
-                        positive
+                        primary
                     >
                         {s("reload")}
                     </Button>

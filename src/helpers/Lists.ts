@@ -12,7 +12,10 @@ export default class Lists {
         const pinned = this.deleteFromList(accountId, "pinned", id, collection, true);
         const forwarded = this.deleteFromList(accountId, "forwarded", id, collection, true);
 
-        const list = [...this.deleteFromList(accountId, listName, id, collection, true), { accountId, id, collection, rev }];
+        const list = [
+            ...this.deleteFromList(accountId, listName, id, collection, true),
+            { accountId, id, collection, rev },
+        ];
 
         const lists = { deferred, permawatch, favorites, hidden, pinned, forwarded, [listName]: list } as any;
 
@@ -87,9 +90,7 @@ export default class Lists {
             if (!existingNote) {
                 notes = [...notes, { accountId, id, collection, note, color }];
             } else {
-                notes = notes.map((n) =>
-                    n.id === id && collection === n.collection ? { ...n, note, color } : n
-                );
+                notes = notes.map((n) => (n.id === id && collection === n.collection ? { ...n, note, color } : n));
             }
         }
 

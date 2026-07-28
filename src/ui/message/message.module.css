@@ -1,0 +1,126 @@
+.message {
+    position: relative;
+    min-height: 1em;
+    margin: 1em 0;
+    padding: 1em 1.5em;
+    line-height: 1.4285em;
+    border-radius: 0.28571429rem;
+    box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.22) inset, 0 0 0 0 transparent;
+    background: var(--msg-bg, #f8f8f9);
+    color: var(--msg-color, rgba(0, 0, 0, 0.87));
+    transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease,
+        box-shadow 0.1s ease;
+}
+
+/* Sizes */
+.tiny {
+    font-size: 0.85714286em;
+}
+
+.mini {
+    font-size: 0.78571429em;
+}
+
+/* Header subcomponent */
+.header {
+    font-weight: 700;
+    font-size: 1.14285714em;
+}
+
+/* Content subcomponent */
+.content {
+    display: block;
+    flex: 1 1 auto;
+    vertical-align: middle;
+}
+
+/* Icon layout */
+.icon {
+    display: flex;
+    align-items: center;
+}
+.icon > :global(.icon) {
+    display: block;
+    flex: 0 0 auto;
+    width: auto;
+    line-height: 1;
+    font-size: 3em;
+    opacity: 0.8;
+    margin-right: 16px;
+}
+
+/* Variants */
+.info {
+    background: #e8f4fd;
+    color: #0c5460;
+    box-shadow: 0 0 0 1px #b3d8f0 inset, 0 0 0 0 transparent;
+}
+
+.positive {
+    background: #e3f7e8;
+    color: #1a7d36;
+    box-shadow: 0 0 0 1px #b3e0be inset, 0 0 0 0 transparent;
+}
+
+.negative {
+    background: #ffe8e6;
+    color: #b21e2e;
+    box-shadow: 0 0 0 1px #e0b3b3 inset, 0 0 0 0 transparent;
+}
+
+.error {
+    background: #ffe8e6;
+    color: #b21e2e;
+    box-shadow: 0 0 0 1px #e0b3b3 inset, 0 0 0 0 transparent;
+}
+
+.warning {
+    background: #fff4e6;
+    color: #8a6d3b;
+    box-shadow: 0 0 0 1px #e0c9a3 inset, 0 0 0 0 transparent;
+}
+
+/* Color prop */
+.red {
+    background: #ffe8e6;
+    color: #db2828;
+    box-shadow: 0 0 0 1px #e0b3b3 inset, 0 0 0 0 transparent;
+}
+
+/* Dark theme overrides */
+:global(.FlowerpotDarkTheme) .message {
+    background: #3d3e3f;
+    color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+:global(.FlowerpotDarkTheme) .info {
+    background: #1a3a4a;
+    color: #8dd0f0;
+    box-shadow: 0 0 0 1px #2a5a6a inset;
+}
+
+:global(.FlowerpotDarkTheme) .positive {
+    background: #1a3a2a;
+    color: #6ddb8a;
+    box-shadow: 0 0 0 1px #2a5a3a inset;
+}
+
+:global(.FlowerpotDarkTheme) .negative,
+:global(.FlowerpotDarkTheme) .error {
+    background: #4a1a1a;
+    color: #f08a8a;
+    box-shadow: 0 0 0 1px #6a2a2a inset;
+}
+
+:global(.FlowerpotDarkTheme) .warning {
+    background: #4a3a1a;
+    color: #f0d08a;
+    box-shadow: 0 0 0 1px #6a5a2a inset;
+}
+
+:global(.FlowerpotDarkTheme) .red {
+    background: #4a1a1a;
+    color: #f08a8a;
+    box-shadow: 0 0 0 1px #6a2a2a inset;
+}

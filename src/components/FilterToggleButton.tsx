@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Button, Icon, SemanticICONS } from "semantic-ui-react";
+import { Button } from "../ui/button";
+import { Icon, SemanticICONS } from "../ui/icon";
 import { isDarkTheme } from "../helpers/Theme";
 import { useSettingsStore } from "../zustand/settings";
 
@@ -15,40 +16,23 @@ interface FilterToggleButtonProps {
 }
 
 const IconRenderer: FC<{ icon: SemanticICONS; isDark: boolean }> = ({ icon, isDark }) => (
-    <Icon name={icon} style={isDark ? { color: "white" } : undefined} />
+    <Icon name={icon} className={isDark ? "filter-icon-dark" : undefined} />
 );
 
 const ColorDot: FC<{ colorDot: string; label: string; isDark: boolean }> = ({ colorDot, label, isDark }) => (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 2, height: "15.5px", padding: "2px 1px" }}>
-        <span style={{ width: "9px", height: "9px", borderRadius: "50%", backgroundColor: colorDot }} />
-        <span style={{ fontSize: "9px", lineHeight: 1, color: isDark ? "white" : undefined }}>
+    <span className="color-dot">
+        <span className="color-dot-circle" style={{ backgroundColor: colorDot }} />
+        <span className={`font-xxs line-h-1${isDark ? " filter-label-dark" : ""}`}>
             {label.charAt(0).toUpperCase()}
         </span>
     </span>
 );
 
 const ImageRenderer: FC<{ imgUrl: string; label: string }> = ({ imgUrl, label }) => (
-    <img
-        src={imgUrl}
-        alt={label}
-        style={{ height: "14px", width: "18px", display: "inline-block", margin: "0 auto" }}
-    />
+    <img src={imgUrl} alt={label} className="filter-img" />
 );
 
-const CrossedOutOverlay: FC = () => (
-    <div
-        style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: "150%",
-            height: "2px",
-            backgroundColor: "red",
-            transform: "translate(-50%, -50%) rotate(45deg)",
-            pointerEvents: "none",
-        }}
-    />
-);
+const CrossedOutOverlay: FC = () => <div className="crossed-out-overlay" />;
 
 const ContentRenderer: FC<{
     icon?: SemanticICONS;
@@ -83,10 +67,9 @@ export const FilterToggleButton: FC<FilterToggleButtonProps> = ({
             basic={!checked}
             onClick={onChange}
             title={hintPrefix + label}
-            className={icon ? "filter-toggle-button" : "filter-toggle-button-img"}
+            className={`filter-btn ${icon ? "filter-toggle-button" : "filter-toggle-button-img"}`}
             compact
             size="tiny"
-            style={{ position: "relative", overflow: "hidden" }}
             icon
         >
             <ContentRenderer icon={icon} imgUrl={imgUrl} colorDot={colorDot} label={label} isDark={isDark} />

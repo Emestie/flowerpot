@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Confirm, Form } from "semantic-ui-react";
+import { Form } from "../../ui/form";
+import { Confirm } from "../../ui/confirm";
 import Links from "../../helpers/Links";
 import { s } from "../../values/Strings";
 import ColorPicker from "../ColorPicker";
@@ -38,22 +39,21 @@ export function LinkAddingDialog(p: P) {
     };
 
     const content = (
-        <div style={{ padding: 20 }}>
-            <div style={{ marginBottom: 20 }}>{s("linkDialogCaption")}</div>
+        <div className="dialog-content">
+            <div className="dialog-caption">{s("linkDialogCaption")}</div>
             <div>
                 <Form>
                     <Form.Input
-                        style={{ width: "100%" }}
+                        className="w-full af-input"
                         value={name}
                         onChange={(e) => {
                             setName(e.target.value);
                         }}
                         maxLength="50"
-                        className="af-input"
                         label={s("linkDialogNameLabel")}
                     />
                     <Form.Input
-                        style={{ width: "100%" }}
+                        className="w-full"
                         value={url}
                         onChange={(e) => {
                             setUrl(e.target.value);
@@ -63,7 +63,7 @@ export function LinkAddingDialog(p: P) {
                     />
                 </Form>
             </div>
-            <div style={{ marginTop: 10 }}>
+            <div className="dialog-color-picker">
                 <ColorPicker value={color} onPick={setColor} />
             </div>
         </div>

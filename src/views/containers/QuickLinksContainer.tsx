@@ -1,4 +1,4 @@
-import { Label } from "semantic-ui-react";
+import { Label, type TColor } from "../../ui/label";
 import { LINKS_COUNT_LIMIT } from "../../helpers/Links";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
@@ -18,21 +18,14 @@ export function QuickLinksContainer() {
     };
 
     const items = sortedLinks.map((x) => (
-        <Label
-            key={x.url}
-            color={x.color as any}
-            onClick={() => openLink(x.url)}
-            size="mini"
-            basic
-            className="quick-link-label"
-        >
+        <Label key={x.url} color={x.color as TColor} onClick={() => openLink(x.url)} size="mini" basic>
             {x.name}
         </Label>
     ));
 
     if (!items.length) {
         items.push(
-            <span key="nolinkskey" style={{ color: "gray", fontSize: 10, fontStyle: "italic" }}>
+            <span key="nolinkskey" className="no-links-placeholder">
                 {s("noLinks")}
             </span>
         );
@@ -46,9 +39,5 @@ export function QuickLinksContainer() {
         );
     }
 
-    return (
-        <div className="ql-container" style={{ textAlign: "right" }}>
-            {items}
-        </div>
-    );
+    return <div className="ql-container text-right">{items}</div>;
 }
