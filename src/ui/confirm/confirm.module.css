@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--modal-dimmer-bg, rgba(0, 0, 0, 0.85));
     overflow: auto;
 }
 
@@ -16,7 +16,8 @@
     position: relative;
     z-index: 1001;
     text-align: left;
-    background: #fff;
+    background: var(--modal-bg, #fff);
+    color: var(--modal-color, inherit);
     border: none;
     border-radius: 0.28571429rem;
     box-shadow:
@@ -34,13 +35,14 @@
     width: 100%;
     font-size: 1em;
     line-height: 1.4;
-    background: #fff;
+    background: var(--modal-bg, #fff);
+    color: var(--modal-color, inherit);
 }
 
 .actions {
-    background: #f9fafb;
+    background: var(--modal-actions-bg, #f9fafb);
     padding: 1rem;
-    border-top: 1px solid rgba(34, 36, 38, 0.15);
+    border-top: 1px solid var(--modal-actions-border-color, rgba(34, 36, 38, 0.15));
     text-align: right;
 }
 
@@ -118,48 +120,4 @@
     color: var(--btn-primary-color, #fff);
 }
 
-:global(.FlowerpotDarkTheme) .dimmer {
-    background: rgba(0, 0, 0, 0.85);
-}
 
-:global(.FlowerpotDarkTheme) .modal {
-    background: #3d3e3f;
-    box-shadow:
-        1px 3px 3px 0 rgba(0, 0, 0, 0.3),
-        1px 3px 15px 2px rgba(0, 0, 0, 0.3);
-}
-
-:global(.FlowerpotDarkTheme) .content {
-    background: #3d3e3f;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-:global(.FlowerpotDarkTheme) .actions {
-    background: #454546;
-    border-top-color: rgba(255, 255, 255, 0.1);
-}
-
-:global(.FlowerpotDarkTheme) .cancelBtn {
-    background-color: var(--btn-bg, #454546);
-    color: var(--btn-color, rgba(255, 255, 255, 0.979));
-}
-
-:global(.FlowerpotDarkTheme) .cancelBtn:hover {
-    background-color: var(--btn-hover-bg, #656566);
-    color: var(--btn-hover-color, rgba(255, 255, 255, 0.979));
-}
-
-:global(.FlowerpotDarkTheme) .cancelBtn:active {
-    background-color: var(--btn-active-bg, #555556);
-    color: var(--btn-active-color, rgba(255, 255, 255, 0.979));
-}
-
-:global(.FlowerpotDarkTheme) .confirmBtn {
-    background-color: var(--btn-primary-bg, #2185d0);
-    color: var(--btn-primary-color, #fff);
-}
-
-:global(.FlowerpotDarkTheme) .confirmBtn:hover {
-    background-color: var(--btn-primary-hover-bg, #1678c2);
-    color: var(--btn-primary-color, #fff);
-}

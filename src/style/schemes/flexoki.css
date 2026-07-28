@@ -71,6 +71,12 @@
     --btn-primary-hover-bg: #c46122;
     --btn-primary-focus-bg: #b85719;
     --btn-primary-active-bg: #a64a0f;
+
+    --modal-bg: #f2f0e5;
+    --modal-color: #100f0f;
+    --modal-actions-bg: #f2f0e5;
+    --modal-actions-border-color: #dad8ce;
+    --modal-dimmer-bg: rgba(0, 0, 0, 0.85);
 }
 
 html.scheme-flexoki,
@@ -359,6 +365,12 @@ html.scheme-flexoki.FlowerpotDarkTheme,
     --btn-primary-hover-bg: #e08040;
     --btn-primary-focus-bg: #e58a4d;
     --btn-primary-active-bg: #ea945a;
+
+    --modal-bg: #1c1b1a;
+    --modal-color: #fffcf0;
+    --modal-actions-bg: #1c1b1a;
+    --modal-actions-border-color: #343331;
+    --modal-dimmer-bg: rgba(0, 0, 0, 0.85);
 
     min-height: 100%;
     background-color: #100f0f;

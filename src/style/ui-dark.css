@@ -82,6 +82,12 @@ html.FlowerpotDarkTheme,
     --label-bg: #454546;
     --label-color: rgba(255, 255, 255, 0.9);
     --label-basic-border: rgba(255, 255, 255, 0.15);
+
+    --modal-bg: #3d3e3f;
+    --modal-color: rgba(255, 255, 255, 0.9);
+    --modal-actions-bg: #454546;
+    --modal-actions-border-color: rgba(255, 255, 255, 0.1);
+    --modal-dimmer-bg: rgba(0, 0, 0, 0.85);
 }
 
 html.FlowerpotDarkTheme,
