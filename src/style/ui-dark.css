@@ -10,6 +10,9 @@ html.FlowerpotDarkTheme,
     --card-bg: #353536;
     --card-meta-color: rgba(255, 255, 255, 0.979);
 
+    --msg-bg: #3d3e3f;
+    --msg-color: rgba(255, 255, 255, 0.9);
+
     --btn-primary-bg: #2185d0;
     --btn-primary-color: #fff;
     --btn-primary-hover-bg: #1678c2;

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import { Container } from "../ui/container";
 import { Header } from "../ui/header";
+import { Message } from "../ui/message";
+import { Icon } from "../ui/icon";
+import { Radio } from "../ui/radio";
 import { getApi } from "../api/client";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
@@ -18,6 +22,9 @@ export function DebugView() {
     const accounts = useSettingsStore((state) => state.accounts);
     const projects = useSettingsStore((state) => state.projects) || [];
     const queries = useSettingsStore((state) => state.queries);
+
+    const [showIcon, setShowIcon] = useState(true);
+    const [msgType, setMsgType] = useState<"info" | "positive" | "negative" | "error" | "warning" | undefined>("info");
 
     const api = accounts[0] ? getApi(accounts[0]?.id) : undefined;
 
@@ -119,6 +126,33 @@ export function DebugView() {
                 <div>
                     {Version.long} / {Version.short}
                 </div>
+                <Header as="h3" dividing>
+                    Message
+                </Header>
+                <div style={{ marginBottom: "1em", display: "flex", flexWrap: "wrap", gap: "0.5em 1.5em", alignItems: "center" }}>
+                    <Checkbox
+                        checked={showIcon}
+                        onChange={() => setShowIcon(!showIcon)}
+                        label="Show icon / spinner"
+                    />
+                    <Radio name="msg-type" checked={msgType === undefined} onChange={() => setMsgType(undefined)} label="Default" />
+                    <Radio name="msg-type" checked={msgType === "info"} onChange={() => setMsgType("info")} label="Info" />
+                    <Radio name="msg-type" checked={msgType === "positive"} onChange={() => setMsgType("positive")} label="Positive" />
+                    <Radio name="msg-type" checked={msgType === "negative"} onChange={() => setMsgType("negative")} label="Negative" />
+                    <Radio name="msg-type" checked={msgType === "error"} onChange={() => setMsgType("error")} label="Error" />
+                    <Radio name="msg-type" checked={msgType === "warning"} onChange={() => setMsgType("warning")} label="Warning" />
+                </div>
+                <Message {...(showIcon ? { icon: true } : {})} {...(msgType ? { [msgType]: true } : {})}>
+                    {showIcon && <Icon name="circle notched" loading />}
+                    <Message.Content>
+                        <Message.Header>With header</Message.Header>
+                        Message body text
+                    </Message.Content>
+                </Message>
+                <Message {...(showIcon ? { icon: true } : {})} {...(msgType ? { [msgType]: true } : {})}>
+                    {showIcon && <Icon name="circle notched" loading />}
+                    <Message.Content>No header message body text</Message.Content>
+                </Message>
             </Container>
         </PageLayout>
     );

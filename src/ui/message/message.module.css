@@ -37,7 +37,7 @@
 /* Icon layout */
 .icon {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
 }
 .icon > :global(.icon) {
     display: block;
@@ -46,6 +46,7 @@
     line-height: 1;
     font-size: 3em;
     opacity: 0.8;
+    margin-right: 16px;
 }
 
 /* Variants */

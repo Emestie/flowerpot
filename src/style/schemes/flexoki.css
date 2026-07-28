@@ -67,6 +67,9 @@
     --card-bg: #f2f0e5;
     --card-meta-color: rgba(64, 62, 60, 0.6);
 
+    --msg-bg: #f2f0e5;
+    --msg-color: #403e3c;
+
     --btn-primary-bg: #da702c;
     --btn-primary-hover-bg: #c46122;
     --btn-primary-focus-bg: #b85719;
@@ -362,6 +365,9 @@ html.scheme-flexoki.FlowerpotDarkTheme,
 
     --card-bg: #282726;
     --card-meta-color: rgba(206, 205, 195, 0.6);
+
+    --msg-bg: #282726;
+    --msg-color: #cecdc3;
 
     --btn-primary-bg: #da702c;
     --btn-primary-hover-bg: #e08040;
