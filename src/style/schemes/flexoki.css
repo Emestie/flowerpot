@@ -7,18 +7,18 @@
     --btn-active-color: #403e3c;
     --btn-shadow-color: rgba(16, 15, 15, 0.12);
     --btn-basic-border: rgba(64, 62, 60, 0.15);
-    --btn-basic-hover-bg: #fffcf0;
+    --btn-basic-hover-bg: #FFFDF4;
     --btn-basic-hover-color: #403e3c;
     --btn-basic-hover-border: rgba(64, 62, 60, 0.35);
     --btn-basic-active-bg: #f2f0e5;
     --btn-basic-active-color: #403e3c;
     --btn-group-border: rgba(64, 62, 60, 0.15);
 
-    --input-bg: #fffcf0;
+    --input-bg: #FFFDF4;
     --input-color: #403e3c;
     --input-border: #cecdc3;
     --input-focus-border: #4385be;
-    --input-focus-bg: #fffcf0;
+    --input-focus-bg: #FFFDF4;
     --input-focus-placeholder: #6f6e69;
     --input-active-border: rgba(64, 62, 60, 0.3);
     --input-active-bg: #f2f0e5;
@@ -31,20 +31,20 @@
 
     --radio-color: #403e3c;
     --radio-border: #cecdc3;
-    --radio-bg: #fffcf0;
+    --radio-bg: #FFFDF4;
     --radio-dot: #403e3c;
     --radio-hover-border: rgba(64, 62, 60, 0.35);
     --radio-focus-border: #4385be;
 
     --checkbox-color: #403e3c;
     --checkbox-border: #cecdc3;
-    --checkbox-bg: #fffcf0;
+    --checkbox-bg: #FFFDF4;
     --checkbox-checked-bg: #403e3c;
-    --checkbox-checked-color: #fffcf0;
+    --checkbox-checked-color: #FFFDF4;
     --checkbox-hover-border: rgba(64, 62, 60, 0.35);
     --checkbox-focus-border: #4385be;
 
-    --menu-bg: #fffcf0;
+    --menu-bg: #FFFDF4;
     --menu-item-color: #403e3c;
     --menu-item-active-bg: rgba(64, 62, 60, 0.05);
     --menu-item-active-color: #100f0f;
@@ -57,7 +57,7 @@
     --label-color: #403e3c;
     --label-basic-border: rgba(64, 62, 60, 0.15);
 
-    --table-bg: #fffcf0;
+    --table-bg: #FFFDF4;
     --table-color: #100f0f;
     --table-border: rgba(64, 62, 60, 0.1);
     --table-header-bg: #f2f0e5;
@@ -87,11 +87,11 @@
 html.scheme-flexoki,
 .scheme-flexoki {
     min-height: 100%;
-    background-color: #fffcf0;
+    background-color: #FFFDF4;
     color: #403e3c;
 
     .PageLayout {
-        background-color: #fffcf0;
+        background-color: #FFFDF4;
     }
 
     .ui.modal {
@@ -116,7 +116,7 @@ html.scheme-flexoki,
         }
 
         .ui.input > input {
-            background-color: #fffcf0;
+            background-color: #FFFDF4;
             color: #403e3c;
             border-color: #cecdc3;
         }
@@ -125,7 +125,7 @@ html.scheme-flexoki,
         .ui.form input[type="text"],
         .ui.form input[type="password"],
         .ui.form textarea {
-            background-color: #fffcf0;
+            background-color: #FFFDF4;
             color: #403e3c;
             border-color: #cecdc3;
         }
@@ -135,7 +135,7 @@ html.scheme-flexoki,
         }
 
         textarea {
-            background-color: #fffcf0;
+            background-color: #FFFDF4;
             color: #403e3c;
         }
     }
@@ -156,7 +156,7 @@ html.scheme-flexoki,
     }
 
     .ui.header {
-        background-color: #fffcf0;
+        background-color: #FFFDF4;
         color: #100f0f;
     }
 
@@ -205,7 +205,7 @@ html.scheme-flexoki,
     .ui.checkbox input:focus ~ label:before,
     .ui.checkbox input:checked ~ .box:before,
     .ui.checkbox input:checked ~ label:before {
-        background-color: #fffcf0;
+        background-color: #FFFDF4;
         border-color: #b7b5ac;
     }
 

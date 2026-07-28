@@ -25,7 +25,16 @@
                         }
                     }
                 } catch (e) {
-                    // ignore parse errors — will fall through to CSS/media query
+                    // ignore parse errors
+                }
+
+                // Fallback for first-time visitors with no saved settings
+                // but OS in dark mode — the default theme is "system"
+                if (!document.documentElement.classList.contains("FlowerpotDarkTheme") && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    document.documentElement.classList.add("FlowerpotDarkTheme");
+                    document.documentElement.style.backgroundColor = "#1b1c1d";
+                    var meta = document.getElementById("theme-color");
+                    if (meta) meta.setAttribute("content", "#1b1c1d");
                 }
             })();
         </script>

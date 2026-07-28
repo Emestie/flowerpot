@@ -27,7 +27,7 @@ body {
 
 /* Dark mode body background as CSS-only fallback for system-theme users */
 @media (prefers-color-scheme: dark) {
-    body {
+    html.FlowerpotDarkTheme body {
         background: #1b1c1d;
         color: rgba(255, 255, 255, 0.9);
     }
