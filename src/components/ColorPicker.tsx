@@ -32,8 +32,6 @@ export default function ColorPicker(p: P) {
                         <Label
                             basic={value !== c}
                             className="color-picker-label"
-                            circular
-                            size="mini"
                             color={c}
                         ></Label>
                     }
