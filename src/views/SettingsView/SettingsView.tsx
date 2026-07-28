@@ -176,7 +176,7 @@ export function SettingsView() {
                     <Button icon onClick={toggleTheme} title={getThemeTitle()}>
                         {getThemeIcon()}
                     </Button>
-                    <Button positive onClick={onSave}>
+                    <Button primary onClick={onSave}>
                         {s("settingsBackButton")}
                     </Button>
                 </ViewHeading>

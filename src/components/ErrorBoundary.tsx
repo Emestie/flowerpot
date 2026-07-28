@@ -39,7 +39,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                         onClick={() => {
                             this.props.onRemount?.();
                         }}
-                        positive
+                        primary
                     >
                         {s("reload")}
                     </Button>

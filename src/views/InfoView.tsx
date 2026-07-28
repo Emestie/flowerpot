@@ -58,7 +58,7 @@ export function InfoView() {
         <PageLayout
             heading={
                 <ViewHeading viewCaption={viewParams.viewCaption}>
-                    <Button positive onClick={onSave}>
+                    <Button primary onClick={onSave}>
                         {s("settingsBackButton")}
                     </Button>
                 </ViewHeading>

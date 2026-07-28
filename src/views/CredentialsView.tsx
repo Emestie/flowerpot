@@ -233,7 +233,7 @@ export function CredentialsView() {
                     <Label color={statusParams.color}>{statusParams.text}</Label>
                 </div>
                 <br />
-                <Button positive loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
+                <Button primary loading={checkInProgress} disabled={isCheckUnabailable} onClick={onCheck}>
                     {s("validate")}
                 </Button>
                 <Button loading={checkInProgress} onClick={goToSettings}>

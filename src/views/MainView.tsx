@@ -120,7 +120,7 @@ export function MainView() {
                         {updateStatus === "ready" && (
                             <Button
                                 icon
-                                positive
+                                primary
                                 onClick={updateApp}
                                 title={s("updateArrived")}
                                 disabled={isInstallingUpdate}

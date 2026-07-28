@@ -20,7 +20,7 @@ export function UpdateBanner() {
                 <Message.Header>{s("updateArrived")}</Message.Header>
                 <p>
                     {s("updateArrivedText1")}{" "}
-                    <Button compact positive size="tiny" loading={updateInstallInProgress} onClick={onUpdate}>
+                    <Button compact primary size="tiny" loading={updateInstallInProgress} onClick={onUpdate}>
                         {s("install")}
                     </Button>{" "}
                     {s("updateArrivedText2")}

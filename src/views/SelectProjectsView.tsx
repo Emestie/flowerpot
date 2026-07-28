@@ -109,7 +109,7 @@ export function SelectProjectsView() {
             heading={
                 <ViewHeading>
                     <Button onClick={onCancel}>{s("cancel")}</Button>
-                    <Button onClick={onAdd} positive disabled={!isAddAvailable}>
+                    <Button onClick={onAdd} primary disabled={!isAddAvailable}>
                         {s("add")}
                     </Button>
                 </ViewHeading>
