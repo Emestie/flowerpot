@@ -13,7 +13,7 @@ export default class Telemetry {
         extraInfo?: string,
         ignoreTelemetryDisability?: boolean
     ) {
-        const { allowTelemetry, accounts } = useSettingsStore.getState();
+        const { allowTelemetry, accounts, theme, colorScheme } = useSettingsStore.getState();
         if (!allowTelemetry && !ignoreTelemetryDisability) return;
 
         const account0 = accounts.at(0);
@@ -33,7 +33,8 @@ export default class Telemetry {
             const iid = await Platform.current.getStoreProp("installationID");
             const app = "Flowerpot";
 
-            const encodedString = btoa(JSON.stringify({ app, reason, name, ver, platform, os, iid, extraInfo }));
+            const extra = extraInfo ?? [theme, colorScheme].join("/");
+            const encodedString = btoa(JSON.stringify({ app, reason, name, ver, platform, os, iid, extraInfo: extra }));
 
             //http://localhost:8888/.netlify/functions/handle-app-usage?data=
             await fetch("https://mysweetbot.netlify.app/.netlify/functions/handle-app-usage?data=" + encodedString);
