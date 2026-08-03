@@ -41,7 +41,7 @@ const ru: LocalizedStrings = {
     //sel queries view
     loading: "Загрузка...",
     noQueriesAvailable:
-        "Нет ни одного доступного вам запроса. Убедитесь, что добавили нужные в 'Избранное' в TFS/Azure DevOps.",
+        "Нет ни одного доступного вам запроса. Убедитесь, что добавили нужные в 'Избранное' в Azure DevOps.",
     selQHeader: "Выбор запросов",
     cancel: "Отмена",
     add: "Добавить",
@@ -66,12 +66,12 @@ const ru: LocalizedStrings = {
     errorDesc2: "страницу",
     errorDesc3: "Или проверить",
     errorDesc4: "на предмет корректности",
-    tfsSettings: "Настройки учетной записи TFS/Azure DevOps",
+    tfsSettings: "Настройки учетной записи Azure DevOps",
     //creds view
     validate: "Проверить и сохранить",
     status: "Статус: ",
     credsNoteText: "Вы должны проверить введенные данные на корректность.",
-    tfsPath: "Путь к TFS/Azure DevOps (должен начинаться с 'http://' или 'https://' и заканчиваться '/')",
+    tfsPath: "Путь к Azure DevOps (должен начинаться с 'http://' или 'https://' и заканчиваться '/')",
     tfsToken: "Персональный токен доступа",
     credsHeaderAdd: "Добавление учетной записи",
     credsHeaderEdit: "Редактирование учетной записи",
@@ -86,7 +86,7 @@ const ru: LocalizedStrings = {
     throwNoTeams: "Не найдено доступных проектов",
     throwQueryLoading: "Ошибка при загрузке запроса",
     throwAuth:
-        "Невозможно авторизоваться с предоставленными учетными данными, путь к TFS/Azure DevOps некорректен или проблемы с сетью",
+        "Невозможно авторизоваться с предоставленными учетными данными, путь к Azure DevOps некорректен или проблемы с сетью",
     throwUnknown: "Что-то пошло не так во время обработки запроса",
     notifNewItem: ": новое",
     notifChangedItem: ": изменения",
@@ -287,9 +287,9 @@ const ru: LocalizedStrings = {
     credsTokenInfo1: "Для авторизации в приложении вам необходимо получить",
     credsTokenInfo2: "персональный токен доступа",
     credsTokenInfo3:
-        "в вашем TFS/Azure DevOps. Инструкция по созданию токена и прямая ссылка на страницу создания токена доступны по кнопкам ниже:",
+        "в вашем Azure DevOps. Инструкция по созданию токена и прямая ссылка на страницу создания токена доступны по кнопкам ниже:",
     credsTokenOpenDocs: "Открыть документацию по созданию токена (Microsoft)",
-    credsTokenOpenCreatePage: "Открыть страницу создания токена в вашем TFS/Azure DevOps",
+    credsTokenOpenCreatePage: "Открыть страницу создания токена в вашем Azure DevOps",
     credsTokenInfo4:
         "Обратите внимание, что для полноценной работы приложения необходим токен с максимальным уровенем доступа.",
 

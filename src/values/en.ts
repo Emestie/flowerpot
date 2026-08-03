@@ -39,7 +39,7 @@ const en = {
     //sel queries view
     loading: "Loading...",
     noQueriesAvailable:
-        "No queries available to you. Make sure you added the desired ones to Favorites in TFS/Azure DevOps.",
+        "No queries available to you. Make sure you added the desired ones to Favorites in Azure DevOps.",
     selQHeader: "Select Queries",
     cancel: "Cancel",
     add: "Add",
@@ -65,12 +65,12 @@ const en = {
     errorDesc2: "refresh the page",
     errorDesc3: "Or check",
     errorDesc4: "for correctness",
-    tfsSettings: "TFS/Azure DevOps Account Settings",
+    tfsSettings: "Azure DevOps Account Settings",
     //creds view
     validate: "Validate and save",
     status: "Status: ",
     credsNoteText: "You must validate the entered data for correctness.",
-    tfsPath: "TFS/Azure DevOps path (must start with 'http://' or 'https://' and end with '/')",
+    tfsPath: "Azure DevOps path (must start with 'http://' or 'https://' and end with '/')",
     tfsToken: "Personal Access Token",
     credsHeaderAdd: "Add account",
     credsHeaderEdit: "Edit account",
@@ -85,7 +85,7 @@ const en = {
     throwNoTeams: "No available team projects found",
     throwQueryLoading: "Error while loading query",
     throwAuth:
-        "Cannot authenticate with provided credentials, TFS/Azure DevOps path is incorrect or network problems occurred",
+        "Cannot authenticate with provided credentials, Azure DevOps path is incorrect or network problems occurred",
     throwUnknown: "Something went wrong during request processing",
     notifNewItem: ": new",
     notifChangedItem: ": changes",
@@ -285,9 +285,9 @@ const en = {
     credsTokenInfo1: "To authorize in the application, you need to get a",
     credsTokenInfo2: "Personal Access Token",
     credsTokenInfo3:
-        "in your TFS/Azure DevOps. Instructions for creating a token and a direct link to the token creation page are available using the buttons below:",
+        "in your Azure DevOps. Instructions for creating a token and a direct link to the token creation page are available using the buttons below:",
     credsTokenOpenDocs: "Open token creation documentation (Microsoft)",
-    credsTokenOpenCreatePage: "Open token creation page in your TFS/Azure DevOps",
+    credsTokenOpenCreatePage: "Open token creation page in your Azure DevOps",
     credsTokenInfo4:
         "Please note that for the application to function fully, a token with the maximum access level is required.",
 

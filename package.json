@@ -2,7 +2,7 @@
     "name": "flowerpot",
     "displayName": "Flowerpot",
     "version": "0.8.10",
-    "description": "TFS/Azure DevOps work items tracking tool",
+    "description": "Azure DevOps work items tracking tool",
     "author": {
         "name": "Valery Murashko",
         "url": "https://github.com/Emestie"

@@ -41,7 +41,7 @@ const be: LocalizedStrings = {
     //sel queries view
     loading: "Загрузка...",
     noQueriesAvailable:
-        "Няма даступных вам запытаў. Пераканайцеся, што дадалі патрэбныя ў 'Абранае' ў TFS/Azure DevOps.",
+        "Няма даступных вам запытаў. Пераканайцеся, што дадалі патрэбныя ў 'Абранае' ў Azure DevOps.",
     selQHeader: "Выбар запытаў",
     cancel: "Адмена",
     add: "Дадаць",
@@ -66,12 +66,12 @@ const be: LocalizedStrings = {
     errorDesc2: "старонку",
     errorDesc3: "Або праверыць",
     errorDesc4: "на карэктнасць",
-    tfsSettings: "Налады ўліковага запісу TFS/Azure DevOps",
+    tfsSettings: "Налады ўліковага запісу Azure DevOps",
     //creds view
     validate: "Праверыць і захаваць",
     status: "Статус: ",
     credsNoteText: "Вы павінны праверыць уведзеныя даныя на карэктнасць.",
-    tfsPath: "Шлях да TFS/Azure DevOps (павінен пачынацца з 'http://' або 'https://' і заканчвацца '/')",
+    tfsPath: "Шлях да Azure DevOps (павінен пачынацца з 'http://' або 'https://' і заканчвацца '/')",
     tfsToken: "Персанальны токен доступу",
     credsHeaderAdd: "Даданне ўліковага запісу",
     credsHeaderEdit: "Рэдагаванне ўліковага запісу",
@@ -86,7 +86,7 @@ const be: LocalizedStrings = {
     throwNoTeams: "Не знойдзена даступных праектаў",
     throwQueryLoading: "Памылка пры загрузцы запыту",
     throwAuth:
-        "Немагчыма аўтарызавацца з прадстаўленымі ўліковымі данымі, шлях да TFS/Azure DevOps некарэктны ці праблемы з сеткай",
+        "Немагчыма аўтарызавацца з прадстаўленымі ўліковымі данымі, шлях да Azure DevOps некарэктны ці праблемы з сеткай",
     throwUnknown: "Нешта пайшло не так падчас апрацоўкі запыту",
     notifNewItem: ": новае",
     notifChangedItem: ": змены",
@@ -286,9 +286,9 @@ const be: LocalizedStrings = {
     credsTokenInfo1: "Для аўтарызацыі ў праграме вам неабходна атрымаць",
     credsTokenInfo2: "персанальны токен доступу",
     credsTokenInfo3:
-        "у вашым TFS/Azure DevOps. Інструкцыя па стварэнні токена і прамая спасылка на старонку стварэння токена даступныя па кнопках ніжэй:",
+        "у вашым Azure DevOps. Інструкцыя па стварэнні токена і прамая спасылка на старонку стварэння токена даступныя па кнопках ніжэй:",
     credsTokenOpenDocs: "Адкрыць дакументацыю па стварэнні токена (Microsoft)",
-    credsTokenOpenCreatePage: "Адкрыць старонку стварэння токена ў вашым TFS/Azure DevOps",
+    credsTokenOpenCreatePage: "Адкрыць старонку стварэння токена ў вашым Azure DevOps",
     credsTokenInfo4:
         "Звярніце ўвагу, што для паўнавартаснай працы праграмы неабходны токен з максімальным узроўнем доступу.",
 

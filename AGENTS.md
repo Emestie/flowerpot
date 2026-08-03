@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Flowerpot is an Electron-based desktop application (also available as a PWA) for monitoring TFS/Azure DevOps work items and pull requests. It tracks queries, sends desktop notifications on changes, and supports multiple accounts with English/Russian localization.
+Flowerpot is an Electron-based desktop application (also available as a PWA) for monitoring Azure DevOps work items and pull requests. It tracks queries, sends desktop notifications on changes, and supports multiple accounts with English/Russian localization.
 
 Tech stack: Electron 19, React 19, TypeScript, Vite 6, Zustand, Semantic UI React.
 
@@ -43,7 +43,7 @@ Tech stack: Electron 19, React 19, TypeScript, Vite 6, Zustand, Semantic UI Reac
 - `host/main/` - Electron main process (window management, IPC, store)
 - `host/preload/` - Preload script exposing API to renderer via `#preload`
 - `src/zustand/` - Zustand stores (app, data, settings, quick-search)
-- `src/modules/api-client/` - TFS/Azure DevOps API client with loader pattern
+- `src/modules/api-client/` - Azure DevOps API client with loader pattern
 - `src/helpers/Platform.ts` - Platform abstraction (Electron vs Web)
 - `src/values/{en,ru}.ts` - Localization strings, use `s()` helper from `Strings.ts`
 - `src/style/ui.css` - Base reset, CSS variables (light default), shared component classes, Semantic UI overrides
