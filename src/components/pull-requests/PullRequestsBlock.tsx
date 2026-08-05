@@ -78,6 +78,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                     <span
                         title={s("refresh")}
                         className={`externalLink${isLoading ? " pr-refresh-link" : " pr-refresh-link-visible"}`}
+                        onClick={refreshBlock}
                     >
                         <Icon size="small" name="refresh" />
                     </span>
