@@ -1,5 +1,4 @@
 import { chrome } from "../../.electron-vendors.cache.json";
-import { preload } from "unplugin-auto-expose";
 
 const PACKAGE_ROOT = __dirname;
 
@@ -30,9 +29,7 @@ const config = {
             },
         },
         emptyOutDir: true,
-        brotliSize: false,
     },
-    plugins: [preload.vite()],
 };
 
 export default config;

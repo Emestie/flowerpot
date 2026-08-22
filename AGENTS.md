@@ -4,7 +4,7 @@
 
 Flowerpot is an Electron-based desktop application (also available as a PWA) for monitoring Azure DevOps work items and pull requests. It tracks queries, sends desktop notifications on changes, and supports multiple accounts with English/Russian localization.
 
-Tech stack: Electron 19, React 19, TypeScript, Vite 6, Zustand, Semantic UI React.
+Tech stack: Electron 43, React 19, TypeScript, Vite 6, Zustand, Semantic UI React.
 
 ## Build & Dev Commands
 

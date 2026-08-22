@@ -1,4 +1,3 @@
-import { eapi } from "#preload";
 import { TLocale } from "../types";
 import ElectronPlatform from "./platforms/Electron";
 import WebPlatform from "./platforms/Web";
@@ -41,7 +40,7 @@ export default class Platform {
 
     public static get type() {
         if (!this._type) {
-            if (eapi) {
+            if (window.eapi) {
                 this._type = PlatformType.Electron;
             } else {
                 this._type = PlatformType.Web;

@@ -1,7 +1,8 @@
-import { eapi } from "#preload";
 import { TLocale } from "../../types";
 import { INotificationData, IPlatformClass, OS } from "../Platform";
 import { useAppStore } from "../../zustand/app";
+
+const eapi = window.eapi!;
 
 export default class ElectronPlatform implements IPlatformClass {
     public get os() {

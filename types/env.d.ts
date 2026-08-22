@@ -23,3 +23,11 @@ interface ImportMetaEnv {
 interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
+
+/**
+ * API exposed from `host/preload` via `contextBridge.exposeInMainWorld`.
+ * Available only when the app runs inside Electron; `undefined` in web builds.
+ */
+interface Window {
+    readonly eapi: typeof import("#preload").eapi | undefined;
+}
