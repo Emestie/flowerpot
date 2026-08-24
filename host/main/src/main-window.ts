@@ -48,8 +48,6 @@ async function createWindow() {
     let { width, height } = store.get("windowDim");
     let { x, y } = store.get("windowPos");
 
-    app.setAppUserModelId("mst.flowerpot");
-
     registerAutostart();
 
     const windowOptions: Electron.BrowserWindowConstructorOptions = {
