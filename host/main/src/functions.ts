@@ -10,7 +10,7 @@ export let tray: Tray;
 const getResourcePath = () => "../../../build-resources/";
 
 export const showNotification = (level: any, data: any) => {
-    if (isDev) return; // Suppress dev notifications to prevent Windows from creating a rogue "Electron.lnk" Start Menu shortcut (see electron#4241).
+    if (isDev && process.platform === "win32") return; // Suppress dev notifications on Windows to prevent a rogue "Electron.lnk" Start Menu shortcut (see electron#4241).
     const wnd = getAppWindow();
     data.icon = buildIconPath(level, false, true);
     const notif = new Notification(data);
