@@ -7,6 +7,20 @@ import { store } from "./store";
 import { showNotification } from "./functions";
 
 /**
+ * Identify the app to the OS as early as possible.
+ *
+ * In dev the app runs from `node_modules/electron/dist/electron.exe`, which has no
+ * product identity of its own. If the `AppUserModelID` is not set before the first
+ * notification, Windows creates a rogue "Electron" Start Menu shortcut pointing at the
+ * bare electron binary. Matching the packaged app's `appId` makes Windows reuse the real
+ * `Flowerpot` shortcut instead. Must run before `app.whenReady()`.
+ *
+ * @see https://github.com/electron/electron/issues/4241
+ */
+app.setName("Flowerpot");
+app.setAppUserModelId("mst.flowerpot");
+
+/**
  * Prevent electron from running multiple instances.
  */
 const isSingleInstance = app.requestSingleInstanceLock();

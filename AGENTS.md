@@ -4,7 +4,7 @@
 
 Flowerpot is an Electron-based desktop application (also available as a PWA) for monitoring Azure DevOps work items and pull requests. It tracks queries, sends desktop notifications on changes, and supports multiple accounts with English/Russian localization.
 
-Tech stack: Electron 19, React 19, TypeScript, Vite 6, Zustand, Semantic UI React.
+Tech stack: Electron 43, React 19, TypeScript, Vite 6, Zustand, Semantic UI React.
 
 ## Build & Dev Commands
 
@@ -127,6 +127,22 @@ The PWA/web version had a "flashbang" effect at night: when opening in dark mode
 - The inline script uses generic `#1b1c1d` for dark background, not scheme-specific colors (Flexoki uses `#100f0f`). This is fine: the scheme CSS overrides it on first render, and both values are very dark — the transition is a subtle hue shift, not a brightness flash.
 - Flexoki light mode users still get a brief `#fff` body before Flexoki's `#fffcf0` takes over, but this is not a "flashbang" since they're already in light mode.
 - The `manifest.json` `background_color` controls the PWA native splash screen. Changed from `#ffffff` to `#1b1c1d` so it doesn't flash white on PWA launch in dark mode.
+
+## Electron Version Pin (41.x)
+
+The app is intentionally pinned to **Electron ^41** (`electron` in `package.json`) instead of the newest major.
+
+### Why
+
+- Electron 42 migrated macOS notifications from the deprecated `NSUserNotification` API to `UNNotification` ([electron#47817](https://github.com/electron/electron/pull/47817)).
+- The new API **requires a code-signed app**: unsigned/ad-hoc-signed binaries emit a silent `failed` event on the `Notification` object (`UNErrorDomain error 1`) and no banner ever shows.
+- Dev mode runs from `node_modules/electron/dist/Electron.app`, which is only ad-hoc signed, so notifications would silently stop working on every developer machine.
+
+### Before upgrading past 41
+
+1. Verify native notifications work unsigned on macOS dev builds (test harness: `new Notification(...)` + listen for `show`/`failed` events).
+2. If they don't, plan for code signing of local dev builds (self-signed cert + re-signing helpers with correct entitlements) or accept broken notifications during development.
+3. Packaged builds are unaffected once built with a real signing identity (`CSC_LINK`/`CSC_NAME`).
 
 ## Notes
 

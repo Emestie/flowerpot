@@ -1,6 +1,5 @@
 import react from "@vitejs/plugin-react";
 import { join } from "path";
-import { renderer } from "unplugin-auto-expose";
 import { defineConfig } from "vite";
 import checker from "vite-plugin-checker";
 import { chrome } from "./.electron-vendors.cache.json";
@@ -41,9 +40,6 @@ export default defineConfig({
     },
     plugins: [
         react(),
-        renderer.vite({
-            preloadEntry: join(PACKAGE_ROOT, "./host/preload/src/index.ts"),
-        }),
         checker({
             typescript: true,
         }),
