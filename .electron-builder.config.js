@@ -37,6 +37,8 @@ const config = {
     mac: {
         icon: "build-resources/icons/macicon2.icns",
         category: "public.app-category.utilities",
+        identity: process.env.CSC_LINK || process.env.CSC_NAME ? undefined : "-",
+        hardenedRuntime: process.env.CSC_LINK || process.env.CSC_NAME ? undefined : false,
         target: [
             {
                 target: "dmg",
