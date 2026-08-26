@@ -16,9 +16,11 @@ export function PullRequestsBlock(props: { accountId: string }) {
         includeTeamsPRs,
         includeAcceptedByMePRs,
         includeHiddenPRs,
+        includeDraftPRs,
         showEmptyQueries,
     } = useSettingsStore();
     const setIncludeHiddenPRs = useSettingsStore((state) => state.setIncludeHiddenPRs);
+    const setIncludeDraftPRs = useSettingsStore((state) => state.setIncludeDraftPRs);
     const setIncludeTeamsPRs = useSettingsStore((state) => state.setIncludeTeamsPRs);
     const setIncludeAcceptedByMePRs = useSettingsStore((state) => state.setIncludeAcceptedByMePRs);
 
@@ -35,8 +37,16 @@ export function PullRequestsBlock(props: { accountId: string }) {
         hasTeams,
         hasAcceptedByMe,
         hasHidden,
+        hasDraft,
         allPullRequests,
-    } = usePullRequestsLoader(props.accountId, projects, includeTeamsPRs, includeAcceptedByMePRs, includeHiddenPRs);
+    } = usePullRequestsLoader(
+        props.accountId,
+        projects,
+        includeTeamsPRs,
+        includeAcceptedByMePRs,
+        includeHiddenPRs,
+        includeDraftPRs
+    );
 
     if (!projects.filter((p) => p.enabled).length) return null;
 
@@ -90,6 +100,15 @@ export function PullRequestsBlock(props: { accountId: string }) {
                         }}
                         icon="eye slash"
                         visible={hasHidden}
+                    />
+                    <FilterToggleButton
+                        label={s("draftPrFilter")}
+                        checked={includeDraftPRs}
+                        onChange={() => {
+                            setIncludeDraftPRs(!includeDraftPRs);
+                        }}
+                        icon="pencil"
+                        visible={hasDraft}
                     />
                     <FilterToggleButton
                         label={s("groupPrFilter")}

@@ -321,6 +321,7 @@ const be: LocalizedStrings = {
     jsonParseError: "Некарэктны адказ сервера",
     noAccountWithGivenDomain: "Адсутнічае акаўнт з указаным даменным імем",
     hiddenPrFilter: "Схаваныя",
+    draftPrFilter: "Чарнавікі",
     hidePr: "Схаваць",
     unhidePr: "Выдаліць са схаваных",
 

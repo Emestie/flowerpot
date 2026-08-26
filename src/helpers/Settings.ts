@@ -79,6 +79,7 @@ export interface ISettings {
     includeTeamsPRs: boolean;
     includeAcceptedByMePRs: boolean;
     includeHiddenPRs: boolean;
+    includeDraftPRs: boolean;
     prNotifications: string;
     enableIterationColors: boolean;
     enableQueryColorCode: boolean;

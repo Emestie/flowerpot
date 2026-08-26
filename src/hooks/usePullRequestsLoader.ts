@@ -14,7 +14,8 @@ export function usePullRequestsLoader(
     projects: Project[],
     includeTeams: boolean,
     includeAcceptedByMePRs: boolean,
-    includeHidden: boolean
+    includeHidden: boolean,
+    includeDrafts: boolean
 ) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -72,11 +73,16 @@ export function usePullRequestsLoader(
         .filter((x) => {
             if (includeAcceptedByMePRs) return true;
             return !x.isAcceptedByMe();
+        })
+        .filter((x) => {
+            if (x.isDraft) return includeDrafts;
+            return true;
         });
 
     const hasTeams = allPullRequests.some((x) => x.getBelonging() === "team");
     const hasAcceptedByMe = allPullRequests.some((x) => x.isAcceptedByMe());
     const hasHidden = allPullRequests.some((x) => x.isHidden());
+    const hasDraft = allPullRequests.some((x) => x.isDraft);
 
     return {
         isLoading,
@@ -86,6 +92,7 @@ export function usePullRequestsLoader(
         hasTeams,
         hasAcceptedByMe,
         hasHidden,
+        hasDraft,
         allPullRequests,
     };
 }

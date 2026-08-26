@@ -320,6 +320,7 @@ const en = {
     jsonParseError: "Invalid server response",
     noAccountWithGivenDomain: "No account with the specified domain name",
     hiddenPrFilter: "Hidden",
+    draftPrFilter: "Draft",
     hidePr: "Hide",
     unhidePr: "Unhide",
 

@@ -322,6 +322,7 @@ const ru: LocalizedStrings = {
     jsonParseError: "Некорректный ответ от сервера",
     noAccountWithGivenDomain: "Отсутсвует аккаунт с указанным доменным именем",
     hiddenPrFilter: "Скрытые",
+    draftPrFilter: "Черновики",
     hidePr: "Скрыть",
     unhidePr: "Удалить из скрытых",
 
