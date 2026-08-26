@@ -355,6 +355,35 @@ td.workItemKeyword {
     border-left: 4px solid var(--wi-keyword-color);
 }
 
+/* Negative row (priority 1) border overrides — border-left must stay visible over red bg */
+tr.negative td.workItemDeferred {
+    border-left-color: var(--wi-deferred-color);
+}
+
+tr.negative td.workItemFavorite {
+    border-left-color: var(--wi-favorite-color);
+}
+
+tr.negative td.workItemForwarded {
+    border-left-color: var(--wi-forwarded-color);
+}
+
+tr.negative td.workItemPinned {
+    border-left-color: var(--wi-pinned-color);
+}
+
+tr.negative td.workItemPermawatch {
+    border-left-color: var(--wi-permawatch-color);
+}
+
+tr.negative td.workItemKeyword {
+    border-left-color: var(--wi-keyword-color);
+}
+
+tr.negative td.workItemIsMine {
+    border-left-color: var(--wi-mine-color);
+}
+
 .wiIndicatorPermawatch {
     color: var(--wi-permawatch-color);
 }
