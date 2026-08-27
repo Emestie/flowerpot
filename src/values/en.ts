@@ -6,6 +6,7 @@ const en = {
     refresh10m: "10 minutes",
     refresh20m: "20 minutes",
     refreshdebug: "(debug) 10 seconds",
+    sortPatternQuery: "Query",
     sortPatternWeight: "Priority, Date",
     sortPatternAssigned: '"Assigned To", Date',
     sortPatternId: "ID",

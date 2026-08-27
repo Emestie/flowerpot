@@ -8,6 +8,7 @@ const ru: LocalizedStrings = {
     refresh10m: "10 минут",
     refresh20m: "20 минут",
     refreshdebug: "(debug) 10 секунд",
+    sortPatternQuery: "Запрос",
     sortPatternWeight: "Приоритет, Дата",
     sortPatternAssigned: '"Назначен", Дата',
     sortPatternId: "ID",

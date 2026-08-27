@@ -8,6 +8,7 @@ const be: LocalizedStrings = {
     refresh10m: "10 хвілін",
     refresh20m: "20 хвілін",
     refreshdebug: "(debug) 10 секунд",
+    sortPatternQuery: "Запыт",
     sortPatternWeight: "Прыярытэт, Дата",
     sortPatternAssigned: '"Прызначаны", Дата',
     sortPatternId: "ID",

@@ -91,6 +91,8 @@ export function WorkItemsBlock({ query }: IProps) {
                 return sortPatternAssignedTo;
             case "id":
                 return sortPatternId;
+            case "query":
+                return sortPatternQuery;
             default:
                 return sortPatternDefault;
         }
@@ -109,6 +111,13 @@ export function WorkItemsBlock({ query }: IProps) {
         }
 
         return undefined;
+    };
+
+    const sortPatternQuery = (a: WorkItem, b: WorkItem) => {
+        let listRes = sortByLists(a, b);
+        if (listRes) return listRes;
+
+        return 0;
     };
 
     const sortPatternDefault = (a: WorkItem, b: WorkItem) => {
