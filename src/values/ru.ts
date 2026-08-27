@@ -83,6 +83,8 @@ const ru: LocalizedStrings = {
     credsState4: "Сервер недоступен или персональный токен доступа некорректен или истек",
     credsState5: "OK",
     credsState6: "Такой аккаунт уже добавлен",
+    credsStateInsufficientPermissions:
+        "Токен не имеет достаточно прав. Требуется максимальный уровень доступа (Работы, Код, Проекты).",
     //helpers
     throwNoTeams: "Не найдено доступных проектов",
     throwQueryLoading: "Ошибка при загрузке запроса",

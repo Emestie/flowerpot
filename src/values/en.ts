@@ -82,6 +82,8 @@ const en = {
     credsState4: "Server unavailable or the Personal Access Token is incorrect or expired",
     credsState5: "OK",
     credsState6: "This account is already added",
+    credsStateInsufficientPermissions:
+        "The token does not have sufficient permissions. Full access level is required (Work Items, Code, Projects).",
     //helpers
     throwNoTeams: "No available team projects found",
     throwQueryLoading: "Error while loading query",

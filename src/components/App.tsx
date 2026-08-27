@@ -156,7 +156,10 @@ export function App() {
     const schemeClass = getSchemeClass(colorScheme);
 
     return (
-        <div className={`${isDark ? "FlowerpotDarkTheme" : ""} ${schemeClass}`.trim()} style={{ height: "100%", background: isDark ? "#1b1c1d" : "#fff" }}>
+        <div
+            className={`${isDark ? "FlowerpotDarkTheme" : ""} ${schemeClass}`.trim()}
+            style={{ height: "100%", background: isDark ? "#1b1c1d" : "#fff" }}
+        >
             <HashRouterProvider>
                 <DialogsContainer />
                 {scene}

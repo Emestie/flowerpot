@@ -41,8 +41,7 @@ const be: LocalizedStrings = {
     quickLinksSettingsHeader: "Хуткія спасылкі",
     //sel queries view
     loading: "Загрузка...",
-    noQueriesAvailable:
-        "Няма даступных вам запытаў. Пераканайцеся, што дадалі патрэбныя ў 'Абранае' ў Azure DevOps.",
+    noQueriesAvailable: "Няма даступных вам запытаў. Пераканайцеся, што дадалі патрэбныя ў 'Абранае' ў Azure DevOps.",
     selQHeader: "Выбар запытаў",
     cancel: "Адмена",
     add: "Дадаць",
@@ -83,6 +82,8 @@ const be: LocalizedStrings = {
     credsState4: "Сервер недаступны або персанальны токен доступу некарэктны ці скончыўся",
     credsState5: "OK",
     credsState6: "Такі акаўнт ужо дададзены",
+    credsStateInsufficientPermissions:
+        "Токен не мае дастатковых правоў. Патрабуецца максімальны ўзровень доступу (Працы, Код, Праекты).",
     //helpers
     throwNoTeams: "Не знойдзена даступных праектаў",
     throwQueryLoading: "Памылка пры загрузцы запыту",

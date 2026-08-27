@@ -24,6 +24,7 @@ enum ECredState {
     WrongCredentials = 2,
     OK = 3,
     Duplication = 4,
+    InsufficientPermissions = 5,
 }
 
 const statuses: { color?: TColor; text: string }[] = [
@@ -32,6 +33,7 @@ const statuses: { color?: TColor; text: string }[] = [
     { color: "red", text: s("credsState4") },
     { color: "olive", text: s("credsState5") },
     { color: "orange", text: s("credsState6") },
+    { color: "red", text: s("credsStateInsufficientPermissions") },
 ];
 
 function addAccount(account: IAccount) {
@@ -126,6 +128,12 @@ export function CredentialsView() {
         const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
         if (!result) {
             setCredentialsCheckStatus(ECredState.WrongCredentials);
+            return;
+        }
+
+        const permResult = await Loaders.checkPermissions(currentAccount.url, currentAccount.token);
+        if (!permResult.ok) {
+            setCredentialsCheckStatus(ECredState.InsufficientPermissions);
             return;
         }
 

@@ -129,18 +129,52 @@ export function DebugView() {
                 <Header as="h3" dividing>
                     Message
                 </Header>
-                <div style={{ marginBottom: "1em", display: "flex", flexWrap: "wrap", gap: "0.5em 1.5em", alignItems: "center" }}>
-                    <Checkbox
-                        checked={showIcon}
-                        onChange={() => setShowIcon(!showIcon)}
-                        label="Show icon / spinner"
+                <div
+                    style={{
+                        marginBottom: "1em",
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "0.5em 1.5em",
+                        alignItems: "center",
+                    }}
+                >
+                    <Checkbox checked={showIcon} onChange={() => setShowIcon(!showIcon)} label="Show icon / spinner" />
+                    <Radio
+                        name="msg-type"
+                        checked={msgType === undefined}
+                        onChange={() => setMsgType(undefined)}
+                        label="Default"
                     />
-                    <Radio name="msg-type" checked={msgType === undefined} onChange={() => setMsgType(undefined)} label="Default" />
-                    <Radio name="msg-type" checked={msgType === "info"} onChange={() => setMsgType("info")} label="Info" />
-                    <Radio name="msg-type" checked={msgType === "positive"} onChange={() => setMsgType("positive")} label="Positive" />
-                    <Radio name="msg-type" checked={msgType === "negative"} onChange={() => setMsgType("negative")} label="Negative" />
-                    <Radio name="msg-type" checked={msgType === "error"} onChange={() => setMsgType("error")} label="Error" />
-                    <Radio name="msg-type" checked={msgType === "warning"} onChange={() => setMsgType("warning")} label="Warning" />
+                    <Radio
+                        name="msg-type"
+                        checked={msgType === "info"}
+                        onChange={() => setMsgType("info")}
+                        label="Info"
+                    />
+                    <Radio
+                        name="msg-type"
+                        checked={msgType === "positive"}
+                        onChange={() => setMsgType("positive")}
+                        label="Positive"
+                    />
+                    <Radio
+                        name="msg-type"
+                        checked={msgType === "negative"}
+                        onChange={() => setMsgType("negative")}
+                        label="Negative"
+                    />
+                    <Radio
+                        name="msg-type"
+                        checked={msgType === "error"}
+                        onChange={() => setMsgType("error")}
+                        label="Error"
+                    />
+                    <Radio
+                        name="msg-type"
+                        checked={msgType === "warning"}
+                        onChange={() => setMsgType("warning")}
+                        label="Warning"
+                    />
                 </div>
                 <Message {...(showIcon ? { icon: true } : {})} {...(msgType ? { [msgType]: true } : {})}>
                     {showIcon && <Icon name="circle notched" loading />}

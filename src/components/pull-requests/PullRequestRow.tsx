@@ -153,7 +153,13 @@ export function PullRequestRow(props: IProps) {
                         {pullRequest.projectName}/{pullRequest.repoName}
                     </span>
                     <span>
-                        <Label key={Math.random()} size="mini" basic className="mr-4" style={{ color: "var(--pr-branch-label-color, #689473)" }}>
+                        <Label
+                            key={Math.random()}
+                            size="mini"
+                            basic
+                            className="mr-4"
+                            style={{ color: "var(--pr-branch-label-color, #689473)" }}
+                        >
                             {pullRequest.sourceBranch} &rarr; {pullRequest.targetBranch}
                         </Label>
                     </span>
