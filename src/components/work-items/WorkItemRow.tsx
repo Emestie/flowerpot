@@ -195,9 +195,7 @@ export function WorkItemRow(props: IProps) {
                 </ContextMenuTrigger>
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>
-                    <Status workItem={item} />
-                </ContextMenuTrigger>
+                <Status workItem={item} query={props.query} onUpdate={props.onUpdate} />
             </Table.Cell>
             <Table.Cell collapsing>
                 <span className="dual-container">

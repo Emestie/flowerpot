@@ -226,6 +226,8 @@ const ru: LocalizedStrings = {
     installUpdate: "Установить обновление",
 
     wiStatus: "Статус: ",
+    changeStatus: "Нажмите, чтобы изменить статус. Текущий: ",
+    statusUpdateError: "Не удалось обновить статус",
     linksLimitReached: "Вы достигли максимального количества быстрых ссылок",
 
     infoHeader: "Информация",

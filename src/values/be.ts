@@ -224,6 +224,8 @@ const be: LocalizedStrings = {
     installUpdate: "Усталяваць абнаўленне",
 
     wiStatus: "Статус: ",
+    changeStatus: "Націсніце, каб змяніць статус. Бягучы: ",
+    statusUpdateError: "Не ўдалося абнавіць статус",
     linksLimitReached: "Вы дасягнулі максімальнай колькасці хуткіх спасылак",
 
     infoHeader: "Інфармацыя",

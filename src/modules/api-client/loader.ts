@@ -6,7 +6,12 @@ export type Loader = ReturnType<typeof createLoader>;
 export function createLoader(params: IApiClientParams) {
     return async function loader<T>(
         url: string,
-        options?: { method?: "GET" | "POST"; body?: string; skipConnectionDataCheck?: boolean }
+        options?: {
+            method?: "GET" | "POST" | "PATCH";
+            body?: string;
+            contentType?: string;
+            skipConnectionDataCheck?: boolean;
+        }
     ): Promise<T> {
         try {
             const _tfsPath = params.getTfsPath();
@@ -18,7 +23,7 @@ export function createLoader(params: IApiClientParams) {
                 body: options?.body,
                 headers: {
                     Authorization: "Basic " + btoa(":" + params.getAccessToken()),
-                    "Content-Type": "application/json",
+                    "Content-Type": options?.contentType || "application/json",
                 },
             });
 

@@ -224,6 +224,8 @@ const en = {
     installUpdate: "Install update",
 
     wiStatus: "Status: ",
+    changeStatus: "Click to change status. Current: ",
+    statusUpdateError: "Failed to update status",
     linksLimitReached: "You have reached maximum amount of Quick Links",
 
     infoHeader: "Information",
