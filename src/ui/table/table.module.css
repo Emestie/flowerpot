@@ -171,6 +171,29 @@
     color: #933624;
 }
 
+/* Negative row border-left overrides — colored WI borders must stay visible */
+.table tr.negative td:global(.workItemDeferred) {
+    border-left-color: var(--wi-deferred-color);
+}
+.table tr.negative td:global(.workItemFavorite) {
+    border-left-color: var(--wi-favorite-color);
+}
+.table tr.negative td:global(.workItemForwarded) {
+    border-left-color: var(--wi-forwarded-color);
+}
+.table tr.negative td:global(.workItemPinned) {
+    border-left-color: var(--wi-pinned-color);
+}
+.table tr.negative td:global(.workItemPermawatch) {
+    border-left-color: var(--wi-permawatch-color);
+}
+.table tr.negative td:global(.workItemKeyword) {
+    border-left-color: var(--wi-keyword-color);
+}
+.table tr.negative td:global(.workItemIsMine) {
+    border-left-color: var(--wi-mine-color);
+}
+
 /* Footer full width */
 .table tfoot.fullWidth th {
     text-align: left;
@@ -226,4 +249,34 @@
 :global(.FlowerpotDarkTheme) .table tr.negative:hover td {
     background: #4a2626;
     color: #ff9d99;
+}
+
+/* Dark negative row border-left overrides */
+:global(html.FlowerpotDarkTheme) .table tr.negative td:global(.workItemDeferred),
+:global(.FlowerpotDarkTheme) .table tr.negative td:global(.workItemDeferred) {
+    border-left-color: var(--wi-deferred-color);
+}
+:global(html.FlowerpotDarkTheme) .table tr.negative td:global(.workItemFavorite),
+:global(.FlowerpotDarkTheme) .table tr.negative td:global(.workItemFavorite) {
+    border-left-color: var(--wi-favorite-color);
+}
+:global(html.FlowerpotDarkTheme) .table tr.negative td:global(.workItemForwarded),
+:global(.FlowerpotDarkTheme) .table tr.negative td:global(.workItemForwarded) {
+    border-left-color: var(--wi-forwarded-color);
+}
+:global(html.FlowerpotDarkTheme) .table tr.negative td:global(.workItemPinned),
+:global(.FlowerpotDarkTheme) .table tr.negative td:global(.workItemPinned) {
+    border-left-color: var(--wi-pinned-color);
+}
+:global(html.FlowerpotDarkTheme) .table tr.negative td:global(.workItemPermawatch),
+:global(.FlowerpotDarkTheme) .table tr.negative td:global(.workItemPermawatch) {
+    border-left-color: var(--wi-permawatch-color);
+}
+:global(html.FlowerpotDarkTheme) .table tr.negative td:global(.workItemKeyword),
+:global(.FlowerpotDarkTheme) .table tr.negative td:global(.workItemKeyword) {
+    border-left-color: var(--wi-keyword-color);
+}
+:global(html.FlowerpotDarkTheme) .table tr.negative td:global(.workItemIsMine),
+:global(.FlowerpotDarkTheme) .table tr.negative td:global(.workItemIsMine) {
+    border-left-color: var(--wi-mine-color);
 }
