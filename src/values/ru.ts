@@ -354,8 +354,8 @@ const ru: LocalizedStrings = {
     colorSchemeClassic: "Классическая",
     colorSchemeFlexoki: "Flexoki",
 
-    flexokiBannerText: "Доступна новая цветовая схема Flexoki! Попробуйте её в Настройки → Интерфейс.",
-    flexokiBannerAction: "Попробовать",
+    statusBanner: "Теперь можно менять статус задачи прямо в таблице — кликните на столбец статуса.",
+    statusBannerAction: "Понятно",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тип: ",

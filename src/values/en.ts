@@ -352,8 +352,8 @@ const en = {
     colorSchemeClassic: "Classic",
     colorSchemeFlexoki: "Flexoki",
 
-    flexokiBannerText: "New Flexoki color scheme is available! Try it out in Settings → Interface.",
-    flexokiBannerAction: "Try",
+    statusBanner: "You can now change a work item's status directly in the table — click on the status column.",
+    statusBannerAction: "Got it",
 
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",

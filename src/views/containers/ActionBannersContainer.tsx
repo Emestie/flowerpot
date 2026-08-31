@@ -1,4 +1,3 @@
-import flexokiPalette from "../../assets/flexoki-palette.svg";
 import pull from "../../assets/pull.png";
 import { ActionBanner, IActionBannerProps } from "../../components/banners/ActionBanner";
 import { s } from "../../values/Strings";
@@ -36,25 +35,19 @@ function getActionBannersList(): IActionBannerProps[] {
             },
         },
         {
-            id: 7,
-            text: s("flexokiBannerText"),
-            actionText: s("flexokiBannerAction"),
-            img: flexokiPalette,
-            type: "positive",
-            action() {
-                useSettingsStore.getState().setColorScheme("flexoki");
-            },
+            id: 8,
+            text: s("statusBanner"),
+            actionText: s("statusBannerAction"),
+            type: "info",
             condition() {
-                const state = useSettingsStore.getState();
-                if (state.colorScheme === "flexoki") return false;
-                if (Date.now() >= new Date(2026, 7, 20).getTime()) return false;
+                if (new Date().getTime() >= new Date(2026, 8, 20).getTime()) return false;
                 return true;
             },
         },
     ];
 }
 
-//! LAST USED INDEX: 7
+//! LAST USED INDEX: 8
 
 export function ActionBannersContainer() {
     const banners = getActionBannersList().map((x) => <ActionBanner key={x.id} {...x} />);
