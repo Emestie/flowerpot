@@ -144,6 +144,22 @@ The app is intentionally pinned to **Electron ^41** (`electron` in `package.json
 2. If they don't, plan for code signing of local dev builds (self-signed cert + re-signing helpers with correct entitlements) or accept broken notifications during development.
 3. Packaged builds are unaffected once built with a real signing identity (`CSC_LINK`/`CSC_NAME`).
 
+## macOS Update Flow (unsigned builds)
+
+macOS builds are not code-signed/notarized, so `electron-updater` cannot install an update (Gatekeeper blocks the downloaded app). Instead of failing silently, macOS uses a manual-download fallback; Windows keeps the normal auto-update flow untouched.
+
+### How it works
+
+- **Main process** (`host/main/src/index.ts`): on darwin, `autoUpdater.autoDownload = false` is set before checking. Release detection still goes through electron-updater + GitHub releases (`latest.yml`), but nothing is downloaded.
+- **Renderer** (`src/helpers/platforms/Electron.ts`, `initUpdateListeners`): on darwin, the `update_available` IPC event maps directly to `updateStatus: "ready"` (instead of `"downloading"`). All existing UI surfaces (MainView header button, `UpdateBanner`, green label in `CreditsSection`) therefore appear exactly as they do after a successful Windows download.
+- **`updateApp()`** (`src/helpers/platforms/Electron.ts`): on darwin it opens `https://github.com/Emestie/flowerpot/releases/latest` via the shell instead of sending the `update-app` IPC, so every call site routes to the releases page automatically.
+
+### Notes
+
+- Windows behavior is unchanged: `update_available` → `"downloading"` → `update_downloaded` → `"ready"` → `quitAndInstall()` (NSIS). The darwin branch inside the main-process `update-app` handler is effectively unreachable from the renderer now.
+- The native "Update Arrived!" notification only fires on `update-downloaded`, so it never triggers on macOS (native notifications are broken on unsigned mac builds anyway — see the Electron version pin section).
+- If the app ever gets signed/notarized, remove the darwin branches in `host/main/src/index.ts` and `src/helpers/platforms/Electron.ts` to restore the standard flow.
+
 ## Notes
 
 - Electron main process uses CommonJS output (Vite CJS format)

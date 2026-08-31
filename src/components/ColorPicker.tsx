@@ -28,13 +28,7 @@ export default function ColorPicker(p: P) {
                 <Radio
                     key={c || "def"}
                     indicator={false}
-                    label={
-                        <Label
-                            basic={value !== c}
-                            className="color-picker-label"
-                            color={c}
-                        ></Label>
-                    }
+                    label={<Label basic={value !== c} className="color-picker-label" color={c}></Label>}
                     name="colorGrp"
                     checked={value === c}
                     onChange={() => onPick(c)}

@@ -6,6 +6,7 @@ const en = {
     refresh10m: "10 minutes",
     refresh20m: "20 minutes",
     refreshdebug: "(debug) 10 seconds",
+    sortPatternQuery: "Query",
     sortPatternWeight: "Priority, Date",
     sortPatternAssigned: '"Assigned To", Date',
     sortPatternId: "ID",
@@ -81,6 +82,8 @@ const en = {
     credsState4: "Server unavailable or the Personal Access Token is incorrect or expired",
     credsState5: "OK",
     credsState6: "This account is already added",
+    credsStateInsufficientPermissions:
+        "The token does not have sufficient permissions. Full access level is required (Work Items, Code, Projects).",
     //helpers
     throwNoTeams: "No available team projects found",
     throwQueryLoading: "Error while loading query",
@@ -221,6 +224,8 @@ const en = {
     installUpdate: "Install update",
 
     wiStatus: "Status: ",
+    changeStatus: "Click to change status. Current: ",
+    statusUpdateError: "Failed to update status",
     linksLimitReached: "You have reached maximum amount of Quick Links",
 
     infoHeader: "Information",
@@ -320,6 +325,7 @@ const en = {
     jsonParseError: "Invalid server response",
     noAccountWithGivenDomain: "No account with the specified domain name",
     hiddenPrFilter: "Hidden",
+    draftPrFilter: "Draft",
     hidePr: "Hide",
     unhidePr: "Unhide",
 
@@ -346,8 +352,8 @@ const en = {
     colorSchemeClassic: "Classic",
     colorSchemeFlexoki: "Flexoki",
 
-    flexokiBannerText: "New Flexoki color scheme is available! Try it out in Settings → Interface.",
-    flexokiBannerAction: "Try",
+    statusBanner: "You can now change a work item's status directly in the table — click on the status column.",
+    statusBannerAction: "Got it",
 
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",

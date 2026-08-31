@@ -79,6 +79,10 @@ app.whenReady()
  * Check for new version of the application - production mode only.
  */
 if (import.meta.env.PROD) {
+    if (process.platform === "darwin") {
+        autoUpdater.autoDownload = false;
+    }
+
     app.whenReady()
         .then(() => autoUpdater.checkForUpdatesAndNotify())
         .catch((e) => console.error("Failed check updates:", e));

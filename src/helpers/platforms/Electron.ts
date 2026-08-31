@@ -53,11 +53,12 @@ export default class ElectronPlatform implements IPlatformClass {
     }
 
     public updateApp() {
-        eapi.ipcSend("update-app");
+        if (this.os === "darwin") {
+            this.openUrl("https://github.com/Emestie/flowerpot/releases/latest");
+            return;
+        }
 
-        // if (Platform.current.os === "darwin") {
-        //     this.openUrl("https://github.com/Emestie/flowerpot/releases/latest");
-        // }
+        eapi.ipcSend("update-app");
     }
 
     public showNotification(data: INotificationData) {
@@ -110,7 +111,7 @@ export default class ElectronPlatform implements IPlatformClass {
             useAppStore.getState().setUpdateStatus("none");
         });
         eapi.ipcOn("update_available", () => {
-            useAppStore.getState().setUpdateStatus("downloading");
+            useAppStore.getState().setUpdateStatus(this.os === "darwin" ? "ready" : "downloading");
         });
         eapi.ipcOn("update_downloaded", () => {
             useAppStore.getState().setUpdateStatus("ready");

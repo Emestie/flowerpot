@@ -8,6 +8,7 @@ const ru: LocalizedStrings = {
     refresh10m: "10 минут",
     refresh20m: "20 минут",
     refreshdebug: "(debug) 10 секунд",
+    sortPatternQuery: "Запрос",
     sortPatternWeight: "Приоритет, Дата",
     sortPatternAssigned: '"Назначен", Дата',
     sortPatternId: "ID",
@@ -82,6 +83,8 @@ const ru: LocalizedStrings = {
     credsState4: "Сервер недоступен или персональный токен доступа некорректен или истек",
     credsState5: "OK",
     credsState6: "Такой аккаунт уже добавлен",
+    credsStateInsufficientPermissions:
+        "Токен не имеет достаточно прав. Требуется максимальный уровень доступа (Работы, Код, Проекты).",
     //helpers
     throwNoTeams: "Не найдено доступных проектов",
     throwQueryLoading: "Ошибка при загрузке запроса",
@@ -223,6 +226,8 @@ const ru: LocalizedStrings = {
     installUpdate: "Установить обновление",
 
     wiStatus: "Статус: ",
+    changeStatus: "Нажмите, чтобы изменить статус. Текущий: ",
+    statusUpdateError: "Не удалось обновить статус",
     linksLimitReached: "Вы достигли максимального количества быстрых ссылок",
 
     infoHeader: "Информация",
@@ -322,6 +327,7 @@ const ru: LocalizedStrings = {
     jsonParseError: "Некорректный ответ от сервера",
     noAccountWithGivenDomain: "Отсутсвует аккаунт с указанным доменным именем",
     hiddenPrFilter: "Скрытые",
+    draftPrFilter: "Черновики",
     hidePr: "Скрыть",
     unhidePr: "Удалить из скрытых",
 
@@ -348,8 +354,8 @@ const ru: LocalizedStrings = {
     colorSchemeClassic: "Классическая",
     colorSchemeFlexoki: "Flexoki",
 
-    flexokiBannerText: "Доступна новая цветовая схема Flexoki! Попробуйте её в Настройки → Интерфейс.",
-    flexokiBannerAction: "Попробовать",
+    statusBanner: "Теперь можно менять статус задачи прямо в таблице — кликните на столбец статуса.",
+    statusBannerAction: "Понятно",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тип: ",

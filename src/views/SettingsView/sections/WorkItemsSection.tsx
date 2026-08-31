@@ -11,6 +11,7 @@ const getSortPatterns: () => DropdownItemProps[] = () => [
     { key: 1, text: s("sortPatternWeight"), value: "default" },
     { key: 2, text: s("sortPatternAssigned"), value: "assignedto" },
     { key: 3, text: s("sortPatternId"), value: "id" },
+    { key: 4, text: s("sortPatternQuery"), value: "query" },
 ];
 
 const getTableScales: () => DropdownItemProps[] = () => [

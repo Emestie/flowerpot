@@ -7,7 +7,7 @@ import { AccountBadge } from "./Account";
 import { ILinkItem } from "./Links";
 import Platform from "./Platform";
 
-export type TSortPattern = "default" | "assignedto" | "id";
+export type TSortPattern = "query" | "default" | "assignedto" | "id";
 export type TNotificationsMode = "all" | "mine" | "none";
 export type TTheme = "light" | "dark" | "system";
 export type TColorScheme = "classic" | "flexoki";
@@ -79,6 +79,7 @@ export interface ISettings {
     includeTeamsPRs: boolean;
     includeAcceptedByMePRs: boolean;
     includeHiddenPRs: boolean;
+    includeDraftPRs: boolean;
     prNotifications: string;
     enableIterationColors: boolean;
     enableQueryColorCode: boolean;

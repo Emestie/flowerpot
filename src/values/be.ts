@@ -8,6 +8,7 @@ const be: LocalizedStrings = {
     refresh10m: "10 хвілін",
     refresh20m: "20 хвілін",
     refreshdebug: "(debug) 10 секунд",
+    sortPatternQuery: "Запыт",
     sortPatternWeight: "Прыярытэт, Дата",
     sortPatternAssigned: '"Прызначаны", Дата',
     sortPatternId: "ID",
@@ -40,8 +41,7 @@ const be: LocalizedStrings = {
     quickLinksSettingsHeader: "Хуткія спасылкі",
     //sel queries view
     loading: "Загрузка...",
-    noQueriesAvailable:
-        "Няма даступных вам запытаў. Пераканайцеся, што дадалі патрэбныя ў 'Абранае' ў Azure DevOps.",
+    noQueriesAvailable: "Няма даступных вам запытаў. Пераканайцеся, што дадалі патрэбныя ў 'Абранае' ў Azure DevOps.",
     selQHeader: "Выбар запытаў",
     cancel: "Адмена",
     add: "Дадаць",
@@ -82,6 +82,8 @@ const be: LocalizedStrings = {
     credsState4: "Сервер недаступны або персанальны токен доступу некарэктны ці скончыўся",
     credsState5: "OK",
     credsState6: "Такі акаўнт ужо дададзены",
+    credsStateInsufficientPermissions:
+        "Токен не мае дастатковых правоў. Патрабуецца максімальны ўзровень доступу (Працы, Код, Праекты).",
     //helpers
     throwNoTeams: "Не знойдзена даступных праектаў",
     throwQueryLoading: "Памылка пры загрузцы запыту",
@@ -222,6 +224,8 @@ const be: LocalizedStrings = {
     installUpdate: "Усталяваць абнаўленне",
 
     wiStatus: "Статус: ",
+    changeStatus: "Націсніце, каб змяніць статус. Бягучы: ",
+    statusUpdateError: "Не ўдалося абнавіць статус",
     linksLimitReached: "Вы дасягнулі максімальнай колькасці хуткіх спасылак",
 
     infoHeader: "Інфармацыя",
@@ -321,6 +325,7 @@ const be: LocalizedStrings = {
     jsonParseError: "Некарэктны адказ сервера",
     noAccountWithGivenDomain: "Адсутнічае акаўнт з указаным даменным імем",
     hiddenPrFilter: "Схаваныя",
+    draftPrFilter: "Чарнавікі",
     hidePr: "Схаваць",
     unhidePr: "Выдаліць са схаваных",
 
@@ -347,8 +352,8 @@ const be: LocalizedStrings = {
     colorSchemeClassic: "Класічная",
     colorSchemeFlexoki: "Flexoki",
 
-    flexokiBannerText: "Даступная новая колеравая схема Flexoki! Паспрабуйце яе ў Налады → Інтэрфейс.",
-    flexokiBannerAction: "Паспрабаваць",
+    statusBanner: "Цяпер можно змяніць статус задачы проста ў табліцы — націсніце на слупок статуса.",
+    statusBannerAction: "Зразумела",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тып: ",

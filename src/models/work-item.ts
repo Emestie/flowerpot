@@ -28,6 +28,7 @@ export class WorkItem {
     url: string;
     state: string;
     stateColor: string | undefined;
+    states: IWorkItemType["states"] | undefined;
     tags: string;
     _isMine: boolean;
     _list?: TLists;
@@ -71,6 +72,7 @@ export class WorkItem {
         this.areaPath = resp.fields["System.AreaPath"] || "";
         this.state = resp.fields["System.State"] || "";
         this.stateColor = workItemType?.states.find((state) => state.name === resp.fields["System.State"])?.color;
+        this.states = workItemType?.states;
         this.tags = resp.fields["System.Tags"] || "";
         this._isMine = isMine;
         this._list = _list;

@@ -65,6 +65,20 @@ export function createWorkItemLoaders(
 
             return new WorkItem(workItemResponse, query, workItemType);
         },
+        async updateState(workItem: WorkItem, newState: string, query: Query): Promise<WorkItem> {
+            const workItemResponse = await loader<IResponseWorkItem>(
+                workItem._collectionName + "/_apis/wit/workItems/" + workItem.id + "?api-version=5.1",
+                {
+                    method: "PATCH",
+                    contentType: "application/json-patch+json",
+                    body: JSON.stringify([{ op: "add", path: "/fields/System.State", value: newState }]),
+                }
+            );
+
+            const workItemType = await workItemTypeLoaders.getTypeInfo(workItemResponse);
+
+            return new WorkItem(workItemResponse, query, workItemType);
+        },
         async getList(list: IWorkItemShort[], query: Query): Promise<WorkItem[]> {
             const collections = list.map((x) => x.collection).filter((i, v, a) => a.indexOf(i) === v);
 
