@@ -125,15 +125,20 @@ export function CredentialsView() {
     const onCheck = async () => {
         setCredentialsCheckStatus(ECredState.ValidatingInProgress);
 
-        const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
-        if (!result) {
-            setCredentialsCheckStatus(ECredState.WrongCredentials);
-            return;
-        }
+        try {
+            const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
+            if (!result) {
+                setCredentialsCheckStatus(ECredState.WrongCredentials);
+                return;
+            }
 
-        const permResult = await Loaders.checkPermissions(currentAccount.url, currentAccount.token);
-        if (!permResult.ok) {
-            setCredentialsCheckStatus(ECredState.InsufficientPermissions);
+            const permResult = await Loaders.checkPermissions(currentAccount.url, currentAccount.token);
+            if (!permResult.ok) {
+                setCredentialsCheckStatus(ECredState.InsufficientPermissions);
+                return;
+            }
+        } catch {
+            setCredentialsCheckStatus(ECredState.WrongCredentials);
             return;
         }
 

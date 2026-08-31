@@ -45,8 +45,18 @@ export default class Loaders {
                     },
                 });
 
-                if (result.status === 403) {
+                if (result.status === 403 || result.status === 401) {
                     missingPermissions.push(check.label);
+                    continue;
+                }
+
+                try {
+                    const body = await result.json();
+                    if (body?.errorCode !== undefined || body?.message) {
+                        missingPermissions.push(check.label);
+                    }
+                } catch {
+                    // Not JSON — that's fine
                 }
             } catch {
                 // Network error — skip, don't treat as missing permission

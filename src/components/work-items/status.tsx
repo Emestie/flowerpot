@@ -69,9 +69,7 @@ export function Status({ workItem, query, onUpdate }: Props) {
                     if (!pending) setOpen(true);
                 }}
             >
-                {!pending && (
-                    <span className="wiStatusDot" style={{ backgroundColor: "#" + workItem.stateColor }} />
-                )}
+                {!pending && <span className="wiStatusDot" style={{ backgroundColor: "#" + workItem.stateColor }} />}
                 <span className="wiStatusText">
                     <HighlightenText text={shrink(text)} />
                 </span>
