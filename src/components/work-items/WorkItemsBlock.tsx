@@ -1,11 +1,13 @@
 import { useMemo } from "react";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
+import { CardGroup } from "../../ui/card";
 import { Message } from "../../ui/message";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
 import { useQueryLoader } from "../../hooks/useQueryLoader";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
 import { s } from "../../values/Strings";
@@ -15,6 +17,7 @@ import { useSettingsStore } from "../../zustand/settings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { WorkItemRow } from "./WorkItemRow";
+import { WorkItemCard } from "./WorkItemCard";
 import { useFilteredWorkItems } from "./use-filtered-work-items";
 
 interface IProps {
@@ -32,6 +35,7 @@ export function WorkItemsBlock({ query }: IProps) {
     const showMineOnly = useAppStore((state) => state.showMineOnly);
     const filteredTypes = query.filteredTypes || [];
     const filteredStatuses = query.filteredStatuses || [];
+    const isMobile = useIsMobile();
 
     const setWorkItemsForQuery = useDataStore((state) => state.setWorkItemsForQuery);
 
@@ -160,15 +164,26 @@ export function WorkItemsBlock({ query }: IProps) {
         routineStart();
     };
 
-    const workItemsComponents = workItems
+    const workItemNodes = workItems
         .sort(getSortPattern())
         .filter((wi) => (showMineOnly ? wi._isMine : true))
         .filter((wi) => !Lists.isIn(query.accountId, "hidden", query.collectionName, wi.id, wi.rev))
         .filter((wi) => !filteredTypes.includes(wi.type))
-        .filter((wi) => !filteredStatuses.includes(wi.state))
-        .map((wi) => (
-            <WorkItemRow key={wi.id} query={query} item={wi} isPermawatch={isPermawatch} onUpdate={updateWorkItems} />
-        ));
+        .filter((wi) => !filteredStatuses.includes(wi.state));
+
+    const workItemElements = isMobile
+        ? workItemNodes.map((wi) => (
+              <WorkItemCard
+                  key={wi.id}
+                  query={query}
+                  item={wi}
+                  isPermawatch={isPermawatch}
+                  onUpdate={updateWorkItems}
+              />
+          ))
+        : workItemNodes.map((wi) => (
+              <WorkItemRow key={wi.id} query={query} item={wi} isPermawatch={isPermawatch} onUpdate={updateWorkItems} />
+          ));
 
     const getTableSize = () => {
         return tableScale === 1 ? undefined : tableScale === 2 ? "large" : "small";
@@ -254,11 +269,14 @@ export function WorkItemsBlock({ query }: IProps) {
                         {errorMessage}
                     </Message>
                 )}
-                {!!workItems.length && (
-                    <Table className="wiTable" compact size={getTableSize()}>
-                        <tbody>{workItemsComponents}</tbody>
-                    </Table>
-                )}
+                {!!workItemElements.length &&
+                    (isMobile ? (
+                        <CardGroup>{workItemElements}</CardGroup>
+                    ) : (
+                        <Table className="wiTable" compact size={getTableSize()}>
+                            <tbody>{workItemElements}</tbody>
+                        </Table>
+                    ))}
             </>
         </CollapsibleBlock>
     );

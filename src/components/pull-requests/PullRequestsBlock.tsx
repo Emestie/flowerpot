@@ -1,13 +1,16 @@
 import { useMemo } from "react";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
+import { CardGroup } from "../../ui/card";
 import { Message } from "../../ui/message";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import { s } from "../../values/Strings";
 import { useSettingsStore } from "../../zustand/settings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { PullRequestRow } from "./PullRequestRow";
+import { PullRequestCard } from "./PullRequestCard";
 
 export function PullRequestsBlock(props: { accountId: string }) {
     const {
@@ -23,6 +26,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
     const setIncludeDraftPRs = useSettingsStore((state) => state.setIncludeDraftPRs);
     const setIncludeTeamsPRs = useSettingsStore((state) => state.setIncludeTeamsPRs);
     const setIncludeAcceptedByMePRs = useSettingsStore((state) => state.setIncludeAcceptedByMePRs);
+    const isMobile = useIsMobile();
 
     const projects = useMemo(
         () => _allProjects.filter((x) => x.accountId === props.accountId),
@@ -62,9 +66,13 @@ export function PullRequestsBlock(props: { accountId: string }) {
         return tableScale === 1 ? undefined : tableScale === 2 ? "large" : "small";
     };
 
-    const pullRequestsComponents = pullRequests.map((pr) => (
-        <PullRequestRow key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
-    ));
+    const pullRequestElements = isMobile
+        ? pullRequests.map((pr) => (
+              <PullRequestCard key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
+          ))
+        : pullRequests.map((pr) => (
+              <PullRequestRow key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
+          ));
 
     if (!isLoading && !pullRequests.length && !showEmptyQueries && !allPullRequests.length) return null;
 
@@ -137,11 +145,14 @@ export function PullRequestsBlock(props: { accountId: string }) {
                         {errorMessage}
                     </Message>
                 )}
-                {!!pullRequestsComponents.length && (
-                    <Table className="wiTable" compact size={getTableSize()}>
-                        <tbody>{pullRequestsComponents}</tbody>
-                    </Table>
-                )}
+                {!!pullRequestElements.length &&
+                    (isMobile ? (
+                        <CardGroup>{pullRequestElements}</CardGroup>
+                    ) : (
+                        <Table className="wiTable" compact size={getTableSize()}>
+                            <tbody>{pullRequestElements}</tbody>
+                        </Table>
+                    ))}
             </>
         </CollapsibleBlock>
     );
