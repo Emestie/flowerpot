@@ -1238,7 +1238,6 @@ nav {
 /* ── Pull request card ── */
 .pr-card {
     margin-bottom: 0.5em;
-    border-left: 4px solid var(--pr-branch-label-color, #689473);
 }
 
 .pr-card .pr-card-header {
