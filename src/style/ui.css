@@ -1052,6 +1052,14 @@ nav {
     .dynamic-flex-wrap {
         flex-wrap: wrap;
     }
+
+    .collapsible-header .dynamic-flex-wrap {
+        row-gap: 8px;
+    }
+
+    .collapsible-header {
+        margin-bottom: 8px;
+    }
 }
 
 @media (max-width: 590px) {
