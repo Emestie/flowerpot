@@ -4,7 +4,6 @@ import { URL } from "url";
 import { buildIconPath, buildTrayIcon, registerAutostart } from "./functions";
 import { store } from "./store";
 import { setWindowOnHandlers } from "./window-on-handlers";
-const Splashscreen = require("@trodi/electron-splashscreen");
 
 function setMacOSMenu() {
     if (process.platform !== "darwin") return;
@@ -67,16 +66,7 @@ async function createWindow() {
         },
     };
 
-    const splashCfg = {
-        windowOpts: windowOptions,
-        templateUrl: `${__dirname}/../../../build-resources/splash-screen/splash-screen.html`,
-        splashScreenOpts: {
-            width: 192,
-            height: 192,
-        },
-    };
-
-    const browserWindow = Splashscreen.initSplashScreen(splashCfg) as BrowserWindow;
+    const browserWindow = new BrowserWindow(windowOptions);
 
     setMacOSMenu();
 

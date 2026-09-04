@@ -22,7 +22,6 @@
         }
     },
     "dependencies": {
-        "@trodi/electron-splashscreen": "^1.0.2",
         "cyrillic-to-translit-js": "3.1.0",
         "dayjs": "^1.11.23",
         "electron-updater": "^6.8.9",
