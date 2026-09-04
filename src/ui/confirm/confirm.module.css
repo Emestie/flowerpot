@@ -25,6 +25,7 @@
         1px 3px 15px 2px rgba(0, 0, 0, 0.2);
     flex: 0 0 auto;
     width: 680px;
+    max-width: calc(100vw - 2rem);
     margin: 0;
     user-select: text;
     overflow: hidden;
