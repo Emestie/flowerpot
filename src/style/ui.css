@@ -1176,6 +1176,12 @@ nav {
     white-space: nowrap;
 }
 
+/* Status sits at the card's right edge, so open its menu leftwards to stay on screen */
+.wi-card .wiStatusMenu {
+    left: auto;
+    right: 0;
+}
+
 /* WI list indicator colored borders for cards */
 .wi-card.workItemFavorite {
     border-left-color: var(--wi-favorite-color);
