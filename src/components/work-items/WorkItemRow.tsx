@@ -71,7 +71,9 @@ export function WorkItemRow(props: IProps) {
     })();
 
     const dropChanges = () => {
-        setChangesCollectionItem(props.item, false);
+        if (showUnreads && changesCollection[props.item.id]) {
+            setChangesCollectionItem(props.item, false);
+        }
     };
 
     const getClass = () => {
