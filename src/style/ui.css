@@ -695,6 +695,15 @@ a.url-link {
     margin-right: 3.5px;
 }
 
+.mobile-search-bar {
+    margin-top: 8px;
+}
+
+.mobile-search-bar .qs-input {
+    display: flex;
+    width: 100%;
+}
+
 .public-queries-toggle {
     margin-left: 20px;
 }
