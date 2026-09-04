@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { MouseEvent, useState, useEffect } from "react";
 import { ReactNode } from "react";
-import { ContextMenuTrigger } from "react-contextmenu";
+import { showMenu } from "react-contextmenu";
 import { Label } from "../../ui/label";
 import { Icon } from "../../ui/icon";
 import { Card } from "../../ui/card";
@@ -75,6 +75,12 @@ export function PullRequestCard(props: IProps) {
 
     const [uid] = useState(() => `${pullRequest.repoId}-${pullRequest.id}-${Math.random().toString(36).slice(2)}`);
 
+    const openMenu = (e: MouseEvent) => {
+        e.stopPropagation();
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+        showMenu({ position: { x: rect.left, y: rect.bottom }, id: uid });
+    };
+
     const freshnessEl = (() => {
         return (
             <span title={s("timeSinceCreated") + ` (${new Date(pullRequest.date).toLocaleString()})`} className="ml-4">
@@ -121,80 +127,81 @@ export function PullRequestCard(props: IProps) {
     const cardClassName = ["pr-card", pullRequest.isHidden() ? "workItemDeferred" : ""].filter(Boolean).join(" ");
 
     return (
-        <Card className={cardClassName} onClick={handleClick} wide>
-            <ContextMenuTrigger id={uid}>
-                <Card.Content className="pr-card-header">
-                    <span
-                        className={
-                            "pr-card-id " + (pullRequest.isHidden() ? "cellRelative workItemDeferred" : "cellRelative")
-                        }
-                        style={rowStyle}
-                        onDoubleClick={() => Platform.current.copyString(pullRequest.id.toString())}
-                    >
-                        {pullRequest.newThreadsCount > 0 && (
-                            <span className="PrUnreadDot" title={s("unreadPrHint")}>
-                                {pullRequest.newThreadsCount > 99 ? "99" : pullRequest.newThreadsCount}
-                            </span>
-                        )}
-                        {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
-                        <Icon name="level up alternate" /> {pullRequest.id}
-                    </span>
-                    <span className="pr-card-meta">
-                        {!!pullRequest.isDraft && (
-                            <Label key="draft" size="mini" className="mr-4" color="grey">
-                                {s("draftPullRequest")}
-                            </Label>
-                        )}
-                        {pullRequest.mergeStatus === "conflicts" && (
-                            <Label key="conflicts" size="mini" className="mr-4" color="red">
-                                {s("prMergeConflicts")}
-                            </Label>
-                        )}
-                        {commentsEl}
-                    </span>
-                </Card.Content>
-                <Card.Content className="pr-card-content">
-                    <span className="pr-card-iteration" style={rowStyle}>
-                        {pullRequest.isHidden() && (
-                            <span className="wiIndicatorDeferred">
-                                <Icon name="eye slash" />
-                            </span>
-                        )}
-                        <span className="IterationInTitle">
-                            {pullRequest.projectName}/{pullRequest.repoName}
+        <Card className={cardClassName} onClick={handleClick} onContextMenu={(e) => e.preventDefault()} wide>
+            <Card.Content className="pr-card-header">
+                <span
+                    className={
+                        "pr-card-id " + (pullRequest.isHidden() ? "cellRelative workItemDeferred" : "cellRelative")
+                    }
+                    style={rowStyle}
+                    onDoubleClick={() => Platform.current.copyString(pullRequest.id.toString())}
+                >
+                    {pullRequest.newThreadsCount > 0 && (
+                        <span className="PrUnreadDot" title={s("unreadPrHint")}>
+                            {pullRequest.newThreadsCount > 99 ? "99" : pullRequest.newThreadsCount}
                         </span>
-                        <span>
-                            <Label
-                                key="branch"
-                                size="mini"
-                                basic
-                                className="mr-4"
-                                style={{ color: "var(--pr-branch-label-color, #689473)" }}
-                            >
-                                {pullRequest.sourceBranch} &rarr; {pullRequest.targetBranch}
-                            </Label>
+                    )}
+                    {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
+                    <Icon name="level up alternate" /> {pullRequest.id}
+                </span>
+                <span className="pr-card-meta">
+                    {!!pullRequest.isDraft && (
+                        <Label key="draft" size="mini" className="mr-4" color="grey">
+                            {s("draftPullRequest")}
+                        </Label>
+                    )}
+                    {pullRequest.mergeStatus === "conflicts" && (
+                        <Label key="conflicts" size="mini" className="mr-4" color="red">
+                            {s("prMergeConflicts")}
+                        </Label>
+                    )}
+                    {commentsEl}
+                    <span className="card-menu-btn" title={s("actions")} onClick={openMenu}>
+                        <Icon name="ellipsis vertical" fitted />
+                    </span>
+                </span>
+            </Card.Content>
+            <Card.Content className="pr-card-content">
+                <span className="pr-card-iteration" style={rowStyle}>
+                    {pullRequest.isHidden() && (
+                        <span className="wiIndicatorDeferred">
+                            <Icon name="eye slash" />
                         </span>
+                    )}
+                    <span className="IterationInTitle">
+                        {pullRequest.projectName}/{pullRequest.repoName}
                     </span>
-                    <span>{tags}</span>
-                    <span style={rowStyle}>
-                        <Link className="WorkItemLink" href={pullRequest.url}>
-                            {pullRequest.title}
-                        </Link>
+                    <span>
+                        <Label
+                            key="branch"
+                            size="mini"
+                            basic
+                            className="mr-4"
+                            style={{ color: "var(--pr-branch-label-color, #689473)" }}
+                        >
+                            {pullRequest.sourceBranch} &rarr; {pullRequest.targetBranch}
+                        </Label>
                     </span>
-                </Card.Content>
-                <Card.Content className="pr-card-footer">
-                    <span>{reviewers}</span>
-                    <span className="pr-card-footer-right">
-                        <ProfileWidget
-                            accountId={props.accountId}
-                            avatarUrl={pullRequest.authorAvatar}
-                            displayName={pullRequest.authorName}
-                            nameFull={pullRequest.authorFullName}
-                        />
-                        {freshnessEl}
-                    </span>
-                </Card.Content>
-            </ContextMenuTrigger>
+                </span>
+                <span>{tags}</span>
+                <span style={rowStyle}>
+                    <Link className="WorkItemLink" href={pullRequest.url}>
+                        {pullRequest.title}
+                    </Link>
+                </span>
+            </Card.Content>
+            <Card.Content className="pr-card-footer">
+                <span>{reviewers}</span>
+                <span className="pr-card-footer-right">
+                    <ProfileWidget
+                        accountId={props.accountId}
+                        avatarUrl={pullRequest.authorAvatar}
+                        displayName={pullRequest.authorName}
+                        nameFull={pullRequest.authorFullName}
+                    />
+                    {freshnessEl}
+                </span>
+            </Card.Content>
             <PullRequestContextMenu uid={uid} pullRequest={pullRequest} />
         </Card>
     );

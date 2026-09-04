@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ContextMenuTrigger } from "react-contextmenu";
+import { MouseEvent, useState } from "react";
+import { showMenu } from "react-contextmenu";
 import { Label, type TColor } from "../../ui/label";
 import { Icon } from "../../ui/icon";
 import { Card } from "../../ui/card";
@@ -153,6 +153,12 @@ export function WorkItemCard(props: IProps) {
     const hasChanges = showUnreads ? !!changesCollection[item.id] : false;
     const [uid] = useState(() => `${props.item.id}-${Math.random().toString(36).slice(2)}`);
 
+    const openMenu = (e: MouseEvent) => {
+        e.stopPropagation();
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+        showMenu({ position: { x: rect.left, y: rect.bottom }, id: uid });
+    };
+
     const tags = item.tags
         ? item.tags
               .split(";")
@@ -163,67 +169,68 @@ export function WorkItemCard(props: IProps) {
     const cardClassName = ["wi-card", getClass(), isRed ? "negative" : ""].filter(Boolean).join(" ");
 
     return (
-        <Card className={cardClassName} onClick={dropChanges} wide>
-            <ContextMenuTrigger id={uid}>
-                <Card.Content className="wi-card-header">
-                    <span className="wi-card-id">
-                        <span
-                            onDoubleClick={() => {
-                                Platform.current.copyString(item.id.toString());
-                            }}
-                        >
-                            <Id item={item} hasChanges={hasChanges} />
-                        </span>
-                        {promptnessEl}
+        <Card className={cardClassName} onClick={dropChanges} onContextMenu={(e) => e.preventDefault()} wide>
+            <Card.Content className="wi-card-header">
+                <span className="wi-card-id">
+                    <span
+                        onDoubleClick={() => {
+                            Platform.current.copyString(item.id.toString());
+                        }}
+                    >
+                        <Id item={item} hasChanges={hasChanges} />
                     </span>
-                    <Status workItem={item} query={props.query} onUpdate={props.onUpdate} />
-                </Card.Content>
-                <Card.Content className="wi-card-content">
-                    <span className="wi-card-list-indicator">{getListIndicator()}</span>
-                    <span className="wi-card-iteration">
-                        <IterationPath item={item} />
-                        <span title={item.requestNumber}>
-                            {item.requestNumber ? <Icon name="phone volume" /> : <></>}
-                        </span>
+                    {promptnessEl}
+                </span>
+                <span className="wi-card-actions">
+                    <Status workItem={item} query={props.query} onUpdate={props.onUpdate} enableContextMenu={false} />
+                    <span className="card-menu-btn" title={s("actions")} onClick={openMenu}>
+                        <Icon name="ellipsis vertical" fitted />
                     </span>
-                    <span>{tags}</span>
-                    <Link className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} href={item.url}>
-                        <HighlightenText text={item.titleFull} />
-                    </Link>
-                    {!!fullNote && (
-                        <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
-                            <Label basic color={noteColor as TColor} size="mini">
-                                {getNote()}
-                            </Label>
-                        </span>
-                    )}
-                </Card.Content>
-                <Card.Content className="wi-card-footer">
-                    <span className="dual-container">
-                        <span className="dual-part-half">
-                            <ProfileWidget
-                                accountId={props.query.accountId}
-                                avatarUrl={item.assignedToImg}
-                                displayName={item.assignedTo}
-                                nameFull={item.assignedToFull}
-                                copyName={item.assignedToTextName}
-                            />
-                        </span>
-                        <span className="dual-part-half">
-                            <ProfileWidget
-                                accountId={props.query.accountId}
-                                avatarUrl={item.createdByImg}
-                                displayName={item.createdBy}
-                                nameFull={item.createdByFull}
-                                copyName={item.createdByTextName}
-                            />
-                        </span>
+                </span>
+            </Card.Content>
+            <Card.Content className="wi-card-content">
+                <span className="wi-card-list-indicator">{getListIndicator()}</span>
+                <span className="wi-card-iteration">
+                    <IterationPath item={item} />
+                    <span title={item.requestNumber}>{item.requestNumber ? <Icon name="phone volume" /> : <></>}</span>
+                </span>
+                <span>{tags}</span>
+                <Link className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} href={item.url}>
+                    <HighlightenText text={item.titleFull} />
+                </Link>
+                {!!fullNote && (
+                    <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
+                        <Label basic color={noteColor as TColor} size="mini">
+                            {getNote()}
+                        </Label>
                     </span>
-                    <span className="wi-card-meta">
-                        {revEl} {freshnessEl}
+                )}
+            </Card.Content>
+            <Card.Content className="wi-card-footer">
+                <span className="dual-container">
+                    <span className="dual-part-half">
+                        <ProfileWidget
+                            accountId={props.query.accountId}
+                            avatarUrl={item.assignedToImg}
+                            displayName={item.assignedTo}
+                            nameFull={item.assignedToFull}
+                            copyName={item.assignedToTextName}
+                        />
                     </span>
-                </Card.Content>
-            </ContextMenuTrigger>
+                    <span className="dual-part-half">
+                        <ProfileWidget
+                            accountId={props.query.accountId}
+                            avatarUrl={item.createdByImg}
+                            displayName={item.createdBy}
+                            nameFull={item.createdByFull}
+                            copyName={item.createdByTextName}
+                        />
+                    </span>
+                </span>
+                <span className="wi-card-meta">
+                    {revEl} {freshnessEl}
+                </span>
+            </Card.Content>
             <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
         </Card>
     );

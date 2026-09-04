@@ -1182,6 +1182,54 @@ nav {
     right: 0;
 }
 
+.wi-card .wi-card-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.card-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    min-width: 40px;
+    min-height: 32px;
+    margin: -8px -6px;
+    border-radius: 6px;
+    cursor: pointer;
+    touch-action: manipulation;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.card-menu-btn:active {
+    background-color: var(--table-hover-bg);
+}
+
+/* Hover only where a real hover exists — on touch it sticks after tap */
+@media (hover: hover) {
+    .card-menu-btn:hover {
+        background-color: var(--table-hover-bg);
+        color: rgba(0, 0, 0, 0.85);
+    }
+
+    html.FlowerpotDarkTheme .card-menu-btn:hover,
+    .FlowerpotDarkTheme .card-menu-btn:hover {
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
+
+/* Ellipsis glyph's visual center is ~3px below its em-box center at 14px
+   (bbox y -56..440 of 512upm vs 448/-64 line metrics), nudge it up */
+.card-menu-btn .icon {
+    transform: translateY(-3px);
+}
+
+html.FlowerpotDarkTheme .card-menu-btn,
+.FlowerpotDarkTheme .card-menu-btn {
+    color: rgba(255, 255, 255, 0.6);
+}
+
 /* WI list indicator colored borders for cards */
 .wi-card.workItemFavorite {
     border-left-color: var(--wi-favorite-color);

@@ -9,9 +9,10 @@ interface Props {
     workItem: WorkItem;
     query: Query;
     onUpdate: (wi: WorkItem) => void;
+    enableContextMenu?: boolean;
 }
 
-export function Status({ workItem, query, onUpdate }: Props) {
+export function Status({ workItem, query, onUpdate, enableContextMenu = true }: Props) {
     const [open, setOpen] = useState(false);
     const [pending, setPending] = useState(false);
     const [error, setError] = useState<string | undefined>();
@@ -64,10 +65,14 @@ export function Status({ workItem, query, onUpdate }: Props) {
                 className={"wiStatus wiStatusClickable" + (error ? " wiStatusError" : "")}
                 title={title}
                 onClick={() => !pending && setOpen((v) => !v)}
-                onContextMenu={(e) => {
-                    e.preventDefault();
-                    if (!pending) setOpen(true);
-                }}
+                onContextMenu={
+                    enableContextMenu
+                        ? (e) => {
+                              e.preventDefault();
+                              if (!pending) setOpen(true);
+                          }
+                        : undefined
+                }
             >
                 {!pending && <span className="wiStatusDot" style={{ backgroundColor: "#" + workItem.stateColor }} />}
                 <span className="wiStatusText">
