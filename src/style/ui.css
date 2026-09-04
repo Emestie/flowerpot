@@ -1300,7 +1300,9 @@ html.FlowerpotDarkTheme .wi-card,
 .FlowerpotDarkTheme .wi-card {
     background: var(--card-bg, #353536);
     color: rgba(255, 255, 255, 0.9);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    border-right-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 html.FlowerpotDarkTheme .wi-card .wi-card-header,
@@ -1354,7 +1356,9 @@ html.FlowerpotDarkTheme .pr-card,
 .FlowerpotDarkTheme .pr-card {
     background: var(--card-bg, #353536);
     color: rgba(255, 255, 255, 0.9);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    border-right-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 html.FlowerpotDarkTheme .pr-card .pr-card-header,

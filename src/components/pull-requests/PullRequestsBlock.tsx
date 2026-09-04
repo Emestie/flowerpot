@@ -147,7 +147,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
                 )}
                 {!!pullRequestElements.length &&
                     (isMobile ? (
-                        <CardGroup>{pullRequestElements}</CardGroup>
+                        <CardGroup stacked>{pullRequestElements}</CardGroup>
                     ) : (
                         <Table className="wiTable" compact size={getTableSize()}>
                             <tbody>{pullRequestElements}</tbody>

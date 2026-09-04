@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Label, type TColor } from "../../ui/label";
 import { Icon } from "../../ui/icon";
@@ -150,7 +151,7 @@ export function WorkItemCard(props: IProps) {
 
     const item = props.item;
     const hasChanges = showUnreads ? !!changesCollection[item.id] : false;
-    const uid = props.item.id + Math.random() + "";
+    const [uid] = useState(() => `${props.item.id}-${Math.random().toString(36).slice(2)}`);
 
     const tags = item.tags
         ? item.tags
@@ -177,7 +178,7 @@ export function WorkItemCard(props: IProps) {
                     </span>
                     <Status workItem={item} query={props.query} onUpdate={props.onUpdate} />
                 </Card.Content>
-                <Card.Content>
+                <Card.Content className="wi-card-content">
                     <span className="wi-card-list-indicator">{getListIndicator()}</span>
                     <span className="wi-card-iteration">
                         <IterationPath item={item} />

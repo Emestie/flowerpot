@@ -271,7 +271,7 @@ export function WorkItemsBlock({ query }: IProps) {
                 )}
                 {!!workItemElements.length &&
                     (isMobile ? (
-                        <CardGroup>{workItemElements}</CardGroup>
+                        <CardGroup stacked>{workItemElements}</CardGroup>
                     ) : (
                         <Table className="wiTable" compact size={getTableSize()}>
                             <tbody>{workItemElements}</tbody>

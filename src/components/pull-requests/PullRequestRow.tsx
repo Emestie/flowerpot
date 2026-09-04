@@ -55,15 +55,24 @@ export function PullRequestRow(props: IProps) {
     const [totalComments, setTotalComments] = useState<number | null>(null);
     const [resolvedComments, setResolvedComments] = useState<number | null>(null);
 
-    useEffect(() => {
-        (async () => {
-            const { resolved, total } = await getApi(props.accountId).pullRequest.getCommentsCount(pullRequest);
-            setResolvedComments(resolved);
-            setTotalComments(total);
-        })();
-    }, [pullRequest]);
+    const { collectionName, projectName, repoId, id } = pullRequest;
+    const { accountId } = props;
 
-    const uid = pullRequest.id + Math.random() + "";
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            const { resolved, total } = await getApi(accountId).pullRequest.getCommentsCount(pullRequest);
+            if (!cancelled) {
+                setResolvedComments(resolved);
+                setTotalComments(total);
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [accountId, collectionName, projectName, repoId, id]);
+
+    const [uid] = useState(() => `${pullRequest.repoId}-${pullRequest.id}-${Math.random().toString(36).slice(2)}`);
 
     const freshnessEl = (() => {
         return (
@@ -137,14 +146,14 @@ export function PullRequestRow(props: IProps) {
                     )}
                     {!!pullRequest.isDraft && (
                         <span>
-                            <Label key={Math.random()} size="mini" className="mr-4" color="grey">
+                            <Label key="draft" size="mini" className="mr-4" color="grey">
                                 {s("draftPullRequest")}
                             </Label>
                         </span>
                     )}
                     {pullRequest.mergeStatus === "conflicts" && (
                         <span>
-                            <Label key={Math.random()} size="mini" className="mr-4" color="red">
+                            <Label key="conflicts" size="mini" className="mr-4" color="red">
                                 {s("prMergeConflicts")}
                             </Label>
                         </span>
@@ -154,7 +163,7 @@ export function PullRequestRow(props: IProps) {
                     </span>
                     <span>
                         <Label
-                            key={Math.random()}
+                            key="branch"
                             size="mini"
                             basic
                             className="mr-4"

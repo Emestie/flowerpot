@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { Label, type TColor } from "../../ui/label";
 import { Icon } from "../../ui/icon";
@@ -150,7 +151,7 @@ export function WorkItemRow(props: IProps) {
 
     const item = props.item;
     const hasChanges = showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
-    const uid = props.item.id + Math.random() + "";
+    const [uid] = useState(() => `${props.item.id}-${Math.random().toString(36).slice(2)}`);
 
     const tags = item.tags
         ? item.tags
