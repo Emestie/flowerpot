@@ -65,8 +65,8 @@ export class PullRequest {
         this.title = resp.title;
         this.url = resp.url.replace("/_apis/git/repositories/", "/_git/").replace("/pullRequests/", "/pullrequest/");
         this.freshness = ItemsCommon.getTerm(resp.creationDate);
-        this.sourceBranch = resp.sourceRefName.replace("refs/heads/", "");
-        this.targetBranch = resp.targetRefName.replace("refs/heads/", "");
+        this.sourceBranch = stripRefsHeadsPrefix(resp.sourceRefName);
+        this.targetBranch = stripRefsHeadsPrefix(resp.targetRefName);
         this.labels = resp.labels || [];
         this.mergeStatus = resp.mergeStatus;
         this.newThreadsCount = newThreadsCount;
@@ -111,4 +111,9 @@ export class PullRequest {
     isHidden(): boolean {
         return Lists.isPrHidden(this.accountId, this.collectionName, this.id);
     }
+}
+
+function stripRefsHeadsPrefix(refName: string): string {
+    if (!refName) return "";
+    return refName.startsWith("refs/heads/") ? refName.slice("refs/heads/".length) : refName;
 }

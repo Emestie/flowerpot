@@ -19,7 +19,17 @@ class WebStore {
 
     constructor() {
         const json = localStorage.getItem(LS_KEY) || "{}";
-        this.data = JSON.parse(json);
+        try {
+            this.data = JSON.parse(json);
+        } catch {
+            console.warn(`safeParse: corrupt value for ${LS_KEY}, using defaults.`);
+            try {
+                localStorage.removeItem(LS_KEY);
+            } catch {
+                // ignore eviction errors
+            }
+            this.data = {};
+        }
 
         if (!this.data.installationID) {
             let iid = "";

@@ -4,6 +4,7 @@ import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Settings, { TColorScheme } from "../helpers/Settings";
 import { getSystemThemeListener, isDarkTheme } from "../helpers/Theme";
+import { safeParse } from "../helpers/safe-parse";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
 import { TView } from "../types";
@@ -73,7 +74,7 @@ export function App() {
         const ls = localStorage.getItem("WIChangesCollection");
         if (!ls) return;
 
-        setChangesCollection(JSON.parse(ls));
+        setChangesCollection(safeParse(ls, {}, "WIChangesCollection"));
     }, [setChangesCollection]);
 
     const afterUpdateHandler = useCallback(() => {

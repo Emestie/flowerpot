@@ -6,7 +6,7 @@ import { Project } from "../models/project";
 import { PullRequest } from "../models/pull-request";
 import { useSettingsStore } from "../zustand/settings";
 
-const PR_TIMER_KEY = "pr-block-timer";
+const PR_TIMER_KEY_PREFIX = "pr-block-timer-";
 const fishWIs = !!import.meta.env.VITE_USE_FISH;
 
 export function usePullRequestsLoader(
@@ -38,25 +38,27 @@ export function usePullRequestsLoader(
         }
     }, [projects, accountId]);
 
+    const timerKey = `${PR_TIMER_KEY_PREFIX}${accountId}`;
+
     const routineStart = useCallback(async () => {
         setIsLoading(true);
 
-        Timers.delete(PR_TIMER_KEY);
+        Timers.delete(timerKey);
 
         await load();
 
-        Timers.create(PR_TIMER_KEY, 1000 * refreshRate, () => {
+        Timers.create(timerKey, 1000 * refreshRate, () => {
             setIsLoading(true);
             load();
         });
-    }, [refreshRate, load]);
+    }, [refreshRate, load, timerKey]);
 
     useEffect(() => {
         routineStart();
         return () => {
-            Timers.delete(PR_TIMER_KEY);
+            Timers.delete(timerKey);
         };
-    }, [routineStart, projects]);
+    }, [routineStart, projects, timerKey]);
 
     const pullRequests = allPullRequests
         .filter((x) => {

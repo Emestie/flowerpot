@@ -5,6 +5,7 @@ import { s } from "../values/Strings";
 import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
 import Platform from "./Platform";
+import { safeParse } from "./safe-parse";
 
 type TBoolProps = "enabled" | "ignoreNotif" | "ignoreIcon" | "empty";
 
@@ -34,9 +35,11 @@ export default class QueryHelper {
     }
 
     public static toggleBoolean(query: Query, boolPropName: TBoolProps, forcedValue?: boolean) {
+        const stored = useSettingsStore.getState().queries.find((q) => q.queryId === query.queryId);
+        if (!stored) return;
         const newBool = forcedValue !== undefined ? forcedValue : !query[boolPropName];
         const updatedQuery = {
-            ...useSettingsStore.getState().queries.find((q) => q.queryId === query.queryId)!,
+            ...stored,
             [boolPropName]: newBool,
         };
         this.updateSingleInStore(updatedQuery);
@@ -53,19 +56,20 @@ export default class QueryHelper {
     }
 
     public static move(query: Query, direction: "up" | "dn") {
-        const allQueries = useSettingsStore.getState().queries || [];
-        const index = allQueries.findIndex((q) => q.queryId === query.queryId);
+        const storedQueries = useSettingsStore.getState().queries || [];
+        const index = storedQueries.findIndex((q) => q.queryId === query.queryId);
         const indexToSwapWith = direction === "up" ? index - 1 : index + 1;
 
-        if (index < 0 || indexToSwapWith < 0 || indexToSwapWith >= allQueries.length) {
+        if (index < 0 || indexToSwapWith < 0 || indexToSwapWith >= storedQueries.length) {
             return;
         }
 
+        const allQueries = storedQueries.map((x) => ({ ...x }));
         const tempOrder = allQueries[indexToSwapWith].order;
         allQueries[indexToSwapWith] = { ...allQueries[indexToSwapWith], order: allQueries[index].order };
         allQueries[index] = { ...allQueries[index], order: tempOrder };
 
-        this.updateAllInStore([...allQueries.map((x) => ({ ...x }))]);
+        this.updateAllInStore(allQueries);
     }
 
     private static updateSingleInStore(query: Query) {
@@ -81,13 +85,13 @@ export default class QueryHelper {
         useSettingsStore.getState().setQueries([...queries.map((x) => ({ ...x }))]);
     }
 
-    public static getWIStorage() {
+    public static getWIStorage(): IWIStorage {
         // if (!(window as any).wiStorage) (window as any).wiStorage = {};
         // let wiStorage = (window as any).wiStorage as IWIStorage;
         // return wiStorage;
-        let ls = localStorage.getItem("WIStorage");
+        const ls = localStorage.getItem("WIStorage");
         if (!ls) return {};
-        else return JSON.parse(ls);
+        return safeParse<IWIStorage>(ls, {}, "WIStorage");
     }
 
     public static saveWIStorage(wis: IWIStorage) {
@@ -95,9 +99,9 @@ export default class QueryHelper {
     }
 
     public static getPRStorage(): IPRStorage {
-        let ls = localStorage.getItem("PRStorage");
+        const ls = localStorage.getItem("PRStorage");
         if (!ls) return {};
-        return JSON.parse(ls);
+        return safeParse<IPRStorage>(ls, {}, "PRStorage");
     }
 
     public static savePRStorage(prs: IPRStorage) {

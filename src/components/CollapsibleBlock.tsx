@@ -44,7 +44,7 @@ export function CollapsibleBlock(props: {
     const accounts = useSettingsStore((state) => state.accounts);
 
     useEffect(() => {
-        const onCollapse = () => useSettingsStore.getState().toggleCollapsedBlock(id);
+        const onCollapse = () => useSettingsStore.getState().collapseBlock(id);
         const onExpand = () => useSettingsStore.getState().setCollapsedBlocks([]);
 
         document.addEventListener(APP_EVENT_COLLAPSE_ALL, onCollapse);

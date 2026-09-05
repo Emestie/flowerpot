@@ -75,9 +75,12 @@ export function DialogsContainer() {
                 onOk={(text) => {
                     try {
                         const parsedSettings = JSON.parse(b64Decode(text));
-                        if (typeof parsedSettings !== "object") throw new Error("Not an object");
-                        if (!parsedSettings.accounts && !Array.isArray(parsedSettings.accounts))
+                        if (typeof parsedSettings !== "object" || parsedSettings === null)
+                            throw new Error("Not an object");
+                        if (!parsedSettings.accounts || !Array.isArray(parsedSettings.accounts))
                             throw new Error("Invalid settings object");
+                        if (!parsedSettings.accounts.every((a: unknown) => typeof a === "object" && a !== null))
+                            throw new Error("Invalid accounts list");
 
                         setDialog("importSettings", false);
                         useSettingsStore.getState().setSettings(parsedSettings);

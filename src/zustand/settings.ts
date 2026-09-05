@@ -38,6 +38,7 @@ export interface SettingsState extends ISettings {
     setList: (listName: TLists, items: IListItem[]) => void;
     setCollapsedBlocks: (collapsedBlocks: string[]) => void;
     toggleCollapsedBlock: (blockId: string) => void;
+    collapseBlock: (blockId: string) => void;
     setSettingsSection: (section: Sections) => void;
     setTheme: (theme: TTheme) => void;
     setColorScheme: (colorScheme: TColorScheme) => void;
@@ -164,6 +165,13 @@ export const useSettingsStore = create<SettingsState>()(
             const collapsedBlocks = get().collapsedBlocks.includes(blockId)
                 ? get().collapsedBlocks.filter((x) => x !== blockId)
                 : [...get().collapsedBlocks, blockId];
+            set({ collapsedBlocks });
+            saveSettings({ ...get(), collapsedBlocks });
+        },
+
+        collapseBlock(blockId) {
+            if (get().collapsedBlocks.includes(blockId)) return;
+            const collapsedBlocks = [...get().collapsedBlocks, blockId];
             set({ collapsedBlocks });
             saveSettings({ ...get(), collapsedBlocks });
         },

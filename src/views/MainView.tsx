@@ -43,8 +43,15 @@ export function MainView() {
     const expandCollapseOperation = collapsedBlocks.length ? "expand" : "collapse";
 
     useEffect(() => {
-        setTimeout(() => setIsRefreshAvailable(true), 5000);
+        const timer = setTimeout(() => setIsRefreshAvailable(true), 5000);
+        return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        if (!queries.length) {
+            Platform.current.updateTrayIcon(4);
+        }
+    }, [queries.length]);
 
     useEffect(() => {
         if (!isMobileSearchShown) {
@@ -104,10 +111,6 @@ export function MainView() {
             <p>{s("noQueriesToWatchText")}</p>
         </Message>
     );
-
-    if (!queries.length) {
-        Platform.current.updateTrayIcon(4);
-    }
 
     const qlEnabled = showQuickLinks;
 

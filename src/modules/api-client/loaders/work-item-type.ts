@@ -6,11 +6,13 @@ export function createWorkItemTypeLoaders(loader: Loader) {
     const cache: Record<string, Promise<IWorkItemType>> = {};
 
     return {
-        async getTypeInfo(wir: IResponseWorkItem): Promise<IWorkItemType> {
-            const key = wir._links.workItemType.href;
+        async getTypeInfo(wir: IResponseWorkItem): Promise<IWorkItemType | undefined> {
+            const key = wir._links?.workItemType?.href;
+
+            if (!key) return undefined;
 
             if (!cache[key]) {
-                cache[key] = loader<IWorkItemType>(wir._links.workItemType.href);
+                cache[key] = loader<IWorkItemType>(key);
             }
 
             return cache[key];

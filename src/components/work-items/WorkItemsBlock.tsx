@@ -164,7 +164,7 @@ export function WorkItemsBlock({ query }: IProps) {
         routineStart();
     };
 
-    const workItemNodes = workItems
+    const workItemNodes = [...workItems]
         .sort(getSortPattern())
         .filter((wi) => (showMineOnly ? wi._isMine : true))
         .filter((wi) => !Lists.isIn(query.accountId, "hidden", query.collectionName, wi.id, wi.rev))

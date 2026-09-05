@@ -108,13 +108,11 @@ export function createWorkItemLoaders(
                 })
             );
 
-            const workItemTypes = await Promise.all(
-                workItemResponses.flatMap((x) => x.value).map((wir) => workItemTypeLoaders.getTypeInfo(wir))
-            );
+            const allResponses = workItemResponses.flatMap((x) => x.value).filter((wir) => wir?.id && wir?.fields);
 
-            return workItemResponses
-                .flatMap((x) => x.value)
-                .map((wir, index) => new WorkItem(wir, query, workItemTypes[index]));
+            const workItemTypes = await Promise.all(allResponses.map((wir) => workItemTypeLoaders.getTypeInfo(wir)));
+
+            return allResponses.map((wir, index) => new WorkItem(wir, query, workItemTypes[index]));
         },
     };
 }

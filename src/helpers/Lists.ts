@@ -17,7 +17,16 @@ export default class Lists {
             { accountId, id, collection, rev },
         ];
 
-        const lists = { deferred, permawatch, favorites, hidden, pinned, forwarded, [listName]: list } as any;
+        const lists = {
+            ...useSettingsStore.getState().lists,
+            deferred,
+            permawatch,
+            favorites,
+            hidden,
+            pinned,
+            forwarded,
+            [listName]: list,
+        };
 
         useSettingsStore.getState().setLists(lists);
     }
