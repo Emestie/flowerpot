@@ -162,6 +162,6 @@ macOS builds are not code-signed/notarized, so `electron-updater` cannot install
 
 - Electron main process uses CommonJS output (Vite CJS format)
 - PWA version deployed via Firebase Hosting (`flowerpot-pwa` project)
-- `.env.development` sets `VITE_LOCAL_DYNAMIC_CONTENT=1` and `TARGET_URL`
+- `.env.development` sets `VITE_LOCAL_DYNAMIC_CONTENT=1`
 - No test framework is configured; verify changes manually
 - Auto-updater configured for GitHub releases via `electron-updater`
