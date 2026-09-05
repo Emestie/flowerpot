@@ -11,6 +11,7 @@ import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { PullRequestRow } from "./PullRequestRow";
 import { PullRequestCard } from "./PullRequestCard";
+import { useFilteredPullRequests } from "./use-filtered-pull-requests";
 
 export function PullRequestsBlock(props: { accountId: string }) {
     const {
@@ -52,11 +53,13 @@ export function PullRequestsBlock(props: { accountId: string }) {
         includeDraftPRs
     );
 
+    const filteredPullRequests = useFilteredPullRequests(pullRequests);
+
     if (!projects.filter((p) => p.enabled).length) return null;
 
-    const totalItemsCount = pullRequests.length;
-    const totalTeamsCount = pullRequests.filter((x) => x.getBelonging() === "team").length;
-    const totalHiddenCount = pullRequests.filter((x) => x.isHidden()).length;
+    const totalItemsCount = filteredPullRequests.length;
+    const totalTeamsCount = filteredPullRequests.filter((x) => x.getBelonging() === "team").length;
+    const totalHiddenCount = filteredPullRequests.filter((x) => x.isHidden()).length;
 
     const refreshBlock = () => {
         if (!isLoading) routineStart();
@@ -67,10 +70,10 @@ export function PullRequestsBlock(props: { accountId: string }) {
     };
 
     const pullRequestElements = isMobile
-        ? pullRequests.map((pr) => (
+        ? filteredPullRequests.map((pr) => (
               <PullRequestCard key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
           ))
-        : pullRequests.map((pr) => (
+        : filteredPullRequests.map((pr) => (
               <PullRequestRow key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
           ));
 
@@ -81,7 +84,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
             id={"PR+" + props.accountId}
             caption={s("pullRequestsBlockCaption")}
             accountId={props.accountId}
-            isCollapseEnabled={!!pullRequests.length}
+            isCollapseEnabled={!!filteredPullRequests.length}
             isLoading={isLoading}
             enableColorCode={false}
             counters={{

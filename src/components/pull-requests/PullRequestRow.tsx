@@ -8,6 +8,7 @@ import { PullRequest } from "../../models/pull-request";
 import { PullRequestReviewer } from "../../models/pull-request-reviewer";
 import { s } from "../../values/Strings";
 import { Link } from "../Link";
+import { HighlightenText } from "../HighlightenText";
 import { ProfileWidget } from "../profile-widget/profile-widget";
 import { Tag } from "../Tag";
 import { PRReviewer } from "./pr-reviewer/pr-reviewer";
@@ -133,7 +134,8 @@ export function PullRequestRow(props: IProps) {
                         </span>
                     )}
                     {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
-                    <Icon name="level up alternate" /> {pullRequest.id}
+                    <Icon name="level up alternate" />{" "}
+                    <HighlightenText text={pullRequest.id.toString()} />
                 </ContextMenuTrigger>
                 <PullRequestContextMenu uid={uid} pullRequest={pullRequest} />
             </Table.Cell>
@@ -174,7 +176,7 @@ export function PullRequestRow(props: IProps) {
                     </span>
                     <span>{tags}</span>
                     <Link className="WorkItemLink" href={pullRequest.url}>
-                        {pullRequest.title}
+                        <HighlightenText text={pullRequest.title} />
                     </Link>
                 </ContextMenuTrigger>
             </Table.Cell>
