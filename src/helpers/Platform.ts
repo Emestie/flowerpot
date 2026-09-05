@@ -24,7 +24,7 @@ export interface IPlatformClass {
     checkForUpdates: (cyclic?: boolean) => void;
     reactIsReady: () => void;
     get os(): OS;
-    initUpdateListeners: () => void;
+    initUpdateListeners: () => (() => void) | void;
 }
 
 export enum PlatformType {

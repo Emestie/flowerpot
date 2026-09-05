@@ -1,4 +1,5 @@
 import { app, Menu, Notification, Tray } from "electron";
+import * as fs from "fs";
 import * as path from "path";
 import { getAppWindow } from "./main-window";
 import { store } from "./store";
@@ -8,6 +9,16 @@ const isDev = import.meta.env.DEV;
 export let tray: Tray;
 
 const getResourcePath = () => "../../../build-resources/";
+
+function warnIfMissing(iconPath: string) {
+    try {
+        if (!fs.existsSync(iconPath)) {
+            console.error(`Missing tray icon resource: ${iconPath}`);
+        }
+    } catch (e) {
+        console.error(`Failed to check tray icon resource ${iconPath}:`, e);
+    }
+}
 
 export const showNotification = (level: any, data: any) => {
     if (isDev && process.platform === "win32") return; // Suppress dev notifications on Windows to prevent a rogue "Electron.lnk" Start Menu shortcut (see electron#4241).
@@ -23,11 +34,14 @@ export const showNotification = (level: any, data: any) => {
 export function buildIconPath(level: any, hasChanges?: boolean, hiRez?: any) {
     if (hasChanges) level = level + "d";
 
-    if (process.platform === "win32") {
-        return path.join(__dirname, getResourcePath(), "icons/ico/flower" + level + ".ico");
-    }
+    const iconPath =
+        process.platform === "win32"
+            ? path.join(__dirname, getResourcePath(), "icons/ico/flower" + level + ".ico")
+            : path.join(__dirname, getResourcePath(), "icons/png/flower" + level + getIconExt(hiRez));
 
-    return path.join(__dirname, getResourcePath(), "icons/png/flower" + level + getIconExt(hiRez));
+    warnIfMissing(iconPath);
+
+    return iconPath;
 }
 
 function buildIconDotPath(level: any, _: any) {
@@ -51,7 +65,9 @@ export function iconUpdateTask(level: any, hasChanges: any) {
             if (level !== 4) getAppWindow()?.setOverlayIcon(nidot, "dot");
             else getAppWindow()?.setOverlayIcon(null, "no-dot");
         }
-    } catch (ex) {}
+    } catch (ex) {
+        console.error("Failed to update tray icon:", ex);
+    }
 }
 
 export function buildTrayIcon() {

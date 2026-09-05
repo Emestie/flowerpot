@@ -86,8 +86,9 @@ export function App() {
     }, [setShowWhatsNew]);
 
     useEffect(() => {
+        const removeUpdateListeners = Platform.current.initUpdateListeners();
+        let bootTimer: number | undefined;
         (async function () {
-            Platform.current.initUpdateListeners();
             Platform.current.reactIsReady();
 
             await Settings.read();
@@ -104,7 +105,7 @@ export function App() {
 
             Platform.current.checkForUpdates(true);
 
-            setTimeout(() => {
+            bootTimer = window.setTimeout(() => {
                 const route = parseHash();
                 if (!route || route.view === "loading") {
                     if (Platform.current.isDev()) {
@@ -120,6 +121,10 @@ export function App() {
                 setIsReady(true);
             }, 250);
         })();
+        return () => {
+            if (bootTimer !== undefined) clearTimeout(bootTimer);
+            removeUpdateListeners?.();
+        };
         // eslint-disable-next-line
     }, []);
 

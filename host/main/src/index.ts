@@ -115,9 +115,10 @@ autoUpdater.on("update-downloaded", () => {
         locale = "en";
     }
 
-    showNotification(4, locale === ru ? ru : en);
+    showNotification(4, locale === "ru" ? ru : en);
 });
 
-autoUpdater.on("error", () => {
-    getAppWindow()?.webContents.send("update_error");
+autoUpdater.on("error", (err) => {
+    console.error("Auto-updater error:", err);
+    getAppWindow()?.webContents.send("update_error", err?.message ?? String(err));
 });

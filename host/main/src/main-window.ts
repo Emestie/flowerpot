@@ -1,6 +1,6 @@
 import { app, BrowserWindow, globalShortcut, Menu, MenuItemConstructorOptions } from "electron";
 import { join } from "path";
-import { URL } from "url";
+import { pathToFileURL } from "url";
 import { buildIconPath, buildTrayIcon, registerAutostart } from "./functions";
 import { store } from "./store";
 import { setWindowOnHandlers } from "./window-on-handlers";
@@ -88,7 +88,7 @@ async function createWindow() {
     const pageUrl =
         import.meta.env.DEV && import.meta.env.VITE_DEV_SERVER_URL !== undefined
             ? import.meta.env.VITE_DEV_SERVER_URL
-            : new URL("../../build/index.html", "file://" + __dirname).toString();
+            : pathToFileURL(join(__dirname, "../../build/index.html")).toString();
 
     await browserWindow.loadURL(pageUrl);
 

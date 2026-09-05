@@ -4,6 +4,8 @@ import { useAppStore } from "../../zustand/app";
 
 const eapi = window.eapi!;
 
+let updateCheckInterval: number | undefined;
+
 export default class ElectronPlatform implements IPlatformClass {
     public get os() {
         return eapi.platformName as OS;
@@ -82,7 +84,8 @@ export default class ElectronPlatform implements IPlatformClass {
         //const { updateStatus, view } = store.getState().app;
 
         if (cyclic) {
-            setInterval(
+            if (updateCheckInterval !== undefined) clearInterval(updateCheckInterval);
+            updateCheckInterval = window.setInterval(
                 () => {
                     this.checkForUpdates();
                 },
@@ -103,21 +106,51 @@ export default class ElectronPlatform implements IPlatformClass {
         eapi.ipcSend("check-for-updates");
     }
 
+    public stopCyclicUpdateChecks() {
+        if (updateCheckInterval !== undefined) {
+            clearInterval(updateCheckInterval);
+            updateCheckInterval = undefined;
+        }
+    }
+
     public initUpdateListeners() {
-        eapi.ipcOn("checking_for_update", () => {
-            useAppStore.getState().setUpdateStatus("checking");
-        });
-        eapi.ipcOn("update_not_available", () => {
-            useAppStore.getState().setUpdateStatus("none");
-        });
-        eapi.ipcOn("update_available", () => {
-            useAppStore.getState().setUpdateStatus(this.os === "darwin" ? "ready" : "downloading");
-        });
-        eapi.ipcOn("update_downloaded", () => {
-            useAppStore.getState().setUpdateStatus("ready");
-        });
-        eapi.ipcOn("update_error", () => {
-            useAppStore.getState().setUpdateStatus("error");
-        });
+        const handlers: [string, () => void][] = [
+            [
+                "checking_for_update",
+                () => {
+                    useAppStore.getState().setUpdateStatus("checking");
+                },
+            ],
+            [
+                "update_not_available",
+                () => {
+                    useAppStore.getState().setUpdateStatus("none");
+                },
+            ],
+            [
+                "update_available",
+                () => {
+                    useAppStore.getState().setUpdateStatus(this.os === "darwin" ? "ready" : "downloading");
+                },
+            ],
+            [
+                "update_downloaded",
+                () => {
+                    useAppStore.getState().setUpdateStatus("ready");
+                },
+            ],
+            [
+                "update_error",
+                () => {
+                    useAppStore.getState().setUpdateStatus("error");
+                },
+            ],
+        ];
+
+        handlers.forEach(([channel, handler]) => eapi.ipcOn(channel, handler));
+
+        return () => {
+            handlers.forEach(([channel, handler]) => eapi.ipcOff(channel, handler));
+        };
     }
 }
