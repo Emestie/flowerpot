@@ -18,9 +18,25 @@ interface IShownPR {
     commitId: string;
 }
 
+const MAX_SHOWN_ENTRIES = 1000;
+
 export default class Differences {
     private static shownWI: IShownWI[] = [];
     private static shownPR: IShownPR[] = [];
+
+    private static rememberShownWI(entries: IShownWI[]) {
+        this.shownWI.push(...entries);
+        if (this.shownWI.length > MAX_SHOWN_ENTRIES) {
+            this.shownWI.splice(0, this.shownWI.length - MAX_SHOWN_ENTRIES);
+        }
+    }
+
+    private static rememberShownPR(entries: IShownPR[]) {
+        this.shownPR.push(...entries);
+        if (this.shownPR.length > MAX_SHOWN_ENTRIES) {
+            this.shownPR.splice(0, this.shownPR.length - MAX_SHOWN_ENTRIES);
+        }
+    }
 
     public static put(query: Query, workItems: WorkItem[]) {
         let wiStorage = QueryHelper.getWIStorage();
@@ -70,10 +86,10 @@ export default class Differences {
         //dont show same notifs twice
         news = news.filter((wi) => !this.shownWI.find((x) => x.id === wi.id && x.rev === wi.rev));
         changed = changed.filter((wi) => !this.shownWI.find((x) => x.id === wi.id && x.rev === wi.rev));
-        this.shownWI.push(
+        this.rememberShownWI([
             ...news.map((wi) => ({ id: wi.id, rev: wi.rev })),
-            ...changed.map((wi) => ({ id: wi.id, rev: wi.rev }))
-        );
+            ...changed.map((wi) => ({ id: wi.id, rev: wi.rev })),
+        ]);
 
         this.operateNotifsToShow(news, "new");
         this.operateNotifsToShow(changed, "change");
@@ -86,6 +102,12 @@ export default class Differences {
         if (useSettingsStore.getState().prNotifications !== "on") return;
 
         let prStorage = QueryHelper.getPRStorage();
+
+        //clear storage of removed accounts
+        const knownAccountIds = (useSettingsStore.getState().accounts || []).map((a) => a.id);
+        for (const storedAccountId in prStorage) {
+            if (!knownAccountIds.includes(storedAccountId)) delete prStorage[storedAccountId];
+        }
 
         if (!prStorage[accountId]) {
             prStorage[accountId] = [...pullRequests];
@@ -127,10 +149,10 @@ export default class Differences {
         //dont show same notifs twice
         news = news.filter((pr) => !this.shownPR.find((x) => x.id === pr.id && x.commitId === pr.commitId));
         changed = changed.filter((pr) => !this.shownPR.find((x) => x.id === pr.id && x.commitId === pr.commitId));
-        this.shownPR.push(
+        this.rememberShownPR([
             ...news.map((pr) => ({ id: pr.id, commitId: pr.commitId })),
-            ...changed.map((pr) => ({ id: pr.id, commitId: pr.commitId }))
-        );
+            ...changed.map((pr) => ({ id: pr.id, commitId: pr.commitId })),
+        ]);
 
         this.operatePRNotifsToShow(news, "new");
         this.operatePRNotifsToShow(changed, "change");

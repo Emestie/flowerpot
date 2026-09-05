@@ -8,8 +8,9 @@ import "./style/ui-dark.css";
 import "./style/schemes/flexoki.css";
 
 let remountKey = 0;
+const root = createRoot(document.getElementById("root")!);
 const render = () => {
-    createRoot(document.getElementById("root")!).render(
+    root.render(
         <StrictMode>
             <ErrorBoundary
                 onRemount={() => {

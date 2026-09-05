@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getApi } from "../api/client";
 import Differences from "../helpers/Differences";
 import { Timers } from "../helpers/Timers";
@@ -22,19 +22,24 @@ export function usePullRequestsLoader(
     const [allPullRequests, setAllPullRequests] = useState<PullRequest[]>([]);
     const refreshRate = useSettingsStore((state) => state.refreshRate);
 
+    const loadIdRef = useRef(0);
+
     const load = useCallback(async () => {
+        const loadId = ++loadIdRef.current;
         console.log("updating PRs");
         try {
             const allPRs = fishWIs
                 ? []
                 : await getApi(accountId).pullRequest.getByProjects(projects.filter((p) => p.enabled));
+            if (loadId !== loadIdRef.current) return;
             setAllPullRequests(allPRs);
             Differences.putPRs(accountId, allPRs);
             setErrorMessage(null);
         } catch (e: any) {
+            if (loadId !== loadIdRef.current) return;
             setErrorMessage(e.message);
         } finally {
-            setIsLoading(false);
+            if (loadId === loadIdRef.current) setIsLoading(false);
         }
     }, [projects, accountId]);
 

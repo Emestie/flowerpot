@@ -5,18 +5,21 @@ const currentConnectionData: Record<string, IConnectionData | undefined> = {};
 const singletonPromise: Record<string, Promise<IConnectionData | undefined> | null> = {};
 
 export function preloadConnectionData(accountId: string) {
+    if (currentConnectionData[accountId]) {
+        return Promise.resolve(currentConnectionData[accountId]);
+    }
+
     if (!singletonPromise[accountId]) {
         singletonPromise[accountId] = getApi(accountId)
             .connectionData.get()
             .then((resp) => {
                 currentConnectionData[accountId] = resp;
-                (window as any)._conn = resp;
 
                 return resp;
             })
-            .catch(() => undefined)
-            .finally(() => {
+            .catch(() => {
                 singletonPromise[accountId] = null;
+                return undefined;
             });
     }
 

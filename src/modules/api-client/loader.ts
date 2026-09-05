@@ -13,36 +13,39 @@ export function createLoader(params: IApiClientParams) {
             skipConnectionDataCheck?: boolean;
         }
     ): Promise<T> {
-        try {
-            const _tfsPath = params.getTfsPath();
-            //second replace to support proxy mode
-            const _url = url.replace(_tfsPath, "").replace(/^.*?\/tfs\//, "");
+        const _tfsPath = params.getTfsPath();
+        const _url = url.startsWith(_tfsPath) ? url.slice(_tfsPath.length) : url;
 
-            const result = await fetch(_tfsPath + _url, {
-                method: options?.method || "GET",
-                body: options?.body,
-                headers: {
-                    Authorization: "Basic " + btoa(":" + params.getAccessToken()),
-                    "Content-Type": options?.contentType || "application/json",
-                },
-            });
+        const result = await fetch(_tfsPath + _url, {
+            method: options?.method || "GET",
+            body: options?.body,
+            headers: {
+                Authorization: "Basic " + btoa(":" + params.getAccessToken()),
+                "Content-Type": options?.contentType || "application/json",
+            },
+        });
 
-            if (result.status === 401 && !url.includes("connectionData")) {
-                throw new Error(s("unauthorized"));
-            }
-
-            if (result.status === 404) {
-                throw new Error(s("notFoundOrNoAccess"));
-            }
-
-            try {
-                const data = await result.json();
-                return data as T;
-            } catch {
-                throw new Error(s("jsonParseError"));
-            }
-        } catch (e: any) {
-            throw e;
+        if (result.status === 401 && !url.includes("connectionData")) {
+            throw new Error(s("unauthorized"));
         }
+
+        if (result.status === 404) {
+            throw new Error(s("notFoundOrNoAccess"));
+        }
+
+        //Parse the body first: API error payloads (errorCode/message) are
+        //inspected by callers, so they must flow through as data.
+        let data: T | undefined;
+        try {
+            data = (await result.json()) as T;
+        } catch {
+            data = undefined;
+        }
+
+        if (data === undefined) {
+            throw new Error(!result.ok ? `HTTP ${result.status}` : s("jsonParseError"));
+        }
+
+        return data;
     };
 }

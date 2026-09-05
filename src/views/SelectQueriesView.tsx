@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
@@ -27,7 +27,17 @@ export function SelectQueriesView() {
     const queriesInSettings = useSettingsStore((state) => state.queries);
     const [isLoading, setIsLoading] = useState(true);
     const [availableQueries, setAvailableQueries] = useState<ISelectableQuery[]>([]);
+    const [loadError, setLoadError] = useState<string | null>(null);
     const [showPublic, setShowPublic] = useState(false);
+    const timerRef = useRef<number | null>(null);
+    const mountedRef = useRef(true);
+
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+        };
+    }, []);
 
     const [url, setUrl] = useState("");
     const [urlErrorText, setUrlErrorText] = useState<string | undefined>(undefined);
@@ -36,8 +46,10 @@ export function SelectQueriesView() {
     const isAddAvailable = !!availableQueries.filter((q) => q.checked).length;
 
     const loadQueries = useCallback(() => {
-        setTimeout(() => {
-            Promise.all(
+        if (timerRef.current) clearTimeout(timerRef.current);
+        setLoadError(null);
+        timerRef.current = window.setTimeout(() => {
+            Promise.allSettled(
                 accounts.map((account) =>
                     getApi(account.id)
                         .query.getAvailable()
@@ -52,8 +64,21 @@ export function SelectQueriesView() {
                             return queriesToSelect;
                         })
                 )
-            ).then((queries) => {
-                setAvailableQueries(queries.flat());
+            ).then((results) => {
+                if (!mountedRef.current) return;
+                const collected: ISelectableQuery[] = [];
+                const errors: string[] = [];
+                results.forEach((result, index) => {
+                    if (result.status === "fulfilled") {
+                        collected.push(...result.value);
+                    } else {
+                        const account = accounts[index];
+                        const reason = result.reason instanceof Error ? result.reason.message : String(result.reason);
+                        errors.push(`${account.displayName || account.id}: ${reason}`);
+                    }
+                });
+                setAvailableQueries(collected);
+                setLoadError(errors.length ? errors.join("; ") : null);
                 setIsLoading(false);
             });
         }, 50);
@@ -61,6 +86,9 @@ export function SelectQueriesView() {
 
     useEffect(() => {
         loadQueries();
+        return () => {
+            if (timerRef.current) clearTimeout(timerRef.current);
+        };
     }, [loadQueries]);
 
     const onAdd = () => {
@@ -171,6 +199,7 @@ export function SelectQueriesView() {
                         />
                     </span>
                 </Header>
+                {loadError && <Message error>{loadError}</Message>}
                 {queryList}
             </Container>
         </PageLayout>
