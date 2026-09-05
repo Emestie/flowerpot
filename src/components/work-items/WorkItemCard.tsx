@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { ContextMenuTrigger } from "react-contextmenu";
+import { MouseEvent, useState } from "react";
+import { showMenu } from "react-contextmenu";
 import { Label, type TColor } from "../../ui/label";
 import { Icon } from "../../ui/icon";
-import { Table } from "../../ui/table";
+import { Card } from "../../ui/card";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { Query } from "../../models/query";
@@ -26,7 +26,7 @@ interface IProps {
     onUpdate: (wi: WorkItem) => void;
 }
 
-export function WorkItemRow(props: IProps) {
+export function WorkItemCard(props: IProps) {
     const showUnreads = useSettingsStore((state) => state.showUnreads);
     const changesCollection = useDataStore((state) => state.changesCollection);
     const setChangesCollectionItem = useDataStore((state) => state.setChangesCollectionItem);
@@ -115,35 +115,35 @@ export function WorkItemRow(props: IProps) {
 
         if (Lists.isIn(props.query.accountId, "permawatch", props.query.collectionName, item.id))
             return (
-                <span className="wiIndicatorPermawatch">
+                <span className="wiIndicatorPermawatch" title={s("addToP")}>
                     <Icon name="eye" />
                 </span>
             );
 
         if (Lists.isIn(props.query.accountId, "deferred", props.query.collectionName, item.id))
             return (
-                <span className="wiIndicatorDeferred">
+                <span className="wiIndicatorDeferred" title={s("addToD")}>
                     <Icon name="clock outline" />
                 </span>
             );
 
         if (Lists.isIn(props.query.accountId, "favorites", props.query.collectionName, item.id))
             return (
-                <span className="wiIndicatorFavorite">
+                <span className="wiIndicatorFavorite" title={s("addToF")}>
                     <Icon name="star" />
                 </span>
             );
 
         if (Lists.isIn(props.query.accountId, "pinned", props.query.collectionName, item.id))
             return (
-                <span className="wiIndicatorPinned">
+                <span className="wiIndicatorPinned" title={s("addToPinned")}>
                     <Icon name="pin" />
                 </span>
             );
 
         if (Lists.isIn(props.query.accountId, "forwarded", props.query.collectionName, item.id))
             return (
-                <span className="wiIndicatorForwarded">
+                <span className="wiIndicatorForwarded" title={s("addToForwarded")}>
                     <Icon name="arrow right" />
                 </span>
             );
@@ -152,8 +152,14 @@ export function WorkItemRow(props: IProps) {
     };
 
     const item = props.item;
-    const hasChanges = showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
+    const hasChanges = showUnreads ? !!changesCollection[item.id] : false;
     const [uid] = useState(() => `${props.item.id}-${Math.random().toString(36).slice(2)}`);
+
+    const openMenu = (e: MouseEvent) => {
+        e.stopPropagation();
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+        showMenu({ position: { x: rect.left, y: rect.bottom }, id: uid });
+    };
 
     const tags = item.tags
         ? item.tags
@@ -162,75 +168,72 @@ export function WorkItemRow(props: IProps) {
               .map((x, i) => <Tag key={i} text={x} />)
         : null;
 
+    const cardClassName = ["wi-card", getClass(), isRed ? "negative" : ""].filter(Boolean).join(" ");
+
     return (
-        <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
-            <Table.Cell collapsing className={"cellRelative " + getClass()}>
-                <ContextMenuTrigger id={uid}>
-                    <span className="wi-flex-id">
-                        <span
-                            onDoubleClick={() => {
-                                Platform.current.copyString(item.id.toString());
-                            }}
-                        >
-                            <Id item={item} hasChanges={hasChanges} />
-                        </span>
-                        <span>{promptnessEl}</span>
+        <Card className={cardClassName} onClick={dropChanges} onContextMenu={(e) => e.preventDefault()} wide>
+            <Card.Content className="wi-card-header">
+                <span className="wi-card-id">
+                    <span
+                        onDoubleClick={() => {
+                            Platform.current.copyString(item.id.toString());
+                        }}
+                    >
+                        <Id item={item} hasChanges={hasChanges} />
                     </span>
-                </ContextMenuTrigger>
-                <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
-            </Table.Cell>
-            <Table.Cell>
-                <ContextMenuTrigger id={uid}>
-                    {getListIndicator()}
-                    <IterationPath item={item} />
-                    <span title={item.requestNumber}>{item.requestNumber ? <Icon name="phone volume" /> : <></>}</span>
-                    <span>{tags}</span>
-                    <Link className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} href={item.url}>
-                        <HighlightenText text={item.titleFull} />
-                    </Link>
-                    {!!fullNote && (
-                        <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
-                            <Label basic color={noteColor as TColor} size="mini">
-                                {getNote()}
-                            </Label>
-                        </span>
-                    )}
-                </ContextMenuTrigger>
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <Status workItem={item} query={props.query} onUpdate={props.onUpdate} />
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <span className="dual-container">
-                    <span className="dual-part-half">
-                        <ContextMenuTrigger id={uid}>
-                            <ProfileWidget
-                                accountId={props.query.accountId}
-                                avatarUrl={item.assignedToImg}
-                                displayName={item.assignedTo}
-                                nameFull={item.assignedToFull}
-                                copyName={item.assignedToTextName}
-                            />
-                        </ContextMenuTrigger>
-                    </span>
-                    <span className="dual-part-half">
-                        <ContextMenuTrigger id={uid}>
-                            <ProfileWidget
-                                accountId={props.query.accountId}
-                                avatarUrl={item.createdByImg}
-                                displayName={item.createdBy}
-                                nameFull={item.createdByFull}
-                                copyName={item.createdByTextName}
-                            />
-                        </ContextMenuTrigger>
+                    {promptnessEl}
+                </span>
+                <span className="wi-card-actions">
+                    <Status workItem={item} query={props.query} onUpdate={props.onUpdate} enableContextMenu={false} />
+                    <span className="card-menu-btn" title={s("actions")} onClick={openMenu}>
+                        <Icon name="ellipsis vertical" fitted />
                     </span>
                 </span>
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>
+            </Card.Content>
+            <Card.Content className="wi-card-content">
+                <span className="wi-card-list-indicator">{getListIndicator()}</span>
+                <span className="wi-card-iteration">
+                    <IterationPath item={item} />
+                    <span title={item.requestNumber}>{item.requestNumber ? <Icon name="phone volume" /> : <></>}</span>
+                </span>
+                <span>{tags}</span>
+                <Link className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} href={item.url}>
+                    <HighlightenText text={item.titleFull} />
+                </Link>
+                {!!fullNote && (
+                    <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
+                        <Label basic color={noteColor as TColor} size="mini">
+                            {getNote()}
+                        </Label>
+                    </span>
+                )}
+            </Card.Content>
+            <Card.Content className="wi-card-footer">
+                <span className="dual-container">
+                    <span className="dual-part-half">
+                        <ProfileWidget
+                            accountId={props.query.accountId}
+                            avatarUrl={item.assignedToImg}
+                            displayName={item.assignedTo}
+                            nameFull={item.assignedToFull}
+                            copyName={item.assignedToTextName}
+                        />
+                    </span>
+                    <span className="dual-part-half">
+                        <ProfileWidget
+                            accountId={props.query.accountId}
+                            avatarUrl={item.createdByImg}
+                            displayName={item.createdBy}
+                            nameFull={item.createdByFull}
+                            copyName={item.createdByTextName}
+                        />
+                    </span>
+                </span>
+                <span className="wi-card-meta">
                     {revEl} {freshnessEl}
-                </ContextMenuTrigger>
-            </Table.Cell>
-        </Table.Row>
+                </span>
+            </Card.Content>
+            <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
+        </Card>
     );
 }

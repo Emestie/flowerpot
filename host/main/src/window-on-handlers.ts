@@ -22,14 +22,23 @@ export function setWindowOnHandlers(browserWindow: BrowserWindow) {
     //iconUpdateTask(currentLevel, false);
     //});
 
+    let resizeTimer: NodeJS.Timeout | undefined;
+    let moveTimer: NodeJS.Timeout | undefined;
+
     browserWindow.on("resize", () => {
-        let { width, height } = browserWindow.getBounds();
-        store.set("windowDim", { width, height });
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            let { width, height } = browserWindow.getBounds();
+            store.set("windowDim", { width, height });
+        }, 300);
     });
 
     browserWindow.on("move", () => {
-        let [x, y] = browserWindow.getPosition();
-        store.set("windowPos", { x, y });
+        if (moveTimer) clearTimeout(moveTimer);
+        moveTimer = setTimeout(() => {
+            let [x, y] = browserWindow.getPosition();
+            store.set("windowPos", { x, y });
+        }, 300);
     });
 
     browserWindow.on("close", (event) => {

@@ -12,6 +12,10 @@
     transition: box-shadow 0.1s ease, transform 0.1s ease;
 }
 
+.wide {
+    width: 100%;
+}
+
 .card > :first-child {
     border-radius: 0.28571429rem 0.28571429rem 0 0;
     border-top: none;

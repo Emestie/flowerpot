@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Container } from "../ui/container";
@@ -25,12 +25,24 @@ export function SelectProjectsView() {
     const projects = useSettingsStore((state) => state.projects) || [];
     const [isLoading, setIsLoading] = useState(true);
     const [availableProjects, setAvailableProjects] = useState<ISelectableProject[]>([]);
+    const [loadError, setLoadError] = useState<string | null>(null);
+    const timerRef = useRef<number | null>(null);
+    const mountedRef = useRef(true);
+
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+        };
+    }, []);
 
     const isAddAvailable = !!availableProjects.filter((q) => q.checked).length;
 
     const loadProjects = useCallback(() => {
-        setTimeout(() => {
-            Promise.all(
+        if (timerRef.current) clearTimeout(timerRef.current);
+        setLoadError(null);
+        timerRef.current = window.setTimeout(() => {
+            Promise.allSettled(
                 accounts.map((account) => {
                     return getApi(account.id)
                         .project.getAll()
@@ -46,8 +58,21 @@ export function SelectProjectsView() {
                             return projectsToSelect;
                         });
                 })
-            ).then((projectsToSelect) => {
-                setAvailableProjects(projectsToSelect.flat());
+            ).then((results) => {
+                if (!mountedRef.current) return;
+                const collected: ISelectableProject[] = [];
+                const errors: string[] = [];
+                results.forEach((result, index) => {
+                    if (result.status === "fulfilled") {
+                        collected.push(...result.value);
+                    } else {
+                        const account = accounts[index];
+                        const reason = result.reason instanceof Error ? result.reason.message : String(result.reason);
+                        errors.push(`${account.displayName || account.id}: ${reason}`);
+                    }
+                });
+                setAvailableProjects(collected);
+                setLoadError(errors.length ? errors.join("; ") : null);
                 setIsLoading(false);
             });
         }, 50);
@@ -55,6 +80,9 @@ export function SelectProjectsView() {
 
     useEffect(() => {
         loadProjects();
+        return () => {
+            if (timerRef.current) clearTimeout(timerRef.current);
+        };
     }, [loadProjects]);
 
     const onAdd = () => {
@@ -122,6 +150,7 @@ export function SelectProjectsView() {
                     </span>
                     {s("selpAvailableHeader")}
                 </Header>
+                {loadError && <Message error>{loadError}</Message>}
                 {projectList}
             </Container>
         </PageLayout>

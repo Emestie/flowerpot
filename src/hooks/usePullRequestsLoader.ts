@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getApi } from "../api/client";
 import Differences from "../helpers/Differences";
 import { Timers } from "../helpers/Timers";
@@ -6,7 +6,7 @@ import { Project } from "../models/project";
 import { PullRequest } from "../models/pull-request";
 import { useSettingsStore } from "../zustand/settings";
 
-const PR_TIMER_KEY = "pr-block-timer";
+const PR_TIMER_KEY_PREFIX = "pr-block-timer-";
 const fishWIs = !!import.meta.env.VITE_USE_FISH;
 
 export function usePullRequestsLoader(
@@ -22,41 +22,48 @@ export function usePullRequestsLoader(
     const [allPullRequests, setAllPullRequests] = useState<PullRequest[]>([]);
     const refreshRate = useSettingsStore((state) => state.refreshRate);
 
+    const loadIdRef = useRef(0);
+
     const load = useCallback(async () => {
+        const loadId = ++loadIdRef.current;
         console.log("updating PRs");
         try {
             const allPRs = fishWIs
                 ? []
                 : await getApi(accountId).pullRequest.getByProjects(projects.filter((p) => p.enabled));
+            if (loadId !== loadIdRef.current) return;
             setAllPullRequests(allPRs);
             Differences.putPRs(accountId, allPRs);
             setErrorMessage(null);
         } catch (e: any) {
+            if (loadId !== loadIdRef.current) return;
             setErrorMessage(e.message);
         } finally {
-            setIsLoading(false);
+            if (loadId === loadIdRef.current) setIsLoading(false);
         }
     }, [projects, accountId]);
+
+    const timerKey = `${PR_TIMER_KEY_PREFIX}${accountId}`;
 
     const routineStart = useCallback(async () => {
         setIsLoading(true);
 
-        Timers.delete(PR_TIMER_KEY);
+        Timers.delete(timerKey);
 
         await load();
 
-        Timers.create(PR_TIMER_KEY, 1000 * refreshRate, () => {
+        Timers.create(timerKey, 1000 * refreshRate, () => {
             setIsLoading(true);
             load();
         });
-    }, [refreshRate, load]);
+    }, [refreshRate, load, timerKey]);
 
     useEffect(() => {
         routineStart();
         return () => {
-            Timers.delete(PR_TIMER_KEY);
+            Timers.delete(timerKey);
         };
-    }, [routineStart, projects]);
+    }, [routineStart, projects, timerKey]);
 
     const pullRequests = allPullRequests
         .filter((x) => {

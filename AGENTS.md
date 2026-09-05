@@ -27,11 +27,9 @@ Tech stack: Electron 43, React 19, TypeScript, Vite 6, Zustand, Semantic UI Reac
 
 ## Code Style
 
-- **Formatter**: Prettier (tabWidth: 4, printWidth: 120, trailingComma: es5, endOfLine: lf)
-- **Run**: `npm run prettify` before committing
 - **TypeScript**: Strict mode enabled, target ES2022
 - **JSX**: React JSX transform (react-jsx)
-- **File naming**: camelCase with type suffix (e.g., `WorkItem.ts`, `MainView.tsx`)
+- **New files/folders**: kebab-case (e.g., `my-new-feature/`, `my-component.tsx`)
 - **Components**: PascalCase functional components with React hooks
 - **Interfaces**: PascalCase with `I` prefix (e.g., `IAccount`, `ISettings`)
 - **Types/Enums**: PascalCase (e.g., `TView`, `Sections`)
@@ -164,6 +162,6 @@ macOS builds are not code-signed/notarized, so `electron-updater` cannot install
 
 - Electron main process uses CommonJS output (Vite CJS format)
 - PWA version deployed via Firebase Hosting (`flowerpot-pwa` project)
-- `.env.development` sets `VITE_LOCAL_DYNAMIC_CONTENT=1` and `TARGET_URL`
+- `.env.development` sets `VITE_LOCAL_DYNAMIC_CONTENT=1`
 - No test framework is configured; verify changes manually
 - Auto-updater configured for GitHub releases via `electron-updater`

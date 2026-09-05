@@ -1,13 +1,17 @@
 import { useMemo } from "react";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
+import { CardGroup } from "../../ui/card";
 import { Message } from "../../ui/message";
 import { usePullRequestsLoader } from "../../hooks/usePullRequestsLoader";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import { s } from "../../values/Strings";
 import { useSettingsStore } from "../../zustand/settings";
 import { CollapsibleBlock } from "../CollapsibleBlock";
 import { FilterToggleButton } from "../FilterToggleButton";
 import { PullRequestRow } from "./PullRequestRow";
+import { PullRequestCard } from "./PullRequestCard";
+import { useFilteredPullRequests } from "./use-filtered-pull-requests";
 
 export function PullRequestsBlock(props: { accountId: string }) {
     const {
@@ -23,6 +27,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
     const setIncludeDraftPRs = useSettingsStore((state) => state.setIncludeDraftPRs);
     const setIncludeTeamsPRs = useSettingsStore((state) => state.setIncludeTeamsPRs);
     const setIncludeAcceptedByMePRs = useSettingsStore((state) => state.setIncludeAcceptedByMePRs);
+    const isMobile = useIsMobile();
 
     const projects = useMemo(
         () => _allProjects.filter((x) => x.accountId === props.accountId),
@@ -48,11 +53,13 @@ export function PullRequestsBlock(props: { accountId: string }) {
         includeDraftPRs
     );
 
+    const filteredPullRequests = useFilteredPullRequests(pullRequests);
+
     if (!projects.filter((p) => p.enabled).length) return null;
 
-    const totalItemsCount = pullRequests.length;
-    const totalTeamsCount = pullRequests.filter((x) => x.getBelonging() === "team").length;
-    const totalHiddenCount = pullRequests.filter((x) => x.isHidden()).length;
+    const totalItemsCount = filteredPullRequests.length;
+    const totalTeamsCount = filteredPullRequests.filter((x) => x.getBelonging() === "team").length;
+    const totalHiddenCount = filteredPullRequests.filter((x) => x.isHidden()).length;
 
     const refreshBlock = () => {
         if (!isLoading) routineStart();
@@ -62,9 +69,13 @@ export function PullRequestsBlock(props: { accountId: string }) {
         return tableScale === 1 ? undefined : tableScale === 2 ? "large" : "small";
     };
 
-    const pullRequestsComponents = pullRequests.map((pr) => (
-        <PullRequestRow key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
-    ));
+    const pullRequestElements = isMobile
+        ? filteredPullRequests.map((pr) => (
+              <PullRequestCard key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
+          ))
+        : filteredPullRequests.map((pr) => (
+              <PullRequestRow key={`${pr.repoId}-${pr.id}`} pullRequest={pr} accountId={props.accountId} />
+          ));
 
     if (!isLoading && !pullRequests.length && !showEmptyQueries && !allPullRequests.length) return null;
 
@@ -73,7 +84,7 @@ export function PullRequestsBlock(props: { accountId: string }) {
             id={"PR+" + props.accountId}
             caption={s("pullRequestsBlockCaption")}
             accountId={props.accountId}
-            isCollapseEnabled={!!pullRequests.length}
+            isCollapseEnabled={!!filteredPullRequests.length}
             isLoading={isLoading}
             enableColorCode={false}
             counters={{
@@ -137,11 +148,14 @@ export function PullRequestsBlock(props: { accountId: string }) {
                         {errorMessage}
                     </Message>
                 )}
-                {!!pullRequestsComponents.length && (
-                    <Table className="wiTable" compact size={getTableSize()}>
-                        <tbody>{pullRequestsComponents}</tbody>
-                    </Table>
-                )}
+                {!!pullRequestElements.length &&
+                    (isMobile ? (
+                        <CardGroup stacked>{pullRequestElements}</CardGroup>
+                    ) : (
+                        <Table className="wiTable" compact size={getTableSize()}>
+                            <tbody>{pullRequestElements}</tbody>
+                        </Table>
+                    ))}
             </>
         </CollapsibleBlock>
     );

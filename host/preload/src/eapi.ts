@@ -20,4 +20,7 @@ export const eapi = {
         if (removeOld) ipcRenderer.removeAllListeners(channel);
         ipcRenderer.on(channel, callback);
     },
+    ipcOff: (channel: string, callback: any) => {
+        ipcRenderer.removeListener(channel, callback);
+    },
 };

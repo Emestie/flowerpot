@@ -42,38 +42,40 @@ export class WorkItem {
     requestNumber: string | undefined;
 
     constructor(resp: IResponseWorkItem, query: Query, workItemType: IWorkItemType | undefined) {
+        const fields = resp.fields ?? ({} as IResponseWorkItem["fields"]);
+
         const isMine =
-            resp.fields["System.AssignedTo"]?.descriptor ===
+            fields["System.AssignedTo"]?.descriptor ===
             useSettingsStore.getState().accounts.find((x) => x.id === query.accountId)?.descriptor;
 
-        const type = resp.fields["System.WorkItemType"] || "";
-        const createdByFull = ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "");
-        const assignedToFull = ItemsCommon.parseNameField(resp.fields["System.AssignedTo"] || "");
+        const type = fields["System.WorkItemType"] || "";
+        const createdByFull = ItemsCommon.parseNameField(fields["System.CreatedBy"] || "");
+        const assignedToFull = ItemsCommon.parseNameField(fields["System.AssignedTo"] || "");
         const _list = getListName(query.accountId, resp.id, query.collectionName);
 
         const { priority, priorityText } = calculatePriority(resp);
 
         this.id = resp.id;
         this.rev = resp.rev;
-        this.url = resp._links.html.href;
+        this.url = resp._links?.html?.href ?? "";
         this.type = type;
         this.typeIconUrl = workItemType?.icon.url;
-        this.assignedTo = ItemsCommon.shortName(ItemsCommon.parseNameField(resp.fields["System.AssignedTo"]) || "");
+        this.assignedTo = ItemsCommon.shortName(ItemsCommon.parseNameField(fields["System.AssignedTo"]) || "");
         this.assignedToFull = assignedToFull;
-        this.assignedToImg = resp.fields["System.AssignedTo"]?.imageUrl || "";
-        this.createdDate = resp.fields["System.CreatedDate"];
-        this.freshness = ItemsCommon.getTerm(resp.fields["System.CreatedDate"]);
-        this.createdBy = ItemsCommon.shortName(ItemsCommon.parseNameField(resp.fields["System.CreatedBy"] || "")) || "";
+        this.assignedToImg = fields["System.AssignedTo"]?.imageUrl || "";
+        this.createdDate = fields["System.CreatedDate"];
+        this.freshness = ItemsCommon.getTerm(fields["System.CreatedDate"]);
+        this.createdBy = ItemsCommon.shortName(ItemsCommon.parseNameField(fields["System.CreatedBy"] || "")) || "";
         this.createdByFull = createdByFull;
-        this.createdByImg = resp.fields["System.CreatedBy"]?.imageUrl || "";
-        this.title = ItemsCommon.shortTitle(resp.fields["System.Title"]) || "";
-        this.titleFull = resp.fields["System.Title"] || "";
-        this.iterationPath = resp.fields["System.IterationPath"] || "";
-        this.areaPath = resp.fields["System.AreaPath"] || "";
-        this.state = resp.fields["System.State"] || "";
-        this.stateColor = workItemType?.states.find((state) => state.name === resp.fields["System.State"])?.color;
+        this.createdByImg = fields["System.CreatedBy"]?.imageUrl || "";
+        this.title = ItemsCommon.shortTitle(fields["System.Title"]) || "";
+        this.titleFull = fields["System.Title"] || "";
+        this.iterationPath = fields["System.IterationPath"] || "";
+        this.areaPath = fields["System.AreaPath"] || "";
+        this.state = fields["System.State"] || "";
+        this.stateColor = workItemType?.states.find((state) => state.name === fields["System.State"])?.color;
         this.states = workItemType?.states;
-        this.tags = resp.fields["System.Tags"] || "";
+        this.tags = fields["System.Tags"] || "";
         this._isMine = isMine;
         this._list = _list;
         this._queryId = query.queryId;
@@ -84,9 +86,7 @@ export class WorkItem {
         this.priorityText = priorityText;
         this.isRed = priority === 1;
         this.requestNumber =
-            resp.fields["Custom.RequestNumber"] ||
-            resp.fields["Custom.f21f0e34-49b2-4aac-b6a3-56ced21e1fcd"] ||
-            undefined;
+            fields["Custom.RequestNumber"] || fields["Custom.f21f0e34-49b2-4aac-b6a3-56ced21e1fcd"] || undefined;
 
         if (query.queryId.startsWith("___permawatch")) {
             const itemFromList = useSettingsStore
@@ -109,9 +109,11 @@ function extractLevel(level?: string): number | undefined {
 }
 
 function calculatePriority(resp: IResponseWorkItem): { priority: number | undefined; priorityText: string } {
-    const promptness = resp.fields["EOS.QA.PromptnessLevel"] || resp.fields["Microsoft.VSTS.Common.Priority"];
-    const importance = resp.fields["EOS.QA.ImportanceLevel"] || resp.fields["Microsoft.VSTS.Common.Severity"];
-    const rank = resp.fields["Microsoft.VSTS.Common.Rank"];
+    const fields = resp.fields ?? ({} as IResponseWorkItem["fields"]);
+
+    const promptness = fields["EOS.QA.PromptnessLevel"] || fields["Microsoft.VSTS.Common.Priority"];
+    const importance = fields["EOS.QA.ImportanceLevel"] || fields["Microsoft.VSTS.Common.Severity"];
+    const rank = fields["Microsoft.VSTS.Common.Rank"];
 
     const priorityText = [
         promptness ? s("priority") + " " + promptness : undefined,
@@ -122,11 +124,11 @@ function calculatePriority(resp: IResponseWorkItem): { priority: number | undefi
         .join(", ");
 
     const priority =
-        extractLevel(resp.fields["EOS.QA.PromptnessLevel"]) ??
-        extractLevel(resp.fields["Microsoft.VSTS.Common.Priority"]) ??
-        extractLevel(resp.fields["EOS.QA.ImportanceLevel"]) ??
-        extractLevel(resp.fields["Microsoft.VSTS.Common.Severity"]) ??
-        rankToNumber(resp.fields["Microsoft.VSTS.Common.Rank"]);
+        extractLevel(fields["EOS.QA.PromptnessLevel"]) ??
+        extractLevel(fields["Microsoft.VSTS.Common.Priority"]) ??
+        extractLevel(fields["EOS.QA.ImportanceLevel"]) ??
+        extractLevel(fields["Microsoft.VSTS.Common.Severity"]) ??
+        rankToNumber(fields["Microsoft.VSTS.Common.Rank"]);
 
     return { priorityText, priority };
 }

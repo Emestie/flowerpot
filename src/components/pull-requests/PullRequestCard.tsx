@@ -1,8 +1,9 @@
-import { ReactNode, useEffect, useState } from "react";
-import { ContextMenuTrigger } from "react-contextmenu";
+import { MouseEvent, useState, useEffect } from "react";
+import { ReactNode } from "react";
+import { showMenu } from "react-contextmenu";
 import { Label } from "../../ui/label";
 import { Icon } from "../../ui/icon";
-import { Table } from "../../ui/table";
+import { Card } from "../../ui/card";
 import Platform from "../../helpers/Platform";
 import { PullRequest } from "../../models/pull-request";
 import { PullRequestReviewer } from "../../models/pull-request-reviewer";
@@ -46,7 +47,7 @@ function createReviewersComponents(revs: PullRequestReviewer[], accountId: strin
     return result;
 }
 
-export function PullRequestRow(props: IProps) {
+export function PullRequestCard(props: IProps) {
     const { pullRequest } = props;
     const prChangesCollection = useDataStore((state) => state.prChangesCollection);
     const showUnreads = useSettingsStore((state) => state.showUnreads);
@@ -74,6 +75,12 @@ export function PullRequestRow(props: IProps) {
     }, [accountId, collectionName, projectName, repoId, id]);
 
     const [uid] = useState(() => `${pullRequest.repoId}-${pullRequest.id}-${Math.random().toString(36).slice(2)}`);
+
+    const openMenu = (e: MouseEvent) => {
+        e.stopPropagation();
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+        showMenu({ position: { x: rect.left, y: rect.bottom }, id: uid });
+    };
 
     const freshnessEl = (() => {
         return (
@@ -105,9 +112,7 @@ export function PullRequestRow(props: IProps) {
     })();
 
     const tags = pullRequest.labels.map((x) => x.name).map((x, i) => <Tag key={i} text={x} />);
-
     const reviewers = createReviewersComponents(pullRequest.reviewers, props.accountId);
-
     const rowStyle = hasChanges ? { fontWeight: "bold" as const } : undefined;
 
     const dropChanges = () => {
@@ -120,14 +125,18 @@ export function PullRequestRow(props: IProps) {
         }
     };
 
+    const cardClassName = ["pr-card", pullRequest.isHidden() ? "workItemDeferred" : ""].filter(Boolean).join(" ");
+
     return (
-        <Table.Row style={rowStyle} onClick={handleClick}>
-            <Table.Cell
-                className={pullRequest.isHidden() ? "cellRelative workItemDeferred " : "cellRelative "}
-                collapsing
-                onDoubleClick={() => Platform.current.copyString(pullRequest.id.toString())}
-            >
-                <ContextMenuTrigger id={uid}>
+        <Card className={cardClassName} onClick={handleClick} onContextMenu={(e) => e.preventDefault()} wide>
+            <Card.Content className="pr-card-header">
+                <span
+                    className={
+                        "pr-card-id " + (pullRequest.isHidden() ? "cellRelative workItemDeferred" : "cellRelative")
+                    }
+                    style={rowStyle}
+                    onDoubleClick={() => Platform.current.copyString(pullRequest.id.toString())}
+                >
                     {pullRequest.newThreadsCount > 0 && (
                         <span className="PrUnreadDot" title={s("unreadPrHint")}>
                             {pullRequest.newThreadsCount > 99 ? "99" : pullRequest.newThreadsCount}
@@ -136,28 +145,29 @@ export function PullRequestRow(props: IProps) {
                     {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
                     <Icon name="level up alternate" />{" "}
                     <HighlightenText text={pullRequest.id.toString()} />
-                </ContextMenuTrigger>
-                <PullRequestContextMenu uid={uid} pullRequest={pullRequest} />
-            </Table.Cell>
-            <Table.Cell>
-                <ContextMenuTrigger id={uid}>
+                </span>
+                <span className="pr-card-meta">
+                    {!!pullRequest.isDraft && (
+                        <Label key="draft" size="mini" className="mr-4" color="grey">
+                            {s("draftPullRequest")}
+                        </Label>
+                    )}
+                    {pullRequest.mergeStatus === "conflicts" && (
+                        <Label key="conflicts" size="mini" className="mr-4" color="red">
+                            {s("prMergeConflicts")}
+                        </Label>
+                    )}
+                    {commentsEl}
+                    <span className="card-menu-btn" title={s("actions")} onClick={openMenu}>
+                        <Icon name="ellipsis vertical" fitted />
+                    </span>
+                </span>
+            </Card.Content>
+            <Card.Content className="pr-card-content">
+                <span className="pr-card-iteration" style={rowStyle}>
                     {pullRequest.isHidden() && (
                         <span className="wiIndicatorDeferred">
                             <Icon name="eye slash" />
-                        </span>
-                    )}
-                    {!!pullRequest.isDraft && (
-                        <span>
-                            <Label key="draft" size="mini" className="mr-4" color="grey">
-                                {s("draftPullRequest")}
-                            </Label>
-                        </span>
-                    )}
-                    {pullRequest.mergeStatus === "conflicts" && (
-                        <span>
-                            <Label key="conflicts" size="mini" className="mr-4" color="red">
-                                {s("prMergeConflicts")}
-                            </Label>
                         </span>
                     )}
                     <span className="IterationInTitle">
@@ -174,33 +184,27 @@ export function PullRequestRow(props: IProps) {
                             {pullRequest.sourceBranch} &rarr; {pullRequest.targetBranch}
                         </Label>
                     </span>
-                    <span>{tags}</span>
+                </span>
+                <span>{tags}</span>
+                <span style={rowStyle}>
                     <Link className="WorkItemLink" href={pullRequest.url}>
                         <HighlightenText text={pullRequest.title} />
                     </Link>
-                </ContextMenuTrigger>
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>
-                    <>{commentsEl}</>
-                </ContextMenuTrigger>
-            </Table.Cell>
-            <Table.Cell collapsing>{reviewers}</Table.Cell>
-            <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
-                <ContextMenuTrigger id={uid}>
+                </span>
+            </Card.Content>
+            <Card.Content className="pr-card-footer">
+                <span>{reviewers}</span>
+                <span className="pr-card-footer-right">
                     <ProfileWidget
                         accountId={props.accountId}
                         avatarUrl={pullRequest.authorAvatar}
                         displayName={pullRequest.authorName}
                         nameFull={pullRequest.authorFullName}
                     />
-                </ContextMenuTrigger>
-            </Table.Cell>
-            <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>
-                    <>{freshnessEl}</>
-                </ContextMenuTrigger>
-            </Table.Cell>
-        </Table.Row>
+                    {freshnessEl}
+                </span>
+            </Card.Content>
+            <PullRequestContextMenu uid={uid} pullRequest={pullRequest} />
+        </Card>
     );
 }

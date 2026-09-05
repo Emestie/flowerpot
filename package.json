@@ -1,7 +1,7 @@
 {
     "name": "flowerpot",
     "displayName": "Flowerpot",
-    "version": "0.8.13",
+    "version": "0.8.14",
     "description": "Azure DevOps work items tracking tool",
     "author": {
         "name": "Valery Murashko",
@@ -22,7 +22,6 @@
         }
     },
     "dependencies": {
-        "@trodi/electron-splashscreen": "^1.0.2",
         "cyrillic-to-translit-js": "3.1.0",
         "dayjs": "^1.11.23",
         "electron-updater": "^6.8.9",
@@ -32,7 +31,6 @@
     },
     "devDependencies": {
         "@babel/core": "^7.29.7",
-        "@types/jest": "^29.5.14",
         "@types/node": "^24.13.3",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.5",

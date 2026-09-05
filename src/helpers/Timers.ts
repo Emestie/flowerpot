@@ -7,6 +7,7 @@ export class Timers {
         callback: () => void,
         startImmediately: boolean = false
     ) {
+        this.delete(id);
         if (startImmediately) callback();
         const ivl = setInterval(callback, periodMs);
         this.storage[id] = ivl;

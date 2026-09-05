@@ -43,8 +43,15 @@ export function MainView() {
     const expandCollapseOperation = collapsedBlocks.length ? "expand" : "collapse";
 
     useEffect(() => {
-        setTimeout(() => setIsRefreshAvailable(true), 5000);
+        const timer = setTimeout(() => setIsRefreshAvailable(true), 5000);
+        return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        if (!queries.length) {
+            Platform.current.updateTrayIcon(4);
+        }
+    }, [queries.length]);
 
     useEffect(() => {
         if (!isMobileSearchShown) {
@@ -105,106 +112,104 @@ export function MainView() {
         </Message>
     );
 
-    if (!queries.length) {
-        Platform.current.updateTrayIcon(4);
-    }
-
     const qlEnabled = showQuickLinks;
 
     return (
         <PageLayout
             heading={
-                <ViewHeading underCaption={qlEnabled && <QuickLinksContainer />}>
-                    <div>
-                        <LocalVersionBanner />
-                        {updateStatus === "ready" && (
-                            <Button
-                                icon
-                                primary
-                                onClick={updateApp}
-                                title={s("updateArrived")}
-                                disabled={isInstallingUpdate}
-                            >
-                                {s("installUpdate")}
+                <>
+                    <ViewHeading underCaption={qlEnabled && <QuickLinksContainer />}>
+                        <div>
+                            <LocalVersionBanner />
+                            {updateStatus === "ready" && (
+                                <Button
+                                    icon
+                                    primary
+                                    onClick={updateApp}
+                                    title={s("updateArrived")}
+                                    disabled={isInstallingUpdate}
+                                >
+                                    {s("installUpdate")}
+                                </Button>
+                            )}
+                            {!noAccounts && (
+                                <Button
+                                    icon
+                                    onClick={onExpandCollapse}
+                                    hint={s("expandCollapseAll")}
+                                    title={s("expandCollapseAll")}
+                                    className="hide-on-mobile"
+                                >
+                                    {expandCollapseOperation === "collapse" ? (
+                                        <Icon name="angle double down" />
+                                    ) : (
+                                        <Icon name="angle double right" />
+                                    )}
+                                </Button>
+                            )}
+                            {!noAccounts && (
+                                <Button
+                                    icon
+                                    onClick={onShowMineOnly}
+                                    primary={showMineOnly}
+                                    hint={s("showMineOnly")}
+                                    title={s("showMineOnly")}
+                                >
+                                    <Icon name="user outline" />
+                                </Button>
+                            )}
+                            {!noAccounts && (
+                                <div className="hide-on-mobile search-bar-wrapper">
+                                    <SearchBar />
+                                </div>
+                            )}
+                            {!noAccounts && (
+                                <Button
+                                    className="show-on-mobile"
+                                    icon
+                                    onClick={showSearchBar}
+                                    hint={s("showSearch")}
+                                    title={s("showSearch")}
+                                    primary={isMobileSearchShown}
+                                >
+                                    <Icon name="search" />
+                                </Button>
+                            )}
+                            {!noAccounts && (
+                                <Button icon onClick={onOpenById} hint={s("openById")} title={s("openById")}>
+                                    <Icon name="external share" />
+                                </Button>
+                            )}
+                            {!!showUnreads && isChangesCollectionHasItems && !noAccounts && (
+                                <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
+                                    <Icon name="check circle outline" />
+                                </Button>
+                            )}
+                            {!noAccounts && (
+                                <Button
+                                    icon
+                                    onClick={onRefresh}
+                                    disabled={!isRefreshAvailable}
+                                    hint={s("refresh")}
+                                    title={s("refresh")}
+                                >
+                                    <Icon name="refresh" />
+                                </Button>
+                            )}
+                            <Button icon onClick={onSettings} hint={s("settings")} title={s("settings")}>
+                                <Icon name="setting" />
                             </Button>
-                        )}
-                        {!noAccounts && (
-                            <Button
-                                icon
-                                onClick={onExpandCollapse}
-                                hint={s("expandCollapseAll")}
-                                title={s("expandCollapseAll")}
-                                className="hide-on-mobile"
-                            >
-                                {expandCollapseOperation === "collapse" ? (
-                                    <Icon name="angle double down" />
-                                ) : (
-                                    <Icon name="angle double right" />
-                                )}
-                            </Button>
-                        )}
-                        {!noAccounts && (
-                            <Button
-                                icon
-                                onClick={onShowMineOnly}
-                                primary={showMineOnly}
-                                hint={s("showMineOnly")}
-                                title={s("showMineOnly")}
-                            >
-                                <Icon name="user outline" />
-                            </Button>
-                        )}
-                        {!noAccounts && (
-                            <div className="hide-on-mobile search-bar-wrapper">
-                                <SearchBar />
-                            </div>
-                        )}
-                        {!noAccounts && (
-                            <Button
-                                className="show-on-mobile"
-                                icon
-                                onClick={showSearchBar}
-                                hint={s("showSearch")}
-                                title={s("showSearch")}
-                                primary={isMobileSearchShown}
-                            >
-                                <Icon name="search" />
-                            </Button>
-                        )}
-                        {!noAccounts && (
-                            <Button icon onClick={onOpenById} hint={s("openById")} title={s("openById")}>
-                                <Icon name="external share" />
-                            </Button>
-                        )}
-                        {!!showUnreads && isChangesCollectionHasItems && !noAccounts && (
-                            <Button icon onClick={markAllAsRead} title={s("markAllAsRead")}>
-                                <Icon name="check circle outline" />
-                            </Button>
-                        )}
-                        {!noAccounts && (
-                            <Button
-                                icon
-                                onClick={onRefresh}
-                                disabled={!isRefreshAvailable}
-                                hint={s("refresh")}
-                                title={s("refresh")}
-                            >
-                                <Icon name="refresh" />
-                            </Button>
-                        )}
-                        <Button icon onClick={onSettings} hint={s("settings")} title={s("settings")}>
-                            <Icon name="setting" />
-                        </Button>
-                    </div>
-                </ViewHeading>
+                        </div>
+                    </ViewHeading>
+                    {isMobileSearchShown && !noAccounts && (
+                        <div className="show-on-mobile mobile-search-bar">
+                            <SearchBar />
+                        </div>
+                    )}
+                </>
             }
         >
             <Container fluid>
-                {isMobileSearchShown && (
-                    <div className="show-on-mobile">
-                        <SearchBar />
-                    </div>
-                )}
                 <WhatsNewBanner />
                 {!noAccounts && <ActionBannersContainer />}
                 {accounts.map((account) => (

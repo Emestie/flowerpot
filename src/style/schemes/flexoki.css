@@ -67,6 +67,9 @@
     --card-bg: #f2f0e5;
     --card-meta-color: rgba(64, 62, 60, 0.6);
 
+    --wi-negative-color: #af3029;
+    --wi-negative-bg: rgba(175, 48, 41, 0.08);
+
     --msg-bg: #f2f0e5;
     --msg-color: #403e3c;
 
@@ -365,6 +368,9 @@ html.scheme-flexoki.FlowerpotDarkTheme,
 
     --card-bg: #282726;
     --card-meta-color: rgba(206, 205, 195, 0.6);
+
+    --wi-negative-color: #ff8a85;
+    --wi-negative-bg: rgba(175, 48, 41, 0.12);
 
     --msg-bg: #282726;
     --msg-color: #cecdc3;

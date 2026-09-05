@@ -20,17 +20,21 @@ ipcMain.on("update-icon", (_, { level, hasChanges }) => {
 });
 
 ipcMain.on("update-icon-dot-only", (_, hasChanges) => {
+    if (!tray) return;
     iconUpdateTask(currentLevel, hasChanges);
 });
 
 ipcMain.on("check-for-updates", () => {
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.checkForUpdatesAndNotify().catch((err) => console.error("Failed check updates:", err));
 });
 
 ipcMain.on("update-app", () => {
-    if (process.platform === "darwin" && getAppWindow() !== null) {
-        (app as any).quitting = true;
-        getAppWindow()?.close();
+    if (process.platform === "darwin") {
+        if (getAppWindow() !== null) {
+            (app as any).quitting = true;
+            getAppWindow()?.close();
+        }
+        return;
     }
 
     autoUpdater.quitAndInstall();

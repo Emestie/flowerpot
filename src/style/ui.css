@@ -138,7 +138,10 @@ h6 {
 
 .sidebarMenuItem {
     white-space: normal !important;
-    word-break: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    line-height: 1.4;
+    border-radius: 0.28571429rem;
 }
 
 :root {
@@ -242,6 +245,8 @@ h6 {
     --wi-keyword-bg: #6280b11f;
     --wi-pinned-color: #eca06e;
     --wi-pinned-bg: #eca06e15;
+    --wi-negative-color: #9f3a38;
+    --wi-negative-bg: #fff0f0;
 
     --pr-branch-label-color: #689473;
 }
@@ -288,7 +293,7 @@ body,
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #87CEEB;
+    background-color: #87ceeb;
     border-radius: 50%;
     margin-right: 6px;
     font-size: 10px;
@@ -487,6 +492,13 @@ td.workItemKeyword {
     border: 1px solid var(--btn-basic-border);
     border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.wiStatusMenu.upward {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 2px;
 }
 
 .wiStatusMenuItem {
@@ -691,6 +703,15 @@ a.url-link {
 .search-bar-wrapper {
     display: inline-block;
     margin-right: 3.5px;
+}
+
+.mobile-search-bar {
+    margin-top: 8px;
+}
+
+.mobile-search-bar .qs-input {
+    display: flex;
+    width: 100%;
 }
 
 .public-queries-toggle {
@@ -1041,11 +1062,30 @@ nav {
     .dynamic-flex-wrap {
         flex-wrap: wrap;
     }
+
+    .collapsible-header .dynamic-flex-wrap {
+        row-gap: 8px;
+    }
+
+    .collapsible-header {
+        margin-bottom: 8px;
+    }
 }
 
 @media (max-width: 590px) {
-    .ui.small.secondary.vertical.menu {
-        width: 105px !important;
+    /* Sidebar menu migrated from Semantic UI to CSS modules, so the old
+       `.ui.small.secondary.vertical.menu` selector no longer matches anything.
+       Size the real sidebar instead: 128px fits "Notifications" without
+       mid-word breaks, and flex-shrink:0 stops Safari from shrink-wrapping
+       the column to a single character. */
+    .PageLayoutSidebar {
+        flex: 0 0 128px;
+        max-width: 128px;
+    }
+
+    .PageLayoutSidebar .sidebarMenuItem {
+        padding-left: 0.7em !important;
+        padding-right: 0.7em !important;
     }
 
     .hide-on-mobile {
@@ -1107,4 +1147,323 @@ nav {
     .show-on-mobile {
         display: none !important;
     }
+}
+
+@media (max-width: 767px) {
+    .wi-card .dual-container,
+    .pr-card .dual-container {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .wi-card .dual-part-half,
+    .pr-card .dual-part-half {
+        flex: 0 0 100%;
+    }
+}
+
+/* ── Work item card ── */
+.wi-card {
+    margin-bottom: 0.5em;
+    border-left: 4px solid var(--wi-no-changes-color);
+}
+
+.wi-card .wi-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6em 1em 0.4em;
+}
+
+.wi-card .wi-card-header .wi-card-id {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.wi-card .wi-card-header .wi-promptness {
+    margin-left: 8px;
+}
+
+.wi-card .wi-card-content {
+    padding: 0.5em 1em;
+}
+
+.wi-card .wi-card-iteration {
+    display: block;
+    font-size: 12px;
+    color: gray;
+    font-style: italic;
+    margin-bottom: 4px;
+}
+
+.wi-card .wi-card-iteration .wiIndicatorDeferred {
+    margin-right: 4px;
+}
+
+.wi-card .wi-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3em 1em 0.5em;
+    font-size: 0.9em;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.wi-card .wi-card-footer .wi-card-meta {
+    white-space: nowrap;
+}
+
+/* Status sits at the card's right edge, so open its menu leftwards to stay on screen */
+.wi-card .wiStatusMenu {
+    left: auto;
+    right: 0;
+}
+
+.wi-card .wi-card-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.card-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    min-width: 40px;
+    min-height: 32px;
+    margin: -8px -6px;
+    border-radius: 6px;
+    cursor: pointer;
+    touch-action: manipulation;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.card-menu-btn:active {
+    background-color: var(--table-hover-bg);
+}
+
+/* Hover only where a real hover exists — on touch it sticks after tap */
+@media (hover: hover) {
+    .card-menu-btn:hover {
+        background-color: var(--table-hover-bg);
+        color: rgba(0, 0, 0, 0.85);
+    }
+
+    html.FlowerpotDarkTheme .card-menu-btn:hover,
+    .FlowerpotDarkTheme .card-menu-btn:hover {
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
+
+/* Ellipsis glyph's visual center is ~3px below its em-box center at 14px
+   (bbox y -56..440 of 512upm vs 448/-64 line metrics), nudge it up */
+.card-menu-btn .icon {
+    transform: translateY(-3px);
+}
+
+html.FlowerpotDarkTheme .card-menu-btn,
+.FlowerpotDarkTheme .card-menu-btn {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* WI list indicator colored borders for cards */
+.wi-card.workItemFavorite {
+    border-left-color: var(--wi-favorite-color);
+}
+
+.wi-card.workItemFavorite .wi-card-content {
+    background-color: var(--wi-favorite-bg);
+}
+
+.wi-card.workItemForwarded {
+    border-left-color: var(--wi-forwarded-color);
+}
+
+.wi-card.workItemForwarded .wi-card-content {
+    background-color: var(--wi-forwarded-bg);
+}
+
+.wi-card.workItemPinned {
+    border-left-color: var(--wi-pinned-color);
+}
+
+.wi-card.workItemPinned .wi-card-content {
+    background-color: var(--wi-pinned-bg);
+}
+
+.wi-card.workItemDeferred {
+    border-left-color: var(--wi-deferred-color);
+}
+
+.wi-card.workItemDeferred .wi-card-content {
+    background-color: var(--wi-deferred-bg);
+}
+
+.wi-card.workItemPermawatch {
+    border-left-color: var(--wi-permawatch-color);
+}
+
+.wi-card.workItemKeyword {
+    border-left-color: var(--wi-keyword-color);
+}
+
+.wi-card.workItemKeyword .wi-card-content {
+    background-color: var(--wi-keyword-bg);
+}
+
+.wi-card.workItemIsMine {
+    border-left-color: var(--wi-mine-color);
+}
+
+/* Negative (high priority) row */
+.wi-card.negative {
+    border-left-color: var(--wi-negative-color);
+}
+
+.wi-card.negative .wi-card-content {
+    background: var(--wi-negative-bg);
+    color: var(--wi-negative-color);
+}
+
+/* ── Pull request card ── */
+.pr-card {
+    margin-bottom: 0.5em;
+}
+
+.pr-card .pr-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em 1em 0.3em;
+}
+
+.pr-card .pr-card-header .pr-card-id {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pr-card .pr-card-header .pr-card-meta {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.pr-card .pr-card-content {
+    padding: 0.5em 1em;
+}
+
+.pr-card .pr-card-iteration {
+    display: block;
+    font-size: 12px;
+    color: gray;
+    font-style: italic;
+    margin-bottom: 4px;
+}
+
+.pr-card .pr-card-iteration .wiIndicatorDeferred {
+    margin-right: 4px;
+}
+
+.pr-card .pr-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3em 1em 0.5em;
+    font-size: 0.9em;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.pr-card .pr-card-footer-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pr-card.workItemDeferred {
+    border-left-color: var(--wi-deferred-color);
+}
+
+/* ── Dark theme card overrides ── */
+html.FlowerpotDarkTheme .wi-card,
+.FlowerpotDarkTheme .wi-card {
+    background: var(--card-bg, #353536);
+    color: rgba(255, 255, 255, 0.9);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    border-right-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+html.FlowerpotDarkTheme .wi-card .wi-card-header,
+.FlowerpotDarkTheme .wi-card .wi-card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html.FlowerpotDarkTheme .wi-card .wi-card-footer,
+.FlowerpotDarkTheme .wi-card .wi-card-footer {
+    color: rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+html.FlowerpotDarkTheme .wi-card .wi-card-iteration,
+.FlowerpotDarkTheme .wi-card .wi-card-iteration {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+html.FlowerpotDarkTheme .wi-card.workItemFavorite .wi-card-content,
+.FlowerpotDarkTheme .wi-card.workItemFavorite .wi-card-content {
+    background-color: rgba(161, 99, 202, 0.15);
+}
+
+html.FlowerpotDarkTheme .wi-card.workItemDeferred .wi-card-content,
+.FlowerpotDarkTheme .wi-card.workItemDeferred .wi-card-content {
+    background-color: rgba(173, 173, 173, 0.1);
+}
+
+html.FlowerpotDarkTheme .wi-card.workItemPinned .wi-card-content,
+.FlowerpotDarkTheme .wi-card.workItemPinned .wi-card-content {
+    background-color: rgba(234, 160, 110, 0.15);
+}
+
+html.FlowerpotDarkTheme .wi-card.workItemForwarded .wi-card-content,
+.FlowerpotDarkTheme .wi-card.workItemForwarded .wi-card-content {
+    background-color: rgba(33, 186, 69, 0.15);
+}
+
+html.FlowerpotDarkTheme .wi-card.workItemKeyword .wi-card-content,
+.FlowerpotDarkTheme .wi-card.workItemKeyword .wi-card-content {
+    background-color: rgba(66, 135, 245, 0.15);
+}
+
+html.FlowerpotDarkTheme .wi-card.negative .wi-card-content,
+.FlowerpotDarkTheme .wi-card.negative .wi-card-content {
+    background: var(--wi-negative-bg);
+    color: var(--wi-negative-color);
+}
+
+html.FlowerpotDarkTheme .pr-card,
+.FlowerpotDarkTheme .pr-card {
+    background: var(--card-bg, #353536);
+    color: rgba(255, 255, 255, 0.9);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    border-right-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+html.FlowerpotDarkTheme .pr-card .pr-card-header,
+.FlowerpotDarkTheme .pr-card .pr-card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html.FlowerpotDarkTheme .pr-card .pr-card-footer,
+.FlowerpotDarkTheme .pr-card .pr-card-footer {
+    color: rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+html.FlowerpotDarkTheme .pr-card .pr-card-iteration,
+.FlowerpotDarkTheme .pr-card .pr-card-iteration {
+    color: rgba(255, 255, 255, 0.5);
 }

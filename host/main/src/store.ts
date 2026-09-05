@@ -49,11 +49,15 @@ class Store {
     set(key: any, val: any, dontWriteToFile?: any) {
         (this as any).data[key] = val;
         if (dontWriteToFile) return;
-        try {
-            fs.writeFileAsync((this as any).path, JSON.stringify((this as any).data));
-        } catch (e) {
-            fs.writeFileSync((this as any).path, JSON.stringify((this as any).data));
-        }
+        const filePath = (this as any).path;
+        const content = JSON.stringify((this as any).data);
+        fs.promises.writeFile(filePath, content).catch(() => {
+            try {
+                fs.writeFileSync(filePath, content);
+            } catch (e) {
+                console.error("Failed to write settings file:", e);
+            }
+        });
     }
 }
 

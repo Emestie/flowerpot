@@ -12,7 +12,19 @@ export function HighlightenText({ text }: Props) {
     const escapedHighlights = highlights.map((h) => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
     const regex = new RegExp(`(${escapedHighlights.join("|")})`, "gi");
 
-    const replaced = text.replace(regex, (replacee) => `<span class="marked">${replacee}</span>`);
+    const parts = text.split(regex);
 
-    return <span dangerouslySetInnerHTML={{ __html: replaced }}></span>;
+    return (
+        <span>
+            {parts.map((part, i) =>
+                i % 2 === 1 ? (
+                    <span key={i} className="marked">
+                        {part}
+                    </span>
+                ) : (
+                    <span key={i}>{part}</span>
+                )
+            )}
+        </span>
+    );
 }

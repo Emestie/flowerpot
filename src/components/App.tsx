@@ -4,6 +4,7 @@ import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Settings, { TColorScheme } from "../helpers/Settings";
 import { getSystemThemeListener, isDarkTheme } from "../helpers/Theme";
+import { safeParse } from "../helpers/safe-parse";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
 import { TView } from "../types";
@@ -73,7 +74,7 @@ export function App() {
         const ls = localStorage.getItem("WIChangesCollection");
         if (!ls) return;
 
-        setChangesCollection(JSON.parse(ls));
+        setChangesCollection(safeParse(ls, {}, "WIChangesCollection"));
     }, [setChangesCollection]);
 
     const afterUpdateHandler = useCallback(() => {
@@ -85,8 +86,9 @@ export function App() {
     }, [setShowWhatsNew]);
 
     useEffect(() => {
+        const removeUpdateListeners = Platform.current.initUpdateListeners();
+        let bootTimer: number | undefined;
         (async function () {
-            Platform.current.initUpdateListeners();
             Platform.current.reactIsReady();
 
             await Settings.read();
@@ -103,7 +105,7 @@ export function App() {
 
             Platform.current.checkForUpdates(true);
 
-            setTimeout(() => {
+            bootTimer = window.setTimeout(() => {
                 const route = parseHash();
                 if (!route || route.view === "loading") {
                     if (Platform.current.isDev()) {
@@ -119,6 +121,10 @@ export function App() {
                 setIsReady(true);
             }, 250);
         })();
+        return () => {
+            if (bootTimer !== undefined) clearTimeout(bootTimer);
+            removeUpdateListeners?.();
+        };
         // eslint-disable-next-line
     }, []);
 

@@ -17,3 +17,19 @@
     margin: 0.875em 0.5em;
     float: none;
 }
+
+.stacked {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin: -0.5em 0;
+}
+
+.stacked::after {
+    display: none;
+}
+
+.stacked > * {
+    margin: 0.5em 0;
+    width: auto;
+    min-width: 0;
+}
