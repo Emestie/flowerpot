@@ -3,13 +3,24 @@
  * Strategy:
  * - Navigations: network-first, falling back to the cached app shell.
  * - Same-origin static assets: cache-first, refreshing the cache in background.
- * - Cross-origin GET (fonts, dynamic-content CDN): cache-first so the
- *   second visit works offline.
- * Non-GET requests (Azure DevOps API calls) always go to the network.
+ * - Known cross-origin static CDNs (fonts, dynamic-content): cache-first so
+ *   the second visit works offline.
+ * - Everything else cross-origin (notably user-configured TFS hosts):
+ *   bypass the SW entirely (no respondWith), so the browser handles TLS
+ *   exactly as if no SW was installed. Intercepting API GETs breaks hosts
+ *   with self-signed/invalid certs and risks caching API data.
+ * Non-GET requests (Azure DevOps API writes) always go to the network.
  */
 
-const CACHE = "flowerpot-v1";
+const CACHE = "flowerpot-v2";
 const APP_SHELL = "./index.html";
+
+// Origins whose GET responses are safe to cache for offline use.
+const STATIC_ORIGINS = new Set([
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://raw.githubusercontent.com",
+]);
 
 self.addEventListener("install", (event) => {
     event.waitUntil(
@@ -42,13 +53,20 @@ self.addEventListener("fetch", (event) => {
 
     const url = new URL(request.url);
 
-    // Cross-origin content (Google Fonts, raw.githubusercontent dynamic-content):
-    // cache-first, populate cache on miss.
+    // Cross-origin: only cache known static CDNs (Google Fonts,
+    // raw.githubusercontent dynamic-content). Anything else — notably the
+    // user-configured TFS host — must bypass the SW so TLS/cert handling
+    // stays identical to "no SW installed".
     if (url.origin !== self.location.origin) {
+        if (!STATIC_ORIGINS.has(url.origin)) return;
         event.respondWith(
-            caches
-                .match(request)
-                .then((hit) => hit || fetch(request).then((response) => cacheInBackground(request, response)))
+            caches.match(request).then(
+                (hit) =>
+                    hit ||
+                    fetch(request)
+                        .then((response) => cacheInBackground(request, response))
+                        .catch(() => hit)
+            )
         );
         return;
     }

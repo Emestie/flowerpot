@@ -28,10 +28,18 @@ const render = () => {
 render();
 
 //Service worker is web/PWA only: Electron loads over file:// where SW is unsupported.
+//In Electron (e.g. dev over http://localhost) actively remove any previously
+//installed worker so it can never intercept requests there.
 if (Platform.type === PlatformType.Web && "serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js").catch((err) => {
             console.warn("Service worker registration failed:", err);
         });
+    });
+} else if ("serviceWorker" in navigator && navigator.serviceWorker.getRegistrations) {
+    navigator.serviceWorker.getRegistrations().then((regs) => {
+        for (const reg of regs) {
+            reg.unregister().catch(() => undefined);
+        }
     });
 }
