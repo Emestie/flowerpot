@@ -33,6 +33,7 @@ export function CreditsSection() {
     };
 
     const getPlatformIcon = () => {
+        if (Platform.type === PlatformType.Web) return <Icon name="globe" />;
         const os = Platform.current.os;
         if (os === "win32") return <Icon name="windows" />;
         if (os === "darwin" || os === "ios") return <Icon name="apple" />;
@@ -106,7 +107,7 @@ export function CreditsSection() {
                 onChange={(e, { value }) => onLocaleSelect(value as TLocale)}
             />
             <br />
-            {Platform.current.os === "win32" && (
+            {Platform.type === PlatformType.Electron && Platform.current.os === "win32" && (
                 <>
                     <Checkbox label={s("cbAutostartLabel")} checked={autostart} onChange={toggleAutostart} />
                     <br />
