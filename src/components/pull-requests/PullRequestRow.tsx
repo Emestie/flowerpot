@@ -56,7 +56,6 @@ export function PullRequestRow(props: IProps) {
     const [totalComments, setTotalComments] = useState<number | null>(null);
     const [resolvedComments, setResolvedComments] = useState<number | null>(null);
 
-    const { collectionName, projectName, repoId, id } = pullRequest;
     const { accountId } = props;
 
     useEffect(() => {
@@ -71,7 +70,10 @@ export function PullRequestRow(props: IProps) {
         return () => {
             cancelled = true;
         };
-    }, [accountId, collectionName, projectName, repoId, id]);
+        // NOTE: dep on the whole `pullRequest` object (not just ids) so counts
+        // refetch when the PR list refreshes (timer / refresh button recreates
+        // PullRequest instances with the same ids).
+    }, [accountId, pullRequest]);
 
     const [uid] = useState(() => `${pullRequest.repoId}-${pullRequest.id}-${Math.random().toString(36).slice(2)}`);
 
