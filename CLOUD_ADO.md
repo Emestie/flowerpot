@@ -1,7 +1,9 @@
 # Azure DevOps Services (cloud) support — investigation & implementation plan
 
-**Status:** investigation complete, implementation **not** started.
-**Last verified:** 2026-10-21 against `https://mstpwnz.visualstudio.com` using a PAT.
+**Status:** investigation complete; **implementation landed on this branch** (see §9 for the change list).
+**Last verified:**
+- investigation probes: 2026-10-21 against `https://mstpwnz.visualstudio.com` using a PAT;
+- deep-link / permission-probe follow-ups: 2026-10-21 (same org, same PAT).
 **Target branch:** `m/cloud`
 
 This document is the single source of truth for adding support for **Microsoft-hosted Azure DevOps
@@ -341,7 +343,7 @@ from the browser without a proxy.
 | `src/modules/api-client/loader.ts:19-26` | `fetch(tfsPath + url)` with only `Authorization` + `Content-Type` | invalid PAT → 203 HTML; `result.json()` throws → wrong error | add `X-TFS-FedAuthRedirect: Suppress`; detect `content-type: text/html` / non-JSON → `unauthorized` |
 | `src/modules/api-client/loader.ts:17` | strips only the `account.url` prefix | absolute URLs on foreign hosts become garbage | accept absolute URLs verbatim; normalize the account URL |
 | `src/modules/api-client/loader.ts:28` | maps only `401` → `unauthorized` | 203 HTML, 302, 407 not handled | broaden the auth-failure detection |
-| `src/modules/api-client/loaders/collection.ts:9` | `GET _apis/projectCollections?$top=1000` | returns `name = "mstpwnz"`, unusable as a path segment | skip entirely for cloud; synthesize one collection with `name = ""` |
+| `src/modules/api-client/loaders/collection.ts:9` | `GET _apis/projectCollections?$top=1000` | returns `name = "mstpwnz"`, unusable as a path segment | still called (it requires auth, so it doubles as the credential proof), but the response value is replaced with a single synthetic collection `name = ""` for cloud |
 | `src/modules/api-client/loaders/project.ts:14` | `collection.name + "/_api/_wit/teamProjects?__v=5"` | `mstpwnz/…` → 404 | with `name = ""` → `//_api/…` → 200 ✔ (double slash tolerated) |
 | `src/modules/api-client/loaders/project.ts:19` | passes `collections[index].name` into `Project` | would bake `"mstpwnz"` into `Project.path` | pass `""` for cloud |
 | `src/modules/api-client/loaders/query.ts:17` | `collectionName + "/" + project.guid + "/_apis/wit/queries…"` | with `""` → `/{guid}/_apis/…` → 200 ✔ | only depends on #2 |
@@ -352,24 +354,27 @@ from the browser without a proxy.
 | `src/modules/api-client/types/connection-data.ts` | `IConnectionData` has only `authenticatedUser` | no `deploymentType` to detect the cloud with | add `deploymentType`, `instanceId`, `authorizedUser` |
 | `src/modules/api-client/loaders/work-item-type.ts:15` | `loader(absolute href)` | breaks on a non-matching host | fixed by absolute-URL support + URL canonicalization |
 | `src/helpers/Loaders.ts:19` | `checkCredentials` → `api.collection.getAll()` | `projectCollections` on the cloud is auth-optional-ish and returns a bogus collection name | use `connectionData` + check the user is not `Anonymous` / `System:PublicAccess` |
-| `src/helpers/Loaders.ts:29-34` | `checkPermissions` hits `_apis/projectCollections`, `_apis/wit/fields`, `_apis/git/repositories`, `_apis/connectionData` | `_apis/wit/fields?$top=1` and `_apis/git/repositories` were **not** verified on the cloud → the check may report a false "insufficient permissions" | verify/replace the probe URLs; add `X-TFS-FedAuthRedirect: Suppress` |
+| `src/helpers/Loaders.ts:29-34` | `checkPermissions` hits `_apis/projectCollections`, `_apis/wit/fields`, `_apis/git/repositories`, `_apis/connectionData` | all four probe URLs verified working on the cloud (2026-10-21) | keep the URLs, canonicalize the account URL and add `X-TFS-FedAuthRedirect: Suppress` |
 | `src/helpers/Loaders.ts:73-92` | `getUserData` → `connectionData.get()` | the identities call inside 404s → whole thing throws | must survive a failed identities call (groups are optional) |
 | `src/views/CredentialsView.tsx:82-98` | URL validation: must start with `http`, must end with `/`, min length 11 | `https://mstpwnz.visualstudio.com/` passes, but `dev.azure.com/mstpwnz/` also passes and is *not* canonical | accept cloud URLs, canonicalize before storing |
-| `src/views/CredentialsView.tsx:187` | placeholder `http://tfs:8080/tfs/` | — | mention the cloud URL form |
+| `src/views/CredentialsView.tsx:187` | placeholder `http://tfs:8080/tfs/` | — | cloud example (`https://dev.azure.com/organization/`) + localized cloud hint |
 | `src/views/CredentialsView.tsx:219` | "create PAT" link → `account.url + "_usersSettings/tokens"` | → `https://mstpwnz.visualstudio.com/_usersSettings/tokens` ✔ (verified) | keep, but use the canonical URL |
 | `src/views/CredentialsView.tsx:208` | docs link → Microsoft Learn PAT page | on-prem wording | the same page covers ADO Services |
 | `src/models/project.ts:16` | `path = collectionName + "/" + name` | `"/any"` | format without the leading separator for cloud |
 | `src/models/query.ts:35` | `nameInList = collectionName + " / " + name + " / " + path` | `" / any / …"` | same |
-| `src/components/dialogs/OpenByIdDialog.tsx:47-49` | `url.split("/tfs/").at(0) + "/tfs/"` | on-prem-only hack | cloud deep link is `https://{org}.visualstudio.com/{project}/_workitems/edit/{id}` |
-| `src/components/work-items/WorkItemsBlock.tsx:88` | `/_workItems?path=` deep link | on-prem shape | add the cloud shape |
-| `src/helpers/Settings.ts:16-23` (`IAccount`) | `url` only | no cloud marker | add `deploymentType?: "hosted" \| "onprem"` (or a `isCloud` flag) |
+| `src/components/dialogs/OpenByIdDialog.tsx:47-49` | `url.split("/tfs/").at(0) + "/tfs/"` | on-prem-only hack | cloud deep link: the account URL itself is the base — `https://{org}.visualstudio.com/_workitems/edit/{id}` redirects to the project-scoped form (verified 302 → 200) |
+| `src/components/work-items/WorkItemsBlock.tsx:88` | `/_workItems?path=` deep link | the TFS `_workItems?path=` hub exists on the cloud only behind a redirect (verified 302 → `_queries?path=`) | cloud queries are opened by id: `https://{org}.visualstudio.com/{project}/_queries/query/{queryId}` (verified 200) |
+| `src/helpers/Settings.ts:16-23` (`IAccount`) | `url` only | no cloud marker | not needed — every consumer derives cloud-ness from the URL host (`CloudAdo.isCloudUrl`) or `connectionData.deploymentType`, so no persisted flag was added |
 | `src/helpers/Lists.ts` | list keys are `accountId` + `collection` + `id` | `""` collection for cloud | safe — `accountId` separates accounts, and the permawatch pseudo-project also uses `""` |
-| `src/helpers/Migration.ts` | account migration hook (`migrationsDone`) | existing accounts have no cloud flag | add a migration that back-fills the flag (or infer it from the host) |
-| `src/values/{en,ru,be}.ts` | — | — | new strings for the cloud URL hint / the "Azure DevOps Services" label |
+| `src/helpers/Migration.ts` | account migration hook (`migrationsDone`) | existing accounts have no cloud flag | no migration needed — cloud accounts can only be added by this feature; nothing in the app depends on a persisted cloud flag |
+| `src/values/{en,ru,be}.ts` | — | — | new `credsCloudHint` string (cloud URL examples) |
+| `src/models/pull-request.ts:80` | author detection compares `createdBy.descriptor` with the user's `subjectDescriptor` | on the cloud the two never match (`ClaimsIdentity;…` vs `msa./aad.…`) → "author" badge would never show | for `deploymentType === "hosted"` the identity id is compared instead (`createdBy.id === authenticatedUser.id`) |
 
 ---
 
 ## 6. Implementation plan
+
+> **As implemented** — deviations from the plan below are marked in *italics*. Full change list in §9.
 
 ### Phase 1 — Detection & account model
 
@@ -414,9 +419,14 @@ from the browser without a proxy.
 9. **`src/helpers/Loaders.ts`**
    * `checkCredentials` — verify via `connectionData` and assert the user is **not**
      `Anonymous` and `properties.Account.$value` does not start with `System:PublicAccess`.
+     *As implemented: the existing `api.collection.getAll()` path is kept for cloud too —
+     `_apis/projectCollections` requires authentication (verified 401 with a bogus PAT), so the
+     current call already proves the token; the Anonymous pitfall never enters the flow.*
    * `checkPermissions` — replace/verify the probe URLs for the cloud
      (`_apis/wit/fields` and `_apis/git/repositories` were not verified on the cloud yet);
      add `X-TFS-FedAuthRedirect: Suppress`.
+     *As implemented: all four probe URLs verified working on the cloud on 2026-10-21 — the URLs
+     stayed, only the header was added (plus URL canonicalization).*
    * `getUserData` — tolerate a failed identities lookup.
 
 ### Phase 4 — UI, deep links, i18n
@@ -432,6 +442,8 @@ from the browser without a proxy.
     * cloud: `https://{org}.visualstudio.com/`
 12. **`src/components/work-items/WorkItemsBlock.tsx`** — emit the cloud deep link
     `https://{org}.visualstudio.com/{project}/_workitems?path=…`.
+    *As implemented: the canonical `_queries/query/{queryId}` link is used instead — the
+    `_workItems?path=` hub only exists behind a redirect on the cloud.*
 13. **`src/models/project.ts` / `src/models/query.ts`** — format `path` / `nameInList` without the
     leading separator when the collection name is empty.
 14. **Localization** — new strings in `src/values/en.ts`, `src/values/ru.ts`, `src/values/be.ts`
@@ -439,16 +451,14 @@ from the browser without a proxy.
 
 ---
 
-## 7. Risks & remaining open questions
-
 * **`PATCH /_apis/wit/workItems/{id}` (change state) is unverified** — the test PAT has no write
   scope. The URL shape is the same as `GET`, so it should work, but it needs a write-scoped PAT to
   confirm.
 * **`GET /_apis/git/pullrequests/{id}/threads` is unverified** — the test org has no open PRs.
   The URL shape mirrors the verified `git/pullrequests` route.
-* **`_apis/wit/fields?$top=1` (used by `checkPermissions`) is unverified** on the cloud. If it 404s,
-  `checkPermissions` will report `vso.work` as missing and the user will be blocked from adding an
-  account. **Must be verified (or replaced) before shipping.**
+* ~~`_apis/wit/fields?$top=1` (used by `checkPermissions`) is unverified~~ — **resolved**: verified
+  working on the cloud on 2026-10-21 (`fields`, `repositories?$top=1`, `projectCollections?$top=1`
+  all 200 with a valid PAT).
 * **Multiple collections in one account** — an ADO Services account is a single org, so a single
   empty-name collection is correct. On-prem accounts with several collections keep their current
   behaviour.
@@ -475,6 +485,36 @@ from the browser without a proxy.
 
 Suggested order of work: Phase 2 → Phase 1 → Phase 3 → Phase 4, because Phase 2 alone (the
 `X-TFS-FedAuthRedirect` header) is what makes the rest of the investigation reproducible from the app.
+
+---
+
+## 9. Implementation change list (as landed on `m/cloud`)
+
+| File | Change |
+|---|---|
+| `src/helpers/CloudAdo.ts` | **new** — `getOrgName` / `isCloudUrl` / `canonicalizeUrl` / `getVsspsUrl` / `getCollectionDisplayName` |
+| `src/modules/api-client/loader.ts` | sends `X-TFS-FedAuthRedirect: Suppress`; absolute URLs pass through untouched; URLs joined via `joinUrl` (single slash, tolerates a base without the trailing slash); `401` / `203` / `text/html` → `unauthorized` |
+| `src/modules/api-client/types/connection-data.ts` | optional `deploymentType` / `instanceId` / `deploymentId` / `authorizedUser` / `locationServiceData`; `properties.Account` optional + lowercase `account` key |
+| `src/modules/api-client/types/pull-request.ts` | `createdBy.id` added |
+| `src/modules/api-client/loaders/collection.ts` | takes `params`; the real `_apis/projectCollections` call is still made (it requires auth → doubles as the credential proof), but for cloud accounts the result is replaced with one synthetic collection `{ id: <org>, name: "", url: <account> }` |
+| `src/modules/api-client/loaders/connection-data.ts` | takes `params`; identities calls go against `{org}.vssps.visualstudio.com` (`getVsspsUrl`, identity to on-prem org host); `queryMembership=Direct` added to the `descriptors=` form; group lookup wrapped in try/catch (non-fatal); null identities filtered |
+| `src/modules/api-client/loaders/project.ts`, `create.ts` | call signatures updated for `params` |
+| `src/helpers/Loaders.ts` | `checkCredentials` / `checkPermissions` / `getUserData` canonicalize the URL; `checkPermissions` sends the suppress header |
+| `src/models/project.ts` | `path` omits the leading separator when the collection name is empty |
+| `src/models/query.ts` | `nameInList` same |
+| `src/models/pull-request.ts` | `authorId` captured; cloud author detection compares identity ids when `deploymentType === "hosted"` |
+| `src/views/CredentialsView.tsx` | cloud URLs accepted without a trailing slash; `onCheck` stores the canonical URL; placeholder + localized cloud hint |
+| `src/components/dialogs/OpenByIdDialog.tsx` | cloud: base = canonical account URL (`_workitems/edit/{id}` redirects server-side); on-prem logic preserved + fixed the `undefined` fallback bug; selector gate now accepts the empty cloud collection name |
+| `src/components/work-items/WorkItemsBlock.tsx` | cloud: query opened via `/{project}/_queries/query/{queryId}`; block tooltip falls back to the org name |
+| `src/components/CollectionSelector.tsx`, `src/components/tables/{Queries,Projects}SettingsTable.tsx`, `src/views/SelectProjectsView.tsx` | empty (cloud) collection names display the org name / no leading separator |
+| `src/values/{en,ru,be}.ts` | new `credsCloudHint` string |
+
+**Deliberately not done:** `IAccount.deploymentType` + migration — every consumer derives cloud-ness
+from the URL host or `connectionData.deploymentType`, so there is nothing to persist.
+
+**Still to do before release:** manual verification in the running app (add the `mstpwnz` account,
+run query blocks, open deep links); `PATCH` work-item state change and PR threads need a
+write-scoped PAT / an org with open PRs.
 
 ---
 
@@ -516,3 +556,12 @@ Legend: ✔ = 200 JSON · ✖ = error status.
 | `GET {org}.vssps.visualstudio.com/_apis/identities?queryMembership=Direct&descriptors=…&api-version=7.0` | ✔ |
 | `GET {org}.vssps.visualstudio.com/_apis/identities?descriptors=…&api-version=7.0` (no `queryMembership`) | ✔ but `value:[null]` — **must add `queryMembership=Direct`** |
 | `OPTIONS /_apis/connectionData` (CORS preflight) | ✔ `allow-origin: *`, allows `authorization`, `x-tfs-fedauthredirect` |
+| `GET /_apis/wit/fields?$top=1&api-version=5.1` | ✔ (checkPermissions `vso.work` probe) |
+| `GET /_apis/git/repositories?$top=1&api-version=7.0` | ✔ (checkPermissions `vso.code` probe) |
+| `GET /_apis/projectCollections?$top=1` | ✔ (checkPermissions `vso.project` probe) |
+| `GET /_apis/connectionData` **with a bogus PAT** | 200 + `providerDisplayName: "Anonymous"`, `System:PublicAccess;…` — connectionData is public |
+| `GET /_apis/projectCollections?$top=1000` **with a bogus PAT** | ✖ 401 — real auth proof for `checkCredentials` |
+| `GET /{org}/_workitems/edit/{id}` (web route) | 302 → `/{project}/_workitems/edit/{id}` → 200 |
+| `GET /{project}/_workItems?path=…&_a=query` (web route) | 302 → `/{project}/_queries?path=…&_a=query` |
+| `GET /{project}/_queries/query/{queryId}` (web route) | 200 — canonical cloud query link |
+| `GET /_usersSettings/tokens` (PAT management page) | 200 |

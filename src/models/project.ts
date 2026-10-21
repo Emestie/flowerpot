@@ -13,7 +13,7 @@ export class Project {
         this.collectionName = collectionName;
         this.guid = resp.guid;
         this.name = resp.name;
-        this.path = collectionName + "/" + resp.name;
+        this.path = collectionName ? collectionName + "/" + resp.name : resp.name;
         this.enabled = true;
     }
 }

@@ -3,6 +3,7 @@ import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
 import { CardGroup } from "../../ui/card";
 import { Message } from "../../ui/message";
+import CloudAdo from "../../helpers/CloudAdo";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
@@ -82,6 +83,15 @@ export function WorkItemsBlock({ query }: IProps) {
 
         const accountUrl = accounts.find((x) => x.id === query.accountId)?.url;
         if (!accountUrl) return;
+
+        //on ADO Services the query is opened by id: the TFS-style "_workItems?path="
+        //hub only lives behind a redirect, while "_queries/query/{id}" is canonical
+        if (CloudAdo.isCloudUrl(accountUrl)) {
+            Platform.current.openUrl(
+                CloudAdo.canonicalizeUrl(accountUrl) + q.teamName + "/_queries/query/" + q.queryId
+            );
+            return;
+        }
 
         let encodedPath = encodeURI(q.queryPath).replace("/", "%2F").replace("&", "%26");
 
@@ -199,7 +209,10 @@ export function WorkItemsBlock({ query }: IProps) {
             caption={query.queryName}
             accountId={query.accountId}
             subcaption={query.teamName}
-            subcaptionTooltip={query.collectionName}
+            subcaptionTooltip={CloudAdo.getCollectionDisplayName(
+                accounts.find((x) => x.id === query.accountId)?.url,
+                query.collectionName
+            )}
             enableColorCode={!isPermawatch && enableQueryColorCode}
             isCollapseEnabled={!!workItems.length}
             isLoading={isLoading}

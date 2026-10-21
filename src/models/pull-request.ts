@@ -13,6 +13,7 @@ export class PullRequest {
     authorUid: string;
     authorAvatar: string;
     authorDescriptor: string;
+    authorId: string;
     date: string;
     collectionName: string;
     projectName: string;
@@ -43,6 +44,7 @@ export class PullRequest {
         this.authorUid = resp.createdBy.uniqueName;
         this.authorAvatar = resp.createdBy.imageUrl;
         this.authorDescriptor = resp.createdBy.descriptor;
+        this.authorId = resp.createdBy.id;
         this.date = resp.creationDate;
         this.isDraft = resp.isDraft;
         this.collectionName = collection;
@@ -78,6 +80,14 @@ export class PullRequest {
 
         //if author
         if (this.authorDescriptor === this.connectionData.authenticatedUser.subjectDescriptor) return "author";
+
+        //on Azure DevOps Services the identity descriptor differs from the subject
+        //descriptor, the identity id is the stable match there
+        if (
+            this.connectionData.deploymentType === "hosted" &&
+            this.authorId === this.connectionData.authenticatedUser.id
+        )
+            return "author";
 
         //if in reviewers list as person
         if (this.reviewers.map((rev) => rev.name).includes(this.connectionData.authenticatedUser.providerDisplayName))

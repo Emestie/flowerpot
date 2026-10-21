@@ -32,7 +32,11 @@ export class Query {
         this.ignoreIcon = false;
         this.ignoreNotif = false;
         this.isPublic = resp.isPublic;
-        this.nameInList = project.collectionName + " / " + project.name + " / " + resp.path.replaceAll("/", " / ");
+        this.nameInList =
+            (project.collectionName ? project.collectionName + " / " : "") +
+            project.name +
+            " / " +
+            resp.path.replaceAll("/", " / ");
         this.empty = false;
         this.filteredTypes = [];
         this.filteredStatuses = [];

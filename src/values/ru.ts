@@ -291,6 +291,8 @@ const ru: LocalizedStrings = {
 
     credsTokenInfo1: "Для авторизации в приложении вам необходимо получить",
     credsTokenInfo2: "персональный токен доступа",
+    credsCloudHint:
+        "Примеры корректного пути: https://dev.azure.com/organization/ (Azure DevOps Services) или http://tfs:8080/tfs/ (Azure DevOps Server).",
     credsTokenInfo3:
         "в вашем Azure DevOps. Инструкция по созданию токена и прямая ссылка на страницу создания токена доступны по кнопкам ниже:",
     credsTokenOpenDocs: "Открыть документацию по созданию токена (Microsoft)",

@@ -289,6 +289,8 @@ const en = {
 
     credsTokenInfo1: "To authorize in the application, you need to get a",
     credsTokenInfo2: "Personal Access Token",
+    credsCloudHint:
+        "Examples of valid paths: https://dev.azure.com/organization/ (Azure DevOps Services) or http://tfs:8080/tfs/ (Azure DevOps Server).",
     credsTokenInfo3:
         "in your Azure DevOps. Instructions for creating a token and a direct link to the token creation page are available using the buttons below:",
     credsTokenOpenDocs: "Open token creation documentation (Microsoft)",

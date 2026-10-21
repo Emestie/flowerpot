@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Form } from "../../ui/form";
 import { Confirm } from "../../ui/confirm";
+import CloudAdo from "../../helpers/CloudAdo";
 import Platform from "../../helpers/Platform";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
@@ -41,10 +42,20 @@ export function OpenByIdDialog(p: IProps) {
     const onConfirm = () => {
         const account = accounts.find((x) => x.id === accountId);
 
-        if (!account || !collectionName || !id) return;
+        //cloud collections have an empty name, so the check must distinguish
+        //the undefined selector state from a selected empty-named collection
+        if (!account || collectionName === undefined || !id) return;
 
         const workItems = useDataStore.getState().workItems;
-        const calculatedUrl = workItems.at(0)?.url.split("/tfs/").at(0) + "/tfs/";
+        //on ADO Services the account URL is already the deep link base (the
+        ///_workitems/edit/{id} route redirects to the project), on-premises the
+        //base is derived from the work item API URL or falls back to the account
+        const firstWorkItemUrl = workItems.at(0)?.url;
+        const calculatedUrl = CloudAdo.isCloudUrl(account.url)
+            ? CloudAdo.canonicalizeUrl(account.url)
+            : firstWorkItemUrl?.includes("/tfs/")
+              ? firstWorkItemUrl.split("/tfs/").at(0) + "/tfs/"
+              : undefined;
 
         Platform.current.openUrl((calculatedUrl || account.url) + collectionName + "/_workitems/edit/" + id);
 

@@ -2,6 +2,7 @@ import { Button } from "../../ui/button";
 import { Checkbox } from "../../ui/checkbox";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
+import CloudAdo from "../../helpers/CloudAdo";
 import { Project } from "../../models/project";
 import { ProjectHelper } from "../../helpers/Project";
 import { useSettingsStore } from "../../zustand/settings";
@@ -11,6 +12,7 @@ import { AccountBadge } from "../AccountBadge";
 
 export function ProjectsSettingsTable() {
     const projects = useSettingsStore((state) => state.projects) || [];
+    const accounts = useSettingsStore((state) => state.accounts);
 
     const openProjectSelector = () => {
         useAppStore.getState().setView("selectprojects");
@@ -24,7 +26,10 @@ export function ProjectsSettingsTable() {
             <Table.Cell>
                 <div className="collection-badge-row">
                     <AccountBadge accountId={project.accountId} display="flex" rightGap={4} size="l" />{" "}
-                    {project.collectionName}
+                    {CloudAdo.getCollectionDisplayName(
+                        accounts.find((a) => a.id === project.accountId)?.url,
+                        project.collectionName
+                    )}
                 </div>
             </Table.Cell>
             <Table.Cell>{project.name}</Table.Cell>

@@ -4,7 +4,12 @@ interface IAuthenticatedUser {
     providerDisplayName: string;
     isActive: boolean;
     properties: {
-        Account: {
+        Account?: {
+            $type: string;
+            $value: string;
+        };
+        /** Azure DevOps Services uses a lowercase key */
+        account?: {
             $type: string;
             $value: string;
         };
@@ -16,6 +21,19 @@ interface IAuthenticatedUser {
 
 export interface IConnectionData {
     authenticatedUser: IAuthenticatedUser;
+    authorizedUser?: IAuthenticatedUser;
+    /** "hosted" on Azure DevOps Services, "onprem" (or absent) on Azure DevOps Server */
+    deploymentType?: string;
+    instanceId?: string;
+    deploymentId?: string;
+    locationServiceData?: {
+        serviceOwner?: string;
+        defaultAccessMappingMoniker?: string;
+        lastChangeId?: number;
+        lastChangeId64?: number;
+        accessMappings?: unknown[];
+        serviceDefinitions?: unknown[];
+    };
 }
 
 export interface IIdentityMembership {

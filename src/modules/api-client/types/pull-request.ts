@@ -1,5 +1,6 @@
 export interface IResponsePullRequest {
     createdBy: {
+        id: string;
         displayName: string;
         uniqueName: string;
         imageUrl: string;

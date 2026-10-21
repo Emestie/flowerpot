@@ -3,6 +3,11 @@ import { s } from "../../values/Strings";
 
 export type Loader = ReturnType<typeof createLoader>;
 
+/** Joins a base URL (with or without a trailing slash) and a relative path (with or without a leading slash). */
+function joinUrl(base: string, path: string) {
+    return base.replace(/\/+$/, "") + "/" + path.replace(/^\/+/, "");
+}
+
 export function createLoader(params: IApiClientParams) {
     return async function loader<T>(
         url: string,
@@ -14,18 +19,31 @@ export function createLoader(params: IApiClientParams) {
         }
     ): Promise<T> {
         const _tfsPath = params.getTfsPath();
-        const _url = url.startsWith(_tfsPath) ? url.slice(_tfsPath.length) : url;
 
-        const result = await fetch(_tfsPath + _url, {
+        //absolute URLs (e.g. _links.href values returned by the API, which can
+        //point to *.vssps.visualstudio.com service hosts) are used as-is
+        const targetUrl = /^https?:\/\//i.test(url) ? url : joinUrl(_tfsPath, url);
+
+        const result = await fetch(targetUrl, {
             method: options?.method || "GET",
             body: options?.body,
             headers: {
                 Authorization: "Basic " + btoa(":" + params.getAccessToken()),
                 "Content-Type": options?.contentType || "application/json",
+                //without it Azure DevOps Services answers an invalid token with a
+                //redirect to the sign-in page (203 text/html) instead of a plain 401
+                "X-TFS-FedAuthRedirect": "Suppress",
             },
         });
 
-        if (result.status === 401 && !url.includes("connectionData")) {
+        //Azure DevOps Services responses with an HTML sign-in page come through
+        //redirect chains as 203/text/html, so they are treated as unauthorized too
+        const isUnauthorized =
+            result.status === 401 ||
+            result.status === 203 ||
+            (result.headers.get("content-type") || "").includes("text/html");
+
+        if (isUnauthorized && !url.includes("connectionData")) {
             throw new Error(s("unauthorized"));
         }
 

@@ -120,7 +120,7 @@ export function SelectProjectsView() {
             <div key={p.path} className="mb-6 flex items-center">
                 <AccountBadge accountId={p.accountId} rightGap={8} />
                 <Checkbox
-                    label={p.collectionName + " / " + p.name}
+                    label={(p.collectionName ? p.collectionName + " / " : "") + p.name}
                     checked={p.checked}
                     onChange={() => toggleCheck(p)}
                 />
