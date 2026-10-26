@@ -3,7 +3,16 @@ import acc2 from "../assets/account-badges/acc2.png";
 import acc3 from "../assets/account-badges/acc3.png";
 import acc4 from "../assets/account-badges/acc4.png";
 import acc5 from "../assets/account-badges/acc5.png";
+import { Account, AccountBadge as TAccountBadge } from "../helpers/Account";
 import { useSettingsStore } from "../zustand/settings";
+
+const BADGE_IMAGES: Record<TAccountBadge, string> = {
+    1: acc1,
+    2: acc2,
+    3: acc3,
+    4: acc4,
+    5: acc5,
+};
 
 const SIZE_S = 10;
 const SIZE_M = 14;
@@ -19,29 +28,15 @@ export function AccountBadge(props: {
 
     if (accounts.length < 2) return null;
 
-    const account = accounts.find((x) => x.id === props.accountId);
+    const accountIndex = accounts.findIndex((x) => x.id === props.accountId);
+    const account = accountIndex >= 0 ? accounts[accountIndex] : undefined;
     const title = `${account?.url}\n${account?.displayName}`;
     const size = props.size === "l" ? SIZE_L : props.size === "s" ? SIZE_S : SIZE_M;
 
-    let image = null;
-
-    switch (account?.badge || 5) {
-        case 1:
-            image = <img style={{ width: size, height: size }} src={acc1} title={title} />;
-            break;
-        case 2:
-            image = <img style={{ width: size, height: size }} src={acc2} title={title} />;
-            break;
-        case 3:
-            image = <img style={{ width: size, height: size }} src={acc3} title={title} />;
-            break;
-        case 4:
-            image = <img style={{ width: size, height: size }} src={acc4} title={title} />;
-            break;
-        case 5:
-            image = <img style={{ width: size, height: size }} src={acc5} title={title} />;
-            break;
-    }
+    //always a valid flower, even for accounts from imported settings with a
+    //missing or unexpected badge value
+    const badge = Account.normalizeBadge(account?.badge, Math.max(accountIndex, 0));
+    const image = <img style={{ width: size, height: size }} src={BADGE_IMAGES[badge]} title={title} />;
 
     return (
         <span
