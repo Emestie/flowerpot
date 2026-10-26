@@ -1,7 +1,7 @@
 import { Button } from "../../ui/button";
-import { Checkbox } from "../../ui/checkbox";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
+import { Toggle } from "../../ui/toggle";
 import CloudAdo from "../../helpers/CloudAdo";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
@@ -24,8 +24,9 @@ export function QueriesSettingsTable() {
     const rows = queries.map((q: any, idx: number) => (
         <Table.Row key={q.queryId}>
             <Table.Cell collapsing>
-                <Checkbox
+                <Toggle
                     checked={q.enabled}
+                    ariaLabel={s("enabled")}
                     onChange={() => {
                         QueryHelper.toggleBoolean(q, "enabled");
                     }}
@@ -44,8 +45,9 @@ export function QueriesSettingsTable() {
             <Table.Cell>{q.queryName}</Table.Cell>
             {!isWeb && (
                 <Table.Cell collapsing>
-                    <Checkbox
+                    <Toggle
                         checked={q.ignoreIcon}
+                        ariaLabel={s("ignoreIcon")}
                         onChange={() => {
                             QueryHelper.toggleBoolean(q, "ignoreIcon");
                         }}
@@ -54,8 +56,9 @@ export function QueriesSettingsTable() {
             )}
             {!isWeb && (
                 <Table.Cell collapsing>
-                    <Checkbox
+                    <Toggle
                         checked={q.ignoreNotif}
+                        ariaLabel={s("ignoreNotif")}
                         onChange={() => {
                             QueryHelper.toggleBoolean(q, "ignoreNotif");
                         }}

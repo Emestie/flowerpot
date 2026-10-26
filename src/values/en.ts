@@ -110,6 +110,7 @@ const en = {
     severity: "Severity",
     addQuery: "Add query",
     actions: "Actions",
+    enabled: "Enabled",
     ignoreNotif: "Ignore Notif.",
     ignoreIcon: "Ignore Icon",
     queryName: "Query name",

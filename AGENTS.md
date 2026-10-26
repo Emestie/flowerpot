@@ -80,6 +80,7 @@ Components expect these CSS variables (with fallback defaults in `src/style/ui.c
 | Inputs | `--input-bg`, `--input-color`, `--input-border`, `--input-focus-border`, `--input-focus-bg`, `--input-focus-placeholder`, `--input-active-border`, `--input-active-bg`, `--input-placeholder`, `--input-error-bg`, `--input-error-border`, `--input-error-color`, `--input-error-placeholder`, `--input-error-placeholder-focus` |
 | Radio | `--radio-color`, `--radio-border`, `--radio-bg`, `--radio-dot`, `--radio-hover-border`, `--radio-focus-border` |
 | Checkbox | `--checkbox-color`, `--checkbox-border`, `--checkbox-bg`, `--checkbox-checked-bg`, `--checkbox-checked-color`, `--checkbox-hover-border`, `--checkbox-focus-border` |
+| Toggle | `--toggle-color`, `--toggle-bg`, `--toggle-border`, `--toggle-knob`, `--toggle-checked-bg`, `--toggle-checked-border`, `--toggle-checked-knob`, `--toggle-hover-border`, `--toggle-focus-border` |
 | Menu | `--menu-bg`, `--menu-item-color`, `--menu-item-active-bg`, `--menu-item-active-color`, `--menu-item-hover-bg`, `--menu-item-hover-color`, `--menu-item-active-hover-bg` |
 | Labels | `--label-bg`, `--label-color`, `--label-basic-border` |
 | Table | `--table-bg`, `--table-color`, `--table-border`, `--table-header-bg`, `--table-header-color`, `--table-hover-bg` |

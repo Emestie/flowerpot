@@ -110,6 +110,7 @@ const be: LocalizedStrings = {
     severity: "Важнасць",
     addQuery: "Дадаць запыт",
     actions: "Дзеянні",
+    enabled: "Уключана",
     ignoreNotif: "Ігнараваць абвесткі",
     ignoreIcon: "Ігнараваць іконку",
     queryName: "Назва запыту",

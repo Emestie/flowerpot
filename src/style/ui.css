@@ -218,6 +218,16 @@ h6 {
     --checkbox-hover-border: rgba(34, 36, 38, 0.35);
     --checkbox-focus-border: #85b7d9;
 
+    --toggle-color: rgba(0, 0, 0, 0.87);
+    --toggle-bg: #e0e1e2;
+    --toggle-border: rgba(34, 36, 38, 0.15);
+    --toggle-knob: #fff;
+    --toggle-checked-bg: #2185d0;
+    --toggle-checked-border: #2185d0;
+    --toggle-checked-knob: #fff;
+    --toggle-hover-border: rgba(34, 36, 38, 0.35);
+    --toggle-focus-border: #85b7d9;
+
     --menu-bg: #fff;
     --menu-item-color: rgba(0, 0, 0, 0.87);
     --menu-item-active-bg: rgba(0, 0, 0, 0.05);

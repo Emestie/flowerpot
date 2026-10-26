@@ -1,7 +1,7 @@
 import { Button } from "../../ui/button";
-import { Checkbox } from "../../ui/checkbox";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
+import { Toggle } from "../../ui/toggle";
 import CloudAdo from "../../helpers/CloudAdo";
 import { Project } from "../../models/project";
 import { ProjectHelper } from "../../helpers/Project";
@@ -21,7 +21,11 @@ export function ProjectsSettingsTable() {
     const rows = projects.map((project: Project) => (
         <Table.Row key={project.path}>
             <Table.Cell collapsing>
-                <Checkbox checked={project.enabled} onChange={() => ProjectHelper.toggleBoolean(project, "enabled")} />
+                <Toggle
+                    checked={project.enabled}
+                    ariaLabel={s("enabled")}
+                    onChange={() => ProjectHelper.toggleBoolean(project, "enabled")}
+                />
             </Table.Cell>
             <Table.Cell>
                 <div className="collection-badge-row">

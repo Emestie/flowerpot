@@ -111,6 +111,7 @@ const ru: LocalizedStrings = {
     severity: "Важность",
     addQuery: "Добавить запрос",
     actions: "Действия",
+    enabled: "Включено",
     ignoreNotif: "Игнор. уведом.",
     ignoreIcon: "Игнор. икон.",
     queryName: "Название запроса",

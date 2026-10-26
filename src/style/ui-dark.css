@@ -77,6 +77,16 @@ html.FlowerpotDarkTheme,
     --checkbox-hover-border: rgba(255, 255, 255, 0.35);
     --checkbox-focus-border: #6bb3e0;
 
+    --toggle-color: rgba(255, 255, 255, 0.9);
+    --toggle-bg: rgba(255, 255, 255, 0.15);
+    --toggle-border: rgba(255, 255, 255, 0.15);
+    --toggle-knob: rgba(255, 255, 255, 0.9);
+    --toggle-checked-bg: #2185d0;
+    --toggle-checked-border: #2185d0;
+    --toggle-checked-knob: #fff;
+    --toggle-hover-border: rgba(255, 255, 255, 0.35);
+    --toggle-focus-border: #6bb3e0;
+
     --menu-bg: #3d3e3f;
     --menu-item-color: rgba(255, 255, 255, 0.9);
     --menu-item-active-bg: rgba(255, 255, 255, 0.08);
