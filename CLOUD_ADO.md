@@ -516,6 +516,29 @@ from the URL host or `connectionData.deploymentType`, so there is nothing to per
 run query blocks, open deep links); `PATCH` work-item state change and PR threads need a
 write-scoped PAT / an org with open PRs.
 
+## 10. Test coverage (vitest, `src/__tests__`)
+
+Run with `npm test` (watch: `npm run test:watch`); config in `vitest.config.ts` (jsdom globally,
+react plugin; deliberately separate from `vite.config.ts`). `tsconfig.json` excludes
+`src/__tests__` from the app typecheck.
+
+| File | Covers |
+|---|---|
+| `cloud-ado.test.ts` | all five `CloudAdo` helpers: visualstudio.com / dev.azure.com / vssps / on-prem / invalid URLs, case-insensitivity, display-name fallback |
+| `loader.test.ts` | `createLoader`: `joinUrl` single-slash joins (base with/without trailing slash), absolute URL passthrough, Basic-auth + suppress + content-type headers, PATCH/POST bodies, `401`/`203`/`text-html` → `unauthorized`, `connectionData` exemption, `404` → `notFoundOrNoAccess`, JSON passthrough, parse failures (`jsonParseError` / `HTTP <status>`) |
+| `loader-groups.test.ts` | collection (cloud synthetic `{id: org, name: ""}` + on-prem passthrough), connection-data (vssps URLs, `queryMembership=Direct`, 15-per-chunk splitting, null filtering, non-fatal identities failure, on-prem base), project (`/_api/...` vs `/{collection}/_api/...`, model paths), query (`$depth=2` list with/without collection, `getByUrl` `_queries/query`→`_apis/wit/queries` rewrite + trailing-slash trim), work-item (wiql/workitemsbatch URLs and POST body, error 600288 query deletion, server-message errors, permawatch zero-query path, `getOne`, PATCH `updateState`), work-item-type (absolute href passthrough + caching) |
+| `models.test.ts` | `Project.path` / `Query.nameInList` with empty vs real collection name; `PullRequest`: field mapping, `/_git/` + `/pullrequest/` URL rewrite, `authorId`, belonging via descriptor (on-prem) vs identity id (hosted), reviewer / team-group detection, no-connection-data case, `isAcceptedByMe` |
+| `loaders-helper.test.ts` | `Loaders.checkCredentials` (dev.azure.com canonicalization visible in the fetch URL, on-prem passthrough, false on 401), `checkPermissions` (4 scope probes, suppress header, 401/403/errorCode → missing labels, network errors ignored), `getUserData` |
+| `credentials-view.test.tsx` | cloud URL accepted without a trailing slash, canonical URL passed to `checkCredentials` and stored on the account, display name/descriptor saved, on-prem URL without trailing slash disables Validate, short token disables Validate, failed check state |
+| `open-by-id-dialog.test.tsx` | cloud deep link `{org}.visualstudio.com/_workitems/edit/{id}` with the empty collection name, on-prem link derived from the work item `/tfs/` base, no-op without an id |
+| `collection-selector.test.tsx` | auto-select reporting the empty cloud collection name, org-name display fallback, dropdown switch to the on-prem collection; `QueriesSettingsTable` / `ProjectsSettingsTable` org-name rows |
+| `work-items-block.test.tsx` | external-link deep link: cloud `/{project}/_queries/query/{queryId}` vs on-prem `_workItems?path=` hub URL; rows render |
+| `select-projects-view.test.tsx` | live loader chain against a stubbed fetch: cloud labels without a collection prefix, on-prem `Collection / Project` labels |
+
+The tests also caught and fixed a bug: `OpenByIdDialog` built the cloud deep link with a double
+slash (`...visualstudio.com//_workitems/edit/5`) because `canonicalizeUrl` keeps the trailing
+slash — fixed by stripping it before appending the route.
+
 ---
 
 ## Appendix A — endpoint matrix (all verified 2026-10-21)

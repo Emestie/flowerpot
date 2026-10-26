@@ -50,9 +50,11 @@ export function OpenByIdDialog(p: IProps) {
         //on ADO Services the account URL is already the deep link base (the
         ///_workitems/edit/{id} route redirects to the project), on-premises the
         //base is derived from the work item API URL or falls back to the account
+        //the trailing slash is stripped: cloud collections are empty-named and
+        //the route below adds its own leading slash
         const firstWorkItemUrl = workItems.at(0)?.url;
         const calculatedUrl = CloudAdo.isCloudUrl(account.url)
-            ? CloudAdo.canonicalizeUrl(account.url)
+            ? CloudAdo.canonicalizeUrl(account.url).replace(/\/+$/, "")
             : firstWorkItemUrl?.includes("/tfs/")
               ? firstWorkItemUrl.split("/tfs/").at(0) + "/tfs/"
               : undefined;
