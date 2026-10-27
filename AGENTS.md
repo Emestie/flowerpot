@@ -127,6 +127,20 @@ The PWA/web version had a "flashbang" effect at night: when opening in dark mode
 - Flexoki light mode users still get a brief `#fff` body before Flexoki's `#fffcf0` takes over, but this is not a "flashbang" since they're already in light mode.
 - The `manifest.json` `background_color` controls the PWA native splash screen. Changed from `#ffffff` to `#1b1c1d` so it doesn't flash white on PWA launch in dark mode.
 
+## Settings Storage (durability)
+
+Settings live in `{userData}/settings.json`, written by the hand-rolled `Store` in `host/main/src/store.ts` (not `electron-store`). The file shape (`windowDim`, `windowPos`, `autostart`, `locale`, `installationID`, `flowerpot` as a JSON **string**) is what production versions write — keep it that way.
+
+Rules the store enforces, each of which exists because violating them lost user settings:
+
+- **Never truncate in place.** Writes go to `settings.json.tmp` and are renamed over the real file (`flush()`), so an interrupted write (power loss, Task Manager, `quitAndInstall`) leaves the previous file intact.
+- **One writer, debounced.** `set()` only marks the store dirty; `flush()` runs 200 ms later, synchronously, and serializes the whole store — no overlapping writes. `flushSync()` is called from `before-quit` and before `quitAndInstall()`.
+- **Unreadable ≠ empty.** `readJsonFile` distinguishes ENOENT from "there but unreadable" (lock, invalid JSON, BOM). A damaged file is copied to `settings.corrupt-<ts>.json`, recovery is attempted from `settings.json.bak` / `.tmp`. Damaged *content* (bytes read, not valid settings) is replaced by a fresh file once a copy is kept; a *read error* (lock, permissions) turns the store **read-only** instead, because the file may be fine on the next launch.
+- **Backups.** The last valid content is rotated into `settings.json.bak` before every write.
+- **Renderer must not save before reading.** `Settings.read()` gates `Settings.save()` behind a `loaded` flag; the read status comes back through `read-settings-status` and drives `SettingsProblemBanner`. That banner is a dedicated component (like `WhatsNewBanner`), deliberately not an `ActionBanner`: those are one-time promotional messages stored in `bannersShown`, while a broken settings file must be reported on every launch until it is fixed.
+
+Covered by `src/__tests__/settings-store.test.ts` (production file shape, recovery, read-only mode, atomic writes, failed writes).
+
 ## Electron Version Pin (41.x)
 
 The app is intentionally pinned to **Electron ^41** (`electron` in `package.json`) instead of the newest major.

@@ -45,7 +45,12 @@ app.on("window-all-closed", () => {
     if (process.platform === "darwin") app.quit();
 });
 
-app.on("before-quit", () => ((app as any).quitting = true));
+app.on("before-quit", () => {
+    (app as any).quitting = true;
+    // Writes are debounced; without this the last change would be lost (or
+    // worse, cut off mid-write) when the app is closed or restarted by an update.
+    store.flushSync();
+});
 
 /**
  * @see https://www.electronjs.org/docs/latest/api/app#event-activate-macos Event: 'activate'.

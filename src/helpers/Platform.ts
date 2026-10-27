@@ -7,10 +7,25 @@ export interface INotificationData {
     body?: string;
 }
 
+/** What happened when the settings file was read at startup. */
+export interface ISettingsStoreStatus {
+    /** false when the file was there but could not be read */
+    ok: boolean;
+    /** true when nothing may be written, so a damaged file is kept intact */
+    readOnly: boolean;
+    /** "backup" / "temp" when settings were restored from a sibling copy */
+    recoveredFrom: "backup" | "temp" | null;
+    /** where the damaged file was kept, if it was kept */
+    corruptBackupPath: string | null;
+}
+
 export interface IPlatformClass {
     isLocal: () => boolean;
     getStoreProp: <T = unknown>(prop: string) => Promise<T>;
     setStoreProp: (prop: string, value: any) => void;
+    getSettingsStatus: () => Promise<ISettingsStoreStatus>;
+    /** Reveals the settings file, or the copy kept from a damaged one, in the file manager. */
+    showSettingsFile: (target: "settings" | "backup") => void;
     copyString: (s: string) => void;
     changeLocale: (locale: TLocale) => void;
     toggleAutostart: (autostart: boolean) => void;

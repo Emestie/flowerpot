@@ -21,6 +21,14 @@ export default class WebPlatform implements IPlatformClass {
         webStore.set(prop, value);
     }
 
+    getSettingsStatus() {
+        return Promise.resolve(webStore.getStatus());
+    }
+
+    showSettingsFile() {
+        // not needed in web platform, the banner does not offer it
+    }
+
     copyString(s: string) {
         navigator.clipboard.writeText(s);
     }

@@ -1,5 +1,5 @@
 import { TLocale } from "../../types";
-import { INotificationData, IPlatformClass, OS } from "../Platform";
+import { INotificationData, IPlatformClass, ISettingsStoreStatus, OS } from "../Platform";
 import { useAppStore } from "../../zustand/app";
 
 const eapi = window.eapi!;
@@ -18,6 +18,14 @@ export default class ElectronPlatform implements IPlatformClass {
 
     public setStoreProp(prop: string, value: any) {
         eapi.ipcSend("save-settings-prop", { prop, value });
+    }
+
+    public async getSettingsStatus() {
+        return await eapi.ipcInvoke<ISettingsStoreStatus>("read-settings-status");
+    }
+
+    public showSettingsFile(target: "settings" | "backup") {
+        eapi.ipcSend("show-settings-file", target);
     }
 
     public copyString(s: string) {

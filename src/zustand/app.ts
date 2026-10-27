@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { IFestivalDescriptor } from "../helpers/Festival";
+import type { ISettingsStoreStatus } from "../helpers/Platform";
 import { TDialog, TLocale, TUpdateStatus, TView } from "../types";
 import { createLogger } from "./logger";
 
@@ -13,6 +14,7 @@ export interface AppState<IVP = Record<string, any>> {
     autostart: boolean;
     locale: TLocale;
     showMineOnly: boolean;
+    settingsStatus: ISettingsStoreStatus | undefined;
     setView: (view: TView, viewParams?: Record<string, any>) => void;
     setError: (message: string) => void;
     setShowWhatsNew: (showWhatsNew: boolean) => void;
@@ -34,6 +36,7 @@ export const useAppStore = create<AppState>()(
         autostart: true,
         locale: "en",
         showMineOnly: false,
+        settingsStatus: undefined,
 
         setView(view, viewParams = {}) {
             set({ view, viewParams });

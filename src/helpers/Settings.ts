@@ -90,25 +90,56 @@ export interface ISettings {
 }
 
 export default class Settings {
+    /** Settings may only be written back after the stored ones were read. */
+    private static loaded = false;
+    private static warnedEarlySave = false;
+
     public static async read() {
-        const settings = await Platform.current.getStoreProp<string>("flowerpot");
-        if (settings) {
-            try {
-                const parsedSettings = JSON.parse(settings);
-                useSettingsStore.getState().setSettings(parsedSettings);
-            } catch (e: any) {}
+        try {
+            const settings = await Platform.current.getStoreProp<string>("flowerpot");
+            if (settings) {
+                try {
+                    const parsedSettings = JSON.parse(settings);
+                    useSettingsStore.getState().setSettings(parsedSettings);
+                } catch (e: any) {
+                    console.error("Failed to parse stored settings:", e);
+                }
+            }
+
+            const autostart = await Platform.current.getStoreProp<boolean>("autostart");
+            const locale = await Platform.current.getStoreProp<TLocale>("locale");
+
+            useAppStore.getState().setSettings({ autostart, locale });
+        } catch (e: any) {
+            console.error("Failed to read settings:", e);
         }
 
-        const autostart = await Platform.current.getStoreProp<boolean>("autostart");
-        const locale = await Platform.current.getStoreProp<TLocale>("locale");
-
-        useAppStore.getState().setSettings({ autostart, locale });
+        try {
+            const status = await Platform.current.getSettingsStatus();
+            if (status) useAppStore.getState().setSettings({ settingsStatus: status });
+        } catch (e: any) {
+            console.error("Failed to read settings file status:", e);
+        } finally {
+            Settings.loaded = true;
+        }
     }
 
     public static async save(settings: ISettings) {
+        // Anything saved before read() has finished would put the default state
+        // (no accounts, no queries) on top of the user's real settings.
+        if (!Settings.loaded) {
+            if (!Settings.warnedEarlySave) {
+                Settings.warnedEarlySave = true;
+                console.warn("Settings.save() called before Settings.read(), skipping.");
+            }
+            return;
+        }
+
         try {
             const settingsToStore = JSON.stringify(settings);
             Platform.current.setStoreProp("flowerpot", settingsToStore);
-        } catch (e: any) {}
+        } catch (e: any) {
+            console.error("Failed to save settings:", e);
+        }
     }
 }

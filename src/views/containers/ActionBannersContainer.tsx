@@ -5,6 +5,13 @@ import { useAppStore } from "../../zustand/app";
 import { useSettingsStore } from "../../zustand/settings";
 // import idea from "../../assets/idea.png";
 
+/**
+ * One-time promotional banners only: an id is persisted in `bannersShown` as soon
+ * as the banner is dismissed, so ids are permanent and never reused. Messages
+ * about app state or failures get their own component instead of an entry here
+ * (see SettingsProblemBanner) — a broken settings file must be reported on every
+ * launch until it is fixed, not hidden after one click.
+ */
 function getActionBannersList(): IActionBannerProps[] {
     return [
         // {
@@ -47,7 +54,7 @@ function getActionBannersList(): IActionBannerProps[] {
     ];
 }
 
-//! LAST USED INDEX: 8
+//! LAST USED INDEX: 8 — next banner takes a new id, existing ids are never reused
 
 export function ActionBannersContainer() {
     const banners = getActionBannersList().map((x) => <ActionBanner key={x.id} {...x} />);

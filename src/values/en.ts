@@ -358,6 +358,14 @@ const en = {
     statusBanner: "You can now change a work item's status directly in the table — click on the status column.",
     statusBannerAction: "Got it",
 
+    settingsRestoredBanner:
+        "Part of your settings was restored from a backup copy because the settings file was damaged. Please check your accounts, queries and lists.",
+    settingsDamagedBanner:
+        "Your settings file was damaged and could not be read, so Flowerpot started with default settings. The damaged file was kept next to it.",
+    settingsLockedBanner:
+        "Your settings file could not be read and was left untouched. Changes made now will not be saved — restart Flowerpot to try again.",
+    settingsShowFile: "Show file",
+
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",
 };

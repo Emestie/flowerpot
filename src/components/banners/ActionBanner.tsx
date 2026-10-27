@@ -15,6 +15,16 @@ export interface IActionBannerProps {
     condition?: () => boolean;
 }
 
+/**
+ * A one-time announcement: once dismissed, its id is stored in `bannersShown`
+ * and the banner never appears again — which is why an id must never be reused.
+ *
+ * Use it for promotional / one-off messages only. Anything that reflects live
+ * app state or a fault (a new version, a damaged settings file) belongs in its
+ * own component — see WhatsNewBanner, UpdateBanner, SettingsProblemBanner —
+ * because such a message has to stay visible until the problem is actually gone
+ * and must not be silenced forever by one click.
+ */
 export function ActionBanner(p: IActionBannerProps) {
     const bannersShown = useSettingsStore((state) => state.bannersShown);
 

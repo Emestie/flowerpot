@@ -11,6 +11,7 @@ const isDev = import.meta.env.DEV;
 
 ipcMain.handle("user-data-path", () => userDataPath);
 ipcMain.handle("read-settings-prop", (_, prop) => store.get(prop));
+ipcMain.handle("read-settings-status", () => store.getStatus());
 ipcMain.handle("read-is-dev", (_) => isDev);
 
 ipcMain.on("update-icon", (_, { level, hasChanges }) => {
@@ -29,6 +30,9 @@ ipcMain.on("check-for-updates", () => {
 });
 
 ipcMain.on("update-app", () => {
+    // the app quits immediately below, so pending settings must hit the disk now
+    store.flushSync();
+
     if (process.platform === "darwin") {
         if (getAppWindow() !== null) {
             (app as any).quitting = true;
@@ -68,6 +72,12 @@ ipcMain.on("react-is-ready", () => {
 
 ipcMain.on("save-settings-prop", (_, data) => {
     store.set(data.prop, data.value);
+});
+
+/** Reveals the settings file (or the copy kept from a damaged one) in the OS file manager. */
+ipcMain.on("show-settings-file", (_, target?: "settings" | "backup") => {
+    const filePath = (target === "backup" && store.getCorruptFilePath()) || store.getFilePath();
+    shell.showItemInFolder(filePath);
 });
 
 ipcMain.on("toggle-dev-tools", (_) => getAppWindow()?.webContents.openDevTools());
