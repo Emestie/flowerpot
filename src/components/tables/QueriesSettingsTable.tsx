@@ -1,4 +1,5 @@
 import { Button } from "../../ui/button";
+import { Checkbox } from "../../ui/checkbox";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
 import { Toggle } from "../../ui/toggle";
@@ -45,9 +46,8 @@ export function QueriesSettingsTable() {
             <Table.Cell>{q.queryName}</Table.Cell>
             {!isWeb && (
                 <Table.Cell collapsing>
-                    <Toggle
+                    <Checkbox
                         checked={q.ignoreIcon}
-                        ariaLabel={s("ignoreIcon")}
                         onChange={() => {
                             QueryHelper.toggleBoolean(q, "ignoreIcon");
                         }}
@@ -56,9 +56,8 @@ export function QueriesSettingsTable() {
             )}
             {!isWeb && (
                 <Table.Cell collapsing>
-                    <Toggle
+                    <Checkbox
                         checked={q.ignoreNotif}
-                        ariaLabel={s("ignoreNotif")}
                         onChange={() => {
                             QueryHelper.toggleBoolean(q, "ignoreNotif");
                         }}
