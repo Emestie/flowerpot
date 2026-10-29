@@ -183,6 +183,63 @@ describe("PullRequest model", () => {
         expect(pr.getBelonging()).toBe("team");
     });
 
+    it("detects the reviewer group that only contains a group of the user", () => {
+        //DeloWebApprovers <- DeloWeb <- the user, the PR lists DeloWebApprovers
+        mockedGetConnectionData.mockReturnValue(
+            makeConnectionData({
+                authenticatedUser: {
+                    subjectDescriptor: "aad.subject-descriptor",
+                    id: "aad.other-id",
+                    providerDisplayName: "Someone Else",
+                    memberOfGroups: ["DeloWeb", "DeloWebApprovers"],
+                    memberOfGroupIds: ["team-id", "approvers-id"],
+                },
+            })
+        );
+
+        const resp = makePullRequestResponse();
+        resp.reviewers = [
+            {
+                displayName: "DeloWebApprovers",
+                uniqueName: "approvers",
+                imageUrl: "",
+                isRequired: true,
+                vote: 0,
+                id: "approvers-id",
+            },
+        ];
+
+        expect(new PullRequest(resp as any, "Collection2020", "acc1", 0).getBelonging()).toBe("team");
+    });
+
+    it("matches a review group by identity id when its name is scoped differently", () => {
+        mockedGetConnectionData.mockReturnValue(
+            makeConnectionData({
+                authenticatedUser: {
+                    subjectDescriptor: "aad.subject-descriptor",
+                    id: "aad.other-id",
+                    providerDisplayName: "Someone Else",
+                    memberOfGroups: ["[Delo2020]\\DeloWebApprovers"],
+                    memberOfGroupIds: ["approvers-id"],
+                },
+            })
+        );
+
+        const resp = makePullRequestResponse();
+        resp.reviewers = [
+            {
+                displayName: "DeloWebApprovers",
+                uniqueName: "approvers",
+                imageUrl: "",
+                isRequired: false,
+                vote: 0,
+                id: "approvers-id",
+            },
+        ];
+
+        expect(new PullRequest(resp as any, "Collection2020", "acc1", 0).getBelonging()).toBe("team");
+    });
+
     it("returns null when there is no connection data", () => {
         mockedGetConnectionData.mockReturnValue(undefined);
 

@@ -9,6 +9,9 @@ const arrayChunks = <T>(array: T[], chunkSize: number) =>
         .map((_, index) => index * chunkSize)
         .map((begin) => array.slice(begin, begin + chunkSize));
 
+const readMemberOf = (response: IIdentityMembership | undefined) =>
+    (response?.value || []).flatMap((x) => x?.memberOf || []);
+
 export function createConnectionDataLoaders(params: IApiClientParams, loader: Loader) {
     return {
         async get(): Promise<IConnectionData | undefined> {
@@ -23,11 +26,25 @@ export function createConnectionDataLoaders(params: IApiClientParams, loader: Lo
                     //URL base for on-premises accounts
                     const identitiesBase = CloudAdo.getVsspsUrl(params.getTfsPath());
                     const subjectDescriptor = connectionData.authenticatedUser.subjectDescriptor;
-                    const userMembership = await loader<IIdentityMembership>(
-                        `${identitiesBase}_apis/identities?queryMembership=Direct&subjectDescriptors=${subjectDescriptor}&api-version=7.0`,
-                        { skipConnectionDataCheck: true }
-                    );
-                    const descriptors = userMembership.value.flatMap((x) => x.memberOf);
+                    const membershipUrl = (membership: string) =>
+                        `${identitiesBase}_apis/identities?queryMembership=${membership}&subjectDescriptors=${subjectDescriptor}&api-version=7.0`;
+
+                    //Expanded, not Direct: a PR can list a reviewer group that only
+                    //*contains* a group the user belongs to (`Approvers <- Team <- me`),
+                    //and ADO counts that as the user being a reviewer. Direct membership
+                    //stops at one level, so such PRs looked like they were not the
+                    //user's at all and were filtered out of the pull requests list
+                    const expanded = await loader<IIdentityMembership>(membershipUrl("Expanded"), {
+                        skipConnectionDataCheck: true,
+                    }).catch(() => undefined);
+
+                    //an answered-but-unusable payload (an error object, an older server
+                    //ignoring the parameter) is retried as direct membership
+                    const membership = Array.isArray(expanded?.value)
+                        ? expanded
+                        : await loader<IIdentityMembership>(membershipUrl("Direct"), { skipConnectionDataCheck: true });
+
+                    const descriptors = Array.from(new Set(readMemberOf(membership).filter(Boolean)));
 
                     if (descriptors.length) {
                         const chunks = arrayChunks(descriptors, 15);
@@ -45,11 +62,14 @@ export function createConnectionDataLoaders(params: IApiClientParams, loader: Lo
                                     )
                                 )
                             )
-                        ).flatMap((x) => x.value);
+                        )
+                            .flatMap((x) => x?.value || [])
+                            .filter(Boolean);
 
-                        connectionData.authenticatedUser.memberOfGroups = groups
-                            .filter(Boolean)
-                            .map((x) => x.providerDisplayName);
+                        //both are kept: ids survive renamed or scoped groups, names keep
+                        //working when reviewers come back without an id
+                        connectionData.authenticatedUser.memberOfGroups = groups.map((x) => x.providerDisplayName);
+                        connectionData.authenticatedUser.memberOfGroupIds = groups.map((x) => x.id);
                     }
                 } catch {
                     //group names are used for cosmetic purposes only (PR team badges),

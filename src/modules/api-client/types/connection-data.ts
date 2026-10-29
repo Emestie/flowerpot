@@ -16,7 +16,10 @@ interface IAuthenticatedUser {
     };
     resourceVersion: number;
     metaTypeId: number;
+    /**display names of every group the user belongs to, nested ones included*/
     memberOfGroups?: string[];
+    /**identity ids of the same groups — stable when display names differ*/
+    memberOfGroupIds?: string[];
 }
 
 export interface IConnectionData {
@@ -37,5 +40,5 @@ export interface IConnectionData {
 }
 
 export interface IIdentityMembership {
-    value: { id: string; providerDisplayName: string; memberOf: string[] }[];
+    value?: { id: string; providerDisplayName: string; memberOf: string[] }[];
 }

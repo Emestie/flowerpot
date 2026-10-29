@@ -76,30 +76,25 @@ export class PullRequest {
     }
 
     getBelonging(): null | "author" | "reviewer" | "team" {
-        if (!this.connectionData || !this.connectionData.authenticatedUser) return null;
+        const user = this.connectionData?.authenticatedUser;
+        if (!user) return null;
 
         //if author
-        if (this.authorDescriptor === this.connectionData.authenticatedUser.subjectDescriptor) return "author";
+        if (this.authorDescriptor === user.subjectDescriptor) return "author";
 
         //on Azure DevOps Services the identity descriptor differs from the subject
         //descriptor, the identity id is the stable match there
-        if (
-            this.connectionData.deploymentType === "hosted" &&
-            this.authorId === this.connectionData.authenticatedUser.id
-        )
-            return "author";
+        if (this.connectionData?.deploymentType === "hosted" && this.authorId === user.id) return "author";
 
         //if in reviewers list as person
-        if (this.reviewers.map((rev) => rev.name).includes(this.connectionData.authenticatedUser.providerDisplayName))
+        if (this.reviewers.some((rev) => rev.name === user.providerDisplayName || rev.id === user.id))
             return "reviewer";
 
-        //if member of review group
-        if (
-            this.reviewers
-                .map((rev) => rev.name)
-                .some((name) => (this.connectionData?.authenticatedUser.memberOfGroups || []).includes(name))
-        )
-            return "team";
+        //if member of review group: ADO expands nested groups, so the reviewer group
+        //may only contain a group the user belongs to (`Approvers <- Team <- me`)
+        const myGroups = user.memberOfGroups || [];
+        const myGroupIds = user.memberOfGroupIds || [];
+        if (this.reviewers.some((rev) => myGroups.includes(rev.name) || myGroupIds.includes(rev.id))) return "team";
 
         return null;
     }
@@ -109,8 +104,11 @@ export class PullRequest {
     }
 
     isAcceptedByMe(): boolean {
+        const user = this.connectionData?.authenticatedUser;
+        if (!user) return false;
+
         return this.reviewers.some(
-            (rev) => this.connectionData?.authenticatedUser.providerDisplayName === rev.name && rev.vote > 0
+            (rev) => (rev.name === user.providerDisplayName || rev.id === user.id) && rev.vote > 0
         );
     }
 

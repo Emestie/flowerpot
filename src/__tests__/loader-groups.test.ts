@@ -82,7 +82,7 @@ describe("connection-data loader", () => {
         return Array.from({ length: count }, (_, i) => "aad.g" + i);
     }
 
-    it("resolves group names via the vssps host with queryMembership=Direct", async () => {
+    it("resolves group names via the vssps host with expanded membership", async () => {
         const descriptors = makeDescriptors(20); //forces two chunks of 15 and 5
         const connData = makeConnData();
         const { loader, urls } = fakeLoader((url) => {
@@ -94,7 +94,7 @@ describe("connection-data loader", () => {
 
             const chunk = new URL(url).searchParams.get("descriptors")!.split(",");
             return {
-                value: chunk.map((d, i) => ({ id: "g" + i, providerDisplayName: "Group " + d, memberOf: [] })),
+                value: chunk.map((d) => ({ id: "id-" + d, providerDisplayName: "Group " + d, memberOf: [] })),
             };
         });
 
@@ -105,16 +105,74 @@ describe("connection-data loader", () => {
 
         expect(urls[0]).toBe("_apis/connectionData");
         expect(urls[1]).toBe(
-            "https://mstpwnz.vssps.visualstudio.com/_apis/identities?queryMembership=Direct&subjectDescriptors=aad.me&api-version=7.0"
+            "https://mstpwnz.vssps.visualstudio.com/_apis/identities?queryMembership=Expanded&subjectDescriptors=aad.me&api-version=7.0"
         );
         expect(urls).toHaveLength(4);
         expect(urls[2]).toContain("descriptors=" + descriptors.slice(0, 15).join(","));
         expect(urls[3]).toContain("descriptors=" + descriptors.slice(15).join(","));
-        for (const url of urls.slice(1)) {
+        for (const url of urls.slice(2)) {
             expect(url).toContain("queryMembership=Direct");
         }
 
         expect(result!.authenticatedUser.memberOfGroups).toEqual(descriptors.map((d) => "Group " + d));
+        expect(result!.authenticatedUser.memberOfGroupIds).toEqual(descriptors.map((d) => "id-" + d));
+    });
+
+    it("keeps the groups reached through nesting and drops duplicates", async () => {
+        const connData = makeConnData();
+        const { loader } = fakeLoader((url) => {
+            if (url === "_apis/connectionData") return connData;
+
+            if (url.includes("subjectDescriptors=")) {
+                //the user's own team plus the approver group that contains it
+                return {
+                    value: [{ id: "i1", providerDisplayName: "Test User", memberOf: ["aad.team", "aad.approvers"] }],
+                };
+            }
+
+            if (url.includes("aad.team") && url.includes("aad.approvers")) {
+                return {
+                    value: [
+                        { id: "team-id", providerDisplayName: "DeloWeb", memberOf: [] },
+                        { id: "approvers-id", providerDisplayName: "DeloWebApprovers", memberOf: [] },
+                    ],
+                };
+            }
+
+            return { value: [] };
+        });
+
+        const result = await createConnectionDataLoaders(
+            makeParams(() => CLOUD_URL),
+            loader
+        ).get();
+
+        expect(result!.authenticatedUser.memberOfGroups).toEqual(["DeloWeb", "DeloWebApprovers"]);
+        expect(result!.authenticatedUser.memberOfGroupIds).toEqual(["team-id", "approvers-id"]);
+    });
+
+    it("falls back to direct membership when the server rejects expanded", async () => {
+        const connData = makeConnData();
+        const { loader, urls } = fakeLoader((url) => {
+            if (url === "_apis/connectionData") return connData;
+
+            if (url.includes("queryMembership=Expanded")) return { message: "Bad request", errorCode: 1 };
+
+            if (url.includes("subjectDescriptors=")) {
+                return { value: [{ id: "i1", providerDisplayName: "Test User", memberOf: ["aad.team"] }] };
+            }
+
+            return { value: [{ id: "team-id", providerDisplayName: "DeloWeb", memberOf: [] }] };
+        });
+
+        const result = await createConnectionDataLoaders(
+            makeParams(() => CLOUD_URL),
+            loader
+        ).get();
+
+        expect(urls[1]).toContain("queryMembership=Expanded");
+        expect(urls[2]).toContain("queryMembership=Direct");
+        expect(result!.authenticatedUser.memberOfGroups).toEqual(["DeloWeb"]);
     });
 
     it("does not fail the whole flow when the identities lookup breaks", async () => {
@@ -131,7 +189,8 @@ describe("connection-data loader", () => {
 
         expect(result).toEqual(connData);
         expect(result!.authenticatedUser.memberOfGroups).toBeUndefined();
-        expect(urls).toHaveLength(2);
+        //expanded, its direct fallback, and nothing else
+        expect(urls).toHaveLength(3);
     });
 
     it("uses the same base for on-premises identities", async () => {
@@ -147,7 +206,7 @@ describe("connection-data loader", () => {
         ).get();
 
         expect(urls[1]).toBe(
-            ON_PREM_URL + "_apis/identities?queryMembership=Direct&subjectDescriptors=aad.me&api-version=7.0"
+            ON_PREM_URL + "_apis/identities?queryMembership=Expanded&subjectDescriptors=aad.me&api-version=7.0"
         );
     });
 });
