@@ -49,12 +49,6 @@ export function MainView() {
     }, []);
 
     useEffect(() => {
-        if (!queries.length) {
-            Platform.current.updateTrayIcon(4);
-        }
-    }, [queries.length]);
-
-    useEffect(() => {
         if (!isMobileSearchShown) {
             setQuickSearchValue("");
         }

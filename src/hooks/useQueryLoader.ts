@@ -2,7 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getApi } from "../api/client";
 import QueryHelper from "../helpers/Query";
 import { Timers } from "../helpers/Timers";
+import TrayIcon from "../helpers/TrayIcon";
 import { Query } from "../models/query";
+import { WorkItem } from "../models/work-item";
 import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
 
@@ -18,10 +20,17 @@ export function useQueryLoader(query: Query) {
     const loadWorkItemsForThisQuery = useCallback(async () => {
         const loadId = ++loadIdRef.current;
         console.log("updating query ->", query.queryName, `(${query.queryId})`);
+
+        TrayIcon.markQueryLoading(query.queryId);
+
+        let loadedWorkItems: WorkItem[] | undefined;
+
         try {
             const { workItems, hiddenCount } = await getApi(query.accountId).workItem.getByQuery(query);
             if (loadId !== loadIdRef.current) return;
-            QueryHelper.calculateIconLevel(query, workItems);
+
+            loadedWorkItems = workItems;
+
             QueryHelper.toggleBoolean(query, "empty", !workItems.length);
 
             setWorkItemsForQuery(query, workItems);
@@ -32,6 +41,13 @@ export function useQueryLoader(query: Query) {
             if (loadId !== loadIdRef.current) return;
             setErrorMessage(e.message);
         } finally {
+            //a superseded response is not worth showing, but its load must still end
+            if (loadId === loadIdRef.current && loadedWorkItems) {
+                TrayIcon.setQueryItems(query, loadedWorkItems);
+            } else {
+                TrayIcon.endQueryLoad(query.queryId);
+            }
+
             if (loadId === loadIdRef.current) setIsLoading(false);
         }
     }, [setWorkItemsForQuery, query.queryId, query.accountId]);
@@ -42,7 +58,7 @@ export function useQueryLoader(query: Query) {
         Timers.delete(query.queryId);
 
         await loadWorkItemsForThisQuery();
-        Timers.create(query.queryId, 1000 * refreshRate, () => {
+        Timers.createAligned(query.queryId, 1000 * refreshRate, () => {
             setIsLoading(true);
             loadWorkItemsForThisQuery();
         });

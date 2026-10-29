@@ -127,6 +127,20 @@ The PWA/web version had a "flashbang" effect at night: when opening in dark mode
 - Flexoki light mode users still get a brief `#fff` body before Flexoki's `#fffcf0` takes over, but this is not a "flashbang" since they're already in light mode.
 - The `manifest.json` `background_color` controls the PWA native splash screen. Changed from `#ffffff` to `#1b1c1d` so it doesn't flash white on PWA launch in dark mode.
 
+## Tray Icon Colour
+
+`src/helpers/TrayIcon.ts` owns the tray level: `0` grey — no data yet (starting up, no connection), `1` a priority 1 item is present, `3` items are present, `4` nothing watched or nothing to do. `host/main/src/functions.ts` only maps a level to `build-resources/icons/*`. Grey is never "there is no work": no watched queries means green.
+
+Rules that matter:
+
+- **Sources are the watched queries, not `localStorage.WIStorage`.** The level aggregates the work items `useQueryLoader` reports for queries that are `enabled` and **not** `ignoreIcon`. `WIStorage` belongs to `Differences`/notifications: it keeps snapshots of disabled and removed queries indefinitely, and reading it here used to paint the icon red from query data nobody was watching.
+- **Publish once per refresh round.** `markQueryLoading` / `setQueryItems` / `endQueryLoad` count loads in flight; the level is pushed only after the last one finishes plus a 400 ms settle (and at most 15 s after the round started, so one hung request cannot freeze the icon). Repainting after every finished query is what flashed the icon red for the rest of a round.
+- **Aligned refresh rounds.** `Timers.createAligned` (not `Timers.create`) runs all query reloads on one shared grid, so the "some queries are a whole cycle fresher" window lasts one round instead of being permanent.
+- **Grey on start.** Nothing is published until a query has delivered items in this session; the tray starts as `flower0`.
+- **Settings changes re-evaluate immediately** through a `useSettingsStore` subscription (disabling a query, toggling "ignore icon" or "my items only"). Levels set outside the query data (`ErrorView`, `DebugView`) go through `TrayIcon.forceLevel`, so the dedupe of identical levels stays correct.
+
+Covered by `src/__tests__/tray-icon.test.ts` and `src/__tests__/timers.test.ts`.
+
 ## Settings Storage (durability)
 
 Settings live in `{userData}/settings.json`, written by the hand-rolled `Store` in `host/main/src/store.ts` (not `electron-store`). The file shape (`windowDim`, `windowPos`, `autostart`, `locale`, `installationID`, `flowerpot` as a JSON **string**) is what production versions write — keep it that way.

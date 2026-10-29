@@ -108,7 +108,7 @@ export function makeQuery(
 }
 
 /** A real WorkItem with the minimum fields the model reads. */
-export function makeWorkItem(query: Query, options?: { id?: number; htmlUrl?: string }): WorkItem {
+export function makeWorkItem(query: Query, options?: { id?: number; htmlUrl?: string; priority?: number }): WorkItem {
     return new WorkItem(
         {
             id: options?.id ?? 1,
@@ -122,6 +122,9 @@ export function makeWorkItem(query: Query, options?: { id?: number; htmlUrl?: st
                 "System.State": "New",
                 "System.WorkItemType": "User Story",
                 "System.CreatedDate": "2026-01-01T10:00:00Z",
+                ...(options?.priority === undefined
+                    ? {}
+                    : { "Microsoft.VSTS.Common.Priority": String(options.priority) }),
             } as any,
         } as any,
         query,
