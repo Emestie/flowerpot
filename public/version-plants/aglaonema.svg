@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200" viewBox="0 0 800 200" role="img" aria-labelledby="aglaonema-title aglaonema-desc">
+  <title id="aglaonema-title">Aglaonema</title>
+  <desc id="aglaonema-desc">A silver-variegated aglaonema (Chinese evergreen) growing in a clay pot on a deep green background.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a211b"/>
+      <stop offset=".42" stop-color="#143a2c"/>
+      <stop offset=".72" stop-color="#0e2a21"/>
+      <stop offset="1" stop-color="#081a15"/>
+    </linearGradient>
+
+    <radialGradient id="glow" cx="400" cy="182" r="265" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6ccf99" stop-opacity=".24"/>
+      <stop offset=".48" stop-color="#3f9d72" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#3f9d72" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="groundShadow" cx=".5" cy=".5" r=".5">
+      <stop stop-color="#03100b" stop-opacity=".6"/>
+      <stop offset="1" stop-color="#03100b" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="baseShade" cx=".5" cy=".5" r=".5">
+      <stop stop-color="#05170f" stop-opacity=".5"/>
+      <stop offset=".7" stop-color="#05170f" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#05170f" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="pot" x1="369" y1="0" x2="431" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d9865a"/>
+      <stop offset=".3" stop-color="#c46e46"/>
+      <stop offset=".72" stop-color="#a2532d"/>
+      <stop offset="1" stop-color="#7a3b1f"/>
+    </linearGradient>
+
+    <linearGradient id="potRim" x1="362" y1="0" x2="438" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e8a077"/>
+      <stop offset=".34" stop-color="#cd7d55"/>
+      <stop offset=".74" stop-color="#ac5c36"/>
+      <stop offset="1" stop-color="#874325"/>
+    </linearGradient>
+
+    <linearGradient id="lgDark" x1="0" y1="1" x2=".25" y2="0">
+      <stop offset="0" stop-color="#0f2e24"/>
+      <stop offset=".5" stop-color="#184836"/>
+      <stop offset="1" stop-color="#205a40"/>
+    </linearGradient>
+
+    <linearGradient id="lgMid" x1="0" y1="1" x2=".25" y2="0">
+      <stop offset="0" stop-color="#154a35"/>
+      <stop offset=".48" stop-color="#267450"/>
+      <stop offset="1" stop-color="#399367"/>
+    </linearGradient>
+
+    <linearGradient id="lgSilver" x1="0" y1="1" x2=".25" y2="0">
+      <stop offset="0" stop-color="#1c5c43"/>
+      <stop offset=".45" stop-color="#328160"/>
+      <stop offset="1" stop-color="#479c73"/>
+    </linearGradient>
+
+    <!-- Leaf geometry: base at (0,0), rounded tip at (0,-112), 40 wide -->
+    <path id="leafBody" d="M0 0C-10 -12 -20 -32 -20 -58C-20 -84 -11 -112 0 -112C11 -112 20 -84 20 -58C20 -32 10 -12 0 0Z"/>
+    <path id="leafVar" d="M0 -10C-6 -22 -9 -42 -9 -60C-9 -82 -5 -106 0 -111C5 -106 9 -82 9 -60C9 -42 6 -22 0 -10Z"/>
+    <g id="leafVeins" fill="none" stroke-width="1.2" stroke-linecap="round">
+      <path d="M0 -26C-6 -34 -11 -46 -15 -61"/>
+      <path d="M0 -26C6 -34 11 -46 15 -61"/>
+      <path d="M0 -58C-5 -66 -9 -78 -12 -92"/>
+      <path d="M0 -58C5 -66 9 -78 12 -92"/>
+    </g>
+
+    <clipPath id="leafClip">
+      <path d="M0 0C-10 -12 -20 -32 -20 -58C-20 -84 -11 -112 0 -112C11 -112 20 -84 20 -58C20 -32 10 -12 0 0Z"/>
+    </clipPath>
+
+    <!-- Leaf variants -->
+    <g id="leafDark">
+      <use href="#leafBody" fill="url(#lgDark)" stroke="#0a281e" stroke-opacity=".6"/>
+      <g clip-path="url(#leafClip)">
+        <use href="#leafVar" fill="#a8d8bb" fill-opacity=".12"/>
+      </g>
+      <path d="M0 -6V-105" stroke="#4d9c78" stroke-opacity=".26" stroke-width="1.6"/>
+    </g>
+
+    <g id="leafMid">
+      <use href="#leafBody" fill="url(#lgMid)" stroke="#0a281e" stroke-opacity=".55"/>
+      <g clip-path="url(#leafClip)">
+        <use href="#leafVar" fill="#d8efdd" fill-opacity=".42"/>
+        <ellipse cx="-6" cy="-34" rx="3.6" ry="9" transform="rotate(14 -6 -34)" fill="#eaf8e8" fill-opacity=".3"/>
+        <ellipse cx="7" cy="-52" rx="3.2" ry="10" transform="rotate(-18 7 -52)" fill="#eaf8e8" fill-opacity=".26"/>
+        <ellipse cx="-6" cy="-72" rx="3" ry="8" transform="rotate(15 -6 -72)" fill="#eaf8e8" fill-opacity=".22"/>
+        <ellipse cx="5" cy="-90" rx="2.2" ry="6" transform="rotate(-10 5 -90)" fill="#eaf8e8" fill-opacity=".18"/>
+      </g>
+      <use href="#leafVeins" stroke="#092a20" stroke-opacity=".3"/>
+      <path d="M0 -6V-105" stroke="#8bd2b1" stroke-opacity=".4" stroke-width="1.8"/>
+    </g>
+
+    <g id="leafSilver">
+      <use href="#leafBody" fill="url(#lgSilver)" stroke="#0a281e" stroke-opacity=".55"/>
+      <g clip-path="url(#leafClip)">
+        <use href="#leafVar" fill="#e6f5e6" fill-opacity=".5"/>
+        <ellipse cx="-6" cy="-32" rx="3.8" ry="10" transform="rotate(16 -6 -32)" fill="#f6fdee" fill-opacity=".36"/>
+        <ellipse cx="7" cy="-54" rx="3.4" ry="11" transform="rotate(-18 7 -54)" fill="#f6fdee" fill-opacity=".32"/>
+        <ellipse cx="-6" cy="-74" rx="3" ry="9" transform="rotate(14 -6 -74)" fill="#f6fdee" fill-opacity=".26"/>
+      </g>
+      <use href="#leafVeins" stroke="#092a20" stroke-opacity=".28"/>
+      <path d="M0 -6V-105" stroke="#b6e6c8" stroke-opacity=".5" stroke-width="1.8"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="200" fill="url(#bg)"/>
+  <rect width="800" height="200" fill="url(#glow)"/>
+
+  <!-- Decorative rings -->
+  <g fill="none" stroke="#9fe3bf">
+    <circle cx="400" cy="156" r="142" stroke-opacity=".07"/>
+    <circle cx="400" cy="156" r="200" stroke-opacity=".04"/>
+  </g>
+
+  <!-- Motes -->
+  <g fill="#b6ecd2">
+    <circle cx="176" cy="52" r="2.6" opacity=".16"/>
+    <circle cx="238" cy="132" r="1.8" opacity=".12"/>
+    <circle cx="612" cy="62" r="2.4" opacity=".14"/>
+    <circle cx="668" cy="126" r="1.8" opacity=".11"/>
+    <circle cx="86" cy="106" r="1.4" opacity=".1"/>
+    <circle cx="724" cy="44" r="1.4" opacity=".09"/>
+    <circle cx="316" cy="96" r="1.4" opacity=".1"/>
+    <circle cx="492" cy="92" r="1.2" opacity=".08"/>
+  </g>
+
+  <ellipse cx="400" cy="188" rx="72" ry="8" fill="url(#groundShadow)"/>
+
+  <!-- Aglaonema -->
+  <g id="aglaonema" transform="translate(400 144) scale(1.06)">
+    <!-- petioles -->
+    <g stroke="#276f4d" stroke-width="3" stroke-linecap="round" fill="none">
+      <path d="M-2 -2L-18 -8"/>
+      <path d="M2 -2L19 -8"/>
+      <path d="M-1 -2L-30 -6"/>
+      <path d="M1 -2L30 -6"/>
+      <path d="M0 -2L-9 -12"/>
+      <path d="M0 -2L10 -12"/>
+      <path d="M-1 -2L-4 -14"/>
+      <path d="M1 -2L5 -14"/>
+    </g>
+
+    <!-- back, low and splayed -->
+    <use href="#leafDark" transform="translate(-12 -8) rotate(-68) scale(.9 .55)"/>
+    <use href="#leafDark" transform="translate(13 -8) rotate(70) scale(.88 .53)"/>
+    <use href="#leafDark" transform="translate(-11 -11) rotate(-56) scale(.92 .7)"/>
+    <use href="#leafDark" transform="translate(12 -11) rotate(58) scale(.9 .68)"/>
+
+    <!-- back, upper -->
+    <use href="#leafDark" transform="translate(-6 -14) rotate(-34) scale(.95 .88)"/>
+    <use href="#leafDark" transform="translate(7 -14) rotate(36) scale(.93 .86)"/>
+
+    <!-- middle row -->
+    <use href="#leafMid" transform="translate(0 -14) rotate(-3) scale(1 1)"/>
+    <use href="#leafMid" transform="translate(-15 -8) rotate(-48) scale(.95 .84)"/>
+    <use href="#leafMid" transform="translate(16 -8) rotate(50) scale(.93 .82)"/>
+    <use href="#leafMid" transform="translate(-8 -12) rotate(-25) scale(.98 .94)"/>
+    <use href="#leafMid" transform="translate(9 -12) rotate(27) scale(.96 .92)"/>
+
+    <!-- front row -->
+    <use href="#leafSilver" transform="translate(-5 -6) rotate(-12) scale(.9 .96)"/>
+    <use href="#leafSilver" transform="translate(6 -6) rotate(14) scale(.88 .94)"/>
+  </g>
+
+  <!-- Pot -->
+  <g>
+    <ellipse cx="400" cy="146" rx="40" ry="9" fill="url(#baseShade)"/>
+    <path d="M369 152h62l-7 32.6c-.6 2.9-3.1 4.4-6 4.4h-36c-2.9 0-5.4-1.5-6-4.4z" fill="url(#pot)"/>
+    <path d="M369 152h13l-6.4 37h-3.6c-2.9 0-5.4-1.5-6-4.4z" fill="#ffffff" opacity=".12"/>
+    <path d="M421 152h10l-7 32.6c-.6 2.9-3.1 4.4-6 4.4h-2.2c2-.6 3.1-2.2 3.5-4.8z" fill="#4a2312" opacity=".26"/>
+    <rect x="362" y="138.5" width="76" height="13.5" rx="4.5" fill="url(#potRim)"/>
+    <path d="M367.5 141.4h65" stroke="#ffffff" stroke-opacity=".22" stroke-width="1.7" stroke-linecap="round"/>
+    <rect x="364" y="146.4" width="72" height="5.6" fill="#5c2f18" opacity=".13"/>
+    <ellipse cx="400" cy="140.4" rx="30.5" ry="4.4" fill="#3b2517"/>
+    <ellipse cx="400" cy="141.7" rx="30.5" ry="3.5" fill="#241609"/>
+    <circle cx="390" cy="140.8" r=".8" fill="#6b4a32" opacity=".45"/>
+    <circle cx="409" cy="141.6" r=".7" fill="#6b4a32" opacity=".4"/>
+    <circle cx="400" cy="139.8" r=".6" fill="#6b4a32" opacity=".35"/>
+  </g>
+</svg>
