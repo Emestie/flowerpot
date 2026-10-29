@@ -166,7 +166,7 @@ const ru: LocalizedStrings = {
     localWarning:
         "Приложение использует локальную версию функционала. Причиной может быть отсутствие подключения к интернету. Не все новые функции доступны.",
 
-    justUpdatedMessage1: "Flowerpot обновлен до версии ",
+    justUpdatedMessage1: "🎉 Flowerpot обновлен до версии ",
     justUpdatedMessage2: "Посмотреть изменения",
     justUpdatedHide: "ОК",
 

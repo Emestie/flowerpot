@@ -163,7 +163,7 @@ const en = {
     localWarning:
         "App loaded with local scripts. The reason might be in the internet outage. Not all features available.",
 
-    justUpdatedMessage1: "Flowerpot has been updated to version ",
+    justUpdatedMessage1: "🎉 Flowerpot has been updated to version ",
     justUpdatedMessage2: "View changes",
     justUpdatedHide: "OK",
 

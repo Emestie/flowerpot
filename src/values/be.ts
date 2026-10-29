@@ -163,7 +163,7 @@ const be: LocalizedStrings = {
     localWarning:
         "Праграма выкарыстоўвае лакальную версію функцыяналу. Прычынай можа быць адсутнасць падключэння да інтэрнэту. Не ўсе новыя функцыі даступныя.",
 
-    justUpdatedMessage1: "Flowerpot абноўлены да версіі ",
+    justUpdatedMessage1: "🎉 Flowerpot абноўлены да версіі ",
     justUpdatedMessage2: "Паглядзець змены",
     justUpdatedHide: "ОК",
 
