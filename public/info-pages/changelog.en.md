@@ -1,6 +1,7 @@
 ## 1.0.0
 
-- after 7 years of Flowerpot development, 1.0.0 is finally here 🎉🎉🎉
+- after 7 years of Flowerpot development, 1.0 is finally here 🎉🎉🎉
+- introducing plant branding: every new version will have a unique name, starting with Aglaonema
 - fixed settings loss: the settings file is now written atomically and backed up
 - if the settings file is damaged, the app warns about it and keeps a copy of the damaged file
 - added support for Azure DevOps Services (cloud DevOps): an account can be connected by `https://dev.azure.com/organization/` or `https://organization.visualstudio.com/`
