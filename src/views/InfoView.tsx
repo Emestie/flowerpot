@@ -5,8 +5,11 @@ import { Container } from "../ui/container";
 import { Icon } from "../ui/icon";
 import { Message } from "../ui/message";
 import { PageLayout } from "../components/PageLayout";
+import { VersionPlantArt } from "../components/VersionPlantArt";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Info } from "../helpers/Info";
+import Version from "../helpers/Version";
+import { brandChangelogHeading, getReleasePlant } from "../helpers/VersionPlants";
 import { s } from "../values/Strings";
 import { useAppStore } from "../zustand/app";
 
@@ -15,6 +18,9 @@ interface IInfoViewParams extends Record<string, any> {
     viewCaption?: string;
 }
 
+/** The release notes of the running version, the only page that carries a release plant. */
+const CHANGELOG_PAGE = "changelog.md";
+
 export function InfoView() {
     const viewParams = useAppStore((state) => state.viewParams) as IInfoViewParams;
     const locale = useAppStore((state) => state.locale);
@@ -22,16 +28,20 @@ export function InfoView() {
     const [isLoading, setIsLoading] = useState(true);
 
     const isMarkdown = viewParams.contentFileName.endsWith(".md");
+    const isChangelog = viewParams.contentFileName === CHANGELOG_PAGE;
+    const releasePlant = isChangelog ? getReleasePlant(Version.short) : undefined;
+    const plantName = releasePlant?.name;
 
     useEffect(() => {
         setIsLoading(true);
         (async () => {
             const text = await Info.getInfoText(viewParams.contentFileName);
-            setContentText(text);
+
+            setContentText(plantName ? brandChangelogHeading(text, Version.short, plantName) : text);
             setIsLoading(false);
         })();
         // locale is a dependency: a translated page is re-fetched in the new language
-    }, [viewParams, locale]);
+    }, [viewParams, locale, plantName]);
 
     useEffect(() => {
         if (!isLoading && contentText) {
@@ -70,6 +80,11 @@ export function InfoView() {
                 </ViewHeading>
             }
         >
+            {releasePlant && (
+                <div className="version-plant-hero">
+                    <VersionPlantArt className="version-plant-hero-art" />
+                </div>
+            )}
             {content()}
         </PageLayout>
     );
