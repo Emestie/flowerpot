@@ -9,6 +9,7 @@
 - the maximum number of accounts is increased to 5
 - fixed account flower icons: the icon is now always shown, including for accounts from imported settings
 - the switches enabling queries and projects in settings are replaced with toggles
+- added the Shire color scheme: a warm, earthy palette with a light and a dark side
 - reworked the tray icon colour calculation: only enabled queries without "ignore icon" are counted, so the red icon no longer appears because of disabled queries and no longer flickers during refreshes
 - fixed a bug that kept pull requests with nested reviewer groups out of the list: if the user belongs to a group nested inside a reviewer group, such a PR now counts as theirs
 
