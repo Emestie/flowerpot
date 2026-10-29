@@ -23,6 +23,7 @@ const getTableScales: () => DropdownItemProps[] = () => [
 const getColorSchemes: () => DropdownItemProps[] = () => [
     { key: 1, text: s("colorSchemeClassic"), value: "classic" },
     { key: 2, text: s("colorSchemeFlexoki"), value: "flexoki" },
+    { key: 3, text: s("colorSchemeShire"), value: "shire" },
 ];
 
 const getThemes: () => DropdownItemProps[] = () => [

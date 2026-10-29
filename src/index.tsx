@@ -7,6 +7,7 @@ import "./debug-fns";
 import "./style/ui.css";
 import "./style/ui-dark.css";
 import "./style/schemes/flexoki.css";
+import "./style/schemes/shire.css";
 
 let remountKey = 0;
 const root = createRoot(document.getElementById("root")!);

@@ -356,9 +356,10 @@ const ru: LocalizedStrings = {
     ddColorSchemeLabel: "Цветовая схема: ",
     colorSchemeClassic: "Классическая",
     colorSchemeFlexoki: "Flexoki",
+    colorSchemeShire: "Shire",
 
-    statusBanner: "Теперь можно менять статус задачи прямо в таблице — кликните на столбец статуса.",
-    statusBannerAction: "Понятно",
+    shireBannerText: "Доступна новая цветовая схема Shire! Попробуйте её в Настройки → Интерфейс.",
+    shireBannerAction: "Попробовать",
 
     settingsRestoredBanner:
         "Часть настроек восстановлена из резервной копии, потому что файл настроек был повреждён. Проверьте аккаунты, запросы и списки.",

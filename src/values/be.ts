@@ -354,9 +354,10 @@ const be: LocalizedStrings = {
     ddColorSchemeLabel: "Колеравая схема: ",
     colorSchemeClassic: "Класічная",
     colorSchemeFlexoki: "Flexoki",
+    colorSchemeShire: "Shire",
 
-    statusBanner: "Цяпер можно змяніць статус задачы проста ў табліцы — націсніце на слупок статуса.",
-    statusBannerAction: "Зразумела",
+    shireBannerText: "Даступная новая колеравая схема Shire! Паспрабуйце яе ў Налады → Інтэрфейс.",
+    shireBannerAction: "Паспрабаваць",
 
     settingsRestoredBanner:
         "Частка налад адноўлена з рэзервовай копіі, бо файл налад быў пашкоджаны. Праверце акаўнты, запыты і спісы.",

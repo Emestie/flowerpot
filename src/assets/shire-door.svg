@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="shireSky" x1="4" y1="1" x2="26" y2="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fdfaf3"/>
+      <stop offset="100%" stop-color="#e9e1cf"/>
+    </linearGradient>
+    <linearGradient id="shireHill" x1="16" y1="15" x2="16" y2="31" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#93a56b"/>
+      <stop offset="100%" stop-color="#3f5229"/>
+    </linearGradient>
+    <clipPath id="shireDisc">
+      <circle cx="16" cy="16" r="15"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#shireDisc)">
+    <rect x="0" y="0" width="32" height="32" fill="url(#shireSky)"/>
+    <circle cx="24.2" cy="8.2" r="3" fill="#c47a3a"/>
+    <path d="M-4 30 C 4 12, 28 12, 36 30 Z" fill="url(#shireHill)"/>
+    <path d="M-4 30 H36 V33 H-4 Z" fill="#2f3d1c"/>
+    <circle cx="16" cy="25" r="5.6" fill="#43372a" stroke="#c47a3a" stroke-width="1.3"/>
+    <circle cx="18.2" cy="25" r="1.2" fill="#d8cbb6"/>
+  </g>
+  <circle cx="16" cy="16" r="15" fill="none" stroke="#809062" stroke-width="1.6"/>
+</svg>

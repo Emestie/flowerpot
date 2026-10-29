@@ -354,9 +354,10 @@ const en = {
     ddColorSchemeLabel: "Color scheme: ",
     colorSchemeClassic: "Classic",
     colorSchemeFlexoki: "Flexoki",
+    colorSchemeShire: "Shire",
 
-    statusBanner: "You can now change a work item's status directly in the table — click on the status column.",
-    statusBannerAction: "Got it",
+    shireBannerText: "New Shire color scheme is available! Try it out in Settings → Interface.",
+    shireBannerAction: "Try",
 
     settingsRestoredBanner:
         "Part of your settings was restored from a backup copy because the settings file was damaged. Please check your accounts, queries and lists.",

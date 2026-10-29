@@ -62,7 +62,7 @@ export function App() {
     }, [isDark]);
 
     useEffect(() => {
-        document.documentElement.classList.remove("scheme-classic", "scheme-flexoki");
+        document.documentElement.classList.remove("scheme-classic", "scheme-flexoki", "scheme-shire");
         const schemeClass = getSchemeClass(colorScheme);
         if (schemeClass) {
             document.documentElement.classList.add(schemeClass);
