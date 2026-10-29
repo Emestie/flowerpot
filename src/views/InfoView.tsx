@@ -17,6 +17,7 @@ interface IInfoViewParams extends Record<string, any> {
 
 export function InfoView() {
     const viewParams = useAppStore((state) => state.viewParams) as IInfoViewParams;
+    const locale = useAppStore((state) => state.locale);
     const [contentText, setContentText] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
@@ -29,7 +30,8 @@ export function InfoView() {
             setContentText(text);
             setIsLoading(false);
         })();
-    }, [viewParams]);
+        // locale is a dependency: a translated page is re-fetched in the new language
+    }, [viewParams, locale]);
 
     useEffect(() => {
         if (!isLoading && contentText) {
