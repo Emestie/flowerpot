@@ -8,7 +8,7 @@ import { VersionPlantArt } from "../VersionPlantArt";
 export function WhatsNewBanner() {
     const showWhatsNew = useAppStore((state) => state.showWhatsNew);
 
-    //if (!showWhatsNew) return null;
+    if (!showWhatsNew) return null;
 
     const hideMessage = () => {
         useAppStore.getState().setShowWhatsNew(false);
