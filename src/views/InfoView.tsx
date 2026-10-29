@@ -1,15 +1,13 @@
 import Markdown from "markdown-to-jsx";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import { Container } from "../ui/container";
 import { Icon } from "../ui/icon";
 import { Message } from "../ui/message";
 import { PageLayout } from "../components/PageLayout";
-import { VersionPlantArt } from "../components/VersionPlantArt";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Info } from "../helpers/Info";
-import Version from "../helpers/Version";
-import { brandChangelogHeading, getReleasePlant } from "../helpers/VersionPlants";
+import { groupChangelogByPlant } from "../helpers/VersionPlants";
 import { s } from "../values/Strings";
 import { useAppStore } from "../zustand/app";
 
@@ -18,8 +16,8 @@ interface IInfoViewParams extends Record<string, any> {
     viewCaption?: string;
 }
 
-/** The release notes of the running version, the only page that carries a release plant. */
-const CHANGELOG_PAGE = "changelog.md";
+/** The release notes, the only pages that carry release plants. */
+const CHANGELOG_PAGES = ["changelog.md", "changelog-old.md"];
 
 export function InfoView() {
     const viewParams = useAppStore((state) => state.viewParams) as IInfoViewParams;
@@ -28,20 +26,23 @@ export function InfoView() {
     const [isLoading, setIsLoading] = useState(true);
 
     const isMarkdown = viewParams.contentFileName.endsWith(".md");
-    const isChangelog = viewParams.contentFileName === CHANGELOG_PAGE;
-    const releasePlant = isChangelog ? getReleasePlant(Version.short) : undefined;
-    const plantName = releasePlant?.name;
+    const isChangelog = CHANGELOG_PAGES.includes(viewParams.contentFileName);
 
     useEffect(() => {
         setIsLoading(true);
         (async () => {
             const text = await Info.getInfoText(viewParams.contentFileName);
 
-            setContentText(plantName ? brandChangelogHeading(text, Version.short, plantName) : text);
+            setContentText(text);
             setIsLoading(false);
         })();
         // locale is a dependency: a translated page is re-fetched in the new language
-    }, [viewParams, locale, plantName]);
+    }, [viewParams, locale]);
+
+    const groups = useMemo(
+        () => (isChangelog ? groupChangelogByPlant(contentText) : [{ markdown: contentText }]),
+        [isChangelog, contentText]
+    );
 
     useEffect(() => {
         if (!isLoading && contentText) {
@@ -63,12 +64,21 @@ export function InfoView() {
             );
         }
 
-        if (isMarkdown) {
-            return <Markdown options={{ overrides: { Button: { component: Button } } }}>{contentText}</Markdown>;
+        if (!isMarkdown) {
+            return <Container fluid>{contentText}</Container>;
         }
 
-        return <Container fluid>{contentText}</Container>;
-    }, [contentText, isLoading, isMarkdown]);
+        return groups.map((group, i) => (
+            <Fragment key={i}>
+                {group.plant && (
+                    <div className="version-plant-hero">
+                        <img className="version-plant-hero-art" src={group.plant.art} alt={group.plant.name} />
+                    </div>
+                )}
+                <Markdown options={{ overrides: { Button: { component: Button } } }}>{group.markdown}</Markdown>
+            </Fragment>
+        ));
+    }, [contentText, groups, isLoading, isMarkdown]);
 
     return (
         <PageLayout
@@ -80,11 +90,6 @@ export function InfoView() {
                 </ViewHeading>
             }
         >
-            {releasePlant && (
-                <div className="version-plant-hero">
-                    <VersionPlantArt className="version-plant-hero-art" />
-                </div>
-            )}
             {content()}
         </PageLayout>
     );

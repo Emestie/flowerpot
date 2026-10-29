@@ -1,7 +1,13 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { brandChangelogHeading, getMinorVersion, getReleasePlant, RELEASE_PLANTS } from "../helpers/VersionPlants";
+import {
+    getMinorVersion,
+    getReleasePlant,
+    groupChangelogByPlant,
+    IReleasePlant,
+    RELEASE_PLANTS,
+} from "../helpers/VersionPlants";
 
 describe("release plants", () => {
     it("names a release after its plant", () => {
@@ -39,28 +45,85 @@ describe("release plants", () => {
     });
 });
 
-describe("changelog heading branding", () => {
-    const notes = "## 1.0.0\n\n- fixed settings loss\n\n## 0.8.15\n\n- older note\n";
+describe("changelog grouping by plant", () => {
+    /** A changelog of two plants plus a release from before the naming started. */
+    const changelog = [
+        "## 1.1.1",
+        "",
+        "- begonia patch",
+        "",
+        "## 1.1.0",
+        "",
+        "- begonia",
+        "",
+        "## 1.0.1",
+        "",
+        "- aglaonema patch",
+        "",
+        "## 1.0.0",
+        "",
+        "- aglaonema",
+        "",
+        "## 0.8.15",
+        "",
+        "- old release",
+        "",
+    ].join("\n");
 
-    it("puts the plant after the version number", () => {
-        expect(brandChangelogHeading(notes, "1.0.0", "Aglaonema")).toBe(
-            "## 1.0.0 · Aglaonema\n\n- fixed settings loss\n\n## 0.8.15\n\n- older note\n"
-        );
+    const begonia: IReleasePlant = { name: "Begonia", art: "./version-plants/begonia.svg" };
+
+    // stands in for the map of a future release, where 1.1 is Begonia
+    const resolvePlant = (version: string) => (version.startsWith("1.1.") ? begonia : getReleasePlant(version));
+
+    it("puts the art above every run and the name on the release that started it", () => {
+        const groups = groupChangelogByPlant(changelog, resolvePlant);
+
+        expect(groups.map((group) => group.plant?.name)).toEqual(["Begonia", "Aglaonema", undefined]);
+        expect(groups[0].markdown).toContain("## 1.1.1\n");
+        expect(groups[0].markdown).toContain("## 1.1.0 · Begonia\n");
+        expect(groups[1].markdown).toContain("## 1.0.1\n");
+        expect(groups[1].markdown).toContain("## 1.0.0 · Aglaonema\n");
     });
 
-    it("leaves the notes and the older releases untouched", () => {
-        const branded = brandChangelogHeading(notes, "1.0.0", "Aglaonema");
+    it("leaves releases without a plant unbranded", () => {
+        const groups = groupChangelogByPlant(changelog, resolvePlant);
 
-        expect(branded).toContain("- fixed settings loss");
-        expect(branded).toContain("## 0.8.15\n\n- older note");
+        expect(groups[2].plant).toBeUndefined();
+        expect(groups[2].markdown).toBe("## 0.8.15\n\n- old release\n");
     });
 
-    it("changes nothing when the version has no heading", () => {
-        expect(brandChangelogHeading(notes, "1.1.0", "Begonia")).toBe(notes);
-        expect(brandChangelogHeading("_no notes yet_", "1.0.0", "Aglaonema")).toBe("_no notes yet_");
+    it("keeps the notes of every release with its heading", () => {
+        const groups = groupChangelogByPlant(changelog, resolvePlant);
+
+        expect(groups[1].markdown).toBe("## 1.0.1\n\n- aglaonema patch\n\n## 1.0.0 · Aglaonema\n\n- aglaonema\n");
     });
 
-    it("does not treat the version as a pattern", () => {
-        expect(brandChangelogHeading("## 1x0y0\n", "1.0.0", "Aglaonema")).toBe("## 1x0y0\n");
+    it("names a single release group and puts the art above it", () => {
+        const groups = groupChangelogByPlant("## 1.0.0\n\n- first release of the name\n", resolvePlant);
+
+        expect(groups).toHaveLength(1);
+        expect(groups[0].plant?.name).toBe("Aglaonema");
+        expect(groups[0].markdown).toBe("## 1.0.0 · Aglaonema\n\n- first release of the name\n");
+    });
+
+    it("reads headings of a CRLF page like the shipped ones", () => {
+        const groups = groupChangelogByPlant("## 1.0.0\r\n\r\n- note\r\n", resolvePlant);
+
+        expect(groups).toHaveLength(1);
+        expect(groups[0].plant?.name).toBe("Aglaonema");
+        expect(groups[0].markdown).toBe("## 1.0.0 · Aglaonema\n\n- note\n");
+    });
+
+    it("keeps a page without release headings in one unbranded group", () => {
+        const page = "_Release notes are not available in English for now_\n";
+        const groups = groupChangelogByPlant(page, resolvePlant);
+
+        expect(groups).toEqual([{ plant: undefined, markdown: page }]);
+    });
+
+    it("drops the empty block before the first heading", () => {
+        const groups = groupChangelogByPlant(changelog, resolvePlant);
+
+        expect(groups[0].markdown.startsWith("## 1.1.1")).toBe(true);
     });
 });
