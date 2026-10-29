@@ -90,9 +90,13 @@ async function createWindow() {
             ? import.meta.env.VITE_DEV_SERVER_URL
             : pathToFileURL(join(__dirname, "../../../build/index.html")).toString();
 
-    await browserWindow.loadURL(pageUrl);
-
+    // Build the tray before loading the page: the renderer sends "react-is-ready"
+    // from its very first effect (twice in dev, React StrictMode), which can land
+    // before loadURL resolves. Creating the tray afterwards left `tray` undefined
+    // when that IPC arrived, logging "Failed to update tray icon: ... setImage".
     buildTrayIcon();
+
+    await browserWindow.loadURL(pageUrl);
 
     return browserWindow;
 }

@@ -67,6 +67,7 @@ ipcMain.on("toggle-autostart", () => {
 });
 
 ipcMain.on("react-is-ready", () => {
+    if (!tray) return;
     iconUpdateTask(currentLevel, false);
 });
 
