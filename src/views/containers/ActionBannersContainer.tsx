@@ -1,10 +1,18 @@
 import pull from "../../assets/pull.png";
+import shireDoor from "../../assets/shire-door.svg";
 import { ActionBanner, IActionBannerProps } from "../../components/banners/ActionBanner";
 import { s } from "../../values/Strings";
 import { useAppStore } from "../../zustand/app";
 import { useSettingsStore } from "../../zustand/settings";
 // import idea from "../../assets/idea.png";
 
+/**
+ * One-time promotional banners only: an id is persisted in `bannersShown` as soon
+ * as the banner is dismissed, so ids are permanent and never reused. Messages
+ * about app state or failures get their own component instead of an entry here
+ * (see SettingsProblemBanner) — a broken settings file must be reported on every
+ * launch until it is fixed, not hidden after one click.
+ */
 function getActionBannersList(): IActionBannerProps[] {
     return [
         // {
@@ -35,19 +43,25 @@ function getActionBannersList(): IActionBannerProps[] {
             },
         },
         {
-            id: 8,
-            text: s("statusBanner"),
-            actionText: s("statusBannerAction"),
-            type: "info",
+            id: 9,
+            text: s("shireBannerText"),
+            actionText: s("shireBannerAction"),
+            img: shireDoor,
+            type: "positive",
+            action() {
+                useSettingsStore.getState().setColorScheme("shire");
+            },
             condition() {
-                if (new Date().getTime() >= new Date(2026, 8, 20).getTime()) return false;
+                const state = useSettingsStore.getState();
+                if (state.colorScheme === "shire") return false;
+                if (Date.now() >= new Date(2026, 10, 20).getTime()) return false;
                 return true;
             },
         },
     ];
 }
 
-//! LAST USED INDEX: 8
+//! LAST USED INDEX: 9 — next banner takes a new id, existing ids are never reused
 
 export function ActionBannersContainer() {
     const banners = getActionBannersList().map((x) => <ActionBanner key={x.id} {...x} />);

@@ -4,8 +4,8 @@ import { Container } from "../ui/container";
 import { Message } from "../ui/message";
 import { PageLayout } from "../components/PageLayout";
 import { ViewHeading } from "../components/heading/ViewHeading";
-import Platform from "../helpers/Platform";
 import { Timers } from "../helpers/Timers";
+import TrayIcon from "../helpers/TrayIcon";
 import { s } from "../values/Strings";
 import { useAppStore } from "../zustand/app";
 
@@ -41,7 +41,7 @@ export function ErrorView() {
 
     useEffect(() => {
         routineStart();
-        Platform.current.updateTrayIcon(0, false);
+        TrayIcon.forceLevel(0, false);
 
         return () => {
             Timers.delete("error-interval");

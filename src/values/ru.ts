@@ -111,6 +111,7 @@ const ru: LocalizedStrings = {
     severity: "Важность",
     addQuery: "Добавить запрос",
     actions: "Действия",
+    enabled: "Включено",
     ignoreNotif: "Игнор. уведом.",
     ignoreIcon: "Игнор. икон.",
     queryName: "Название запроса",
@@ -165,7 +166,7 @@ const ru: LocalizedStrings = {
     localWarning:
         "Приложение использует локальную версию функционала. Причиной может быть отсутствие подключения к интернету. Не все новые функции доступны.",
 
-    justUpdatedMessage1: "Flowerpot обновлен до версии ",
+    justUpdatedMessage1: "🎉 Flowerpot обновлен до версии ",
     justUpdatedMessage2: "Посмотреть изменения",
     justUpdatedHide: "ОК",
 
@@ -291,6 +292,8 @@ const ru: LocalizedStrings = {
 
     credsTokenInfo1: "Для авторизации в приложении вам необходимо получить",
     credsTokenInfo2: "персональный токен доступа",
+    credsCloudHint:
+        "Примеры корректного пути: https://dev.azure.com/organization/ (Azure DevOps Services) или http://tfs:8080/tfs/ (Azure DevOps Server).",
     credsTokenInfo3:
         "в вашем Azure DevOps. Инструкция по созданию токена и прямая ссылка на страницу создания токена доступны по кнопкам ниже:",
     credsTokenOpenDocs: "Открыть документацию по созданию токена (Microsoft)",
@@ -353,9 +356,18 @@ const ru: LocalizedStrings = {
     ddColorSchemeLabel: "Цветовая схема: ",
     colorSchemeClassic: "Классическая",
     colorSchemeFlexoki: "Flexoki",
+    colorSchemeShire: "Shire",
 
-    statusBanner: "Теперь можно менять статус задачи прямо в таблице — кликните на столбец статуса.",
-    statusBannerAction: "Понятно",
+    shireBannerText: "Доступна новая цветовая схема Shire! Попробуйте её в Настройки → Интерфейс.",
+    shireBannerAction: "Попробовать",
+
+    settingsRestoredBanner:
+        "Часть настроек восстановлена из резервной копии, потому что файл настроек был повреждён. Проверьте аккаунты, запросы и списки.",
+    settingsDamagedBanner:
+        "Файл настроек был повреждён и не читается, поэтому Flowerpot запустился с настройками по умолчанию. Повреждённый файл сохранён рядом.",
+    settingsLockedBanner:
+        "Файл настроек не удалось прочитать, он оставлен без изменений. Изменения, сделанные сейчас, не сохранятся — перезапустите Flowerpot.",
+    settingsShowFile: "Показать файл",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тип: ",

@@ -1,5 +1,30 @@
+import { TLocale } from "../types";
 import { useAppStore } from "../zustand/app";
 import Platform from "./Platform";
+
+/**
+ * Info pages that ship in several languages as `<baseName>.<locale>.md` in
+ * `public/info-pages`. Views keep asking for the language agnostic name
+ * ("changelog.md"), the current locale picks the file.
+ *
+ * Adding a language means adding the file and the locale to the list below;
+ * the declarations are verified against the shipped files in info-pages.test.ts.
+ */
+export const TRANSLATED_INFO_PAGES: Record<string, { baseName: string; locales: TLocale[] }> = {
+    "changelog.md": { baseName: "changelog", locales: ["be", "en", "ru"] },
+};
+
+/** A missing translation must not leave the page empty. */
+const FALLBACK_LOCALE: TLocale = "en";
+
+export function resolveInfoPageName(pageName: string, locale: TLocale): string {
+    const translated = TRANSLATED_INFO_PAGES[pageName];
+    if (!translated) return pageName;
+
+    const chosen = translated.locales.includes(locale) ? locale : FALLBACK_LOCALE;
+
+    return `${translated.baseName}.${chosen}.md`;
+}
 
 export class Info {
     private static listenerDictionary: Record<string, () => void> = {
@@ -36,7 +61,7 @@ export class Info {
     }
 
     private static async fetchPage(pageName: string) {
-        const url = this.getFetchUrl(pageName);
+        const url = this.getFetchUrl(resolveInfoPageName(pageName, useAppStore.getState().locale));
 
         return await fetch(url);
     }

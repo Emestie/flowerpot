@@ -2,9 +2,7 @@ import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
 import { PullRequest } from "../models/pull-request";
 import { s } from "../values/Strings";
-import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
-import Platform from "./Platform";
 import { safeParse } from "./safe-parse";
 
 type TBoolProps = "enabled" | "ignoreNotif" | "ignoreIcon" | "empty";
@@ -106,41 +104,6 @@ export default class QueryHelper {
 
     public static savePRStorage(prs: IPRStorage) {
         localStorage.setItem("PRStorage", JSON.stringify(prs));
-    }
-
-    public static calculateIconLevel(query: Query, workItems: WorkItem[]) {
-        let wiStorage = this.getWIStorage();
-
-        wiStorage[query.queryId] = [...workItems];
-
-        let allWIs: WorkItem[] = [];
-        //clear incative queries in wi
-
-        for (let x in wiStorage) {
-            //TODO: if (!queriesIds.includes(x) || Loaders.outage) wiStorage[x] = undefined;
-            if (wiStorage[x]) allWIs = [...allWIs, ...(wiStorage[x] as WorkItem[])];
-        }
-
-        let hasChanges = false;
-        for (let x in allWIs) {
-            let wiChanges = !!useDataStore.getState().changesCollection[allWIs[x].id];
-            if (wiChanges) {
-                hasChanges = true;
-                break;
-            }
-        }
-
-        if (useSettingsStore.getState().iconChangesOnMyWorkItemsOnly) {
-            allWIs = allWIs.filter((wi) => wi._isMine);
-        }
-
-        let level = allWIs.length ? 3 : 4;
-
-        allWIs.forEach((wi) => {
-            if (wi.isRed) level = 1;
-        });
-
-        Platform.current.updateTrayIcon(level, hasChanges);
     }
 
     public static getFakePermawatchQuery(accountId: string): Query {

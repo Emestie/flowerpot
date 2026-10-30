@@ -2,6 +2,8 @@ import { Button } from "../../ui/button";
 import { Checkbox } from "../../ui/checkbox";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
+import { Toggle } from "../../ui/toggle";
+import CloudAdo from "../../helpers/CloudAdo";
 import Platform, { PlatformType } from "../../helpers/Platform";
 import QueryHelper from "../../helpers/Query";
 import { s } from "../../values/Strings";
@@ -12,6 +14,7 @@ import { AccountBadge } from "../AccountBadge";
 export function QueriesSettingsTable() {
     const setView = useAppStore((s) => s.setView);
     const queries = useSettingsStore((state) => state.queries.sort((a, b) => a.order - b.order)) || [];
+    const accounts = useSettingsStore((state) => state.accounts);
 
     const openQuerySelector = () => {
         setView("selectqueries");
@@ -22,8 +25,9 @@ export function QueriesSettingsTable() {
     const rows = queries.map((q: any, idx: number) => (
         <Table.Row key={q.queryId}>
             <Table.Cell collapsing>
-                <Checkbox
+                <Toggle
                     checked={q.enabled}
+                    ariaLabel={s("enabled")}
                     onChange={() => {
                         QueryHelper.toggleBoolean(q, "enabled");
                     }}
@@ -31,7 +35,11 @@ export function QueriesSettingsTable() {
             </Table.Cell>
             <Table.Cell>
                 <div className="collection-badge-row">
-                    <AccountBadge accountId={q.accountId} display="flex" rightGap={4} size="l" /> {q.collectionName}
+                    <AccountBadge accountId={q.accountId} display="flex" rightGap={4} size="l" />{" "}
+                    {CloudAdo.getCollectionDisplayName(
+                        accounts.find((a) => a.id === q.accountId)?.url,
+                        q.collectionName
+                    )}
                 </div>
             </Table.Cell>
             <Table.Cell>{q.teamName}</Table.Cell>

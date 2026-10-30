@@ -4,7 +4,9 @@ import Platform from "./Platform";
 import Version from "./Version";
 import { useSettingsStore } from "../zustand/settings";
 
-const cyrillicToTranslit = new CyrillicToTranslit();
+// 3.2.x typings declare a factory function (no construct signature); calling it
+// without arguments yields the same instance `new CyrillicToTranslit()` produced.
+const cyrillicToTranslit = CyrillicToTranslit();
 
 export default class Telemetry {
     private static async basicMessage(

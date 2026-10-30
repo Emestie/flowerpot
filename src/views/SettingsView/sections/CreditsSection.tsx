@@ -162,7 +162,9 @@ export function CreditsSection() {
             <Label className="credits-label">
                 {s("versionWord")}
                 <Label.Detail>
-                    {getPlatformIcon()} {Version.long}
+                    {getPlatformIcon()} {Version.number}
+                    {Version.plant ? <span className="credits-plant-name"> · {Version.plant.name}</span> : null}
+                    {` (${Version.buildTime})`}
                 </Label.Detail>
             </Label>
             <Label as="a" onClick={showChangelog} className="credits-label">

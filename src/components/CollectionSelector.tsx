@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Form } from "../ui/form";
+import CloudAdo from "../helpers/CloudAdo";
 import { AccountBadge } from "./AccountBadge";
 import { useSettingsStore } from "../zustand/settings";
 
@@ -8,6 +9,7 @@ export function CollectionSelector(props: {
     value?: { accountId: string; collectionName: string };
 }) {
     const queries = useSettingsStore((state) => state.queries);
+    const accounts = useSettingsStore((state) => state.accounts);
 
     const options = useMemo(
         () =>
@@ -23,14 +25,18 @@ export function CollectionSelector(props: {
                     text: (
                         <div className="collection-badge-row">
                             <AccountBadge accountId={x.accountId} rightGap={8} display="flex" />
-                            {x.collectionName}
+                            {/*cloud collections have an empty name, the org name is displayed instead*/}
+                            {CloudAdo.getCollectionDisplayName(
+                                accounts.find((a) => a.id === x.accountId)?.url,
+                                x.collectionName
+                            )}
                         </div>
                     ),
                     value: i,
                     collectionName: x.collectionName,
                     accountId: x.accountId,
                 })),
-        [queries]
+        [queries, accounts]
     );
 
     const [collectionIndex, setCollectionIndex] = useState(

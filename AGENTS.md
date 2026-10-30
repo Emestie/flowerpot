@@ -80,6 +80,7 @@ Components expect these CSS variables (with fallback defaults in `src/style/ui.c
 | Inputs | `--input-bg`, `--input-color`, `--input-border`, `--input-focus-border`, `--input-focus-bg`, `--input-focus-placeholder`, `--input-active-border`, `--input-active-bg`, `--input-placeholder`, `--input-error-bg`, `--input-error-border`, `--input-error-color`, `--input-error-placeholder`, `--input-error-placeholder-focus` |
 | Radio | `--radio-color`, `--radio-border`, `--radio-bg`, `--radio-dot`, `--radio-hover-border`, `--radio-focus-border` |
 | Checkbox | `--checkbox-color`, `--checkbox-border`, `--checkbox-bg`, `--checkbox-checked-bg`, `--checkbox-checked-color`, `--checkbox-hover-border`, `--checkbox-focus-border` |
+| Toggle | `--toggle-color`, `--toggle-bg`, `--toggle-border`, `--toggle-knob`, `--toggle-checked-bg`, `--toggle-checked-border`, `--toggle-checked-knob`, `--toggle-hover-border`, `--toggle-focus-border` |
 | Menu | `--menu-bg`, `--menu-item-color`, `--menu-item-active-bg`, `--menu-item-active-color`, `--menu-item-hover-bg`, `--menu-item-hover-color`, `--menu-item-active-hover-bg` |
 | Labels | `--label-bg`, `--label-color`, `--label-basic-border` |
 | Table | `--table-bg`, `--table-color`, `--table-border`, `--table-header-bg`, `--table-header-color`, `--table-hover-bg` |
@@ -125,6 +126,34 @@ The PWA/web version had a "flashbang" effect at night: when opening in dark mode
 - The inline script uses generic `#1b1c1d` for dark background, not scheme-specific colors (Flexoki uses `#100f0f`). This is fine: the scheme CSS overrides it on first render, and both values are very dark — the transition is a subtle hue shift, not a brightness flash.
 - Flexoki light mode users still get a brief `#fff` body before Flexoki's `#fffcf0` takes over, but this is not a "flashbang" since they're already in light mode.
 - The `manifest.json` `background_color` controls the PWA native splash screen. Changed from `#ffffff` to `#1b1c1d` so it doesn't flash white on PWA launch in dark mode.
+
+## Tray Icon Colour
+
+`src/helpers/TrayIcon.ts` owns the tray level: `0` grey — no data yet (starting up, no connection), `1` a priority 1 item is present, `3` items are present, `4` nothing watched or nothing to do. `host/main/src/functions.ts` only maps a level to `build-resources/icons/*`. Grey is never "there is no work": no watched queries means green.
+
+Rules that matter:
+
+- **Sources are the watched queries, not `localStorage.WIStorage`.** The level aggregates the work items `useQueryLoader` reports for queries that are `enabled` and **not** `ignoreIcon`. `WIStorage` belongs to `Differences`/notifications: it keeps snapshots of disabled and removed queries indefinitely, and reading it here used to paint the icon red from query data nobody was watching.
+- **Publish once per refresh round.** `markQueryLoading` / `setQueryItems` / `endQueryLoad` count loads in flight; the level is pushed only after the last one finishes plus a 400 ms settle (and at most 15 s after the round started, so one hung request cannot freeze the icon). Repainting after every finished query is what flashed the icon red for the rest of a round.
+- **Aligned refresh rounds.** `Timers.createAligned` (not `Timers.create`) runs all query reloads on one shared grid, so the "some queries are a whole cycle fresher" window lasts one round instead of being permanent.
+- **Grey on start.** Nothing is published until a query has delivered items in this session; the tray starts as `flower0`.
+- **Settings changes re-evaluate immediately** through a `useSettingsStore` subscription (disabling a query, toggling "ignore icon" or "my items only"). Levels set outside the query data (`ErrorView`, `DebugView`) go through `TrayIcon.forceLevel`, so the dedupe of identical levels stays correct.
+
+Covered by `src/__tests__/tray-icon.test.ts` and `src/__tests__/timers.test.ts`.
+
+## Settings Storage (durability)
+
+Settings live in `{userData}/settings.json`, written by the hand-rolled `Store` in `host/main/src/store.ts` (not `electron-store`). The file shape (`windowDim`, `windowPos`, `autostart`, `locale`, `installationID`, `flowerpot` as a JSON **string**) is what production versions write — keep it that way.
+
+Rules the store enforces, each of which exists because violating them lost user settings:
+
+- **Never truncate in place.** Writes go to `settings.json.tmp` and are renamed over the real file (`flush()`), so an interrupted write (power loss, Task Manager, `quitAndInstall`) leaves the previous file intact.
+- **One writer, debounced.** `set()` only marks the store dirty; `flush()` runs 200 ms later, synchronously, and serializes the whole store — no overlapping writes. `flushSync()` is called from `before-quit` and before `quitAndInstall()`.
+- **Unreadable ≠ empty.** `readJsonFile` distinguishes ENOENT from "there but unreadable" (lock, invalid JSON, BOM). A damaged file is copied to `settings.corrupt-<ts>.json`, recovery is attempted from `settings.json.bak` / `.tmp`. Damaged *content* (bytes read, not valid settings) is replaced by a fresh file once a copy is kept; a *read error* (lock, permissions) turns the store **read-only** instead, because the file may be fine on the next launch.
+- **Backups.** The last valid content is rotated into `settings.json.bak` before every write.
+- **Renderer must not save before reading.** `Settings.read()` gates `Settings.save()` behind a `loaded` flag; the read status comes back through `read-settings-status` and drives `SettingsProblemBanner`. That banner is a dedicated component (like `WhatsNewBanner`), deliberately not an `ActionBanner`: those are one-time promotional messages stored in `bannersShown`, while a broken settings file must be reported on every launch until it is fixed.
+
+Covered by `src/__tests__/settings-store.test.ts` (production file shape, recovery, read-only mode, atomic writes, failed writes).
 
 ## Electron Version Pin (41.x)
 

@@ -53,6 +53,8 @@ function getIconExt(hiRez: any) {
 }
 
 export function iconUpdateTask(level: any, hasChanges: any) {
+    if (!tray) return;
+
     let pathToIcon = buildIconPath(level, hasChanges);
     let pathToDotIcon = buildIconDotPath(level, hasChanges);
 
@@ -71,6 +73,8 @@ export function iconUpdateTask(level: any, hasChanges: any) {
 }
 
 export function buildTrayIcon() {
+    if (tray) return;
+
     let locale = store.get("locale");
     if (locale === "auto") {
         locale = "en";

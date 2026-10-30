@@ -1,4 +1,6 @@
 import { createApiClient } from "../modules/api-client";
+import CloudAdo from "./CloudAdo";
+import { s } from "../values/Strings";
 
 export type PermissionCheckResult = { ok: true } | { ok: false; missingPermissions: string[] };
 
@@ -13,7 +15,7 @@ export default class Loaders {
                     return token;
                 },
                 getTfsPath() {
-                    return url;
+                    return CloudAdo.canonicalizeUrl(url);
                 },
             });
             await api.collection.getAll();
@@ -24,13 +26,14 @@ export default class Loaders {
     }
 
     public static async checkPermissions(url: string, token: string): Promise<PermissionCheckResult> {
+        const tfsPath = CloudAdo.canonicalizeUrl(url);
         const authHeader = "Basic " + btoa(":" + token);
 
         const checks: { label: string; url: string }[] = [
-            { label: "vso.project", url: url + "_apis/projectCollections?$top=1" },
-            { label: "vso.work", url: url + "_apis/wit/fields?$top=1&api-version=5.1" },
-            { label: "vso.code", url: url + "_apis/git/repositories?$top=1&api-version=7.0" },
-            { label: "vso.identity", url: url + "_apis/connectionData" },
+            { label: "vso.project", url: tfsPath + "_apis/projectCollections?$top=1" },
+            { label: "vso.work", url: tfsPath + "_apis/wit/fields?$top=1&api-version=5.1" },
+            { label: "vso.code", url: tfsPath + "_apis/git/repositories?$top=1&api-version=7.0" },
+            { label: "vso.identity", url: tfsPath + "_apis/connectionData" },
         ];
 
         const missingPermissions: string[] = [];
@@ -42,6 +45,7 @@ export default class Loaders {
                     headers: {
                         Authorization: authHeader,
                         "Content-Type": "application/json",
+                        "X-TFS-FedAuthRedirect": "Suppress",
                     },
                 });
 
@@ -79,7 +83,7 @@ export default class Loaders {
                 return token;
             },
             getTfsPath() {
-                return url;
+                return CloudAdo.canonicalizeUrl(url);
             },
         });
 

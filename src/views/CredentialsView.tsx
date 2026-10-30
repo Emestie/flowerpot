@@ -9,6 +9,7 @@ import { PageLayout } from "../components/PageLayout";
 import { UpdateBanner } from "../components/banners/UpdateBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
 import { Account } from "../helpers/Account";
+import CloudAdo from "../helpers/CloudAdo";
 import Loaders from "../helpers/Loaders";
 import Platform from "../helpers/Platform";
 import { IAccount } from "../helpers/Settings";
@@ -88,10 +89,11 @@ export function CredentialsView() {
             }
 
             let invalid = false;
-            if (val[val.length - 1] !== "/") invalid = true;
             if (val.indexOf("http") !== 0) invalid = true;
             if (val.indexOf("://") === -1) invalid = true;
             if (val.length < 11) invalid = true;
+            //cloud URLs are canonicalized on save, so the trailing slash is optional there
+            if (!CloudAdo.isCloudUrl(val) && val[val.length - 1] !== "/") invalid = true;
             setPathInvalid(invalid);
         },
         [currentAccount.url]
@@ -125,14 +127,17 @@ export function CredentialsView() {
     const onCheck = async () => {
         setCredentialsCheckStatus(ECredState.ValidatingInProgress);
 
+        const tfsPath = CloudAdo.canonicalizeUrl(currentAccount.url);
+        if (tfsPath !== currentAccount.url) setCurrentAccount((ca) => ({ ...ca, url: tfsPath }));
+
         try {
-            const result = await Loaders.checkCredentials(currentAccount.url, currentAccount.token);
+            const result = await Loaders.checkCredentials(tfsPath, currentAccount.token);
             if (!result) {
                 setCredentialsCheckStatus(ECredState.WrongCredentials);
                 return;
             }
 
-            const permResult = await Loaders.checkPermissions(currentAccount.url, currentAccount.token);
+            const permResult = await Loaders.checkPermissions(tfsPath, currentAccount.token);
             if (!permResult.ok) {
                 setCredentialsCheckStatus(ECredState.InsufficientPermissions);
                 return;
@@ -142,17 +147,13 @@ export function CredentialsView() {
             return;
         }
 
-        if (
-            accounts.some(
-                (acc) => acc.id !== accountId && acc.url === currentAccount.url && acc.token === currentAccount.token
-            )
-        ) {
+        if (accounts.some((acc) => acc.id !== accountId && acc.url === tfsPath && acc.token === currentAccount.token)) {
             setCredentialsCheckStatus(ECredState.Duplication);
             return;
         }
 
         const userData =
-            (await Loaders.getUserData(currentAccount.url, currentAccount.token)) ??
+            (await Loaders.getUserData(tfsPath, currentAccount.token)) ??
             Account.generateDisplayNameByToken(currentAccount.token);
 
         const displayName = userData.displayName ?? Account.generateDisplayNameByToken(currentAccount.token);
@@ -160,10 +161,12 @@ export function CredentialsView() {
 
         setCredentialsCheckStatus(ECredState.OK);
 
+        const validatedAccount = { ...currentAccount, url: tfsPath };
+
         if (accountId) {
-            updateAccount({ ...currentAccount, displayName, descriptor });
+            updateAccount({ ...validatedAccount, displayName, descriptor });
         } else {
-            addAccount({ ...currentAccount, displayName, descriptor });
+            addAccount({ ...validatedAccount, displayName, descriptor });
         }
 
         Telemetry.accountVerificationSucceed(currentAccount.id);
@@ -184,12 +187,14 @@ export function CredentialsView() {
                     <Form.Input
                         fluid
                         label={s("tfsPath")}
-                        placeholder="http://tfs:8080/tfs/"
+                        placeholder="https://dev.azure.com/organization/"
                         value={currentAccount?.url ?? ""}
                         onChange={(e) => validateTfsPath(e.target.value)}
                         error={pathInvalid}
                     />
                     <Message info>
+                        {s("credsCloudHint")}
+                        <br />
                         {s("credsTokenInfo1")}{" "}
                         <b>
                             <i>{s("credsTokenInfo2")}</i>

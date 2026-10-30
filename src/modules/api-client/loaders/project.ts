@@ -7,7 +7,7 @@ import { createCollectionLoaders } from "./collection";
 export function createProjectLoaders(params: IApiClientParams, loader: Loader) {
     return {
         async getAll(): Promise<Project[]> {
-            const collections = await createCollectionLoaders(loader).getAll();
+            const collections = await createCollectionLoaders(params, loader).getAll();
 
             const projectsCollections = await Promise.all(
                 collections.map((collection) =>

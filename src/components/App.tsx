@@ -4,6 +4,7 @@ import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Settings, { TColorScheme } from "../helpers/Settings";
 import { getSystemThemeListener, isDarkTheme } from "../helpers/Theme";
+import TrayIcon from "../helpers/TrayIcon";
 import { safeParse } from "../helpers/safe-parse";
 import { Timers } from "../helpers/Timers";
 import Version from "../helpers/Version";
@@ -61,7 +62,7 @@ export function App() {
     }, [isDark]);
 
     useEffect(() => {
-        document.documentElement.classList.remove("scheme-classic", "scheme-flexoki");
+        document.documentElement.classList.remove("scheme-classic", "scheme-flexoki", "scheme-shire");
         const schemeClass = getSchemeClass(colorScheme);
         if (schemeClass) {
             document.documentElement.classList.add(schemeClass);
@@ -89,6 +90,7 @@ export function App() {
         const removeUpdateListeners = Platform.current.initUpdateListeners();
         let bootTimer: number | undefined;
         (async function () {
+            TrayIcon.init();
             Platform.current.reactIsReady();
 
             await Settings.read();

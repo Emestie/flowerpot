@@ -44,6 +44,16 @@
     --checkbox-hover-border: rgba(64, 62, 60, 0.35);
     --checkbox-focus-border: #4385be;
 
+    --toggle-color: #403e3c;
+    --toggle-bg: #dad8ce;
+    --toggle-border: #cecdc3;
+    --toggle-knob: #FFFDF4;
+    --toggle-checked-bg: #4385be;
+    --toggle-checked-border: #4385be;
+    --toggle-checked-knob: #FFFDF4;
+    --toggle-hover-border: rgba(64, 62, 60, 0.35);
+    --toggle-focus-border: #4385be;
+
     --menu-bg: #FFFDF4;
     --menu-item-color: #403e3c;
     --menu-item-active-bg: rgba(64, 62, 60, 0.05);
@@ -346,6 +356,16 @@ html.scheme-flexoki.FlowerpotDarkTheme,
     --checkbox-checked-color: #100f0f;
     --checkbox-hover-border: rgba(206, 205, 195, 0.35);
     --checkbox-focus-border: #67a3d4;
+
+    --toggle-color: #cecdc3;
+    --toggle-bg: rgba(206, 205, 195, 0.15);
+    --toggle-border: rgba(206, 205, 195, 0.15);
+    --toggle-knob: #cecdc3;
+    --toggle-checked-bg: #cecdc3;
+    --toggle-checked-border: #cecdc3;
+    --toggle-checked-knob: #100f0f;
+    --toggle-hover-border: rgba(206, 205, 195, 0.35);
+    --toggle-focus-border: #67a3d4;
 
     --menu-bg: #1c1b1a;
     --menu-item-color: #cecdc3;

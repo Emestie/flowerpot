@@ -22,11 +22,11 @@ export function createApiClient(params: IApiClientParams) {
 
     return {
         pullRequest: createPullRequestLoaders(params, loader),
-        collection: createCollectionLoaders(loader),
+        collection: createCollectionLoaders(params, loader),
         project: createProjectLoaders(params, loader),
         query: createQueryLoaders(params, loader),
         workItem: createWorkItemLoaders(params, loader, workItemTypeLoaders),
         workItemType: workItemTypeLoaders,
-        connectionData: createConnectionDataLoaders(loader),
+        connectionData: createConnectionDataLoaders(params, loader),
     };
 }

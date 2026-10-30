@@ -3,6 +3,7 @@ import { Card, CardGroup } from "../../../ui/card";
 import { Icon } from "../../../ui/icon";
 import { Header } from "../../../ui/header";
 import { AccountBadge } from "../../../components/AccountBadge";
+import { MAX_ACCOUNTS } from "../../../helpers/Account";
 import { IAccount } from "../../../helpers/Settings";
 import { s } from "../../../values/Strings";
 import { useAppStore } from "../../../zustand/app";
@@ -23,7 +24,7 @@ export function AccountSection() {
                 ))}
             </CardGroup>
             <div className="account-spacer"></div>
-            {accounts.length < 3 && (
+            {accounts.length < MAX_ACCOUNTS && (
                 <Button
                     icon
                     labelPosition="left"

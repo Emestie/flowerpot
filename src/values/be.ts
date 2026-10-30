@@ -110,6 +110,7 @@ const be: LocalizedStrings = {
     severity: "Важнасць",
     addQuery: "Дадаць запыт",
     actions: "Дзеянні",
+    enabled: "Уключана",
     ignoreNotif: "Ігнараваць абвесткі",
     ignoreIcon: "Ігнараваць іконку",
     queryName: "Назва запыту",
@@ -162,7 +163,7 @@ const be: LocalizedStrings = {
     localWarning:
         "Праграма выкарыстоўвае лакальную версію функцыяналу. Прычынай можа быць адсутнасць падключэння да інтэрнэту. Не ўсе новыя функцыі даступныя.",
 
-    justUpdatedMessage1: "Flowerpot абноўлены да версіі ",
+    justUpdatedMessage1: "🎉 Flowerpot абноўлены да версіі ",
     justUpdatedMessage2: "Паглядзець змены",
     justUpdatedHide: "ОК",
 
@@ -289,6 +290,8 @@ const be: LocalizedStrings = {
 
     credsTokenInfo1: "Для аўтарызацыі ў праграме вам неабходна атрымаць",
     credsTokenInfo2: "персанальны токен доступу",
+    credsCloudHint:
+        "Прыклады карэктнага шляху: https://dev.azure.com/organization/ (Azure DevOps Services) або http://tfs:8080/tfs/ (Azure DevOps Server).",
     credsTokenInfo3:
         "у вашым Azure DevOps. Інструкцыя па стварэнні токена і прамая спасылка на старонку стварэння токена даступныя па кнопках ніжэй:",
     credsTokenOpenDocs: "Адкрыць дакументацыю па стварэнні токена (Microsoft)",
@@ -351,9 +354,18 @@ const be: LocalizedStrings = {
     ddColorSchemeLabel: "Колеравая схема: ",
     colorSchemeClassic: "Класічная",
     colorSchemeFlexoki: "Flexoki",
+    colorSchemeShire: "Shire",
 
-    statusBanner: "Цяпер можно змяніць статус задачы проста ў табліцы — націсніце на слупок статуса.",
-    statusBannerAction: "Зразумела",
+    shireBannerText: "Даступная новая колеравая схема Shire! Паспрабуйце яе ў Налады → Інтэрфейс.",
+    shireBannerAction: "Паспрабаваць",
+
+    settingsRestoredBanner:
+        "Частка налад адноўлена з рэзервовай копіі, бо файл налад быў пашкоджаны. Праверце акаўнты, запыты і спісы.",
+    settingsDamagedBanner:
+        "Файл налад быў пашкоджаны і не чытаецца, таму Flowerpot запусціўся з наладамі па змаўчанні. Пашкоджаны файл захаваны побач.",
+    settingsLockedBanner:
+        "Не ўдалося прачытаць файл налад, ён пакінуты без змен. Змены, зробленыя цяпер, не захаваюцца — перазапусціце Flowerpot.",
+    settingsShowFile: "Паказаць файл",
 
     filterStatusPrefix: "Статус: ",
     filterTypePrefix: "Тып: ",

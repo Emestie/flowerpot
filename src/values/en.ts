@@ -110,6 +110,7 @@ const en = {
     severity: "Severity",
     addQuery: "Add query",
     actions: "Actions",
+    enabled: "Enabled",
     ignoreNotif: "Ignore Notif.",
     ignoreIcon: "Ignore Icon",
     queryName: "Query name",
@@ -162,7 +163,7 @@ const en = {
     localWarning:
         "App loaded with local scripts. The reason might be in the internet outage. Not all features available.",
 
-    justUpdatedMessage1: "Flowerpot has been updated to version ",
+    justUpdatedMessage1: "🎉 Flowerpot has been updated to version ",
     justUpdatedMessage2: "View changes",
     justUpdatedHide: "OK",
 
@@ -289,6 +290,8 @@ const en = {
 
     credsTokenInfo1: "To authorize in the application, you need to get a",
     credsTokenInfo2: "Personal Access Token",
+    credsCloudHint:
+        "Examples of valid paths: https://dev.azure.com/organization/ (Azure DevOps Services) or http://tfs:8080/tfs/ (Azure DevOps Server).",
     credsTokenInfo3:
         "in your Azure DevOps. Instructions for creating a token and a direct link to the token creation page are available using the buttons below:",
     credsTokenOpenDocs: "Open token creation documentation (Microsoft)",
@@ -351,9 +354,18 @@ const en = {
     ddColorSchemeLabel: "Color scheme: ",
     colorSchemeClassic: "Classic",
     colorSchemeFlexoki: "Flexoki",
+    colorSchemeShire: "Shire",
 
-    statusBanner: "You can now change a work item's status directly in the table — click on the status column.",
-    statusBannerAction: "Got it",
+    shireBannerText: "New Shire color scheme is available! Try it out in Settings → Interface.",
+    shireBannerAction: "Try",
+
+    settingsRestoredBanner:
+        "Part of your settings was restored from a backup copy because the settings file was damaged. Please check your accounts, queries and lists.",
+    settingsDamagedBanner:
+        "Your settings file was damaged and could not be read, so Flowerpot started with default settings. The damaged file was kept next to it.",
+    settingsLockedBanner:
+        "Your settings file could not be read and was left untouched. Changes made now will not be saved — restart Flowerpot to try again.",
+    settingsShowFile: "Show file",
 
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",

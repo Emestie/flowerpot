@@ -13,6 +13,7 @@ import { DynamicContent } from "../helpers/DynamicContent";
 import Migration from "../helpers/Migration";
 import Platform from "../helpers/Platform";
 import Telemetry from "../helpers/Telemetry";
+import TrayIcon from "../helpers/TrayIcon";
 import Version from "../helpers/Version";
 import { useAppStore } from "../zustand/app";
 import { useSettingsStore } from "../zustand/settings";
@@ -35,7 +36,7 @@ export function DebugView() {
     }
 
     const changeIconLevel = (level: number, noDot?: boolean) => {
-        Platform.current.updateTrayIcon(level, !noDot);
+        TrayIcon.forceLevel(level, !noDot);
     };
 
     const showNotif = () => {
