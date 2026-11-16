@@ -2,6 +2,7 @@
 
 - fixed the "exceeded the quota" error in the pull requests block of the web version: notification snapshots now keep only the fields needed to detect changes, so they no longer fill up the browser's local storage
 - failures to save to local storage no longer break loading: work items and pull requests keep updating even when the browser refuses to store a snapshot
+- fixed the stray border above priority 1 work items
 
 ## 1.0.0
 
