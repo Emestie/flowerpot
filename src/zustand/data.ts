@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import Platform from "../helpers/Platform";
+import { persistToLocalStorage } from "../helpers/safe-storage";
 import { Query } from "../models/query";
 import { WorkItem } from "../models/work-item";
 import { PullRequest } from "../models/pull-request";
@@ -33,13 +34,13 @@ export const useDataStore = create<DataStore>()(
             setChangesCollectionItem(workItem, hasChanges) {
                 const changesCollection = { ...get().changesCollection };
                 changesCollection[workItem.id] = hasChanges ? true : undefined;
-                localStorage.setItem("WIChangesCollection", JSON.stringify(changesCollection));
+                persistToLocalStorage("WIChangesCollection", changesCollection);
                 Platform.current.updateTrayIconDot(!!Object.values(changesCollection || {}).filter((x) => !!x).length);
                 set({ changesCollection });
             },
 
             clearChangesCollection() {
-                localStorage.setItem("WIChangesCollection", JSON.stringify({}));
+                persistToLocalStorage("WIChangesCollection", {});
                 Platform.current.updateTrayIconDot(false);
                 set({ changesCollection: {} });
             },
@@ -47,12 +48,12 @@ export const useDataStore = create<DataStore>()(
             setPrChangesCollectionItem(pr, hasChanges) {
                 const prChangesCollection = { ...get().prChangesCollection };
                 prChangesCollection[pr.id] = hasChanges ? true : undefined;
-                localStorage.setItem("PRChangesCollection", JSON.stringify(prChangesCollection));
+                persistToLocalStorage("PRChangesCollection", prChangesCollection);
                 set({ prChangesCollection });
             },
 
             clearPrChangesCollection() {
-                localStorage.setItem("PRChangesCollection", JSON.stringify({}));
+                persistToLocalStorage("PRChangesCollection", {});
                 set({ prChangesCollection: {} });
             },
 

@@ -5,7 +5,7 @@ import { useDataStore } from "../zustand/data";
 import { useSettingsStore } from "../zustand/settings";
 import { s } from "../values/Strings";
 import Platform from "./Platform";
-import QueryHelper from "./Query";
+import QueryHelper, { IStoredPullRequest, IStoredWorkItem } from "./Query";
 import Lists from "./Lists";
 
 interface IShownWI {
@@ -58,7 +58,7 @@ export default class Differences {
         //TODO:
 
         if (!wiStorage[query.queryId]) {
-            wiStorage[query.queryId] = [...workItems];
+            wiStorage[query.queryId] = workItems.map(toStoredWI);
             QueryHelper.saveWIStorage(wiStorage);
             return;
         }
@@ -94,7 +94,7 @@ export default class Differences {
         this.operateNotifsToShow(news, "new");
         this.operateNotifsToShow(changed, "change");
 
-        wiStorage[query.queryId] = [...workItems];
+        wiStorage[query.queryId] = workItems.map(toStoredWI);
         QueryHelper.saveWIStorage(wiStorage);
     }
 
@@ -110,7 +110,7 @@ export default class Differences {
         }
 
         if (!prStorage[accountId]) {
-            prStorage[accountId] = [...pullRequests];
+            prStorage[accountId] = pullRequests.map(toStoredPR);
             QueryHelper.savePRStorage(prStorage);
             return;
         }
@@ -157,7 +157,7 @@ export default class Differences {
         this.operatePRNotifsToShow(news, "new");
         this.operatePRNotifsToShow(changed, "change");
 
-        prStorage[accountId] = [...pullRequests];
+        prStorage[accountId] = pullRequests.map(toStoredPR);
         QueryHelper.savePRStorage(prStorage);
     }
 
@@ -186,11 +186,11 @@ export default class Differences {
         return `${priorityWarn}${id}: ${text}`;
     }
 
-    private static getWIById(storage: WorkItem[], id: number) {
+    private static getWIById(storage: IStoredWorkItem[], id: number) {
         return storage.find((wi) => wi.id === id);
     }
 
-    private static getPRById(storage: PullRequest[], id: number) {
+    private static getPRById(storage: IStoredPullRequest[], id: number) {
         return storage.find((pr) => pr.id === id);
     }
 
@@ -239,4 +239,12 @@ export default class Differences {
     public static isChangesCollectionHasChanges(changesCollection: any) {
         return !!Object.values(changesCollection || {}).filter((x) => !!x).length;
     }
+}
+
+function toStoredWI(wi: WorkItem): IStoredWorkItem {
+    return { id: wi.id, rev: wi.rev };
+}
+
+function toStoredPR(pr: PullRequest): IStoredPullRequest {
+    return { id: pr.id, commitId: pr.commitId };
 }

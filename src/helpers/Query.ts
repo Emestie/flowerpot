@@ -1,18 +1,34 @@
 import { Query } from "../models/query";
-import { WorkItem } from "../models/work-item";
-import { PullRequest } from "../models/pull-request";
 import { s } from "../values/Strings";
 import { useSettingsStore } from "../zustand/settings";
 import { safeParse } from "./safe-parse";
+import { persistToLocalStorage } from "./safe-storage";
 
 type TBoolProps = "enabled" | "ignoreNotif" | "ignoreIcon" | "empty";
 
+/**
+ * Snapshots only keep what is needed to detect new/changed items, never the
+ * full models. The web build shares a ~5 MB localStorage quota between
+ * settings, snapshots and change collections, so storing whole WorkItems and
+ * PullRequests (with reviewers, avatars, urls...) filled it up and produced
+ * "Setting the value of 'PRStorage' exceeded the quota".
+ */
+export interface IStoredWorkItem {
+    id: number;
+    rev: number;
+}
+
+export interface IStoredPullRequest {
+    id: number;
+    commitId: string;
+}
+
 export interface IWIStorage {
-    [queryId: string]: WorkItem[] | undefined;
+    [queryId: string]: IStoredWorkItem[] | undefined;
 }
 
 export interface IPRStorage {
-    [accountId: string]: PullRequest[];
+    [accountId: string]: IStoredPullRequest[] | undefined;
 }
 
 export default class QueryHelper {
@@ -93,7 +109,7 @@ export default class QueryHelper {
     }
 
     public static saveWIStorage(wis: IWIStorage) {
-        localStorage.setItem("WIStorage", JSON.stringify(wis));
+        persistToLocalStorage("WIStorage", wis);
     }
 
     public static getPRStorage(): IPRStorage {
@@ -103,7 +119,7 @@ export default class QueryHelper {
     }
 
     public static savePRStorage(prs: IPRStorage) {
-        localStorage.setItem("PRStorage", JSON.stringify(prs));
+        persistToLocalStorage("PRStorage", prs);
     }
 
     public static getFakePermawatchQuery(accountId: string): Query {
