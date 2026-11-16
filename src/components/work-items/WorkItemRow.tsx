@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { ContextMenuTrigger } from "react-contextmenu";
+import { useContextMenu } from "../../ui/context-menu";
 import { Label, type TColor } from "../../ui/label";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
@@ -153,7 +152,7 @@ export function WorkItemRow(props: IProps) {
 
     const item = props.item;
     const hasChanges = showUnreads ? !!changesCollection[item.id] : false; //TODO: FL-11
-    const [uid] = useState(() => `${props.item.id}-${Math.random().toString(36).slice(2)}`);
+    const menu = useContextMenu();
 
     const tags = item.tags
         ? item.tags
@@ -163,39 +162,35 @@ export function WorkItemRow(props: IProps) {
         : null;
 
     return (
-        <Table.Row negative={isRed} onClick={dropChanges} className={getClass()}>
+        <Table.Row negative={isRed} onClick={dropChanges} className={getClass()} onContextMenu={menu.open}>
             <Table.Cell collapsing className={"cellRelative " + getClass()}>
-                <ContextMenuTrigger id={uid}>
-                    <span className="wi-flex-id">
-                        <span
-                            onDoubleClick={() => {
-                                Platform.current.copyString(item.id.toString());
-                            }}
-                        >
-                            <Id item={item} hasChanges={hasChanges} />
-                        </span>
-                        <span>{promptnessEl}</span>
+                <span className="wi-flex-id">
+                    <span
+                        onDoubleClick={() => {
+                            Platform.current.copyString(item.id.toString());
+                        }}
+                    >
+                        <Id item={item} hasChanges={hasChanges} />
                     </span>
-                </ContextMenuTrigger>
-                <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
+                    <span>{promptnessEl}</span>
+                </span>
+                <WorkItemRowContextMenu menu={menu} query={props.query} workItem={item} onUpdate={props.onUpdate} />
             </Table.Cell>
             <Table.Cell>
-                <ContextMenuTrigger id={uid}>
-                    {getListIndicator()}
-                    <IterationPath item={item} />
-                    <span title={item.requestNumber}>{item.requestNumber ? <Icon name="phone volume" /> : <></>}</span>
-                    <span>{tags}</span>
-                    <Link className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} href={item.url}>
-                        <HighlightenText text={item.titleFull} />
-                    </Link>
-                    {!!fullNote && (
-                        <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
-                            <Label basic color={noteColor as TColor} size="mini">
-                                {getNote()}
-                            </Label>
-                        </span>
-                    )}
-                </ContextMenuTrigger>
+                {getListIndicator()}
+                <IterationPath item={item} />
+                <span title={item.requestNumber}>{item.requestNumber ? <Icon name="phone volume" /> : <></>}</span>
+                <span>{tags}</span>
+                <Link className={"WorkItemLink " + (hasChanges ? "hasChangesText" : "")} href={item.url}>
+                    <HighlightenText text={item.titleFull} />
+                </Link>
+                {!!fullNote && (
+                    <span className="wi-note-wrapper" title={s("localNoteHint") + ": " + fullNote}>
+                        <Label basic color={noteColor as TColor} size="mini">
+                            {getNote()}
+                        </Label>
+                    </span>
+                )}
             </Table.Cell>
             <Table.Cell collapsing>
                 <Status workItem={item} query={props.query} onUpdate={props.onUpdate} />
@@ -203,33 +198,27 @@ export function WorkItemRow(props: IProps) {
             <Table.Cell collapsing>
                 <span className="dual-container">
                     <span className="dual-part-half">
-                        <ContextMenuTrigger id={uid}>
-                            <ProfileWidget
-                                accountId={props.query.accountId}
-                                avatarUrl={item.assignedToImg}
-                                displayName={item.assignedTo}
-                                nameFull={item.assignedToFull}
-                                copyName={item.assignedToTextName}
-                            />
-                        </ContextMenuTrigger>
+                        <ProfileWidget
+                            accountId={props.query.accountId}
+                            avatarUrl={item.assignedToImg}
+                            displayName={item.assignedTo}
+                            nameFull={item.assignedToFull}
+                            copyName={item.assignedToTextName}
+                        />
                     </span>
                     <span className="dual-part-half">
-                        <ContextMenuTrigger id={uid}>
-                            <ProfileWidget
-                                accountId={props.query.accountId}
-                                avatarUrl={item.createdByImg}
-                                displayName={item.createdBy}
-                                nameFull={item.createdByFull}
-                                copyName={item.createdByTextName}
-                            />
-                        </ContextMenuTrigger>
+                        <ProfileWidget
+                            accountId={props.query.accountId}
+                            avatarUrl={item.createdByImg}
+                            displayName={item.createdBy}
+                            nameFull={item.createdByFull}
+                            copyName={item.createdByTextName}
+                        />
                     </span>
                 </span>
             </Table.Cell>
             <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>
-                    {revEl} {freshnessEl}
-                </ContextMenuTrigger>
+                {revEl} {freshnessEl}
             </Table.Cell>
         </Table.Row>
     );

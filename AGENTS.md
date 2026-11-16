@@ -55,6 +55,31 @@ Tech stack: Electron 43, React 19, TypeScript, Vite 6, Zustand, Semantic UI Reac
 - Platform-specific code: Implement `IPlatformClass` in `helpers/platforms/Electron.ts` or `Web.ts`
 - Settings: Managed via `src/helpers/Settings.ts` and Zustand `settings` store
 - Notifications: Handled in main process via IPC, renderer triggers via `#preload` API
+- Right-click menus: `useContextMenu()` + `<ContextMenu controller>` from `src/ui/context-menu` (see below)
+
+## Context Menus (rows and cards)
+
+Work item and pull request rows/cards get their right-click menu from `src/ui/context-menu`
+(`useContextMenu()` for the state, `<ContextMenu controller={...}>` for the portaled menu). It
+replaced `react-contextmenu`, which was React 16-era and brought its own bugs.
+
+Rules that matter:
+
+- **One handler per row, not per cell.** `onContextMenu={menu.open}` sits on `<Table.Row>`; the
+  six `.react-contextmenu-wrapper` divs per row are gone. `Status` opens its own menu and calls
+  `stopPropagation()`, so right-clicking the status cell does not also open the row menu.
+- **Outside clicks are detected with a capture-phase listener on `document`.** Handlers inside the
+  list call `stopPropagation()`; a bubble-phase listener would never fire and the menu would stay
+  open when clicking another row (the old library's `holdToDisplay` did exactly that).
+- **`menu.open` always replaces the position**, so right-clicking the same row twice moves the menu
+  instead of closing it.
+- **`menu.openAt({x, y})`** anchors the menu under an element — the cards' "⋯" button uses it.
+- The menu also closes on scroll (capture, so nested scrollers count), resize, Escape, window
+  `blur`, an outside right click, and after any item click.
+- Placement is computed in a layout effect (flip to the other side near an edge, capped height when
+  it cannot fit), so the menu never paints at the old position.
+
+Covered by `src/__tests__/context-menu.test.tsx`.
 
 ## Color Schemes
 

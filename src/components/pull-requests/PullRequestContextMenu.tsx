@@ -1,32 +1,32 @@
-import { ContextMenu, MenuItem } from "react-contextmenu";
 import { Icon } from "../../ui/icon";
 import { Menu } from "../../ui/menu";
+import { ContextMenu, type IContextMenuController } from "../../ui/context-menu";
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { PullRequest } from "../../models/pull-request";
 import { s } from "../../values/Strings";
 
 interface IProps {
-    uid: string;
+    menu: IContextMenuController;
     pullRequest: PullRequest;
 }
 
 export function PullRequestContextMenu(props: IProps) {
-    const { pullRequest, uid } = props;
+    const { pullRequest, menu } = props;
 
     const isHidden = pullRequest.isHidden();
 
-    const onCopy = (_: any) => {
+    const onCopy = () => {
         const pr = pullRequest;
-        const s = `PR #${pr.id} - ${pr.projectName}/${pr.repoName}: ${pr.title} - ${pr.url}`;
-        Platform.current.copyString(s);
+        const text = `PR #${pr.id} - ${pr.projectName}/${pr.repoName}: ${pr.title} - ${pr.url}`;
+        Platform.current.copyString(text);
     };
 
-    const onCopyId = (_: any) => {
+    const onCopyId = () => {
         Platform.current.copyString(pullRequest.id.toString());
     };
 
-    const onCopyUrl = (_: any) => {
+    const onCopyUrl = () => {
         Platform.current.copyString(pullRequest.url);
     };
 
@@ -39,51 +39,41 @@ export function PullRequestContextMenu(props: IProps) {
     };
 
     return (
-        <ContextMenu id={uid}>
-            <Menu vertical>
-                <MenuItem data={{ action: "copy" }} onClick={onCopy}>
-                    <Menu.Item>
-                        <span>
-                            <Icon name="copy outline" />
-                        </span>
-                        {s("copy")}
-                    </Menu.Item>
-                </MenuItem>
-                <MenuItem data={{ action: "copyurl" }} onClick={onCopyUrl}>
-                    <Menu.Item>
-                        <span>
-                            <Icon name="copy outline" />
-                        </span>
-                        {s("copyUrl")}
-                    </Menu.Item>
-                </MenuItem>
-                <MenuItem data={{ action: "copyid" }} onClick={onCopyId}>
-                    <Menu.Item>
-                        <span>
-                            <Icon name="copy outline" />
-                        </span>
-                        {s("copyId")}
-                    </Menu.Item>
-                </MenuItem>
+        <ContextMenu controller={menu}>
+            <Menu vertical secondary>
+                <Menu.Item onClick={onCopy}>
+                    <span>
+                        <Icon name="copy outline" />
+                    </span>
+                    {s("copy")}
+                </Menu.Item>
+                <Menu.Item onClick={onCopyUrl}>
+                    <span>
+                        <Icon name="copy outline" />
+                    </span>
+                    {s("copyUrl")}
+                </Menu.Item>
+                <Menu.Item onClick={onCopyId}>
+                    <span>
+                        <Icon name="copy outline" />
+                    </span>
+                    {s("copyId")}
+                </Menu.Item>
                 {!isHidden && (
-                    <MenuItem data={{ action: "hide" }} onClick={onHide}>
-                        <Menu.Item>
-                            <span>
-                                <Icon name="eye slash outline" />
-                            </span>
-                            {s("hidePr")}
-                        </Menu.Item>
-                    </MenuItem>
+                    <Menu.Item onClick={onHide}>
+                        <span>
+                            <Icon name="eye slash outline" />
+                        </span>
+                        {s("hidePr")}
+                    </Menu.Item>
                 )}
                 {!!isHidden && (
-                    <MenuItem data={{ action: "unhide" }} onClick={onUnhide}>
-                        <Menu.Item>
-                            <span>
-                                <Icon name="eye" />
-                            </span>
-                            {s("unhidePr")}
-                        </Menu.Item>
-                    </MenuItem>
+                    <Menu.Item onClick={onUnhide}>
+                        <span>
+                            <Icon name="eye" />
+                        </span>
+                        {s("unhidePr")}
+                    </Menu.Item>
                 )}
             </Menu>
         </ContextMenu>

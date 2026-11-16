@@ -116,6 +116,8 @@ export function Status({ workItem, query, onUpdate, enableContextMenu = true }: 
                     enableContextMenu
                         ? (e) => {
                               e.preventDefault();
+                              // Own menu only: the row's menu must not open as well.
+                              e.stopPropagation();
                               if (!pending && !open) openMenu();
                           }
                         : undefined
