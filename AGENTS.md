@@ -81,6 +81,38 @@ Rules that matter:
 
 Covered by `src/__tests__/context-menu.test.tsx`.
 
+## Permawatch Block
+
+The Permawatch block is a pseudo query (`___permawatch_<accountId>`) built from
+`settings.lists.permawatch` instead of a service query, so it has no refresh cycle of its own to
+rely on: `useQueryLoader` compares `permawatchMembershipKey()` between renders and, when the list
+changes, calls `syncPermawatchQuery()` (drops what left the list, reuses instances other blocks
+already hold, so the change is visible immediately) and then reloads the block.
+
+Rules that matter:
+
+- **Never answer a list change with `setView("refreshhelper")`.** That remounts the whole MainView,
+  which flashes every block, drops the scroll position and restarts every query's timer. The
+  context menu (`WorkItemRowContextMenu`) only edits the list and the row's `_list`; the block
+  follows on its own. Lines are mutually exclusive (`Lists.push` clears the other lists), so
+  adding to Favorites/Hidden/Deferred also takes the item out of Permawatch — the same
+  subscription covers that.
+- MainView's manual refresh button still uses `refreshhelper`; that is the intended full reload.
+- **Items are separate instances per query** (`setWorkItemsForQuery` filters by `_queryId`), so the
+  reused item is a copy: the block the user right-clicked keeps its own row and indicator.
+- **`WorkItem._list` is a per-instance cache, never the truth.** The same item lives in several
+  query blocks as separate instances and a list change is only written to the clicked one, so
+  anything user-visible resolves the list with `Lists.getListOf(accountId, collection, id)`
+  (the order `deferred → favorites → pinned → hidden → permawatch → forwarded` lives in `Lists`
+  and `WorkItem` uses the same lookup). Sorting in `WorkItemsBlock` still reads `_list`, which is
+  why `onListChange` keeps writing it.
+- **Inside the Permawatch block the row menu only offers "Remove from list Permawatch."** Moving
+  the item to another list from there would mutate the block's copy and leave the original
+  query's instance showing a stale "remove from permawatch" that does nothing when clicked.
+  Copy/note actions stay; the query blocks keep the full list menu.
+
+Covered by `src/__tests__/permawatch.test.tsx`.
+
 ## Color Schemes
 
 Color scheme switching uses a `.scheme-{name}` class on `<html>` + root `<div>`, orthogonal to `.FlowerpotDarkTheme`.

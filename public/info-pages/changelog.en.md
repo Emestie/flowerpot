@@ -4,6 +4,8 @@
 - failures to save to local storage no longer break loading: work items and pull requests keep updating even when the browser refuses to store a snapshot
 - removed the stray border above priority 1 work items
 - fixed the context menu of work items and pull requests: it no longer stays open after a click on another row, no longer opens by itself when the mouse button is held down, no longer hangs over the list while it scrolls, and right-clicking the same row again moves the menu instead of closing it
+- adding a work item to Permawatch or removing it from there no longer redraws the whole list: the item appears or disappears immediately, and only the Permawatch block reloads itself
+- the row menu inside the Permawatch block now offers only the removal from that list, so moving an item to another list from there no longer leaves the original query with a stale "remove from Permawatch" entry that did nothing
 
 ## 1.0.0
 

@@ -5,9 +5,9 @@ import { ContextMenu, type IContextMenuController } from "../../ui/context-menu"
 import Lists from "../../helpers/Lists";
 import Platform from "../../helpers/Platform";
 import { TLists } from "../../helpers/Settings";
+import { isPermawatchQuery } from "../../helpers/permawatch";
 import { Query } from "../../models/query";
 import { WorkItem } from "../../models/work-item";
-import { useAppStore } from "../../zustand/app";
 import { s } from "../../values/Strings";
 import { SingleInputColorDialog } from "../dialogs/SingleInputColorDialog";
 
@@ -25,19 +25,21 @@ export function WorkItemRowContextMenu(props: IProps) {
     const [noteInitialText, setNoteInitialText] = useState<string | undefined>(undefined);
     const [noteInitialColor, setNoteInitialColor] = useState<string | undefined>(undefined);
 
-    const setView = useAppStore((s) => s.setView);
+    //inside the permawatch block the only list action is leaving it: _list belongs to one instance,
+    //so moving an item to another list there would leave the copy in the original query stale
+    const isPermawatchBlock = isPermawatchQuery(props.query);
+    //the list the item is in now, not the one cached on this instance
+    const currentList = Lists.getListOf(props.query.accountId, workItem._collectionName, workItem.id);
+    const listToRemove = isPermawatchBlock ? "permawatch" : currentList;
 
     const onListChange = (list?: TLists) => {
         const wi = workItem;
 
         if (list) {
             Lists.push(props.query.accountId, list, wi._collectionName, wi.id, wi.rev);
-        } else if (wi._list) Lists.deleteFromList(props.query.accountId, wi._list, wi.id, wi._collectionName);
+        } else if (listToRemove) Lists.deleteFromList(props.query.accountId, listToRemove, wi.id, wi._collectionName);
 
-        if (list === "permawatch" || wi._list === "permawatch") {
-            setView("refreshhelper");
-        }
-
+        //no setView("refreshhelper") here: the permawatch block follows the list itself
         wi._list = list;
 
         onUpdate(wi);
@@ -93,60 +95,64 @@ export function WorkItemRowContextMenu(props: IProps) {
                         </span>
                         {s("copyId")}
                     </Menu.Item>
-                    {workItem._list && (
+                    {listToRemove && (
                         <Menu.Item onClick={() => onListChange(undefined)}>
                             <span>
                                 <Icon name="delete" />
                             </span>
-                            {s("removeFromList")}"{s(workItem._list)}"
+                            {s("removeFromList")}"{s(listToRemove)}"
                         </Menu.Item>
                     )}
-                    {workItem._list !== "permawatch" && (
-                        <Menu.Item onClick={() => onListChange("permawatch")}>
-                            <span>
-                                <Icon name="eye" />
-                            </span>
-                            {s("addToP")}
-                        </Menu.Item>
+                    {!isPermawatchBlock && (
+                        <>
+                            {currentList !== "permawatch" && (
+                                <Menu.Item onClick={() => onListChange("permawatch")}>
+                                    <span>
+                                        <Icon name="eye" />
+                                    </span>
+                                    {s("addToP")}
+                                </Menu.Item>
+                            )}
+                            {currentList !== "pinned" && (
+                                <Menu.Item onClick={() => onListChange("pinned")}>
+                                    <span>
+                                        <Icon name="pin" />
+                                    </span>
+                                    {s("addToPinned")}
+                                </Menu.Item>
+                            )}
+                            {currentList !== "favorites" && (
+                                <Menu.Item onClick={() => onListChange("favorites")}>
+                                    <span>
+                                        <Icon name="star" />
+                                    </span>
+                                    {s("addToF")}
+                                </Menu.Item>
+                            )}
+                            {currentList !== "forwarded" && (
+                                <Menu.Item onClick={() => onListChange("forwarded")}>
+                                    <span>
+                                        <Icon name="arrow right" />
+                                    </span>
+                                    {s("addToForwarded")}
+                                </Menu.Item>
+                            )}
+                            {currentList !== "deferred" && (
+                                <Menu.Item onClick={() => onListChange("deferred")}>
+                                    <span>
+                                        <Icon name="clock outline" />
+                                    </span>
+                                    {s("addToD")}
+                                </Menu.Item>
+                            )}
+                            <Menu.Item onClick={() => onListChange("hidden")}>
+                                <span>
+                                    <Icon name="eye slash outline" />
+                                </span>
+                                {s("addToH")}
+                            </Menu.Item>
+                        </>
                     )}
-                    {workItem._list !== "pinned" && (
-                        <Menu.Item onClick={() => onListChange("pinned")}>
-                            <span>
-                                <Icon name="pin" />
-                            </span>
-                            {s("addToPinned")}
-                        </Menu.Item>
-                    )}
-                    {workItem._list !== "favorites" && (
-                        <Menu.Item onClick={() => onListChange("favorites")}>
-                            <span>
-                                <Icon name="star" />
-                            </span>
-                            {s("addToF")}
-                        </Menu.Item>
-                    )}
-                    {workItem._list !== "forwarded" && (
-                        <Menu.Item onClick={() => onListChange("forwarded")}>
-                            <span>
-                                <Icon name="arrow right" />
-                            </span>
-                            {s("addToForwarded")}
-                        </Menu.Item>
-                    )}
-                    {workItem._list !== "deferred" && (
-                        <Menu.Item onClick={() => onListChange("deferred")}>
-                            <span>
-                                <Icon name="clock outline" />
-                            </span>
-                            {s("addToD")}
-                        </Menu.Item>
-                    )}
-                    <Menu.Item onClick={() => onListChange("hidden")}>
-                        <span>
-                            <Icon name="eye slash outline" />
-                        </span>
-                        {s("addToH")}
-                    </Menu.Item>
                     <Menu.Item onClick={onOpenNote}>
                         <span>
                             <Icon name="text cursor" />
