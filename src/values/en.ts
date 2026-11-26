@@ -367,6 +367,11 @@ const en = {
         "Your settings file could not be read and was left untouched. Changes made now will not be saved — restart Flowerpot to try again.",
     settingsShowFile: "Show file",
 
+    compatModeBanner:
+        "Flowerpot is running in compatibility mode: the Chromium system sandbox is off because the interface process crashed at startup. This is usually caused by Windows, a video driver or security software. Settings and tokens are safe.",
+    compatModeShowLog: "Show log",
+    compatModeTryNormal: "Try normal mode",
+
     filterStatusPrefix: "Status: ",
     filterTypePrefix: "Type: ",
 };

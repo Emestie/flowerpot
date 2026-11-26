@@ -1,6 +1,8 @@
 import { app, clipboard, ipcMain, shell } from "electron";
 import { autoUpdater } from "electron-updater";
+import { clearCompatMode, getCompatModeStatus } from "./compat-mode";
 import { iconUpdateTask, registerAutostart, showNotification, tray } from "./functions";
+import { getLogFilePath, log } from "./logger";
 import { getAppWindow } from "./main-window";
 import { store } from "./store";
 
@@ -12,7 +14,25 @@ const isDev = import.meta.env.DEV;
 ipcMain.handle("user-data-path", () => userDataPath);
 ipcMain.handle("read-settings-prop", (_, prop) => store.get(prop));
 ipcMain.handle("read-settings-status", () => store.getStatus());
+ipcMain.handle("read-compat-mode", () => getCompatModeStatus());
 ipcMain.handle("read-is-dev", (_) => isDev);
+
+/** Leaves compatibility mode and restarts with the Chromium sandbox enabled. */
+ipcMain.on("disable-compat-mode", () => {
+    log("Compatibility mode disabled by the user; restarting with the Chromium sandbox");
+    clearCompatMode();
+    store.flushSync();
+
+    // The running process was started with `--no-sandbox`, so it must be dropped
+    // from the relaunch arguments or the retry would not actually test the sandbox.
+    const args = process.argv.slice(1).filter((arg) => arg !== "--no-sandbox");
+    app.relaunch({ args });
+    app.exit(0);
+});
+
+ipcMain.on("show-main-log", () => {
+    shell.showItemInFolder(getLogFilePath());
+});
 
 ipcMain.on("update-icon", (_, { level, hasChanges }) => {
     if (!tray || level < 0 || level > 4) return;

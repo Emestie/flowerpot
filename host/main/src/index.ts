@@ -1,6 +1,9 @@
 import { app } from "electron";
+import * as os from "os";
 import "./security-restrictions";
 import "./ipc-handlers";
+import { isCompatModeActiveForLaunch } from "./compat-mode";
+import { installConsoleLogging, log } from "./logger";
 import { getAppWindow, restoreOrCreateWindow } from "./main-window";
 import { autoUpdater } from "electron-updater";
 import { store } from "./store";
@@ -20,6 +23,13 @@ import { showNotification } from "./functions";
 app.setName("Flowerpot");
 app.setAppUserModelId("mst.flowerpot");
 
+installConsoleLogging();
+
+log(
+    `Flowerpot ${app.getVersion()} starting: ${process.platform} ${os.release()} (${process.arch}), ` +
+        `args: ${process.argv.slice(1).join(" ") || "none"}`
+);
+
 /**
  * Prevent electron from running multiple instances.
  */
@@ -29,6 +39,24 @@ if (!isSingleInstance) {
     process.exit(0);
 }
 app.on("second-instance", restoreOrCreateWindow);
+
+/**
+ * Compatibility mode is a decision, not a switch: the renderer keeps starting
+ * sandboxed with `app.commandLine.appendSwitch("no-sandbox")`, so the flag has to
+ * be present on the real command line of a new process. Every launch therefore
+ * relaunches itself once, and the relaunched process (with `--no-sandbox` in
+ * `argv`) runs normally. The single-instance check above keeps a click on the
+ * shortcut from spawning this pair while the app is already running.
+ */
+if (isCompatModeActiveForLaunch() && !process.argv.includes("--no-sandbox")) {
+    log("Compatibility mode is on: relaunching without the Chromium sandbox");
+
+    store.flushSync();
+
+    const args = process.argv.slice(1).filter((arg) => arg !== "--no-sandbox");
+    app.relaunch({ args: [...args, "--no-sandbox"] });
+    app.exit(0);
+}
 
 /**
  * Disable Hardware Acceleration to save more system resources.

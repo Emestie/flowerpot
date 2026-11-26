@@ -25,6 +25,18 @@ export default class WebPlatform implements IPlatformClass {
         return Promise.resolve(webStore.getStatus());
     }
 
+    getCompatMode() {
+        return Promise.resolve({ active: false, logPath: "" });
+    }
+
+    disableCompatMode() {
+        // not needed in web platform
+    }
+
+    showMainLog() {
+        // not needed in web platform
+    }
+
     showSettingsFile() {
         // not needed in web platform, the banner does not offer it
     }

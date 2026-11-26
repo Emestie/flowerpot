@@ -1,7 +1,7 @@
 import { app, Menu, Notification, Tray } from "electron";
 import * as fs from "fs";
 import * as path from "path";
-import { getAppWindow } from "./main-window";
+import { getAppWindow, showAppWindow } from "./main-window";
 import { store } from "./store";
 const nativeImage = require("electron").nativeImage;
 
@@ -22,11 +22,10 @@ function warnIfMissing(iconPath: string) {
 
 export const showNotification = (level: any, data: any) => {
     if (isDev && process.platform === "win32") return; // Suppress dev notifications on Windows to prevent a rogue "Electron.lnk" Start Menu shortcut (see electron#4241).
-    const wnd = getAppWindow();
     data.icon = buildIconPath(level, false, true);
     const notif = new Notification(data);
     notif.on("click", () => {
-        wnd?.show();
+        showAppWindow();
     });
     notif.show();
 };
@@ -87,7 +86,7 @@ export function buildTrayIcon() {
         {
             label: locale === "ru" ? "Открыть" : "Show",
             click: () => {
-                getAppWindow()?.show();
+                showAppWindow();
             },
         },
         {
@@ -103,7 +102,7 @@ export function buildTrayIcon() {
     tray.setContextMenu(contextMenu);
 
     tray.on("double-click", () => {
-        getAppWindow()?.show();
+        showAppWindow();
     });
 }
 

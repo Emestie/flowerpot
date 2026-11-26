@@ -1,5 +1,5 @@
 import { TLocale } from "../../types";
-import { INotificationData, IPlatformClass, ISettingsStoreStatus, OS } from "../Platform";
+import { INotificationData, ICompatModeStatus, IPlatformClass, ISettingsStoreStatus, OS } from "../Platform";
 import { useAppStore } from "../../zustand/app";
 
 const eapi = window.eapi!;
@@ -22,6 +22,18 @@ export default class ElectronPlatform implements IPlatformClass {
 
     public async getSettingsStatus() {
         return await eapi.ipcInvoke<ISettingsStoreStatus>("read-settings-status");
+    }
+
+    public async getCompatMode() {
+        return await eapi.ipcInvoke<ICompatModeStatus>("read-compat-mode");
+    }
+
+    public disableCompatMode() {
+        eapi.ipcSend("disable-compat-mode");
+    }
+
+    public showMainLog() {
+        eapi.ipcSend("show-main-log");
     }
 
     public showSettingsFile(target: "settings" | "backup") {

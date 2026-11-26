@@ -212,6 +212,20 @@ Rules the store enforces, each of which exists because violating them lost user 
 
 Covered by `src/__tests__/settings-store.test.ts` (production file shape, recovery, read-only mode, atomic writes, failed writes).
 
+## Startup Crash Recovery (Windows Chromium Sandbox)
+
+Some Windows 11 builds and security suites (KES/EDR) make Chromium child processes die with `0x80000003` (`STATUS_BREAKPOINT`) before the first paint. The app must not turn that into a silent zombie: the window is created with `show: false` and waits for `ready-to-show`, so a renderer that dies first would leave an invisible process holding the single-instance lock.
+
+Rules that matter:
+
+- **Compatibility mode is a decision, not a switch.** `app.commandLine.appendSwitch("no-sandbox")` leaves the renderer sandboxed (verified with a preload probe), while the real `--no-sandbox` argument reaches every child process, so `index.ts` relaunches the process with that argument when `compat-mode.json` says so. Argv and the record are both checked to avoid a loop.
+- **The record is bound to the environment.** `compat-mode.json` (in `userData`) stores the app version and `os.release()`; after an app or Windows update the sandbox is tried again, and `markStartupSucceeded()` clears the record when the first paint succeeds.
+- **A failed startup must become visible.** `render-process-gone` / `did-fail-load` before `ready-to-show` go through `startup-recovery.ts`: on Windows the app enables compatibility mode and restarts once; when the retry also dies it shows an error dialog and exits, releasing the lock. On macOS/Linux nothing sandbox-related happens and the window is revealed/reloaded through `revealWindow()` instead.
+- **`focus()` does not show a hidden window.** `restoreOrCreateWindow` / `showAppWindow` must `show()` and `reload()` a crashed `webContents`, otherwise every click on the shortcut does nothing while the first instance holds the lock.
+- **Main-process diagnostics** go to `{userData}/logs/main.log` (rotated at 1 MB); `console.error`/`warn` are mirrored. The renderer shows `CompatModeBanner` on the main view while compatibility mode is on (Windows only), with "Show log" and "Try normal mode" (clears the record and relaunches).
+
+Covered by `src/__tests__/compat-mode.test.ts` and `src/__tests__/compat-mode-banner.test.tsx`.
+
 ## Electron Version Pin (41.x)
 
 The app is intentionally pinned to **Electron ^41** (`electron` in `package.json`) instead of the newest major.

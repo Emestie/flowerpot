@@ -19,11 +19,25 @@ export interface ISettingsStoreStatus {
     corruptBackupPath: string | null;
 }
 
+/** Whether the app restarted itself without the Chromium sandbox. */
+export interface ICompatModeStatus {
+    active: boolean;
+    enabledAt?: number;
+    reason?: string;
+    exitCode?: number;
+    logPath: string;
+}
+
 export interface IPlatformClass {
     isLocal: () => boolean;
     getStoreProp: <T = unknown>(prop: string) => Promise<T>;
     setStoreProp: (prop: string, value: any) => void;
     getSettingsStatus: () => Promise<ISettingsStoreStatus>;
+    getCompatMode: () => Promise<ICompatModeStatus>;
+    /** Leaves compatibility mode and restarts with the sandbox enabled. */
+    disableCompatMode: () => void;
+    /** Reveals the main-process log file in the file manager. */
+    showMainLog: () => void;
     /** Reveals the settings file, or the copy kept from a damaged one, in the file manager. */
     showSettingsFile: (target: "settings" | "backup") => void;
     copyString: (s: string) => void;
