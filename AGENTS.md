@@ -55,6 +55,63 @@ Tech stack: Electron 43, React 19, TypeScript, Vite 6, Zustand, Semantic UI Reac
 - Platform-specific code: Implement `IPlatformClass` in `helpers/platforms/Electron.ts` or `Web.ts`
 - Settings: Managed via `src/helpers/Settings.ts` and Zustand `settings` store
 - Notifications: Handled in main process via IPC, renderer triggers via `#preload` API
+- Right-click menus: `useContextMenu()` + `<ContextMenu controller>` from `src/ui/context-menu` (see below)
+
+## Context Menus (rows and cards)
+
+Work item and pull request rows/cards get their right-click menu from `src/ui/context-menu`
+(`useContextMenu()` for the state, `<ContextMenu controller={...}>` for the portaled menu). It
+replaced `react-contextmenu`, which was React 16-era and brought its own bugs.
+
+Rules that matter:
+
+- **One handler per row, not per cell.** `onContextMenu={menu.open}` sits on `<Table.Row>`; the
+  six `.react-contextmenu-wrapper` divs per row are gone. `Status` opens its own menu and calls
+  `stopPropagation()`, so right-clicking the status cell does not also open the row menu.
+- **Outside clicks are detected with a capture-phase listener on `document`.** Handlers inside the
+  list call `stopPropagation()`; a bubble-phase listener would never fire and the menu would stay
+  open when clicking another row (the old library's `holdToDisplay` did exactly that).
+- **`menu.open` always replaces the position**, so right-clicking the same row twice moves the menu
+  instead of closing it.
+- **`menu.openAt({x, y})`** anchors the menu under an element — the cards' "⋯" button uses it.
+- The menu also closes on scroll (capture, so nested scrollers count), resize, Escape, window
+  `blur`, an outside right click, and after any item click.
+- Placement is computed in a layout effect (flip to the other side near an edge, capped height when
+  it cannot fit), so the menu never paints at the old position.
+
+Covered by `src/__tests__/context-menu.test.tsx`.
+
+## Permawatch Block
+
+The Permawatch block is a pseudo query (`___permawatch_<accountId>`) built from
+`settings.lists.permawatch` instead of a service query, so it has no refresh cycle of its own to
+rely on: `useQueryLoader` compares `permawatchMembershipKey()` between renders and, when the list
+changes, calls `syncPermawatchQuery()` (drops what left the list, reuses instances other blocks
+already hold, so the change is visible immediately) and then reloads the block.
+
+Rules that matter:
+
+- **Never answer a list change with `setView("refreshhelper")`.** That remounts the whole MainView,
+  which flashes every block, drops the scroll position and restarts every query's timer. The
+  context menu (`WorkItemRowContextMenu`) only edits the list and the row's `_list`; the block
+  follows on its own. Lines are mutually exclusive (`Lists.push` clears the other lists), so
+  adding to Favorites/Hidden/Deferred also takes the item out of Permawatch — the same
+  subscription covers that.
+- MainView's manual refresh button still uses `refreshhelper`; that is the intended full reload.
+- **Items are separate instances per query** (`setWorkItemsForQuery` filters by `_queryId`), so the
+  reused item is a copy: the block the user right-clicked keeps its own row and indicator.
+- **`WorkItem._list` is a per-instance cache, never the truth.** The same item lives in several
+  query blocks as separate instances and a list change is only written to the clicked one, so
+  anything user-visible resolves the list with `Lists.getListOf(accountId, collection, id)`
+  (the order `deferred → favorites → pinned → hidden → permawatch → forwarded` lives in `Lists`
+  and `WorkItem` uses the same lookup). Sorting in `WorkItemsBlock` still reads `_list`, which is
+  why `onListChange` keeps writing it.
+- **Inside the Permawatch block the row menu only offers "Remove from list Permawatch."** Moving
+  the item to another list from there would mutate the block's copy and leave the original
+  query's instance showing a stale "remove from permawatch" that does nothing when clicked.
+  Copy/note actions stay; the query blocks keep the full list menu.
+
+Covered by `src/__tests__/permawatch.test.tsx`.
 
 ## Color Schemes
 
@@ -154,6 +211,20 @@ Rules the store enforces, each of which exists because violating them lost user 
 - **Renderer must not save before reading.** `Settings.read()` gates `Settings.save()` behind a `loaded` flag; the read status comes back through `read-settings-status` and drives `SettingsProblemBanner`. That banner is a dedicated component (like `WhatsNewBanner`), deliberately not an `ActionBanner`: those are one-time promotional messages stored in `bannersShown`, while a broken settings file must be reported on every launch until it is fixed.
 
 Covered by `src/__tests__/settings-store.test.ts` (production file shape, recovery, read-only mode, atomic writes, failed writes).
+
+## Startup Crash Recovery (Windows Chromium Sandbox)
+
+Some Windows 11 builds and security suites (KES/EDR) make Chromium child processes die with `0x80000003` (`STATUS_BREAKPOINT`) before the first paint. The app must not turn that into a silent zombie: the window is created with `show: false` and waits for `ready-to-show`, so a renderer that dies first would leave an invisible process holding the single-instance lock.
+
+Rules that matter:
+
+- **Compatibility mode is a decision, not a switch.** `app.commandLine.appendSwitch("no-sandbox")` leaves the renderer sandboxed (verified with a preload probe), while the real `--no-sandbox` argument reaches every child process, so `index.ts` relaunches the process with that argument when `compat-mode.json` says so. Argv and the record are both checked to avoid a loop.
+- **The record is bound to the environment.** `compat-mode.json` (in `userData`) stores the app version and `os.release()`; after an app or Windows update the sandbox is tried again, and `markStartupSucceeded()` clears the record when the first paint succeeds.
+- **A failed startup must become visible.** `render-process-gone` / `did-fail-load` before `ready-to-show` go through `startup-recovery.ts`: on Windows the app enables compatibility mode and restarts once; when the retry also dies it shows an error dialog and exits, releasing the lock. On macOS/Linux nothing sandbox-related happens and the window is revealed/reloaded through `revealWindow()` instead.
+- **`focus()` does not show a hidden window.** `restoreOrCreateWindow` / `showAppWindow` must `show()` and `reload()` a crashed `webContents`, otherwise every click on the shortcut does nothing while the first instance holds the lock.
+- **Main-process diagnostics** go to `{userData}/logs/main.log` (rotated at 1 MB); `console.error`/`warn` are mirrored. The renderer shows `CompatModeBanner` on the main view while compatibility mode is on (Windows only), with "Show log" and "Try normal mode" (clears the record and relaunches).
+
+Covered by `src/__tests__/compat-mode.test.ts` and `src/__tests__/compat-mode-banner.test.tsx`.
 
 ## Electron Version Pin (41.x)
 

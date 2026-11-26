@@ -1,3 +1,13 @@
+## 1.0.1
+
+- fixed the "exceeded the quota" error in the pull requests block of the web version: notification snapshots now keep only the fields needed to detect changes, so they no longer fill up the browser's local storage
+- failures to save to local storage no longer break loading: work items and pull requests keep updating even when the browser refuses to store a snapshot
+- removed the stray border above priority 1 work items
+- fixed the context menu of work items and pull requests: it no longer stays open after a click on another row, no longer opens by itself when the mouse button is held down, no longer hangs over the list while it scrolls, and right-clicking the same row again moves the menu instead of closing it
+- adding a work item to Permawatch or removing it from there no longer redraws the whole list: the item appears or disappears immediately, and only the Permawatch block reloads itself
+- the row menu inside the Permawatch block now offers only the removal from that list, so moving an item to another list from there no longer leaves the original query with a stale "remove from Permawatch" entry that did nothing
+- fixed startup on Windows when the Chromium system sandbox prevents the window from being created: if the interface process crashes at startup, Flowerpot restarts in compatibility mode without the sandbox, writes a log into the data folder and shows a warning with a way back to the normal mode; a stuck instance no longer blocks the following launches
+
 ## 1.0.0
 
 - after 7 years of Flowerpot development, 1.0 is finally here 🎉🎉🎉

@@ -2,6 +2,9 @@ import { TLists } from "./Settings";
 import { useSettingsStore } from "../zustand/settings";
 
 export default class Lists {
+    /** the order the rows and the work item model resolve a list in */
+    private static order: TLists[] = ["deferred", "favorites", "pinned", "hidden", "permawatch", "forwarded"];
+
     public static push(accountId: string, listName: TLists, collection: string, id: number, rev?: number) {
         if (!rev) rev = 0;
 
@@ -78,6 +81,15 @@ export default class Lists {
                         (collection ? x.collection === collection : true) && x.id === id && (rev ? x.rev === rev : true)
                     );
             });
+    }
+
+    /**
+     * The list the item is in right now, read from the settings instead of a cached
+     * `WorkItem._list`: one item lives in several query blocks as separate instances, and a
+     * change made through one of them is not written to the others.
+     */
+    public static getListOf(accountId: string, collection: string, id: number): TLists | undefined {
+        return this.order.find((listName) => !!this.isIn(accountId, listName, collection, id));
     }
 
     public static isInText(accountId: string, listName: TLists, name: string) {

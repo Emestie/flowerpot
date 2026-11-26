@@ -2,6 +2,8 @@ import { app, BrowserWindow, globalShortcut, Menu, MenuItemConstructorOptions } 
 import { join } from "path";
 import { pathToFileURL } from "url";
 import { buildIconPath, buildTrayIcon, registerAutostart } from "./functions";
+import { log } from "./logger";
+import { handleStartupRendererFailure } from "./startup-recovery";
 import { store } from "./store";
 import { setWindowOnHandlers } from "./window-on-handlers";
 
@@ -96,9 +98,47 @@ async function createWindow() {
     // when that IPC arrived, logging "Failed to update tray icon: ... setImage".
     buildTrayIcon();
 
-    await browserWindow.loadURL(pageUrl);
+    try {
+        await browserWindow.loadURL(pageUrl);
+    } catch (e: any) {
+        log("Failed to load the main window:", e);
+
+        // A navigation replaced this load; the replacement will paint the window.
+        if (e && e.code === "ERR_ABORTED") {
+            return browserWindow;
+        }
+
+        // `render-process-gone` / `did-fail-load` normally started the recovery
+        // already. This catch is the last resort for a failure that fired neither
+        // event — the window must never stay hidden with the app running.
+        handleStartupRendererFailure({ reason: "loadURL rejected", message: String(e) });
+    }
 
     return browserWindow;
+}
+
+/**
+ * Brings the existing window back into view. `focus()` alone does nothing on
+ * Windows when the window is hidden, which made every click on the shortcut
+ * silently do nothing after a failed startup.
+ */
+function revealWindow(window: BrowserWindow) {
+    if (window.isDestroyed()) return;
+
+    if (window.isMinimized()) {
+        window.restore();
+    }
+
+    if (!window.webContents.isDestroyed() && window.webContents.isCrashed()) {
+        log("Reloading a crashed window");
+        window.webContents.reload();
+    }
+
+    if (!window.isVisible()) {
+        window.show();
+    }
+
+    window.focus();
 }
 
 /**
@@ -111,15 +151,13 @@ export async function restoreOrCreateWindow() {
         window = await createWindow();
     }
 
-    if (window.isMinimized()) {
-        window.restore();
-    }
+    revealWindow(window);
+}
 
-    if (process.platform === "darwin" && window) {
-        window.show();
-    }
-
-    window.focus();
+/** Shows the window from the tray menu, a notification or the second instance. */
+export function showAppWindow() {
+    const window = getAppWindow();
+    if (window !== undefined) revealWindow(window);
 }
 
 export function getAppWindow() {

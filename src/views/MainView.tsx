@@ -6,6 +6,7 @@ import { Icon } from "../ui/icon";
 import { Message } from "../ui/message";
 import { LocalVersionBanner } from "../components/LocalVersionBanner";
 import { PageLayout } from "../components/PageLayout";
+import { CompatModeBanner } from "../components/banners/CompatModeBanner";
 import { SettingsProblemBanner } from "../components/banners/SettingsProblemBanner";
 import { WhatsNewBanner } from "../components/banners/WhatsNewBanner";
 import { ViewHeading } from "../components/heading/ViewHeading";
@@ -207,6 +208,7 @@ export function MainView() {
             <Container fluid>
                 <WhatsNewBanner />
                 <SettingsProblemBanner />
+                <CompatModeBanner />
                 {!noAccounts && <ActionBannersContainer />}
                 {accounts.map((account) => (
                     <PullRequestsBlock key={account.id} accountId={account.id} />

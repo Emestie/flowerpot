@@ -1,5 +1,5 @@
-import { MouseEvent, useState } from "react";
-import { showMenu } from "react-contextmenu";
+import { MouseEvent } from "react";
+import { useContextMenu } from "../../ui/context-menu";
 import { Label, type TColor } from "../../ui/label";
 import { Icon } from "../../ui/icon";
 import { Card } from "../../ui/card";
@@ -153,12 +153,12 @@ export function WorkItemCard(props: IProps) {
 
     const item = props.item;
     const hasChanges = showUnreads ? !!changesCollection[item.id] : false;
-    const [uid] = useState(() => `${props.item.id}-${Math.random().toString(36).slice(2)}`);
+    const menu = useContextMenu();
 
     const openMenu = (e: MouseEvent) => {
         e.stopPropagation();
         const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-        showMenu({ position: { x: rect.left, y: rect.bottom }, id: uid });
+        menu.openAt({ x: rect.left, y: rect.bottom });
     };
 
     const tags = item.tags
@@ -171,7 +171,7 @@ export function WorkItemCard(props: IProps) {
     const cardClassName = ["wi-card", getClass(), isRed ? "negative" : ""].filter(Boolean).join(" ");
 
     return (
-        <Card className={cardClassName} onClick={dropChanges} onContextMenu={(e) => e.preventDefault()} wide>
+        <Card className={cardClassName} onClick={dropChanges} onContextMenu={menu.open} wide>
             <Card.Content className="wi-card-header">
                 <span className="wi-card-id">
                     <span
@@ -233,7 +233,7 @@ export function WorkItemCard(props: IProps) {
                     {revEl} {freshnessEl}
                 </span>
             </Card.Content>
-            <WorkItemRowContextMenu uid={uid} query={props.query} workItem={item} onUpdate={props.onUpdate} />
+            <WorkItemRowContextMenu menu={menu} query={props.query} workItem={item} onUpdate={props.onUpdate} />
         </Card>
     );
 }

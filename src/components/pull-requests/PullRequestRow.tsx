@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { ContextMenuTrigger } from "react-contextmenu";
+import { useContextMenu } from "../../ui/context-menu";
 import { Label } from "../../ui/label";
 import { Icon } from "../../ui/icon";
 import { Table } from "../../ui/table";
@@ -75,7 +75,7 @@ export function PullRequestRow(props: IProps) {
         // PullRequest instances with the same ids).
     }, [accountId, pullRequest]);
 
-    const [uid] = useState(() => `${pullRequest.repoId}-${pullRequest.id}-${Math.random().toString(36).slice(2)}`);
+    const menu = useContextMenu();
 
     const freshnessEl = (() => {
         return (
@@ -123,86 +123,71 @@ export function PullRequestRow(props: IProps) {
     };
 
     return (
-        <Table.Row style={rowStyle} onClick={handleClick}>
+        <Table.Row style={rowStyle} onClick={handleClick} onContextMenu={menu.open}>
             <Table.Cell
                 className={pullRequest.isHidden() ? "cellRelative workItemDeferred " : "cellRelative "}
                 collapsing
                 onDoubleClick={() => Platform.current.copyString(pullRequest.id.toString())}
             >
-                <ContextMenuTrigger id={uid}>
-                    {pullRequest.newThreadsCount > 0 && (
-                        <span className="PrUnreadDot" title={s("unreadPrHint")}>
-                            {pullRequest.newThreadsCount > 99 ? "99" : pullRequest.newThreadsCount}
-                        </span>
-                    )}
-                    {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
-                    <Icon name="level up alternate" />{" "}
-                    <HighlightenText text={pullRequest.id.toString()} />
-                </ContextMenuTrigger>
-                <PullRequestContextMenu uid={uid} pullRequest={pullRequest} />
+                {pullRequest.newThreadsCount > 0 && (
+                    <span className="PrUnreadDot" title={s("unreadPrHint")}>
+                        {pullRequest.newThreadsCount > 99 ? "99" : pullRequest.newThreadsCount}
+                    </span>
+                )}
+                {hasChanges && <span title={s("newItem")} className="HasChangesDot"></span>}
+                <Icon name="level up alternate" /> <HighlightenText text={pullRequest.id.toString()} />
+                <PullRequestContextMenu menu={menu} pullRequest={pullRequest} />
             </Table.Cell>
             <Table.Cell>
-                <ContextMenuTrigger id={uid}>
-                    {pullRequest.isHidden() && (
-                        <span className="wiIndicatorDeferred">
-                            <Icon name="eye slash" />
-                        </span>
-                    )}
-                    {!!pullRequest.isDraft && (
-                        <span>
-                            <Label key="draft" size="mini" className="mr-4" color="grey">
-                                {s("draftPullRequest")}
-                            </Label>
-                        </span>
-                    )}
-                    {pullRequest.mergeStatus === "conflicts" && (
-                        <span>
-                            <Label key="conflicts" size="mini" className="mr-4" color="red">
-                                {s("prMergeConflicts")}
-                            </Label>
-                        </span>
-                    )}
-                    <span className="IterationInTitle">
-                        {pullRequest.projectName}/{pullRequest.repoName}
+                {pullRequest.isHidden() && (
+                    <span className="wiIndicatorDeferred">
+                        <Icon name="eye slash" />
                     </span>
+                )}
+                {!!pullRequest.isDraft && (
                     <span>
-                        <Label
-                            key="branch"
-                            size="mini"
-                            basic
-                            className="mr-4"
-                            style={{ color: "var(--pr-branch-label-color, #689473)" }}
-                        >
-                            {pullRequest.sourceBranch} &rarr; {pullRequest.targetBranch}
+                        <Label key="draft" size="mini" className="mr-4" color="grey">
+                            {s("draftPullRequest")}
                         </Label>
                     </span>
-                    <span>{tags}</span>
-                    <Link className="WorkItemLink" href={pullRequest.url}>
-                        <HighlightenText text={pullRequest.title} />
-                    </Link>
-                </ContextMenuTrigger>
+                )}
+                {pullRequest.mergeStatus === "conflicts" && (
+                    <span>
+                        <Label key="conflicts" size="mini" className="mr-4" color="red">
+                            {s("prMergeConflicts")}
+                        </Label>
+                    </span>
+                )}
+                <span className="IterationInTitle">
+                    {pullRequest.projectName}/{pullRequest.repoName}
+                </span>
+                <span>
+                    <Label
+                        key="branch"
+                        size="mini"
+                        basic
+                        className="mr-4"
+                        style={{ color: "var(--pr-branch-label-color, #689473)" }}
+                    >
+                        {pullRequest.sourceBranch} &rarr; {pullRequest.targetBranch}
+                    </Label>
+                </span>
+                <span>{tags}</span>
+                <Link className="WorkItemLink" href={pullRequest.url}>
+                    <HighlightenText text={pullRequest.title} />
+                </Link>
             </Table.Cell>
-            <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>
-                    <>{commentsEl}</>
-                </ContextMenuTrigger>
-            </Table.Cell>
+            <Table.Cell collapsing>{commentsEl}</Table.Cell>
             <Table.Cell collapsing>{reviewers}</Table.Cell>
             <Table.Cell collapsing onDoubleClick={() => Platform.current.copyString(pullRequest.getAuthorTextName())}>
-                <ContextMenuTrigger id={uid}>
-                    <ProfileWidget
-                        accountId={props.accountId}
-                        avatarUrl={pullRequest.authorAvatar}
-                        displayName={pullRequest.authorName}
-                        nameFull={pullRequest.authorFullName}
-                    />
-                </ContextMenuTrigger>
+                <ProfileWidget
+                    accountId={props.accountId}
+                    avatarUrl={pullRequest.authorAvatar}
+                    displayName={pullRequest.authorName}
+                    nameFull={pullRequest.authorFullName}
+                />
             </Table.Cell>
-            <Table.Cell collapsing>
-                <ContextMenuTrigger id={uid}>
-                    <>{freshnessEl}</>
-                </ContextMenuTrigger>
-            </Table.Cell>
+            <Table.Cell collapsing>{freshnessEl}</Table.Cell>
         </Table.Row>
     );
 }

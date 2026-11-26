@@ -413,14 +413,6 @@ td.workItemKeyword {
     color: #4798da;
 }
 
-.react-contextmenu-item:focus {
-    outline: none;
-}
-
-.react-contextmenu-item:hover {
-    cursor: pointer;
-}
-
 .LocalVersion {
     font-size: 12px;
     margin-right: 10px;

@@ -1,6 +1,6 @@
 import { MouseEvent, useState, useEffect } from "react";
 import { ReactNode } from "react";
-import { showMenu } from "react-contextmenu";
+import { useContextMenu } from "../../ui/context-menu";
 import { Label } from "../../ui/label";
 import { Icon } from "../../ui/icon";
 import { Card } from "../../ui/card";
@@ -76,12 +76,12 @@ export function PullRequestCard(props: IProps) {
         // PullRequest instances with the same ids).
     }, [accountId, pullRequest]);
 
-    const [uid] = useState(() => `${pullRequest.repoId}-${pullRequest.id}-${Math.random().toString(36).slice(2)}`);
+    const menu = useContextMenu();
 
     const openMenu = (e: MouseEvent) => {
         e.stopPropagation();
         const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-        showMenu({ position: { x: rect.left, y: rect.bottom }, id: uid });
+        menu.openAt({ x: rect.left, y: rect.bottom });
     };
 
     const freshnessEl = (() => {
@@ -130,7 +130,7 @@ export function PullRequestCard(props: IProps) {
     const cardClassName = ["pr-card", pullRequest.isHidden() ? "workItemDeferred" : ""].filter(Boolean).join(" ");
 
     return (
-        <Card className={cardClassName} onClick={handleClick} onContextMenu={(e) => e.preventDefault()} wide>
+        <Card className={cardClassName} onClick={handleClick} onContextMenu={menu.open} wide>
             <Card.Content className="pr-card-header">
                 <span
                     className={
@@ -206,7 +206,7 @@ export function PullRequestCard(props: IProps) {
                     {freshnessEl}
                 </span>
             </Card.Content>
-            <PullRequestContextMenu uid={uid} pullRequest={pullRequest} />
+            <PullRequestContextMenu menu={menu} pullRequest={pullRequest} />
         </Card>
     );
 }

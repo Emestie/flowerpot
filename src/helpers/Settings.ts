@@ -119,6 +119,13 @@ export default class Settings {
             if (status) useAppStore.getState().setSettings({ settingsStatus: status });
         } catch (e: any) {
             console.error("Failed to read settings file status:", e);
+        }
+
+        try {
+            const compatMode = await Platform.current.getCompatMode();
+            if (compatMode) useAppStore.getState().setSettings({ compatMode });
+        } catch (e: any) {
+            console.error("Failed to read compatibility mode status:", e);
         } finally {
             Settings.loaded = true;
         }

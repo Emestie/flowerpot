@@ -134,12 +134,5 @@ function calculatePriority(resp: IResponseWorkItem): { priority: number | undefi
 }
 
 function getListName(accountId: string, id: number, collectionName: string): TLists | undefined {
-    if (Lists.isIn(accountId, "deferred", collectionName, id)) return "deferred";
-    if (Lists.isIn(accountId, "favorites", collectionName, id)) return "favorites";
-    if (Lists.isIn(accountId, "pinned", collectionName, id)) return "pinned";
-    if (Lists.isIn(accountId, "hidden", collectionName, id)) return "hidden";
-    if (Lists.isIn(accountId, "permawatch", collectionName, id)) return "permawatch";
-    if (Lists.isIn(accountId, "forwarded", collectionName, id)) return "forwarded";
-
-    return undefined;
+    return Lists.getListOf(accountId, collectionName, id);
 }
